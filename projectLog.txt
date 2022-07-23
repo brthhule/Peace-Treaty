@@ -1,0 +1,231 @@
+Need to do:
+- set up gameplay-- build, train, attack, scout functionality
+- set up enemy gameplay-- use random number system to build, train, attack, or scout
+- scout functionality-- fog of war, can only explore areas of the map that are on the continent, 
+- can only scout territories bordering player's kingdom
+- have opponent number variable, figure this out. Is only in generateContinent function and the one above it, doesn't show up anywhere else. Should be in resume game code
+(global variable?)
+- add fog of war (have another map array, this is shown when the player views the map)
+- add population cap to provinces-- add residence building, increasing level increases the amount held by garrison (not affected by commander army size, 
+or maybe it is?)
+- add immigrant functionality-- the more peaceful a nation, more immigrants come per turn, immigrants needed to train troops
+- add feed population functionality-- every turn, each province/army consumes food?
+- residential building-- cap on immigrants and troops per province
+- add functionality to modify troop stats: militia has 12 carrying capacity, guards have CP increased to 12 when defending, cavalry have CP 
+increased to 12 when attacking, knights have CP increased to 12 when fighting against an army with paladins (to counter paladins), paladins just have stats of 16
+
+Key words to look out for (ctrl f)
+- "fix this" things that need to be addressed
+- "delete this" delete these lines of code if code works without it
+- "test" check if code works
+
+resources
+- https://www.educba.com/c-plus-plus-graphics/ graphics
+https://stackoverflow.com/questions/313970/how-to-convert-an-instance-of-stdstring-to-lower-case
+
+				Log Overview           Minute Conversion
+June 10th: June 15th: 7 hours     420 min
+June 16th: 45 min                 45 min
+June 19th: 2 hours                120 min
+June 20th: 1 hour, 40 min         100 min
+June 21nd: 20 min                 20 min
+June 22nd: 30 min                 30 min
+June 23rd: 30 min                 30 min
+June 24: 1 hour, 30 min           90 min
+June 25: 2 hours, 35 min          155 min
+June 26: 1 hour, 45 min           105 min
+June 27: 2 hours, 15 min          135 min
+June 29: 1 hour                   60 min
+June 30: 3 hours, 50 min          230 min
+July 1: 1 hour                    60 min
+July 2: 1 hour                    60 min
+July 4: 1 hour, 44 min            104 min
+July 5th: 30 min                  30 min
+July 6th: 1 hour, 40 min          100 min
+July 7th: 1 hour, 15 min          75 min
+July 9th: 1 hour, 55 min          115 min
+July 10: 55 min                   55 min
+July 11: 55 min                   55 min
+July 12: 1 hour                   60 min
+July 13: 50 min					  50 min
+July 15: 1 hour, 15 min			  75 min
+July 16: 3 hours, 30 min          210 min
+July 17: 2 hours, 15 min          135 min
+July 18: 2 hours, 40 min		  160 min
+July 19: 1 hour, 15 min           75 min
+July 20: 2 hours, 5 min			  125 min
+
+
+Log:								Total: 51.4 hours
+June 10th - June 15th: 7 hours-
+  developed introduction
+  develoepd framework for player attack, build, and train
+  developed functionality for player attack, so player army size plays a factor
+  developed translation system to turn inputed coordinates into multidimensional array indices
+  developed functionality for showing map of game
+  developed functionality for selecting unit for building/training
+  developed troop army framework
+
+June 16th: 45 min (all of sixth period, into seventh and including 1st and 2nd period a little bit)
+  developed resource management when building infrastructure, fixed all stats function to reflect total player resources
+  update land resources functionality-- each turn, increase amount of resources in each province by production rate of buildings
+  
+June 19th: 2 hours
+	9:45 pm - 10:45 pm (1 hour): downloading microsoft visual studio to do offline work, developed troop train function to train troops, subtract
+the necessary mamterials, ad add to the total amount of troops
+	10:45 pm - 11:45 pm (1 hour): testing game. Need to do the following: fix functionality for kingdom name to include spacing, fix gameplay values
+(such as resource amounts) to make sense, fix it so that when entering coordinates and other integer/numerical entries, the game doesn't just break,
+need to start adding AI gameplay------------- exception handling
+
+minigame idea: just buildings and training troops-- train as many troop as possible until you can't proceed to the next turn
+
+June 20th: (1 hour, 40 min)
+	10:00 pm - 10:20 pm (20 min): Figured out what was wrong with input for kingdom name, used cin.ignore() and fixed it
+	10:20 pm - 11:00 pm (40 min): Functionality so that entering mutiple values for first prompt (S/R) wouldn't end up in error (checkChar function)
+	11:00 pm - 11:40 pm (40 min): Fixed check char function, made it so function actually works
+
+June 21nd: 20 min
+	Tried figuring out how to use multiple cpp files, didn't work
+
+June 22nd: 30 min
+	5:45 pm - 6:00 pm (15 min): Figured out how to use multiple files, had to create new project from project -> add module, have to find "solution explorer"
+(go to view)
+	15 more minutes: tried to create a second file for TrainMAHeader (playerBuildHeader), crashed the system. playerBuildHeader doesn't work. Looking for a solution
+
+June 23rd: 30 min
+	10:15 pm - 10:45v (30 min): Tried ironing out how to fix the program. Problems with the first projet (FFE V1.1), made new project (FFE V1.2)
+
+June 24: 1 hour, 30 min
+	6:15 am - 7:45 am (1 hour, 30 min): Figured out how to use multiple files. Cannot use functions that use other functions (funciton
+in .cpp file cannot use functions from main), found a work around (use functions that don't use other functions, or modify the function
+so that it uses passed arguments rather than functions).
+
+June 25: 2 hours, 35 min
+	3:45 pm - 4:00 pm (15 min): Uploaded visual stuido on my personal computer at home, tried using a flashdrive to upload the project
+and transfer it from laptop to computer. Didn't work, flashdrive failed, is broken now. Copied and pasted code onto repl.it, then
+did so again to transfer from repl to vistual studio on pc. Up and running now
+	4:00 pm - 4:20 pm (20 min): Fixed checkChar functions so that they didn't use the same variable names. Used keyword/phrase "AV" after string name for each instance to
+differentiate between checkChar cases
+	4:20 pm - 4:35 pm (15 min): Started deleting extra material (used to use do and while loops to check characters, deleted these structures due to nature of checkChar)
+	4:35 pm - 4:35 pm (1 hour): replaced selectUnit function with switch statement rather than if statements, added checkInt to area where user is prompted to enter coordinates for 
+upgrade building funciton, did more deleting of extra content
+	8:45 pm - 9:30 pm (45 min): Moved translateCoordinate function from main to otherFunctions file, some clearing up
+
+June 26: 1 hour, 45 min
+	8:45 pm - 9:30 pm (45 min): Developed framework to use enemy AI, player can now choose continent size and opponent number, created and am now working on army deployment function
+	9:30 pm - 10:15 pm (45 min): Developing army commander training
+	10:15 pm - 10:30 pm (15 min): Replaced checkChar AV arrays with vectors (so I didn't have to worry about arrays being the ame size))
+
+June 27: 2 hours, 15 min
+	1:05 pm - 2:00 pm (55 min): Updated checkInt to use vectors (1:22), cleaned up function initializations and stuff
+	3:30 pm - 4:00 (30 min): Checking stuff around, looking at how to utilize mapArmyNumbers, split this into four arrays
+	10:00 pm - 10:50 (50 min): Worked on battle calculations (made battleCalculationsTwo to reduce redundancy and clean up code)
+
+June 29: 1 hour
+	11:30 am - 12:30 pm (1 hour): something happened, have to use std::cout (I think maybe too much code?), working on scout log fucntion, thinking about adding repeats so 
+functions don't automatically default to rerouting to the main menu after an action-- stays at a particular action until player says to go to the previous menu.
+
+June 30: 3 hours, 50 min
+	1:30 pm - 1:45 (15 min): Updated variable names (changed armyCommander variables to be more specific), changed trainCommanders function from char to void,
+laid framework so that specific functions reroute to the "local" menu rather than the main menu, such as the trainCommanders function going to the "Army Deployment
+action menu" rather than the main menu.
+	2:35 pm - 5:30 (2 hours, 55 min): Made all action functions void so it loops back, cleaning up of stuff, developed upgradeCommander function and working 
+on armyDeployment function
+	9:05 pm - 9:45 (40 min): Worked on moveUnit function, starting adding building blocks together
+
+July 1: 1 hour
+	9:40 pm - 10:40 (1 hour): Debugging, fixing things, sorting through older versions of game (such as tileConquests). Found something wrong with upgradeBuilding 
+(I think it's the declaration of the requiredResourcesBuildings array)
+
+July 2: 1 hour
+	9:30 pm - 10:30 (1 hour): Some cleaning work, realized that I can add a thing in the checkChar function to use the AVThree variable to find AVOne and AVTwo,
+So I wouldn't have to repeat these all the time (cleaning up efficiency stuff and removing redundant things). Fixed issue with upgradeBuilding function. Cleaned up a
+lot of the warnings (such as uninitialized variables).
+
+July 4: 1 hour, 44 min
+	12:36 am - 2:00 am (1 hour, 24 min): Cleaned up TrainMA function so it loops back to TrainMA after TrainMAFunction rather than repeating itself, did the thing I did with checkChar (made it so that only one vector has to be passed for it to work)
+	10:40 am - 11:00 am (20 min): Tried using Git and stuff (cloning repository-- need to do more research), cleaned up code, started working on playerScout
+
+July 5th: 30 min
+	11:15 pm - 11:45 pm (30 min): Worked on viewArmyOverview function, did some cleaning up
+
+July 6th: 1 hour, 40 min
+	11:45 am - 12:25 pm (40 min): Developed getTrainBuildCoordinates and findCommanderIndex functions to increase readibility, did some cleaning up
+	10:30 pm - 11:30 pm (1 hour): Clean up code, reduce redundancy
+https://www.youtube.com/show/SCJESAAO27j5IS9Lsr0NXvRA?season=6&sbp=CgE2
+
+July 7th: 1 hour, 15 min
+	9:45 pm - 11:00 pm (1 hour, 15 min): Studying C++ on GeeksforGeeks, added color to showMap function
+
+July 9th: 1 hour, 55 min
+	4:05 pm - 5:10 pm (1 hour, 5 min): made the viewAllStatsFunction (consolodiated information into the textFunctions.cpp file, made program more
+readible)
+    9:20 pm - 10:10 pm (50 min): Developed playerScout function, did stuff, figured out some coloring 
+
+July 10: 55 min
+    11:05 pm - 11:20 pm (15 min): Added color to repl (woo)
+    11:20 pm - 12:00 am (40 min): worked on more color stuff, modified code such that when the continent is generated, the player starts with 1 commander rather than no commanders
+
+July 11: 55 min
+    12:00 am - 12:10 am (10 min): Worked on stuff mentioned in July 10-- carried over
+    10:00 pm - 10:15 pm (15 min): Working on fixing presentation erros and stuff
+    11:25 pm - 11:55 pm (30 min): Did some more fixing, trying to get deployCommander function to work. Met with "signal: segmentation fault (core dumped)" error message,
+tried to see if this error popped up with the playerBuild functions. After entering the letter of the building I want to upgrade, the required resources were printed and then the same error message was printed again.
+
+July 12: 1 hour
+    10:50 pm - 11:50 pm (1 hour): Worked on playerScout functions, encountered a lot of erros (the segmentation fault error keeps popping up (maybe use visual studio instead of repl?))
+
+July 13: 50 min
+	8:30 pm - 9:20 pm (50 min): Tried fixing errors and stuff, tried moving some functions to otherFunctions.cpp (like initializeValues),
+ran into some errors (something with the strings in the .h files). For some reason, got an abort error when running program-- after it says "gameplay _
+selected", the program crashes...
+
+July 15: 1 hour, 15 min
+	10:15 pm - 11:30 pm (1 hour, 15 min): Fixed problems by using a string for the checkChar function instead of vectors (used string manipulators
+to find each character in the string, added it to a vector inside of the checkChar function instead of passing a vector to the function). Offloaded
+the checkChar function to otherFunctions.cpp, started clearing space in the main file. Found a problem: passing a string instead of a vector doesn't
+work for checkInt because I can convert string to char through stringName.at(index), but I can't convert string to int, soooo.... Also moved printMapValues
+to textFunctions.cpp, moved findCommanderIndex to otherFunctions.cpp. Organizing the main file so it covers the main branch actions (side branches
+and other functionalities are moved to textFunctions.cpp (if their primary purpose is to print information) or otherFunctions.cpp (if the purpose 
+of the function is to return a variable derived from arguments passed to it)).
+
+July 16: 3 hours, 30 min
+	2:00 pm - 2:30 pm (30 min): Tried getting army deployment to work, ran into issues (something with vector out of bound index, don't know what's
+wrong-- the index is 0 and the size of the vector is 1). Tried seeing if I can make a vector object so that I can use a class to store the values of 
+the various armies.
+	8:35 pm - 11:15 pm (2 hours, 40 min): Made CommanderProfile class, made it so that instead of tracking the various commanders by their coordinates, I would identify
+them as objects instead. This means that the object's stats and values carry on with them, so I don't have to keep changing the values of the objects
+according to wear they are (in the coordinate-based system, each time a unit (commander)'s coordinates changed, I had to update all their coordinates
+to mvoe too). It's becoming more streamlined now, started doing the same for provinces as well.
+	11:25 pm - 11:45 pm (20 min): Worked on Provinces class
+
+July 17: 2 hours, 15 min
+	9:20 pm - 11:00 pm (1 hour, 40 min): Worked on the various classes, created AllUnits class as a parent to Provinces and CommanderProfile, running into errors
+trying to convert the code to OOP
+	11:15 pm - 11:50 pm (35 min): Worked on Provinces class, did more updating between the main cpp file and the classes
+
+July 18: 2 hours, 40 min
+	11:10 am - 11:20 am (10 min): It's all just a giant mess... Working on mapCharacters now (changing it to a pointer to the provinceList objects)
+	12:20 pm - 1:00 pm (40 min): Trying to sort out some errors, figuring out how the classes work with each other
+	5:50 pm - 6:30 pm (40 min): Fixed some stuff, got the initial screen to work again. Still getting error about line 1732 (vector out of range thing)
+worked on Provinces class, removed mapCharacters array (going to use the provincesList). Updated showMap to reflect the change
+	10:00 pm - 11:10 pm (1 hour, 10 min): Developed getChar function to replace checkChar function, tried rewriting deployCommander function to
+try to address error (putting blocks of code into new functions), didn't work. Still having problems. Thinking about make the main actions into classes
+, see if this changes anything. Upsides: classes organize things, if I have a different class for each main action (like building or training), I can
+put it into its own files. Organization is a plus (putting everything in its own file). Downside: May be difficult to go through and find stuff (
+stuff is organized, but there are so many files and so many functions) 
+
+July 19: 1 hour, 15 min
+	10:00 pm - 11:15 pm (1 hour, 15 min): Still trying to figure out how to get rid of the vector error. I think I have to make everything into classes and
+objects... messed up the playerScout function. Tried making the TrainMA functions into a class.
+
+July 20: 2 hours, 5 min
+	12:00 pm - 12:20 pm (20 min): Worked on TrainMA function-- deleted the first original TrainMA function (it was just meant to
+find coordinates in case there weren't coordinates)
+	2:40 pm - 3:05 pm (25 min): It's all broken, getting a lot of errors regarding the classes 
+(Like "'addSpecificTroop': is not a member of 'Provinces")
+	5:35 pm - 5:45 pm (10 min): Don't know what's wrong; I think there's something wrong with the inheritance. Basically just
+added the AllUnits stuff to Provinces and made it so that Provinces wasn't a child of AllUnits anymore. AllUnits works
+for CommanderProfile though (?????). Getting link error message thingy
+	6:05 pm - 6:55 pm (50 min): Made armyDeployment its own class, working on making playerAttack a class (AttackMA)
+	7:30 pm - 7:50 pm (20 min): Finished making AttackMA class (for now)
