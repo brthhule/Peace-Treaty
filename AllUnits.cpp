@@ -10,6 +10,10 @@ using namespace std;
 	int troopsPresent[5];
 	int troopsInjured[5];
 	int totalCP;*/
+
+extern int troopsCP[5];
+extern int provinceBuildingsProductionNumbers[6];
+
 //Constructor
 AllUnits::AllUnits()
 {
@@ -62,6 +66,27 @@ void AllUnits::printResources()
 	}
 	std::cout << endl;
 	cout << "\033[;0m";
+}
+int AllUnits::getTotalCP()
+{
+	int totalCP = 0;
+	for (int x = 0; x < 5; x++)
+	{
+		totalCP += troopsPresent[x] * troopsCP[x];
+	}
+	return totalCP;
+}
+int AllUnits::getCoordinate(char identifier)
+{
+	switch (identifier)
+	{
+	case 'X':
+		return unitXCoordinate;
+	case 'Y':
+		return unitYCoordinate;
+	default:
+		return '-1';//in case something bad happen
+	}
 }
 
 

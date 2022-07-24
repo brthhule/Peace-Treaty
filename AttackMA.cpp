@@ -11,19 +11,29 @@ extern int enemyDifficulty;
 
 extern vector <vector <CommanderProfile>> commandersList;
 extern vector <vector <Provinces>> provincesList;
+extern int playerTroopsLost[5];
+extern int troopsCP[5];
+extern string provinceResourcesNames[5];
 
 
 
 AttackMA::AttackMA()
-{}
+{
+    commanderIndex = 0;
+    participantIndex = 0;
+    unitAttackingX = 0;
+    unitAttackingY = 0;
+    unitBeingAttackedX = 0;
+    unitBeingAttackedY = 0;
+}
 AttackMA::AttackMA(int xCoordinatearg, int yCoordinatearg, int enemyXarg, int enemyYarg, int participantIndexarg, int commanderIndexarg)
 {
-    int unitAttackingX = xCoordinatearg;
-    int unitAttackingY = yCoordinatearg;
-    int unitBeingAttackedX = enemyXarg;
-    int unitBeingAttackedY = enemyYarg;
-    int participantIndex = participantIndexarg;
-    int commanderIndex = commanderIndexarg;
+    unitAttackingX = xCoordinatearg;
+    unitAttackingY = yCoordinatearg;
+    unitBeingAttackedX = enemyXarg;
+    unitBeingAttackedY = enemyYarg;
+    participantIndex = participantIndexarg;
+    commanderIndex = commanderIndexarg;
 }
 void AttackMA::playerAttack() /*fix this*/
 {

@@ -1,14 +1,12 @@
-#include <iostream>
-#include <string>
-using namespace std;
 class BuildMA
 {
 public:
+	//Constructors
 	BuildMA();
 	BuildMA(int xCoordinate, int yCoordinate);
 
+	//Accessors/Functions?
 	void findProvinceCoordinates();
-
 	void playerBuildFunction();
 	void upgradeBuildings();
 private:
@@ -20,8 +18,5 @@ private:
 	double requiredResourcesMine [5] = {4, 3, 2, 1, 0.5};
 	double requiredResourcesChurch [5] = {5, 4, 3, 2, 1};
 	double requiredResourcesBarracks [5] = {1, 1, 1, 1, 0.2};*/
-	string buildingNames[6] = { "Farm", "Lumber Mill", "Quarry", "Mine", "Church" };
-	const string provinceResourcesNames[5] = { "Food", "Wood", "Ore", "Gold", "Mana" };
-
 };
 

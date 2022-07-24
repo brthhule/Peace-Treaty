@@ -1,4 +1,4 @@
-/*7/13/22 @ 8:39 pm*/
+/*7/23/22 @ 10:10 pm*/
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -60,14 +60,11 @@ void scoutLogFunction(int xCoordinate, int yCoordinate);
 void provinceReportLog(char whatReportChar, int xCoordinate, int yCoordinate);
 /*Enemy turn*/
 void AITurn();
-void AIGameplayOne();
-void AIGameplayTwo();
-void AIGameplayThree();
+int opponentNumber = 0;
 /*Miscellaneous functions*/
 
 void initializeValues();
 void addNewCommander(vector <CommanderProfile>& playerCommandersList); /*Fill vector with commander objects*/
-void updateprovinceResources();
 
 /*map stuff & coordinates*/
 //char *mapCharacters[15][15];
@@ -84,10 +81,9 @@ int enemyDifficulty = 0;
 int playerProvinces = 0;
 int enemyProvinces = 0;
 /*building stuff*/
-const int provinceBuildingsProductionNumbers[6] = { 5,4,3,2,1,2 };
+int provinceBuildingsProductionNumbers[6] = { 5,4,3,2,1,2 };
 /*Army stuff*/
-char mapArmiesIdentification[15][15] = { '0' };
-const int troopsCP[5] = { 1,2,4,8,16 };
+int troopsCP[5] = { 1,2,4,8,16 };
 string troopNames[5] = { "Militia", "Guards", "Cavalry", "Knights", "Paladins" };
 string buildingNames[6] = { "Farm", "Lumber Mill", "Quarry", "Mine", "Church" };
 
@@ -96,7 +92,6 @@ vector<vector<Provinces>> provincesList;
 int scoutLogTurnLevel[15][15][2] = { 0 };
 /*Army commander stuff*/
 int maxAmountOfCommanders = 0;
-int currentEnemyCommanders;
 char confirmOpponents[3] = { 'N', 'N', 'N' };
 vector <vector <char>> commanderIdentifiers;
 vector <vector <char>> commanderIdentifiersList;
@@ -114,8 +109,8 @@ int totalTroopsLost = 0;
 int playerCP = 0;
 int totalPlayerUnits[5] = { 0,0,0,0,0 }; /*0) Militia, 1) Guards, 2) Cavalry, 3) Knights, 4) Paladins*/
 /*Resource stuff*/
-const int initialResources[5] = { 5, 4, 3, 2, 1 };
-const string provinceResourcesNames[5] = { "Food", "Wood", "Ore", "Gold", "Mana" };
+int initialResources[5] = { 5, 4, 3, 2, 1 };
+string provinceResourcesNames[5] = { "Food", "Wood", "Ore", "Gold", "Mana" };
 //int provinceResources[15][15][5] = { 0 }; /*food, wood, ore, gold, mana*/
 
 
@@ -199,7 +194,7 @@ void startGame()
     {
         for (int y = 0; y < 5; y++)
         {
-            provincesList[participantCoordinates[x][0]][participantCoordinates[x][1]].addProvinceResources (y, initialResources[y] * enemyDifficulty);
+            provincesList[participantCoordinates[x][0]][participantCoordinates[x][1]].addResources (y, initialResources[y] * enemyDifficulty);
         }
     }
 
@@ -309,8 +304,8 @@ void playerAction(int turn)
         std::cout << "Clearing screen. " << endl;
         chrono::seconds dura(1);
         this_thread::sleep_for(dura);
-        //system("cls"); /*Windows only*/
-        system("clear"); /*Non-Windows*/
+        system("cls"); /*Windows only*/
+        //system("clear"); /*Non-Windows*/
 
         std::cout << "Turn: " << turn << endl << endl;
         std::cout << "Welcome to the Main menu " << endl;
@@ -553,6 +548,8 @@ int findUnitLevel(int xCoordinate, int yCoordinate, char identifier)
             return provincesList[xCoordinate][yCoordinate].findProvinceLevel();
         }
     }
+    default:
+        return 0;//if something goes wrong
     }
 }
 void scoutLogCalculationsCommander(int participantIndex, int commanderIndex, int accuracy)/*fix this-- unfinished*/
@@ -563,7 +560,7 @@ void scoutLogCalculationsCommander(int participantIndex, int commanderIndex, int
     double newAccuracy = (double) accuracy / 100;
     newAccuracy = 1 - newAccuracy;
     double accuracyAdjustedValueOne;
-    double accuracyAdjustedValueTwo;
+    int accuracyAdjustedValueTwo;
     int fooOne;
     int fooTwo;
     int findRange;
@@ -585,7 +582,7 @@ void scoutLogCalculationsProvince(int xCoordinate, int yCoordinate, int accuracy
     double newAccuracy = (double) accuracy / 100;
     newAccuracy = 1 - newAccuracy;
     double accuracyAdjustedValueOne;
-    double accuracyAdjustedValueTwo;
+    int accuracyAdjustedValueTwo;
     int fooOne;
     int fooTwo;
     int findRange;
@@ -594,8 +591,8 @@ void scoutLogCalculationsProvince(int xCoordinate, int yCoordinate, int accuracy
     {
         findRange = provincesList[xCoordinate][yCoordinate].getProvinceStats(x);
         accuracyAdjustedValueOne = findRange * newAccuracy;
-        fooOne = findRange - accuracyAdjustedValueOne;
-        fooTwo = findRange + accuracyAdjustedValueOne;
+        fooOne = findRange - (int) accuracyAdjustedValueOne;
+        fooTwo = findRange + (int) accuracyAdjustedValueOne;
         accuracyAdjustedValueTwo = rand() % fooOne + fooTwo;
         provincesList[xCoordinate][yCoordinate].updateProvinceScoutLog(x, accuracyAdjustedValueTwo);
     }
@@ -770,7 +767,7 @@ void provinceReportLog(char whatReportChar, int xCoordinate, int yCoordinate)
         break;
     }
     case 'R':
-        provincesList[xCoordinate][yCoordinate].printProvinceResources();
+        provincesList[xCoordinate][yCoordinate].printResources();
         break;
     case 'B':
         provincesList[xCoordinate][yCoordinate].printBuildingStats();
@@ -833,29 +830,9 @@ void selectEnemyAction(int xCoordinate, int yCoordinate)/*finish this*/
 
 void AITurn()
 {
-    AIGameplayOne();
-    AIGameplayTwo();
-    AIGameplayThree();
-}
-void AIGameplayOne() /*Make moves for AI 1*/
-{
-    if (confirmOpponents[0] == 'Y')
+    for (int x = 1; x <= opponentNumber; x++)
     {
-        std::cout << "AI One Action " << endl;
-    }
-}
-void AIGameplayTwo()
-{
-    if (confirmOpponents[0] == 'Y')
-    {
-        std::cout << "AI Two Action " << endl;
-    }
-}
-void AIGameplayThree()
-{
-    if (confirmOpponents[0] == 'Y')
-    {
-        std::cout << "AI Three Action " << endl;
+        //Execute AI turn stuff here
     }
 }
 
@@ -909,7 +886,7 @@ void testingSkip()
     playerProvinces = 1;
 
     continentSize = 5;
-    int opponentNumber = 2;
+    opponentNumber = 2;
     enemyDifficulty = 2;
     generateNewContinent(opponentNumber);
 }
@@ -945,24 +922,9 @@ void initializeValues()
 void addNewCommander(vector <CommanderProfile>& playerCommandersList)
 {
     char commanderIdentifier = commanderIdentifiersList[0][0];
-    int commanderIndex = commandersList[0].size();
+    int commanderIndex = (int) commandersList[0].size();
     CommanderProfile newCommander(1, commanderIdentifier, commanderIndex);
     playerCommandersList.push_back(newCommander);
 }
 
 
-void updateprovinceResources()
-{
-    for (int x = 0; x < continentSize; x++)
-    {
-        for (int y = 0; y < continentSize; y++)
-        {
-            for (int z = 0; z < 5; z++)
-            {
-                provincesList[x][y].updateBuildingsProduction();
-                provincesList[x][y].updateProvinceResources();
-            }
-
-        }
-    }
-}

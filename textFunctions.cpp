@@ -5,14 +5,16 @@
 #include <string>
 //#include <windows.h> //WO
 #include <stdlib.h>
+#include "Provinces.h"
 
 using namespace std;
 extern vector <vector <Provinces>> provincesList;
-const string provinceResourcesNamesTwo[5] = { "Food", "Wood", "Ore", "Gold", "Mana" };
-string buildingNamesTwo [6] = { "Farm", "Lumber Mill", "Quarry", "Mine", "Church" };
-string troopNamesTwo[5] = { "Militia", "Guards", "Cavalry", "Knights", "Paladins" };
-
-
+extern string provinceResourcesNames[5];
+extern string buildingNames[6];
+extern string troopNames[5];
+extern int playerTroopsLost[5];
+extern int initialResources[5];
+extern int continentSize;
 
 void synopsis()
 {
@@ -261,18 +263,16 @@ void upgradeBuildingsHelp()
 
 void casualtyReport(int deadTroops[5], int injuredTroops[5])
 {
-    string troopNamesTwo[5] = { "Militia", "Guards", "Cavalry", "Knights", "Paladins" };
-
     std::cout << endl;
     std::cout << "Troops casualties: " << endl;
     for (int x = 0; x < 5; x++) /*print out deaths*/
     {
-        std::cout << troopNamesTwo[x] << " dead: " << deadTroops[x] << endl;
+        std::cout << troopNames[x] << " dead: " << deadTroops[x] << endl;
     }
     std::cout << endl;
     for (int x = 0; x < 5; x++) /*print out deaths*/
     {
-        std::cout << troopNamesTwo[x] << " injured: " << injuredTroops[x] << endl;
+        std::cout << troopNames[x] << " injured: " << injuredTroops[x] << endl;
     }
     std::cout << endl;
 }
@@ -286,7 +286,7 @@ void printCostsToTrainAnotherCommander(int trainArmyCommanderCosts[5], int curre
     {
         trainArmyCommanderCosts[x] = (currentPlayerCommanders + 1) * 10;
         trainArmyCommanderCosts[x] *= initialResources[x];
-        std::cout << provinceResourcesNamesTwo[x] << ": " << trainArmyCommanderCosts[x] << endl;
+        std::cout << provinceResourcesNames[x] << ": " << trainArmyCommanderCosts[x] << endl;
     }
     std::cout << endl;
 }

@@ -46,6 +46,11 @@ extern vector <vector <CommanderProfile>> commandersList;
 extern vector <Provinces> provincesCanSelect;
 extern char mapMoveUnit[15][15];
 extern char generalCommanderIdentifiers[26];
+extern int provinceBuildingsProductionNumbers[6];
+extern int continentSize;
+extern int playerTroopsLost[5];
+extern int scoutLogTurnLevel[15][15][2];
+extern int troopsCP[5];
 
 
 
@@ -85,18 +90,36 @@ int translateCoordinate(int coordinate, char indicator, char whichWay)
     return translation;
 }
 
-
-
 int calculatePlayerValues(int decision)
 {
     switch (decision)
     {
     case 1:
     {
+        int whichParticipant = 0; //fix this when making AI
         int totalTroopsCP = 0;
-        for (int x = 0; x < 5; x++)
+        int amountOfTroops[5] = {};
+        //findTotalTroopsCPFunction
+        for (int x = 0; x < continentSize; x++)//find troops in provinces-- might be better to create a list of provinces per player? Don't
+            //have to search through provinces that belong to other participants
         {
-            totalTroopsCP += totalTroops[x] * troopsCP[x];
+            for (int y = 0; y < continentSize; y++)
+            {
+                switch (provincesList[x][y].getProvinceIdentifier())
+                {
+                case 'P':
+                case 'p':
+                    totalTroopsCP += provincesList[x][y].getTotalCP();
+                    break;
+                }
+            }
+        }
+        for (int b = 0; b < commandersList[whichParticipant].size(); b++)
+        {
+            for (int c = 0; c < 5; c++)
+            {
+                totalTroopsCP += commandersList[whichParticipant][b].getTotalCP();
+            }
         }
         return totalTroopsCP;
         break;
@@ -115,9 +138,11 @@ int calculatePlayerValues(int decision)
         break;
     default:
         cout << "Something went wrong... " << endl;
+        return -1;
         break;
     }
     cout << "Something went wrong" << endl;
+    return -1;
 }
 
 char checkChar(string stringAV, string input)
@@ -177,6 +202,7 @@ int findCommanderIndex(char commanderChar, string listOfCommanders)
             return x;
         }
     }
+    return -1;//if something goes wrong
 }
 
 vector<int> getCoordinates(int identifier)/*Might have have to fix this (check if the coordinate stuff is right)*/
@@ -422,7 +448,7 @@ void moveUnit(int xCoordinate, int yCoordinate, int participantIndex, int comman
             }
             std::cout << "Confirm moving your unit to (" << moveToX << ", " << moveToY << ")? (Y/N) ";
 
-            if (getChar(NULL, "YN", 2) == 'Y')
+            if (getChar("Replacement thingy", "YN", 2) == 'Y')
             {
                 if (attackScenario == 'P')
                 {
@@ -447,3 +473,19 @@ void moveUnit(int xCoordinate, int yCoordinate, int participantIndex, int comman
     }
     std::cout << "Returning to previous menu... " << endl << endl;
 }/* unfinished*/
+
+void updateprovinceResources()
+{
+    for (int x = 0; x < continentSize; x++)
+    {
+        for (int y = 0; y < continentSize; y++)
+        {
+            for (int z = 0; z < 5; z++)
+            {
+                provincesList[x][y].updateBuildingsProduction();
+                provincesList[x][y].updateProvinceResources();
+            }
+
+        }
+    }
+}

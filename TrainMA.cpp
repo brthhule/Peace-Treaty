@@ -1,9 +1,13 @@
 #include "TrainMA.h"
+#include "textFunctions.h"
+#include "AllUnits.h"
+#include "Provinces.h"
 
 using namespace std;
 
 extern vector <vector <Provinces>> provincesList;
 extern string troopNames[5];
+extern string provinceResourcesNames[5];
 
 TrainMA::TrainMA()
 {
@@ -92,9 +96,8 @@ void TrainMA::TrainMAFunction()
                 char trainingFail = 'S';
                 for (int a = 0; a < 5; a++)
                 {
-                    newProvinceList->subtractProvinceResources(a, requiredResources[a]);
-                    totalPlayerResources[a] -= requiredResources[a];
-                    if (newProvinceList->getProvinceResource(a) < 0)
+                    newProvinceList->subtractResources(a, requiredResources[a]);
+                    if (newProvinceList->getResource(a) < 0)
                     {
                         trainingFail = 'F';
                     }
@@ -105,19 +108,19 @@ void TrainMA::TrainMAFunction()
                     std::cout << "Training failed" << endl;
                     for (int a = 0; a < 5; a++)
                     {
-                        newProvinceList->addProvinceResources(a, requiredResources[a]);
+                        newProvinceList->addResources(a, requiredResources[a]);
                     }
                 }
                 else
                 {
                     std::cout << "Training successful" << endl;
-                    newProvinceList->addProvinceSpecificTroop(troopTier - 1, amountOfTroops);
+                    newProvinceList->addSpecificTroop(troopTier - 1, amountOfTroops);
                 }
                 break;
             }
             case 'S':
             {
-                newProvinceList->printProvinceResources();
+                newProvinceList->printResources();
                 break;
             }
             case 'M':

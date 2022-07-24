@@ -1,21 +1,18 @@
-#ifndef PROVINCES
-#define PROVINCES
+#ifndef PROVINCES_H
+#define PROVINCES_H
 
-#include <iostream>
-#include <iostream>
 #include <vector>
+#include <iostream>
 
 #include "AllUnits.h"
-#include "textFunctions.h"
 
-using namespace std;
-
-class Provinces
+class Provinces: public AllUnits
 {
 public:
 	/*Constructors*/
 	Provinces();
 	Provinces(int xCoordinate, int yCoordinate);
+
 	/*Destructor*/
 
 	/*Accessor Functions*/
@@ -23,14 +20,17 @@ public:
 	int findProvinceScoutLog(int index);
 	int findMaxGarrison();
 	int findMaxInfirmaryCapacity();
-	void printBuildingStats();
-	char getProvinceIdentifier();
 	int getBuildingLevel(int index);
 	int getCommandersPresent();
 	int returnCommanderPresentIdentifier(int index);
-	int getCoordinate(char whichCoordinate);
 	int returnCommanderIndex(int index);
 	int getTroopsTrainedThisTurn();
+	int findProvinceLevel();
+
+
+	void printBuildingStats();
+
+	char getProvinceIdentifier();
 
 	/*Mutator Functions*/
 	void updateProvinceScoutLog(int index, int value);
@@ -41,7 +41,6 @@ public:
 	void removeCommandersPresent(int amount);
 	void setCoordinates(int xCoordinate, int yCoordinate);
 	void provinceIsACapital(char identifier);
-	int findProvinceLevel();
 	void resetTroopsTrainedThisTurn();
 	void increaseBuildingLevel(int index, int amount);
 
@@ -54,21 +53,8 @@ public:
 
 	//from AllUnits
 	//Accessor Functions
-	int getProvinceResource(int resourceIndex);
-	int getProvinceTroopsPresent(int troopTypeIndex);
-	void printProvinceResources();
-
-	//Mutator Functions
-	void removeProvinceTroops(int troopIndex, int troopAmount);
-	void addProvinceResources(int resourceIndex, int resourceAmount);
-	void addProvinceInjuredTroops(int troopIndex, int troopAmount);
-	void subtractProvinceResources(int index, int amount);
-	void addProvinceTroops(int troopsAdd[5]);
-	void addProvinceSpecificTroop(int index, int amount);
-
 
 private:
-	int initialProvinceResources[5] = { 5, 4, 3, 2, 1 };
 	int *provinceStats[27];/*
 [0] food present
 [1] wood present
@@ -107,8 +93,6 @@ private:
 	int buildingsProduction[6];
 	int maxResources[5];
 	int totalMaxResources;
-	int xCoordinate;
-	int yCoordinate;
 	int troopsTrainedThisTurn;
 
 	int resourcesPresent[5];
@@ -118,14 +102,7 @@ private:
 	int totalTroops;
 	int foodConsumption;
 
-	string provinceResourcesNamesThree[5] = { "Food", "Wood", "Ore", "Gold", "Mana" };
-	string buildingNamesThree[6] = { "Farm", "Lumber Mill", "Quarry", "Mine", "Church" };
-	string troopNamesThree[5] = { "Militia", "Guards", "Cavalry", "Knights", "Paladins" };
-	int provinceBuildingsProductionNumbersTwo[6] = { 5,4,3,2,1,2 };
 	int initialStats[5] = { 5, 4, 3, 2, 1 };
-
-	int unitXCoordinate = 0;
-	int unitYCoordinate = 0;
 };
 
 #endif

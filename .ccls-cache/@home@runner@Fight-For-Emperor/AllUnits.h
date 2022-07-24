@@ -4,7 +4,6 @@
 #include <string>
 #include <iostream>
 #include "otherFunctions.h"
-#include "Provinces.h"
 
 using namespace std;
 
@@ -20,6 +19,8 @@ public:
 	int getCommanderArmyCP();
 	int getTroopsPresent(int troopTypeIndex);
 	void printResources();
+	int getTotalCP();
+	int getCoordinate(char identifier);
 
 	//Mutator Functions
 	void removeTroops(int troopIndex, int troopAmount);
@@ -41,7 +42,6 @@ protected:
 	string provinceResourcesNamesThree[5] = { "Food", "Wood", "Ore", "Gold", "Mana" };
 	string buildingNamesThree[6] = { "Farm", "Lumber Mill", "Quarry", "Mine", "Church" };
 	string troopNamesThree[5] = { "Militia", "Guards", "Cavalry", "Knights", "Paladins" };
-	int provinceBuildingsProductionNumbersTwo[6] = { 5,4,3,2,1,2 };
 	int initialStats[5] = { 5, 4, 3, 2, 1 };
 
 	int unitXCoordinate = 0;

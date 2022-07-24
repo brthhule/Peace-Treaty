@@ -21,21 +21,20 @@ public:
 	~CommanderProfile();
 
 	//Accessor functions
-	char getCommanderIdentifier();
-	void printCommanderStats();
-	
-	
 	int getCommanderStat(int index);
-	void changeCoordinates(int xCoordinate, int yCoordinate);
 	int printCommanderScoutReport(int idex);
 	int getCommanderLevel();
+
 	char hasCommanderMoved();
+	char getCommanderIdentifier();
+
+	void changeCoordinates(int xCoordinate, int yCoordinate);
+	void printCommanderStats();
 
 	//Mutator Functions
 	void changeCommanderCoordinates(int xCoordinate, int yCoordinate);
 	void changeCommanderStat(int index, int amount);
 	void changeCommanderIdentifier(char identifier);
-	int getCoordinate(char identifier);
 	void updateCommanderScoutReport(int index, int value);
 	void addCommanderLevel(int amount);
 	void resetCommanderMoved();
@@ -64,9 +63,6 @@ private:
 [19] = food consumption
 */
 	int commanderLevel;
-	char commanderIdentifier;
-	string MANDescriptions[5] = { "Resources in", "Troops present in", "Troops injured in", "Other stats of" };//check
-	string namesOfMAN[20];//check
 	int commanderScoutReport[22];/*
 [0] = food the army possesses    Resources
 [1]  = wood
@@ -93,7 +89,12 @@ private:
 	int maxTroops;//check
 	int totalMaxResources;
 	int commanderIndex;
+
+	char commanderIdentifier;
 	char hasMoved;
+
+	string MANDescriptions[5] = { "Resources in", "Troops present in", "Troops injured in", "Other stats of" };//check
+	string namesOfMAN[20];//check
 };
 
 #endif

@@ -231,4 +231,7 @@ for CommanderProfile though (?????). Getting link error message thingy
 	7:30 pm - 7:50 pm (20 min): Finished making AttackMA class (for now)
 
 July 23
-    2:40 pm - 2:45 pm(5 min): Updated sizeof instances-- now includes / sizeof(*data type)
+    2:40 pm - 2:45 pm (5 min): Updated sizeof instances-- now includes / sizeof(*data type)
+	8:45 pm - 10:00 pm (1 hour, 15 min): Reorganized some stuff, fixed all the warnings that Visual Studio was telling me about,
+made Provinces a child of AllUnits, trying to simplify stuff more, ran into error (LNK1168 cannot open c:\Users\Brennen\source\repos\FFE V1.2\x64\Debug\FFE V1.2.exe for writing)
+, still haven't fixed the segmentation core fault/vector subscript out of range error

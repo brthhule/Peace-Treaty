@@ -9,6 +9,7 @@ public:
 	AttackMA();
 	AttackMA(int xCoordinatearg, int yCoordinatearg, int enemyXarg, int enemyYarg, int participantIndexarg, int commanderIndexarg);
 
+	//Function stuff
 	void playerAttack();
 	void playerCommitAttack();
 	void playerCommitAttackWin(int oldResources[5]);
@@ -21,5 +22,4 @@ private:
 	int unitBeingAttackedY;
 	int participantIndex;
 	int commanderIndex;
-	string provinceResourcesNames[5] = { "Food", "Wood", "Ore", "Gold", "Mana" };
 };

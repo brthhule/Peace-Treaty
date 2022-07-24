@@ -1,10 +1,17 @@
 #include <iostream>
 #include <vector>
+#include <string>
+
 #include "BuildMA.h"
 #include "otherFunctions.h"
+#include "Provinces.h"
+#include "textFunctions.h"
 
 using namespace std;
+
 extern vector <vector<Provinces>> provincesList;
+extern string buildingNames[6];
+extern string provinceResourcesNames[5];
 
 BuildMA::BuildMA()
 {
@@ -54,7 +61,7 @@ void BuildMA::findProvinceCoordinates()
 void BuildMA::playerBuildFunction()
 {
     std::cout << "---------- Start printing province information ----------" << endl;
-    provincesList[provinceXCoordinate][provinceYCoordinate].printProvinceResources();
+    provincesList[provinceXCoordinate][provinceYCoordinate].printResources();
     provincesList[provinceXCoordinate][provinceYCoordinate].printBuildingStats();
     std::cout << "---------- End printing province information ----------" << endl << endl;
 
@@ -115,9 +122,8 @@ void BuildMA::upgradeBuildings()
                 char failOrWork = 'W'; /*delete this? not necessary-- will always return 'Y'*/
                 for (int x = 0; x < 5; x++)
                 {
-                    newProvince->subtractProvinceResources(x, requiredResources[x]);
-                    totalPlayerResources[x] -= requiredResources[x];
-                    if (newProvince ->getProvinceResource(x) < 0)
+                    newProvince->subtractResources(x, requiredResources[x]);
+                    if (newProvince ->getResource(x) < 0)
                     {
                         failOrWork = 'F';
                     }
@@ -127,7 +133,7 @@ void BuildMA::upgradeBuildings()
                 {
                     for (int x = 0; x < 5; x++)
                     {
-                        newProvince->addProvinceResources(x, requiredResources[x]);
+                        newProvince->addResources(x, requiredResources[x]);
                     }
                     std::cout << "Upgrade failed. Not enough resources. " << endl;
                 }

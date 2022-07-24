@@ -13,6 +13,9 @@ extern vector < vector <CommanderProfile>> commandersList;
 extern vector <vector <Provinces>> provincesList;
 extern vector <vector <char>>commanderIdentifiers;
 extern vector <vector <char>> commanderIdentifiersList;
+extern int initialResources[5];
+extern string provinceResourcesNames[5];
+
 
 ArmyDeploymentMA::ArmyDeploymentMA(int xCoordinate, int yCoordinate)
 {
@@ -85,8 +88,8 @@ void ArmyDeploymentMA::upgradeCommanders() /*fix this-- finish making it*/
             for (int x = 0; x < 5; x++) /*subtracts cost of upgrade from capital resources. If one of the resources goes into the negative,
     training fails; check to make sure there are enough resources to upgrade the commander*/
             {
-                newProvince->subtractProvinceResources(x, commanderUpgradeCosts[x]);
-                if (newProvince->getProvinceResource(x) < 0)
+                newProvince->subtractResources(x, commanderUpgradeCosts[x]);
+                if (newProvince->getResource(x) < 0)
                 {
                     failCommanderUpgrade = 'F';
                 }
@@ -100,7 +103,7 @@ void ArmyDeploymentMA::upgradeCommanders() /*fix this-- finish making it*/
             {
                 for (int x = 0; x < 5; x++) /*return resource values back to original values*/
                 {
-                    newProvince->addProvinceResources(x, commanderUpgradeCosts[x]);
+                    newProvince->addResources(x, commanderUpgradeCosts[x]);
                 }
                 std::cout << "Upgrade failed. " << endl;
             }
@@ -183,7 +186,7 @@ void ArmyDeploymentMA::trainCommanders()
         std::cout << "Do you want to train another commnader? (Y/N) ";
     }
     int trainArmyCommanderCosts[5] = { 0 };
-    if (getChar(NULL, "YN", 2) == 'Y')
+    if (getChar("Replacement", "YN", 2) == 'Y')
     {
         if (currentPlayerCommanders < maxAmountOfCommanders) /*if amount of commanders is less than max (not at max capacity)*/
         {
@@ -195,8 +198,8 @@ void ArmyDeploymentMA::trainCommanders()
                 for (int x = 0; x < 5; x++) /*subtracts cost of upgrade from a province's land resources. If one of the resources goes into the negative,
 training fails*/
                 {
-                    newProvince->subtractProvinceResources(x, trainArmyCommanderCosts[x]);
-                    if (newProvince->getProvinceResource(x) < 0)
+                    newProvince->subtractResources(x, trainArmyCommanderCosts[x]);
+                    if (newProvince->getResource(x) < 0)
                     {
                         failCommanderTraining = 'F';
                     }
@@ -218,7 +221,7 @@ training fails*/
                     std::cout << "Commander training failed (Not enough resources)... " << endl << endl;
                     for (int x = 0; x < 5; x++)
                     {
-                        newProvince->addProvinceResources(x, trainArmyCommanderCosts[x]);
+                        newProvince->addResources(x, trainArmyCommanderCosts[x]);
                     }
                 }
             }
@@ -263,7 +266,7 @@ void ArmyDeploymentMA::deployCommanderMF()
 
                 string confirmDeployCommanderString;
                 std::cout << "Deploy commander " << commanderLetterIdentifierChar << "? (Y/N) ";
-                char confirmDeployCommanderChar = getChar(NULL, "YN", 2);
+                char confirmDeployCommanderChar = getChar("Replacement", "YN", 2);
 
                 int participantIndex = 0; /*Fix this when developing AI*/
                 int xThingyTwo = commandersList[participantIndex][indexToSelect].getCoordinate('X');

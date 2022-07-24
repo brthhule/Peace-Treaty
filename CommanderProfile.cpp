@@ -12,11 +12,18 @@ CommanderProfile::CommanderProfile()
 	}
     commanderIdentifier = '0';
     commanderLevel = 1;
+    commanderIndex = 0;
+    for (int x = 0; x < 22; x++)
+    {
+        commanderScoutReport[x] = 0;
+    }
+    hasMoved = 'N';
+    maxTroops = 0;
+    totalMaxResources = 0;
 }
 CommanderProfile::CommanderProfile(int level, char identifier, int index)
 {
-    AllUnits();
-    for (int x = 0; x < sizeof(commanderScoutReport) / sizeof(int); x++)
+    for (int x = 0; x < sizeof(commanderScoutReport) / sizeof (int); x++)
     {
         commanderScoutReport[x] = 0;
     }
@@ -82,16 +89,6 @@ void CommanderProfile::printCommanderStats()
 int CommanderProfile::getCommanderStat(int index)
 {
     return *commanderArmyStats[index];
-}
-int CommanderProfile::getCoordinate(char identifier)
-{
-    switch (identifier)
-    {
-    case 'X':
-        return unitXCoordinate;
-    case 'Y':
-        return unitYCoordinate;
-    }
 }
 int CommanderProfile::printCommanderScoutReport(int index)
 {
