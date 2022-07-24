@@ -3,7 +3,7 @@
 //constructors
 Provinces::Provinces()
 {
-	for (int x = 0; sizeof (provinceScoutReport); x++)
+	for (int x = 0; sizeof (provinceScoutReport) / sizeof(int); x++)
 	{
 		provinceScoutReport[x] = 0;
 	}
@@ -27,7 +27,7 @@ Provinces::Provinces()
 }
 Provinces::Provinces(int sendXCoordinate, int sendYCoordinate)
 {
-	for (int x = 0; sizeof(provinceScoutReport); x++)
+	for (int x = 0; sizeof(provinceScoutReport) / sizeof(int); x++)
 	{
 		provinceScoutReport[x] = 0;
 	}
@@ -102,7 +102,7 @@ int Provinces::getBuildingLevel(int index)
 int Provinces::findProvinceLevel()
 {
 	provinceLevel = 0;
-	for (int x = 0; x < sizeof(buildingLevels); x++)
+	for (int x = 0; x < sizeof(buildingLevels) / sizeof(int); x++)
 	{
 		provinceLevel += buildingLevels[x];
 	}
@@ -149,14 +149,14 @@ void Provinces::setProvinceIdentifier(char identifier)
 }
 void Provinces::updateBuildingsProduction()
 {
-	for (int x = 0; x < sizeof(buildingsProduction); x++)
+	for (int x = 0; x < sizeof(buildingsProduction) / sizeof(int); x++)
 	{
 		buildingsProduction[x] = buildingLevels[x] * provinceBuildingsProductionNumbersTwo[x];
 	}
 }
 void Provinces::updateProvinceResources()
 {
-	for (int x = 0; x < sizeof(buildingsProduction); x++)
+	for (int x = 0; x < sizeof(buildingsProduction) / sizeof(int); x++)
 	{
 		resourcesPresent[x] += buildingsProduction[x];
 	}

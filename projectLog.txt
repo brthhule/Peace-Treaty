@@ -229,3 +229,6 @@ added the AllUnits stuff to Provinces and made it so that Provinces wasn't a chi
 for CommanderProfile though (?????). Getting link error message thingy
 	6:05 pm - 6:55 pm (50 min): Made armyDeployment its own class, working on making playerAttack a class (AttackMA)
 	7:30 pm - 7:50 pm (20 min): Finished making AttackMA class (for now)
+
+July 23
+    2:40 pm - 2:45 pm(5 min): Updated sizeof instances-- now includes / sizeof(*data type)

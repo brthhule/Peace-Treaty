@@ -16,7 +16,7 @@ CommanderProfile::CommanderProfile()
 CommanderProfile::CommanderProfile(int level, char identifier, int index)
 {
     AllUnits();
-    for (int x = 0; x < sizeof(commanderScoutReport); x++)
+    for (int x = 0; x < sizeof(commanderScoutReport) / sizeof(int); x++)
     {
         commanderScoutReport[x] = 0;
     }
