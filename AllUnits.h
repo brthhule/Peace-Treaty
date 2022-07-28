@@ -39,9 +39,6 @@ protected:
 	int totalTroops;
 	int foodConsumption;
 
-	string provinceResourcesNamesThree[5] = { "Food", "Wood", "Ore", "Gold", "Mana" };
-	string buildingNamesThree[6] = { "Farm", "Lumber Mill", "Quarry", "Mine", "Church" };
-	string troopNamesThree[5] = { "Militia", "Guards", "Cavalry", "Knights", "Paladins" };
 	int initialStats[5] = { 5, 4, 3, 2, 1 };
 
 	int unitXCoordinate = 0;

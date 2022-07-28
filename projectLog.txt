@@ -13,11 +13,15 @@ or maybe it is?)
 - residential building-- cap on immigrants and troops per province
 - add functionality to modify troop stats: militia has 12 carrying capacity, guards have CP increased to 12 when defending, cavalry have CP 
 increased to 12 when attacking, knights have CP increased to 12 when fighting against an army with paladins (to counter paladins), paladins just have stats of 16
-
+by value-- do the same for Provinces
+-Rewrite battle calculations so both the attacking commander and the defending commander(s) lose CP throughout battle, changes 
+how battle functionality works... Consider if all enemy defending units are grouped together or not
 Key words to look out for (ctrl f)
 - "fix this" things that need to be addressed
 - "delete this" delete these lines of code if code works without it
 - "test" check if code works
+- Update participants so that Participants passes objects like commanders by reference rather than
+
 
 resources
 - https://www.educba.com/c-plus-plus-graphics/ graphics
@@ -54,9 +58,11 @@ July 17: 2 hours, 15 min          135 min
 July 18: 2 hours, 40 min		  160 min
 July 19: 1 hour, 15 min           75 min
 July 20: 2 hours, 5 min			  125 min
+July 23: 1 hour, 20 min			  80 min
+July 24: 1 hour, 15 min			  75 min
+July 25: 2 hours, 20 min		  140 min
 
-
-Log:								Total: 51.4 hours
+Log:								Total: 56.32 hours
 June 10th - June 15th: 7 hours-
   developed introduction
   develoepd framework for player attack, build, and train
@@ -230,8 +236,28 @@ for CommanderProfile though (?????). Getting link error message thingy
 	6:05 pm - 6:55 pm (50 min): Made armyDeployment its own class, working on making playerAttack a class (AttackMA)
 	7:30 pm - 7:50 pm (20 min): Finished making AttackMA class (for now)
 
-July 23
+July 23: 1 hour, 20 min
     2:40 pm - 2:45 pm (5 min): Updated sizeof instances-- now includes / sizeof(*data type)
 	8:45 pm - 10:00 pm (1 hour, 15 min): Reorganized some stuff, fixed all the warnings that Visual Studio was telling me about,
 made Provinces a child of AllUnits, trying to simplify stuff more, ran into error (LNK1168 cannot open c:\Users\Brennen\source\repos\FFE V1.2\x64\Debug\FFE V1.2.exe for writing)
 , still haven't fixed the segmentation core fault/vector subscript out of range error
+
+July 24: 1 hour, 15 min
+    10:00 pm - 10:50 pm (50 min): Creating Participants class, started offloading variables like commandersList and 
+adapting them to Participants
+	11:35 PM - 12:00 am (25 min): Worked on Participants class
+
+July 25: 2 hours, 20 min
+	10:10 am - 10:45 am (35 min): Worked out instances of commandersList from the main file... have to move on to the other files now.
+	11:15 am - 11:45 am (30 min): Worked out some errors that came about due to deleting commandersList
+	4:10 pm - 4:30 pm (20 min): Kept working out some errors
+	7:40 pm - 8:00 pm (20 min): Kept working on working out errors. Found that there's work to do in 
+AttackMA class (Have to sort out how the program knows what target to attack)
+	9:45 pm - 10:20 (35 min): Sorted out errors, getting "'&' requires I-value error" now ??????
+
+July 27:
+	5:40 pm - 6:55 pm (1 hour, 15 min): Fixed the I-value errors by just deleting the CommanderProfile pointers and just using
+Participants objects)... still getting errors (tried using template to merge checkChar and checkInt into one)
+	10:50 pm - 10:55 pm (5 min): Got rid of getValue, caused too many errors, not worth it
+	10:55 pm - 11:40 pm (45 min): Made it so that addCommander in Participants returns value by reference rather than by value...
+This way, data that has to be mutated/modified can be

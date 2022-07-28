@@ -5,7 +5,7 @@
 
 using namespace std;
 
-extern vector <vector <Provinces>> provincesList;
+extern vector <vector <Provinces>> provincesMap;
 extern string troopNames[5];
 extern string provinceResourcesNames[5];
 
@@ -22,8 +22,8 @@ TrainMA::TrainMA(int xCoordinate, int yCoordinate)
 
 void TrainMA::TrainMAFunction()
 {
-    Provinces *newProvinceList;
-    newProvinceList = &provincesList[provinceXCoordinate][provinceYCoordinate];
+    Provinces* newProvinceList;
+    newProvinceList = &provincesMap[provinceXCoordinate][provinceYCoordinate];
     int troopCost[5] = { 5, 4, 3, 2, 1 };
 
     int barracksLevel = newProvinceList->getBuildingLevel(5);
@@ -153,7 +153,7 @@ void TrainMA::findProvinceCoordinates()
         }
         else
         {
-            switch (provincesList[provinceXCoordinate][provinceYCoordinate].getProvinceIdentifier())
+            switch (provincesMap[provinceXCoordinate][provinceYCoordinate].getProvinceIdentifier())
             {
             case 'P':
             case 'p':

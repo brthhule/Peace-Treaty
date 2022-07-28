@@ -1,5 +1,8 @@
 #include <iostream>
 #include <string>
+
+#include "CommanderProfile.h"
+
 using namespace std;
 
 class AttackMA
@@ -22,4 +25,6 @@ private:
 	int unitBeingAttackedY;
 	int participantIndex;
 	int commanderIndex;
+	vector <int> commandersBeingAttackedIndices;
+	int enemyParticipantIndex;
 };

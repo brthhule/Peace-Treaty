@@ -14,6 +14,10 @@ using namespace std;
 extern int troopsCP[5];
 extern int provinceBuildingsProductionNumbers[6];
 
+extern string provinceResourcesNames[5];
+extern string buildingNames[6];
+extern string troopNames[5];
+
 //Constructor
 AllUnits::AllUnits()
 {
@@ -38,7 +42,7 @@ AllUnits::AllUnits(char unitIdentifier)
 	totalCP = 0;
 	totalTroops = 0;
 	foodConsumption = 0;
-		
+
 }
 
 
@@ -62,7 +66,7 @@ void AllUnits::printResources()
 	std::cout << "Resources present: " << endl;
 	for (int x = 0; x < 5; x++)
 	{
-		cout << provinceResourcesNamesThree[x] << ": " << resourcesPresent[x] << endl;
+		cout << provinceResourcesNames[x] << ": " << resourcesPresent[x] << endl;
 	}
 	std::cout << endl;
 	cout << "\033[;0m";

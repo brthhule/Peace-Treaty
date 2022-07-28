@@ -1,9 +1,23 @@
+#include <iostream>
+#include <vector>
+
 #include "Provinces.h"
+#include "AllUnits.h"
+#include "textFunctions.h"
+
+using namespace std;
+
+extern string provinceResourcesNames[5];
+extern string buildingNames[6];
+extern string troopNames[5];
+extern int provinceBuildingsProductionNumbers[6];
+extern int initialResources [5];
+extern int troopsCP[5];
 
 //constructors
 Provinces::Provinces()
 {
-	for (int x = 0; sizeof (provinceScoutReport) / sizeof(int); x++)
+	for (int x = 0; sizeof (provinceScoutReport); x++)
 	{
 		provinceScoutReport[x] = 0;
 	}
@@ -27,7 +41,7 @@ Provinces::Provinces()
 }
 Provinces::Provinces(int sendXCoordinate, int sendYCoordinate)
 {
-	for (int x = 0; sizeof(provinceScoutReport) / sizeof(int); x++)
+	for (int x = 0; sizeof(provinceScoutReport); x++)
 	{
 		provinceScoutReport[x] = 0;
 	}
@@ -48,8 +62,8 @@ Provinces::Provinces(int sendXCoordinate, int sendYCoordinate)
 	maxInfirmaryCapacity = findMaxInfirmaryCapacity();
 	provinceLevel = 1;
 	provinceIdentifier = '0';
-	xCoordinate = sendXCoordinate;
-	yCoordinate = sendYCoordinate;
+	unitXCoordinate = sendXCoordinate;
+	unitYCoordinate = sendYCoordinate;
 }
 //Accessors
 int Provinces::getProvinceStats(int index)
@@ -74,14 +88,14 @@ void Provinces::printBuildingStats()
 	cout << "\033[;34m";
 	for (int x = 0; x < 6; x++)
 	{
-		buildingsProduction[x] = buildingLevels [x]  * provinceBuildingsProductionNumbersTwo[x];
+		buildingsProduction[x] = buildingLevels [x]  * provinceBuildingsProductionNumbers[x];
 	}
 	std::cout << "Buildings in this province: " << endl << endl;
 	for (int x = 0; x < 5; x++)
 	{
-		std::cout << buildingNamesThree[x] << " (" << buildingNamesThree[x].substr(0, 1) << ") " << endl;
+		std::cout << buildingNames[x] << " (" << buildingNames[x].substr(0, 1) << ") " << endl;
 		std::cout << "    Level: " << buildingLevels[x] << endl;
-		std::cout << "    " << provinceResourcesNamesThree[x] << " production rate : " << buildingsProduction[x] << endl;
+		std::cout << "    " << provinceResourcesNames[x] << " production rate : " << buildingsProduction[x] << endl;
 	}
 	std::cout << "Barracks (B) " << endl;
 	std::cout << "    Level: " << buildingLevels[5] << endl;
@@ -102,7 +116,7 @@ int Provinces::getBuildingLevel(int index)
 int Provinces::findProvinceLevel()
 {
 	provinceLevel = 0;
-	for (int x = 0; x < sizeof(buildingLevels) / sizeof(int); x++)
+	for (int x = 0; x < sizeof(buildingLevels) / sizeof (int); x++)
 	{
 		provinceLevel += buildingLevels[x];
 	}
@@ -117,18 +131,7 @@ int Provinces::returnCommanderPresentIdentifier(int index)
 {
 	return listOfCommandersPresent[index];
 }
-int Provinces::getCoordinate(char whichCoordinate)
-{
-	switch (whichCoordinate)
-	{
-	case 'Y':
-		return yCoordinate;
-		break;
-	case 'X':
-		return xCoordinate;
-		break;
-	}
-}
+
 int Provinces::returnCommanderIndex(int index)
 {
 	return commandersPresentIndices[index];
@@ -151,12 +154,12 @@ void Provinces::updateBuildingsProduction()
 {
 	for (int x = 0; x < sizeof(buildingsProduction) / sizeof(int); x++)
 	{
-		buildingsProduction[x] = buildingLevels[x] * provinceBuildingsProductionNumbersTwo[x];
+		buildingsProduction[x] = buildingLevels[x] * provinceBuildingsProductionNumbers[x];
 	}
 }
 void Provinces::updateProvinceResources()
 {
-	for (int x = 0; x < sizeof(buildingsProduction) / sizeof(int); x++)
+	for (int x = 0; x < sizeof(buildingsProduction) / sizeof (int) - 1; x++)
 	{
 		resourcesPresent[x] += buildingsProduction[x];
 	}
@@ -181,8 +184,8 @@ void Provinces::provinceIsACapital(char identifier)
 		resourcesPresent[x] = initialStats[x];
 		buildingLevels[x] = 1;
 	}
+	buildingLevels[5] = 1;
 	buildingLevels[6] = 1;
-	buildingLevels[7] = 1;
 	commandersPresent += 1;
 }
 void Provinces::resetTroopsTrainedThisTurn()
@@ -190,47 +193,9 @@ void Provinces::resetTroopsTrainedThisTurn()
 	troopsTrainedThisTurn = 0;
 }
 
-int Provinces::getProvinceResource(int resourceIndex)
-{
-	return resourcesPresent[resourceIndex];
-}
-int Provinces::getProvinceTroopsPresent(int troopTypeIndex)
-{
-	return troopsPresent[troopTypeIndex];
-}
-void Provinces::printProvinceResources()
-{
-
-}
-
 //Mutator Functions
-void Provinces::removeProvinceTroops(int troopIndex, int troopAmount)
-{
-	troopsPresent[troopIndex] -= troopAmount;
-}
-void Provinces::addProvinceResources(int resourceIndex, int resourceAmount)
-{
-	resourcesPresent[resourceIndex] += resourceAmount;
-}
-void Provinces::addProvinceInjuredTroops(int troopIndex, int troopAmount)
-{
-	troopsInjured[troopIndex] -= troopAmount;
-}
-void Provinces::subtractProvinceResources(int index, int amount)
-{
-	resourcesPresent [index] -= amount;
-}
-void Provinces::addProvinceTroops(int troopsAdd[5])
-{
-	for (int x = 0; x < 5; x++)
-	{
-		troopsPresent[x] += troopsAdd[5];
-	}
-}
-void Provinces::addProvinceSpecificTroop(int index, int amount)
-{
-	troopsPresent[index] += amount;
-}
+//void Provinces::removeTroops(int troopIndex, int troopAmount)
+
 void Provinces::increaseBuildingLevel(int index, int amount)
 {
 	resourcesPresent[index] += amount;

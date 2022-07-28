@@ -9,7 +9,7 @@
 
 using namespace std;
 
-extern vector <vector<Provinces>> provincesList;
+extern vector <vector<Provinces>> provincesMap;
 extern string buildingNames[6];
 extern string provinceResourcesNames[5];
 
@@ -43,7 +43,7 @@ void BuildMA::findProvinceCoordinates()
         }
         else
         {
-            switch (provincesList[provinceXCoordinate][provinceYCoordinate].getProvinceIdentifier())
+            switch (provincesMap[provinceXCoordinate][provinceYCoordinate].getProvinceIdentifier())
             {
             case 'P':
             case 'p':
@@ -61,8 +61,8 @@ void BuildMA::findProvinceCoordinates()
 void BuildMA::playerBuildFunction()
 {
     std::cout << "---------- Start printing province information ----------" << endl;
-    provincesList[provinceXCoordinate][provinceYCoordinate].printResources();
-    provincesList[provinceXCoordinate][provinceYCoordinate].printBuildingStats();
+    provincesMap[provinceXCoordinate][provinceYCoordinate].printResources();
+    provincesMap[provinceXCoordinate][provinceYCoordinate].printBuildingStats();
     std::cout << "---------- End printing province information ----------" << endl << endl;
 
     char upgradeBuilding = ' ';
@@ -85,8 +85,8 @@ void BuildMA::playerBuildFunction()
 }
 void BuildMA::upgradeBuildings()
 {
-    Provinces *newProvince;
-    newProvince = &provincesList[provinceXCoordinate][provinceYCoordinate];
+    Provinces* newProvince;
+    newProvince = &provincesMap[provinceXCoordinate][provinceYCoordinate];
     string upgradeAnotherBuildingString;
     char upgradeAnotherBuildingChar = 'Y';
     int requiredResources[5] = { 0 };
@@ -123,7 +123,7 @@ void BuildMA::upgradeBuildings()
                 for (int x = 0; x < 5; x++)
                 {
                     newProvince->subtractResources(x, requiredResources[x]);
-                    if (newProvince ->getResource(x) < 0)
+                    if (newProvince->getResource(x) < 0)
                     {
                         failOrWork = 'F';
                     }

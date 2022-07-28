@@ -8,7 +8,7 @@
 #include "Provinces.h"
 
 using namespace std;
-extern vector <vector <Provinces>> provincesList;
+extern vector <vector <Provinces>> provincesMap;
 extern string provinceResourcesNames[5];
 extern string buildingNames[6];
 extern string troopNames[5];
@@ -300,7 +300,7 @@ void printListOfProvinces()
     {
         for (int b = 0; b < continentSize; b++)
         {
-            switch (provincesList[a][b].getProvinceIdentifier())
+            switch (provincesMap[a][b].getProvinceIdentifier())
             {
             case 'P':
             case 'p':

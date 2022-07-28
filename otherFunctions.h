@@ -13,11 +13,10 @@ char checkChar(string inputAV, string input);
 
 int translateCoordinate(int coordinate, char indicator, char whichWay);
 int calculatePlayerValues(int decision);
-int findCommanderIndex(char commanderChar, string listOfCommanders);
+int findCommanderIndex(char commanderChar);
 int checkInt(vector<int>& acceptableValuesTwo, string input);
 
 void showMap();
-void updateCommanderIdentifiers(int participantIndex);
 void updateprovinceResources();
 void moveUnit(int xCoordinate, int yCoordinate, int participantIndex, int commanderIndex);
 
@@ -25,3 +24,5 @@ string convertPCIToString(vector <char> playerCommanderIdentifiers);
 
 vector<int> getCoordinates(int identifier);
 vector<int> getTrainBuildCoordinates();
+
+void findTotalPlayerUnits(int totalPlayerUnits[5]);

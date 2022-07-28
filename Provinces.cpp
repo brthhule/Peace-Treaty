@@ -11,13 +11,13 @@ extern string provinceResourcesNames[5];
 extern string buildingNames[6];
 extern string troopNames[5];
 extern int provinceBuildingsProductionNumbers[6];
-extern int initialResources [5];
+extern int initialResources[5];
 extern int troopsCP[5];
 
 //constructors
 Provinces::Provinces()
 {
-	for (int x = 0; sizeof (provinceScoutReport); x++)
+	for (int x = 0; sizeof(provinceScoutReport); x++)
 	{
 		provinceScoutReport[x] = 0;
 	}
@@ -65,6 +65,7 @@ Provinces::Provinces(int sendXCoordinate, int sendYCoordinate)
 	unitXCoordinate = sendXCoordinate;
 	unitYCoordinate = sendYCoordinate;
 }
+
 //Accessors
 int Provinces::getProvinceStats(int index)
 {
@@ -76,7 +77,7 @@ int Provinces::findProvinceScoutLog(int index)
 }
 int Provinces::findMaxGarrison()
 {
-	int maxGarrisonThingy = buildingLevels [5] * 10;
+	int maxGarrisonThingy = buildingLevels[5] * 10;
 	return maxGarrisonThingy;
 }
 int Provinces::findMaxInfirmaryCapacity()
@@ -88,7 +89,7 @@ void Provinces::printBuildingStats()
 	cout << "\033[;34m";
 	for (int x = 0; x < 6; x++)
 	{
-		buildingsProduction[x] = buildingLevels [x]  * provinceBuildingsProductionNumbers[x];
+		buildingsProduction[x] = buildingLevels[x] * provinceBuildingsProductionNumbers[x];
 	}
 	std::cout << "Buildings in this province: " << endl << endl;
 	for (int x = 0; x < 5; x++)
@@ -116,7 +117,7 @@ int Provinces::getBuildingLevel(int index)
 int Provinces::findProvinceLevel()
 {
 	provinceLevel = 0;
-	for (int x = 0; x < sizeof(buildingLevels) / sizeof (int); x++)
+	for (int x = 0; x < sizeof(buildingLevels) / sizeof(int); x++)
 	{
 		provinceLevel += buildingLevels[x];
 	}
@@ -140,6 +141,10 @@ int Provinces::getTroopsTrainedThisTurn()
 {
 	return troopsTrainedThisTurn;
 }
+int Provinces::returnProvinceParticipantIndex()
+{
+	return provinceParticipantIndex;
+}
 
 /*Mutator Functions*/
 void Provinces::updateProvinceScoutLog(int index, int value)
@@ -159,7 +164,7 @@ void Provinces::updateBuildingsProduction()
 }
 void Provinces::updateProvinceResources()
 {
-	for (int x = 0; x < sizeof(buildingsProduction) / sizeof (int) - 1; x++)
+	for (int x = 0; x < sizeof(buildingsProduction) / sizeof(int) - 1; x++)
 	{
 		resourcesPresent[x] += buildingsProduction[x];
 	}

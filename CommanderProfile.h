@@ -8,7 +8,7 @@
 
 using namespace std;
 
-class CommanderProfile: public AllUnits
+class CommanderProfile : public AllUnits
 {
 public:
 	//default constructor
@@ -40,7 +40,7 @@ public:
 	void resetCommanderMoved();
 
 private:
-	int *commanderArmyStats [20];/*
+	int* commanderArmyStats[20];/*
 [0] = food the army possesses    Resources
 [1]  = wood
 [2] = ore

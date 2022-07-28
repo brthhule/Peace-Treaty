@@ -499,3 +499,48 @@ cout << "Resources in this army: " << endl;
     cout << "Commander level: " << commanderArmyStats[17] << endl;
     cout << "Max troops: " << commanderArmyStats[18] << endl;
     cout << "Food consumption: " << commanderArmyStats[19] << endl;
+
+
+
+
+    template <typename T>
+T getValue(string outputText, vector <T> acceptableValues, int caseInstance)
+{
+    for (int x = 0; x < acceptableValues.size(); x++)
+    {
+        cout << "Item: " << acceptableValues[0] << endl;
+    }
+
+    vector <string> compareTheseValues;
+    string userInput = " ";
+    string a = "";
+    //if (typeid(acceptableValues[0]) != typeid(string))
+    for (int x = 0; x < acceptableValues.size(); x++)
+    {
+        a = "" + acceptableValues[x];
+        compareTheseValues.push_back(a);
+    }
+    if (caseInstance == 1)
+    {
+        std::cout << outputText;
+    }
+    std::getline(cin, userInput);
+
+    do
+    {
+        for (int x = 0; x < acceptableValues.size(); x++)
+        {
+            if (userInput == compareTheseValues[x])
+            {
+                return acceptableValues[x];
+            }
+        }
+
+        std::cout << endl;
+        std::cout << "Invalid character entered. Please try again. " << endl;
+        std::cout << "Please enter a valid character: ";
+        std::getline(cin, userInput);
+
+    } while (1 > 0);
+    return '1'; /*added this bc the debugger said that not all control paths return a value*/
+}

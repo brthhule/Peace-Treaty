@@ -19,7 +19,7 @@ public:
 	void viewArmyOverview();
 	void deployCommanderMF();
 
-	string deployCommanderDisplayInformation(int commandersInCapital);
+	void deployCommanderDisplayInformation(int commandersInCapital);
 private:
 	int capitalX;
 	int capitalY;

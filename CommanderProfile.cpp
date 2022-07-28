@@ -1,15 +1,16 @@
 #include "CommanderProfile.h"
 #include "AllUnits.h"
 
-
+extern string provinceResourcesNames [5];
+extern string troopNames [5];
 
 /*Constructors*/
 CommanderProfile::CommanderProfile()
 {
-	for (int x = 0; x < 20; x++)
-	{
-		commanderArmyStats[x] = 0;
-	}
+    for (int x = 0; x < 20; x++)
+    {
+        commanderArmyStats[x] = 0;
+    }
     commanderIdentifier = '0';
     commanderLevel = 1;
     commanderIndex = 0;
@@ -23,20 +24,20 @@ CommanderProfile::CommanderProfile()
 }
 CommanderProfile::CommanderProfile(int level, char identifier, int index)
 {
-    for (int x = 0; x < sizeof(commanderScoutReport) / sizeof (int); x++)
+    for (int x = 0; x < sizeof(commanderScoutReport) / sizeof(int); x++)
     {
         commanderScoutReport[x] = 0;
     }
 
-	commanderLevel = level;
-	commanderIdentifier = identifier;
+    commanderLevel = level;
+    commanderIdentifier = identifier;
 
     for (int x = 0; x < 5; x++)
-	{
-		commanderArmyStats[x] = &resourcesPresent[x];
+    {
+        commanderArmyStats[x] = &resourcesPresent[x];
         commanderArmyStats[x + 5] = &troopsPresent[x];
         commanderArmyStats[x + 10] = &troopsInjured[x];
-	}
+    }
     commanderArmyStats[15] = &totalTroops;
     commanderArmyStats[16] = &totalCP;
     commanderArmyStats[17] = &commanderLevel;
@@ -45,9 +46,9 @@ CommanderProfile::CommanderProfile(int level, char identifier, int index)
 
     for (int x = 0; x < 5; x++)
     {
-        namesOfMAN[x] = provinceResourcesNamesThree[x];
-        namesOfMAN[x + 5] = troopNamesThree[x];
-        namesOfMAN[x + 10] = troopNamesThree[x];
+        namesOfMAN[x] = provinceResourcesNames[x];
+        namesOfMAN[x + 5] = troopNames[x];
+        namesOfMAN[x + 10] = troopNames[x];
     }
     namesOfMAN[15] = "Total Troops";
     namesOfMAN[16] = "Total Army CP";
@@ -67,11 +68,11 @@ CommanderProfile::~CommanderProfile()
 /*Accessor Functions*/
 char CommanderProfile::getCommanderIdentifier()
 {
-	return commanderIdentifier;
+    return commanderIdentifier;
 }
 void CommanderProfile::printCommanderStats()
 {
-	//print out stats
+    //print out stats
     cout << "\033[;34m";
     int c = 0;
     for (int a = 0; a < 4; a++)

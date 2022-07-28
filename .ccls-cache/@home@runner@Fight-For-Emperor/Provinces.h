@@ -6,7 +6,7 @@
 
 #include "AllUnits.h"
 
-class Provinces: public AllUnits
+class Provinces : public AllUnits
 {
 public:
 	/*Constructors*/
@@ -26,6 +26,7 @@ public:
 	int returnCommanderIndex(int index);
 	int getTroopsTrainedThisTurn();
 	int findProvinceLevel();
+	int returnProvinceParticipantIndex();
 
 
 	void printBuildingStats();
@@ -55,7 +56,7 @@ public:
 	//Accessor Functions
 
 private:
-	int *provinceStats[27];/*
+	int* provinceStats[27];/*
 [0] food present
 [1] wood present
 [2] ore present
@@ -103,6 +104,9 @@ private:
 	int foodConsumption;
 
 	int initialStats[5] = { 5, 4, 3, 2, 1 };
+
+
+	int provinceParticipantIndex;
 };
 
 #endif

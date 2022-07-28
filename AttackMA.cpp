@@ -3,17 +3,19 @@
 #include <vector>
 #include <string>
 #include "CommanderProfile.h"
+#include "Participants.h"
 using namespace std;
 
 
 extern int continentSize;
 extern int enemyDifficulty;
 
-extern vector <vector <CommanderProfile>> commandersList;
-extern vector <vector <Provinces>> provincesList;
+extern vector <vector <Provinces>> provincesMap;
 extern int playerTroopsLost[5];
 extern int troopsCP[5];
 extern string provinceResourcesNames[5];
+extern vector <Participants> participantsList;
+extern int actualParticipantIndex;
 
 
 
@@ -25,6 +27,7 @@ AttackMA::AttackMA()
     unitAttackingY = 0;
     unitBeingAttackedX = 0;
     unitBeingAttackedY = 0;
+    enemyParticipantIndex = 0;
 }
 AttackMA::AttackMA(int xCoordinatearg, int yCoordinatearg, int enemyXarg, int enemyYarg, int participantIndexarg, int commanderIndexarg)
 {
@@ -34,9 +37,11 @@ AttackMA::AttackMA(int xCoordinatearg, int yCoordinatearg, int enemyXarg, int en
     unitBeingAttackedY = enemyYarg;
     participantIndex = participantIndexarg;
     commanderIndex = commanderIndexarg;
+    enemyParticipantIndex = 0;
 }
 void AttackMA::playerAttack() /*fix this*/
 {
+    Participants* newParticipant = &participantsList[actualParticipantIndex];
     if (commanderIndex == -1)
     {
         char canAttack = 'N';
@@ -59,7 +64,7 @@ void AttackMA::playerAttack() /*fix this*/
                 {
                     if (forLoopY >= 0 && forLoopY < continentSize)
                     {
-                        if (commandersList[forLoopX][forLoopY].getCommanderIdentifier() == 'H')
+                        if (provincesMap[forLoopX][forLoopY].getCommandersPresent() > 0)
                         {
                             amountOfHeros++;
                             canAttack = 'Y';
@@ -113,10 +118,10 @@ void AttackMA::playerAttack() /*fix this*/
 
                     if (verifyCanAttack == 'Y')
                     {
-                        for (int playerCommanderIndex = 0; playerCommanderIndex < commandersList[participantIndex].size(); playerCommanderIndex++)
+                        for (int playerCommanderIndex = 0; playerCommanderIndex < newParticipant->howManyCommanders(); playerCommanderIndex++)
                         {
-                            if (attackUnitWithX == commandersList[participantIndex][playerCommanderIndex].getCoordinate('X') && 
-                                attackUnitWithY == commandersList[participantIndex][playerCommanderIndex].getCoordinate('Y'))
+                            if (attackUnitWithX == newParticipant->returnCommander(playerCommanderIndex)->getCoordinate('X') &&
+                                attackUnitWithY == newParticipant->returnCommander(playerCommanderIndex)->getCoordinate('Y'))
                             {
                                 return playerCommitAttack(); /*May have to fix this at some point*/
                             }
@@ -138,40 +143,46 @@ void AttackMA::playerAttack() /*fix this*/
 }
 void AttackMA::playerCommitAttack()
 {
-    CommanderProfile* ptrCommanderProfile;
-    ptrCommanderProfile = &commandersList[participantIndex][commanderIndex];
+    Participants* newParticipant = &participantsList[actualParticipantIndex];
     vector <char> targetEnemyCommanders;
 
     int oldResources[5] = { 0 };
     for (int x = 0; x < 5; x++)
     {
-        oldResources[x] = ptrCommanderProfile->getResource(x);
+        oldResources[x] = newParticipant->returnCommander(commanderIndex)->getResource(x);
     }
-    int whichEnemy = 0;//fix this-- have to add some function to determine which enemy is being attacked (if there are multiple enemies) and which
-    //enemy commander/army is being atacked
-    int whichCommander = 0;
-    if (commandersList[whichEnemy][whichCommander].getCommanderArmyCP() < ptrCommanderProfile->getCommanderArmyCP()) /*if the enemy defender has less CP than attacking player army*/
+
+    Provinces* newProvince = &provincesMap[unitBeingAttackedX][unitBeingAttackedY];
+    enemyParticipantIndex = newProvince->returnProvinceParticipantIndex();
+
+    for (int a = 0; a < newProvince->getCommandersPresent(); a++)
+    {
+        commandersBeingAttackedIndices.push_back(newProvince->returnCommanderIndex(a));
+    }
+    //Fix this-- add functionality to go through each commander and province garrison
+
+    Participants* enemyParticipant = &participantsList[enemyParticipantIndex];
+    if (enemyParticipant->returnCommander(commandersBeingAttackedIndices[0])->getCommanderArmyCP() < newParticipant->returnCommander(commanderIndex)->getCommanderArmyCP()) /*if the enemy defender has less CP than attacking player army*/
     {
         ;
         std::cout << "You won! ";
         playerCommitAttackWin(oldResources);
     }
-    else if (commandersList[whichEnemy][whichCommander].getCommanderArmyCP() > ptrCommanderProfile->getCommanderArmyCP()) /*if defending enemy has more CP than attacking player*/
+    else if (enemyParticipant->returnCommander(commandersBeingAttackedIndices[0])->getCommanderArmyCP() > newParticipant->returnCommander(commanderIndex)->getCommanderArmyCP()) /*if defending enemy has more CP than attacking player*/
     {/*fix this-- add on to this*/
     }
 }
 void AttackMA::playerCommitAttackWin(int oldResources[5])
 {
-    CommanderProfile* ptrCommanderProfile;
-    ptrCommanderProfile = &commandersList[participantIndex][commanderIndex];
-    int whichEnemy = 0;//fix this
-    int whichCommander = 0;
+    Participants* newParticipant;
+    newParticipant = &participantsList[actualParticipantIndex];
+
     for (int x = 0; x < 5; x++)
     {
-        ptrCommanderProfile->addResources(x, commandersList[whichEnemy][whichCommander].getResource(x));
+        newParticipant->returnCommander(commanderIndex)->addResources(x, participantsList[enemyParticipantIndex].returnCommander(0)->getResource(x));
     }
-    int difference = ptrCommanderProfile->getCommanderArmyCP() / commandersList[whichEnemy][whichCommander].getCommanderArmyCP();
-    int lostCombatPower = commandersList[whichEnemy][whichCommander].getCommanderArmyCP() * (1 / difference);
+    int difference = newParticipant->returnCommander(commanderIndex)->getCommanderArmyCP() / participantsList[enemyParticipantIndex].returnCommander(commandersBeingAttackedIndices[0])->getCommanderArmyCP();
+    int lostCombatPower = participantsList[enemyParticipantIndex].returnCommander(0)->getCommanderArmyCP() * (1 / difference);
     int deadTroops[5] = { 0 };
     int injuredTroops[5] = { 0 };
 
@@ -185,14 +196,14 @@ void AttackMA::playerCommitAttackWin(int oldResources[5])
         }
         for (int x = 10; x < 15; x++)
         {
-            ptrCommanderProfile->addInjuredTroops(x, injuredTroops[x - 10]);/*fix this?*/
+            newParticipant->returnCommander(commanderIndex)->addInjuredTroops(x, injuredTroops[x - 10]);/*fix this?*/
         }
 
         std::cout << "  Results: " << endl << endl;
         std::cout << "Resources gained: " << endl;
         for (int x = 0; x < 5; x++) /*print out resources*/
         {
-            std::cout << provinceResourcesNames[x] << " gained: " << ptrCommanderProfile->getResource(x) - oldResources[x] << endl;
+            std::cout << provinceResourcesNames[x] << " gained: " << newParticipant->returnCommander(commanderIndex)->getResource(x) - oldResources[x] << endl;
         }
         casualtyReport(deadTroops, injuredTroops);
 
@@ -200,8 +211,8 @@ void AttackMA::playerCommitAttackWin(int oldResources[5])
         char repeatViewAllArmyStats = 'N';
         string viewAllArmyStatsString;
 
-        provincesList[unitAttackingX][unitAttackingY].addCommandersPresent(1);
-        provincesList[unitAttackingX][unitAttackingY].setProvinceIdentifier('H');
+        provincesMap[unitAttackingX][unitAttackingY].addCommandersPresent(1);
+        provincesMap[unitAttackingX][unitAttackingY].setProvinceIdentifier('H');
 
         do
         {
@@ -213,7 +224,7 @@ void AttackMA::playerCommitAttackWin(int oldResources[5])
             {
             case 'Y':
             {
-                ptrCommanderProfile->printCommanderStats();
+                newParticipant->returnCommander(commanderIndex)->printCommanderStats();
                 break;
             }
             case 'N':
@@ -231,8 +242,8 @@ void AttackMA::playerCommitAttackWin(int oldResources[5])
 }
 void AttackMA::battleCalculations(int lostCombatPower, int deadTroops[5], int playerTroopsLost[5], int a)
 {
-    CommanderProfile* ptrCommanderProfile;
-    ptrCommanderProfile = &commandersList[participantIndex][commanderIndex];
+    Participants* attackingParticipant = &participantsList[actualParticipantIndex];
+
     switch (a)
     {
     case 0:
@@ -245,13 +256,13 @@ void AttackMA::battleCalculations(int lostCombatPower, int deadTroops[5], int pl
         break;
     }
     case 4:
-        if (ptrCommanderProfile->getTroopsPresent(9) > 0)
+        if (attackingParticipant->returnCommander(commanderIndex)->getTroopsPresent(9) > 0)
         {
             if (lostCombatPower > 0)
             {
                 lostCombatPower -= troopsCP[a];
                 deadTroops[a] ++;
-                ptrCommanderProfile->removeTroops(9, 1);
+                attackingParticipant->returnCommander(commanderIndex)->removeTroops(9, 1);
                 playerTroopsLost[a] += 1;
             }
         }
@@ -261,13 +272,13 @@ void AttackMA::battleCalculations(int lostCombatPower, int deadTroops[5], int pl
 }
 void AttackMA::battleCalculationsTwo(int& lostCombatPower, int deadTroops[5], int playerTroopsLost[5], int identifier)/*fix this*/
 {
-    CommanderProfile* ptrCommanderProfile;
-    ptrCommanderProfile = &commandersList[participantIndex][commanderIndex];
+    Participants* playerParticipant = &participantsList[actualParticipantIndex];
+
     int z = abs(4 - identifier);
 
     for (int b = 0; b < troopsCP[z]; b++)
     {
-        if (ptrCommanderProfile->getTroopsPresent(5) > 0)
+        if (playerParticipant->returnCommander(commanderIndex)->getTroopsPresent(5) > 0)
         {
             b = troopsCP[z];
         }
@@ -277,7 +288,7 @@ void AttackMA::battleCalculationsTwo(int& lostCombatPower, int deadTroops[5], in
             {
                 lostCombatPower -= troopsCP[identifier];
                 deadTroops[identifier] ++;
-                ptrCommanderProfile->removeTroops(identifier, 1);
+                playerParticipant->returnCommander(commanderIndex)->removeTroops(identifier, 1);
                 playerTroopsLost[identifier] += 1;
             }
             else
