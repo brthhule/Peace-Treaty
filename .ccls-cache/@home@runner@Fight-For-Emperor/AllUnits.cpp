@@ -14,6 +14,10 @@ using namespace std;
 extern int troopsCP[5];
 extern int provinceBuildingsProductionNumbers[6];
 
+extern string provinceResourcesNames[5];
+extern string buildingNames[6];
+extern string troopNames[5];
+
 //Constructor
 AllUnits::AllUnits()
 {
@@ -26,6 +30,7 @@ AllUnits::AllUnits()
 	totalCP = 0;
 	totalTroops = 0;
 	foodConsumption = 0;
+    canSelectThisUnit = 'N';
 }
 AllUnits::AllUnits(char unitIdentifier)
 {
@@ -38,7 +43,8 @@ AllUnits::AllUnits(char unitIdentifier)
 	totalCP = 0;
 	totalTroops = 0;
 	foodConsumption = 0;
-		
+    canSelectThisUnit = 'N';
+
 }
 
 
@@ -62,7 +68,7 @@ void AllUnits::printResources()
 	std::cout << "Resources present: " << endl;
 	for (int x = 0; x < 5; x++)
 	{
-		cout << provinceResourcesNamesThree[x] << ": " << resourcesPresent[x] << endl;
+		cout << provinceResourcesNames[x] << ": " << resourcesPresent[x] << endl;
 	}
 	std::cout << endl;
 	cout << "\033[;0m";
@@ -88,7 +94,15 @@ int AllUnits::getCoordinate(char identifier)
 		return '-1';//in case something bad happen
 	}
 }
+int AllUnits::getBelongsToParticipant ()
+{
+    return belongsToParticipant;
+}
 
+int AllUnits::returnIndexInList ()
+{
+    return indexInList;
+}
 
 
 //Mutator Functions
@@ -118,4 +132,24 @@ void AllUnits::subtractResources(int index, int amount)
 void AllUnits::addInjuredTroops(int troopIndex, int troopAmount)
 {
 	troopsInjured[troopIndex] += troopAmount;
+}
+
+void AllUnits::resetCanSelectThisUnit()
+{
+    canSelectThisUnit = 'N';
+}
+
+void AllUnits::changeBelongsToParticipant (int index)
+{
+    belongsToParticipant = index;
+}
+
+void AllUnits::changeIndexInList (int index)
+{
+    indexInList = index;
+}
+
+void AllUnits::changeCanSelectThisUnit()
+{
+    canSelectThisUnit = 'Y';
 }

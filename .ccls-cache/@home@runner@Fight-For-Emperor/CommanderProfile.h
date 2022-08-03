@@ -38,6 +38,7 @@ public:
 	void updateCommanderScoutReport(int index, int value);
 	void addCommanderLevel(int amount);
 	void resetCommanderMoved();
+    void completeCommanderScoutReport(int accuracy);
 
 private:
 	int* commanderArmyStats[20];/*
@@ -88,8 +89,6 @@ private:
 [21] = accuracy of scout report*/
 	int maxTroops;//check
 	int totalMaxResources;
-	int commanderIndex;
-
 	char commanderIdentifier;
 	char hasMoved;
 

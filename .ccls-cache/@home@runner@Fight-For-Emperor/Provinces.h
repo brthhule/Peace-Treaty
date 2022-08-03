@@ -44,7 +44,7 @@ public:
 	void provinceIsACapital(char identifier);
 	void resetTroopsTrainedThisTurn();
 	void increaseBuildingLevel(int index, int amount);
-
+    void completeProvinceScoutReport(int accuracy);
 
 	//public variables
 	char provinceIdentifier;

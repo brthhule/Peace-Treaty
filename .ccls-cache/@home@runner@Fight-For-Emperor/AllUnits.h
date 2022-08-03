@@ -21,6 +21,8 @@ public:
 	void printResources();
 	int getTotalCP();
 	int getCoordinate(char identifier);
+    int getBelongsToParticipant ();
+    int returnIndexInList ();
 
 	//Mutator Functions
 	void removeTroops(int troopIndex, int troopAmount);
@@ -29,6 +31,10 @@ public:
 	void subtractResources(int index, int amount);
 	void addTroops(int troopsAdd[5]);
 	void addSpecificTroop(int index, int amount);
+    void resetCanSelectThisUnit();
+    void changeBelongsToParticipant (int index);
+    void changeIndexInList (int index);
+    void changeCanSelectThisUnit();
 
 
 protected:
@@ -43,6 +49,9 @@ protected:
 
 	int unitXCoordinate = 0;
 	int unitYCoordinate = 0;
+    char canSelectThisUnit;
+    int belongsToParticipant;//Participant index of the Participant object a unit belongs to
+    int indexInList; //Index of unit in listOfCommanders or listOfParticipants in its Participants object
 };
 
 #endif

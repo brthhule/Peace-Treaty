@@ -1,9 +1,11 @@
-#include "ArmyDeploymentMA.h"
-#include "textFunctions.h"
 #include <iostream>
 #include <vector>
+
+#include "ArmyDeploymentMA.h"
+
 #include "textFunctions.h"
 #include "otherFunctions.h"
+
 #include "CommanderProfile.h"
 #include "Participants.h"
 
@@ -11,10 +13,12 @@ using namespace std;
 extern int maxAmountOfCommanders;
 
 extern vector <vector <Provinces>> provincesMap;
-extern int initialResources[5];
-extern string provinceResourcesNames[5];
-extern int actualParticipantIndex;
+extern vector < vector <CommanderProfile>> allCommanders;
 extern vector <Participants> participantsList;
+
+extern string provinceResourcesNames[5];
+extern int initialResources[5];
+extern int currentParticipantIndex;
 
 
 ArmyDeploymentMA::ArmyDeploymentMA(int xCoordinate, int yCoordinate)
@@ -61,24 +65,29 @@ void ArmyDeploymentMA::armyDeploymentMF()
 }
 void ArmyDeploymentMA::upgradeCommanders() /*fix this-- finish making it*/
 {
-    Provinces* newProvince;
-    newProvince = &provincesMap[capitalX][capitalY];
-    string upgradeCommanderAV = convertPCIToString(participantsList[actualParticipantIndex].commanderIdentifiersList);
+    Provinces* newProvince = &provincesMap[capitalX][capitalY];
+    Participants* newParticipant = &participantsList[currentParticipantIndex];
+    vector <int> indexOfCommanders;
+    for (int x = 1; x <= newParticipant->howManyCommanders(); x++)
+    {
+        indexOfCommanders.push_back(x);
+    }
 
-    Participants* newParticipant = &participantsList[actualParticipantIndex];
     std::cout << "You have " << newParticipant->howManyCommanders() << " army commanders." << endl;
 
-    if (participantsList[actualParticipantIndex].howManyCommanders() > 0)
+    if (participantsList[currentParticipantIndex].howManyCommanders() > 0)
     {
         std::cout << "Here is list of your commanders: " << endl;
 
         for (int x = 0; x < newParticipant->howManyCommanders(); x++)
         {
-            std::cout << "Army commander " << newParticipant->returnCommander(x)->getCommanderIdentifier() << "; Level: " << newParticipant->returnCommander(x)->getCommanderLevel() << endl;
+            std::cout << x + 1 << ") Commander " << allCommanders[currentParticipantIndex][x].getUnitName() << "; Level: " << allCommanders[currentParticipantIndex][x].getCommanderLevel() << endl;
         }
         std::cout << endl;
         //gets the char of the commander the participant wants to select, compares that against the list of commanders
-        int indexOfCommander = findCommanderIndex(getChar("Enter the letter of the army commander you want to upgrade: ", upgradeCommanderAV, 1));
+        int indexOfCommander = getInt("Enter the number of the army commander you want to upgrade: ", indexOfCommanders, 1);
+        indexOfCommander--;
+
         int commanderUpgradeCosts[5] = { 0 };
         printCostsToUpgradeACommander(commanderUpgradeCosts, indexOfCommander);
 
@@ -98,9 +107,10 @@ void ArmyDeploymentMA::upgradeCommanders() /*fix this-- finish making it*/
             }
             if (failCommanderUpgrade == 'S')
             {
-                newParticipant->returnCommander(indexOfCommander)->addCommanderLevel(1);
-                std::cout << "Upgrade successful; Commander " << newParticipant->returnCommander(indexOfCommander)->getCommanderIdentifier() << "is now level " << 
-                    newParticipant->returnCommander(indexOfCommander)->getCommanderIdentifier() << endl;
+                CommanderProfile* newCommander = &allCommanders[currentParticipantIndex][indexOfCommander];
+                newCommander->addCommanderLevel(1);
+                std::cout << "Upgrade successful; Commander " << newCommander->getUnitName() << "is now level " <<
+                    newCommander->getCommanderLevel() << endl;
             }
             else
             {
@@ -120,15 +130,13 @@ void ArmyDeploymentMA::upgradeCommanders() /*fix this-- finish making it*/
 }
 void ArmyDeploymentMA::viewArmyOverview()
 {
-    Participants* newParticipant = &participantsList[actualParticipantIndex];
-    string viewArmyOverviewOptionChar;
+    Participants* newParticipant = &participantsList[currentParticipantIndex];
+    vector <int> listOfOptions = {-1};
     for (int x = 0; x < newParticipant->howManyCommanders(); x++)
     {
-        viewArmyOverviewOptionChar.push_back(newParticipant->returnCommander(x)->getCommanderIdentifier());
+        listOfOptions.push_back(x + 1);
     }
-    viewArmyOverviewOptionChar.push_back('B');
 
-    string VAOString;
     char repeatVAO = 'Y';
 
     std::cout << "You have " << newParticipant->howManyCommanders() << " commanders. " << endl;
@@ -140,27 +148,28 @@ void ArmyDeploymentMA::viewArmyOverview()
             std::cout << "Here is a list of your commanders: " << endl;
             for (int x = 0; x < newParticipant->howManyCommanders(); x++)
             {
-                std::cout << "Commander " << newParticipant->returnCommander(x)->getCommanderIdentifier() << endl;
+                std::cout << x + 1 << ") Commander " << allCommanders[currentParticipantIndex][x].getUnitName() << endl;
             }
             std::cout << endl;
 
-            char VAOChar = getChar("Please enter the letter of the commander you wish to select: ",
-                viewArmyOverviewOptionChar, 1);
-            cout << "Confirm selection of commander " << VAOChar << "? (Y/N): ";
+            int VAO = getInt("Please enter the number of the commander you wish to select: ",
+                listOfOptions, 1);
+            int index = VAO - 1;
+            cout << "Confirm selection of commander " << allCommanders[currentParticipantIndex][index].getUnitName() << "? (Y/N): ";
             char confirmSelection = getChar("0", "YN", 2);
 
             switch (confirmSelection)
             {
             case 'Y':
             {
-                int index = findCommanderIndex(VAOChar);
+                CommanderProfile* newCommander2 = &allCommanders[currentParticipantIndex][index];
 
-                std::cout << "Commander " << VAOChar << " selected... " << endl;
-                std::cout << "The coordinates of this Commander: (" << translateCoordinate(newParticipant->returnCommander(index)->getCoordinate('X'), 'x', 'O') << ", " <<
-                    translateCoordinate(newParticipant->returnCommander(index)->getCoordinate('Y'), 'y', 'O') << ") " << endl;
+                std::cout << "Commander " << newCommander2->getUnitName() << " selected... " << endl;
+                std::cout << "The coordinates of this Commander: (" << translateCoordinate(newCommander2->getCoordinate('X'), 'x', 'O') << ", " <<
+                    translateCoordinate(newCommander2->getCoordinate('Y'), 'y', 'O') << ") " << endl;
                 std::cout << endl;
 
-                newParticipant->returnCommander(index)->printCommanderStats();
+                allCommanders[currentParticipantIndex][index].printCommanderStats();
                 break;
             }
             case 'N':
@@ -181,7 +190,7 @@ void ArmyDeploymentMA::trainCommanders()
     Provinces* newProvince;
     newProvince = &provincesMap[capitalX][capitalY];
 
-    Participants* newParticipant = &participantsList[actualParticipantIndex];
+    Participants* newParticipant = &participantsList[currentParticipantIndex];
     string yesOrNoString;
     int currentPlayerCommanders = newParticipant->howManyCommanders();
     std::cout << "You have " << currentPlayerCommanders << " army commanders in total. " << endl;
@@ -213,16 +222,15 @@ training fails*/
                     }
                 }
 
-                if (failCommanderTraining == 'S')
+                if (failCommanderTraining == 'S') //create new commander
                 {
-                    currentPlayerCommanders++;
                     std::cout << "Commander training successful " << endl;
                     std::cout << "Current commanders: " << newParticipant->howManyCommanders() + 1 << endl;
-                    int commanderIndex = newParticipant->howManyCommanders();
-                    CommanderProfile newCommander(1, newParticipant->getCommanderIdentifier(0), commanderIndex);
-                    newParticipant->addCommander(newCommander);
+                    Participants* newParticipant = &participantsList[currentParticipantIndex];
 
-                    participantsList[actualParticipantIndex].updateCommanderIdentifiers();
+                    CommanderProfile newCommander(1, getNewName(), newParticipant->howManyCommanders());
+                    newCommander.changeCoordinates(newParticipant->getCapitalCoordinate('X'), newParticipant->getCapitalCoordinate('Y'));
+                    allCommanders[currentParticipantIndex].push_back(newCommander);
                 }
                 else /*If training fails, return province land resources to their original values*/
                 {
@@ -246,8 +254,8 @@ training fails*/
 }
 void ArmyDeploymentMA::deployCommanderMF()
 {
-    Participants* newParticipant = &participantsList[actualParticipantIndex];
-    int commandersInCapital = provincesMap[capitalX][capitalY].getCommandersPresent();
+    Participants* newParticipant = &participantsList[currentParticipantIndex];
+    int commandersInCapital = provincesMap[capitalX][capitalY].commandersPresentIndex.size();
 
     if (commandersInCapital == 0)
     {
@@ -258,36 +266,41 @@ void ArmyDeploymentMA::deployCommanderMF()
         deployCommanderDisplayInformation(commandersInCapital);
 
         char returnToMenu = 'N';
-        string listOfCommanders;
-        for (int x = 0; x < newParticipant->returnProvince(0).getCommandersPresent(); x++)
+        vector <int> listOfCommandersIndex;
+        vector <int> amountOfCommanders = { -1 };
+        for (int x = 0; x < provincesMap[newParticipant->listOfProvincesX[0]][newParticipant->listOfProvincesY[0]].commandersPresentIndex.size(); x++)
         {
-            listOfCommanders.push_back(newParticipant->returnProvince(0).returnCommanderPresentIdentifier(x));
+            int xCoordinate = newParticipant->listOfProvincesX[x];
+            int yCoordinate = newParticipant->listOfProvincesY[x];
+            listOfCommandersIndex.push_back(provincesMap[xCoordinate][yCoordinate].returnCommanderIndex(x));
+            amountOfCommanders.push_back(x + 1);
         }
-        listOfCommanders.push_back(1);
         do
         {
-            char commanderLetterIdentifierChar = getChar("Enter the letter identifier of the commander you want to deploy (enter '1' to go back to previous menu): ",
-                listOfCommanders, 1);
+            int commanderLetterIdentifier = getInt("Enter the number identifier of the commander you want to deploy (enter '1' to go back to previous menu): ",
+                amountOfCommanders, 1);
             std::cout << endl;
 
-            if (commanderLetterIdentifierChar != 1)
+            if (commanderLetterIdentifier != 1)
             {
-                int indexToSelect = findCommanderIndex(commanderLetterIdentifierChar);
+                int indexToSelect = commanderLetterIdentifier - 1;
+                CommanderProfile*  newCommander3 = &allCommanders[currentParticipantIndex][indexToSelect];
 
-                newParticipant->returnCommander(indexToSelect)->printCommanderStats();
+                newCommander3->printCommanderStats();
 
                 string confirmDeployCommanderString;
-                std::cout << "Deploy commander " << commanderLetterIdentifierChar << "? (Y/N) ";
+                int commanderIndex = provincesMap[capitalX][capitalY].returnCommanderIndex(indexToSelect);
+                std::cout << "Deploy commander " << allCommanders[currentParticipantIndex][commanderIndex].getUnitName() << "? (Y/N) ";
                 char confirmDeployCommanderChar = getChar("Replacement", "YN", 2);
 
                 int participantIndex = 0; /*Fix this when developing AI*/
-                int xThingyTwo = newParticipant->returnCommander(indexToSelect)->getCoordinate('X');
-                int yThingyTwo = newParticipant->returnCommander(indexToSelect)->getCoordinate('Y');
+                int xThingyTwo = newCommander3->getCoordinate('X');
+                int yThingyTwo = newCommander3->getCoordinate('Y');
                 if (confirmDeployCommanderChar == 'Y')
                 {
-                    if (newParticipant->returnCommander(indexToSelect)->hasCommanderMoved() == 'N')
+                    if (newCommander3->hasCommanderMoved() == 'N')
                     {
-                        moveUnit(xThingyTwo, yThingyTwo, 0, indexToSelect);
+                        newCommander3->moveUnit(xThingyTwo, yThingyTwo);
                         returnToMenu = 'Y';
                     }
                     else
@@ -309,28 +322,29 @@ void ArmyDeploymentMA::deployCommanderMF()
 void ArmyDeploymentMA::deployCommanderDisplayInformation(int commandersInCapital)
 {
     int findCommanderLevel = 0;
-    char commanderIdentifierThingy = ' ';
+    string commanderName = " ";
 
-    Participants* newParticipant = &participantsList[actualParticipantIndex];
+    Participants* newParticipant = &participantsList[currentParticipantIndex];
 
-    std::cout << "The following commanders are in the capital: " << provincesMap[capitalX][capitalY].getCommandersPresent() << endl;
-
+    std::cout << "The following commanders are in the capital: " << provincesMap[capitalX][capitalY].commandersPresentIndex.size() << endl;
 
     for (int a = 0; a < commandersInCapital; a++)
     {
-        commanderIdentifierThingy = provincesMap[newParticipant->getCapitalCoordinate('X')][newParticipant->getCapitalCoordinate('Y')] .returnCommanderPresentIdentifier(a);
-        int commanderIndex = findCommanderIndex(commanderIdentifierThingy);
-        std::cout << "Commander " << newParticipant->returnCommander(commanderIndex)->getCommanderIdentifier() << "; Level: " <<
-            newParticipant->returnCommander(commanderIndex)->getCommanderLevel() << endl;
+        int commanderIndex = provincesMap[newParticipant->getCapitalCoordinate('X')][newParticipant->getCapitalCoordinate('Y')].commandersPresentIndex[a];
+        commanderName = allCommanders[currentParticipantIndex][commanderIndex].getUnitName();
+        //int commanderIndex = participantsList[currentParticipantIndex].findCommanderIndex(commanderName);
+        std::cout << "Commander " << allCommanders[currentParticipantIndex][commanderIndex].getUnitName() << "; Level: " <<
+            allCommanders[currentParticipantIndex][commanderIndex].getCommanderLevel() << endl;
     }
 }
 
 void ArmyDeploymentMA::printCostsToUpgradeACommander(int commanderUpgradeCosts[5], int indexOfCommander)
 {
-    std::cout << "The following is the cost to upgrade commander " << participantsList[actualParticipantIndex].returnCommander(indexOfCommander)->getCommanderIdentifier() << endl;
+    Participants* newParticipant = &participantsList[currentParticipantIndex];
+    std::cout << "The following is the cost to upgrade commander " << allCommanders[currentParticipantIndex][indexOfCommander].getUnitName() << endl;
     for (int x = 0; x < 5; x++)/*Cost of upgrade increases after each upgrade, cheaper than training a new one*/
     {
-        commanderUpgradeCosts[x] = participantsList[actualParticipantIndex].returnCommander(indexOfCommander)->getCommanderLevel() * 5;
+        commanderUpgradeCosts[x] = allCommanders[currentParticipantIndex][indexOfCommander].getCommanderLevel() * 5;
         commanderUpgradeCosts[x] *= initialResources[x];
         std::cout << provinceResourcesNames[x] << ": " << commanderUpgradeCosts[x] << endl;
     }

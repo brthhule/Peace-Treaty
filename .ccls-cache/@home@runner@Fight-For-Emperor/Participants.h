@@ -20,7 +20,7 @@ public:
     char returnGetProvinceIdentifier(int xCoordinate, int yCoordinate);
     char getCommanderIdentifier(int index);
     CommanderProfile *returnCommander(int index);
-    Provinces returnProvince(int index);
+    Provinces *returnProvince(int index);
     int howManyProvinces();
     int howManyCommanders();
 
@@ -32,6 +32,7 @@ public:
     void addResourcesToProvince(int provinceXCoordinate, int provinceYCoordinate, int resourceIndex, int resourceAmount);
     void removeCommanderIdentifier(int index);
     void updateCommanderIdentifiers();
+    void clearCanSelectThisUnit();
 
     //Public variables
     int* participantCapitalX = &capitalCoordinates[0];

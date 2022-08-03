@@ -1,4 +1,3 @@
-/*7/27/22 @ 11:43 pm*/
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -12,11 +11,8 @@
 #include <math.h>
 #include <algorithm>
 #include <cctype>
-//#include <windows.h> //WO
 #include <stdlib.h>
-
-/*#include <iomanip>
-*/
+#include <iomanip>
 
 #include "AllUnits.h"
 #include "CommanderProfile.h"
@@ -29,6 +25,7 @@
 #include "BuildMA.h"
 #include "ArmyDeploymentMA.h"
 #include "AttackMA.h"
+#include "ScoutMA.h"
 
 using namespace std;
 
@@ -43,11 +40,8 @@ void endScreen();
 void testingSkip();
 void pauseGame();
 /*scouting functions*/
-void playerScout(int xCoordinate, int yCoordinate);
-vector <int> showUnitsCanScout(vector <Provinces>& provincesCanSelect);
-int findUnitLevel(int xCoordinate, int yCoordinate, char identifier);
-void scoutLogCalculationsCommander(int commanderIndex, int accuracyy); /*Fix this--- need to write this*/
-void scoutLogCalculationsProvince(int xCoordinate, int yCoordinate, int accuracy);
+
+
 /*view player stats*/
 void viewPlayerStats();
 void viewAllStatsFunction();
@@ -69,13 +63,13 @@ void initializeValues();
 void addNewCommander(); /*Fill vector with commander objects*/
 int findProvinceIndex(int xCoordinate, int yCoordinate);
 
-int actualParticipantIndex = 0;
-int* pAParticipantIndex = &actualParticipantIndex;
+int currentParticipantIndex = 0;
+int* pAParticipantIndex = &currentParticipantIndex;
 /*map stuff & coordinates*/
 //char *mapCharacters[15][15];
 vector <vector <Provinces>> provincesMap;
+vector <vector <CommanderProfile>> allCommanders;
 vector <Participants> participantsList;
-vector <Provinces> provincesCanSelect;
 int participantCoordinates[4][2] = { 0 }; /*first number is for the participant (0 = player; 1,2,3 = AI), second number is which coordinate
 (0 = x coordinate, 1 = y coordinate) these coordinates are the computer coordinates, not player coordinates
 */
@@ -154,100 +148,86 @@ void startGame()
     std::string continentSizeString;
     vector<int> continentSizeAVTwo = { 5, 10, 15 };
     std::string opponentNumberString;
-    vector<int> opponentNumberAVTwo = { 1, 2, 3 };
-    int opponentNumber = 0;
     string userInput = " ";
 
-    //GetValue <int> newGetValue ("What continent size will you descend upon? (5, 10, 15) ", { 5, 10, 15 }, 1);
-    vector <int> continentSizeList = { 5, 10, 15 };
-    cout << "What continent size will you descend upon? (5, 10, 15) ";
-    getline(cin, userInput);
-    continentSize = checkInt(continentSizeList, userInput);
+    //vector <int> continentSizeList = { 5, 10, 15 };
+    continentSize = getInt("What continent size will you descend upon? (5, 10, 15) ", { 5, 10, 15 }, 1);
     std::cout << endl;
 
-    /*
-    std::cout << "How many kingdoms will you fight? (1, 2, 3) ";
-    std::getline(cin, opponentNumberString);
-    opponentNumber = checkInt(opponentNumberAVTwo, opponentNumberString); fix this later*/
-    opponentNumber = 3;
+    opponentNumber = getInt("How many kingdoms will you fight? (1, 2, 3) ", { 1, 2, 3 }, 1);
     enemyProvinces = opponentNumber;
     playerProvinces = 1;
 
     maxAmountOfCommanders = continentSize;
-    /*
-    string input;
-    std::cout << "What gameplay difficulty do you want (1-3): ";
-    std::getline(cin, input);
-
-    vector<int> inputAVTwo = { 1,2,3 };
-    enemyDifficulty = checkInt(inputAVTwo, input); fix this later*/
-    enemyDifficulty = 3;
-    std::cout << "Gameplay difficulty " << enemyDifficulty << " selected. " << endl;
-
-    std::cout << endl;
-
-    //Add resources to enemy participants/players based on difficulty
-    for (int x = 1; x <= opponentNumber; x++)
-    {
-        for (int y = 0; y < 5; y++)
-        {
-            //Select a province from a participant, select resource index y and add amount of resources (last parameter)
-            //[x][0] is the x coordinate, [x][1] is the y coordinate
-            participantsList[*pAParticipantIndex].addResourcesToProvince(participantCoordinates[x][0], participantCoordinates[x][1], y, initialResources[y] * enemyDifficulty);
-        }
-    }
+    
+    enemyDifficulty = getInt("What gameplay difficulty do you want (1-3): ", { 1,2,3 }, 1); 
+    std::cout << "Gameplay difficulty " << enemyDifficulty << " selected. " << endl << endl;
 
     generateNewContinent();
 }
 void generateNewContinent()
 {
     initializeValues();
-    srand(static_cast<int>(time(0)));
     char repeatMap = 'Y';
     int xCoordinate = 0;
     int yCoordinate = 0;
 
+    for (int v = 0; v < opponentNumber; v++)
+    {
+        Participants newParticipant;
+        participantsList.push_back(newParticipant);
+    }
+    cout << "Create capitals" << endl;
+    showMap();
     /*For each participant, generate random x and y values, see if the province associated with these values (coordinates) is empty. If it's empty, change the province identifier and add it to a partipant's
     list of provinces. If it's not empty, repeatMap is 'Y' and the process repeats*/
     for (int participantIndexTemp = 0; participantIndexTemp <= opponentNumber; participantIndexTemp++)
     {
-        repeatMap = 'Y';
-        while (repeatMap == 'Y')
+        do
         {
             repeatMap = 'N';
+            srand(static_cast<int>(time(0)));
             xCoordinate = rand() % (continentSize - 1);
             yCoordinate = rand() % (continentSize - 1);
-            if (provincesMap[xCoordinate][yCoordinate].getProvinceIdentifier() == '0')
+
+            cout << "Coordinates have been created" << endl;
+            if (provincesMap[xCoordinate][yCoordinate].getBelongsToParticipant() == -1)
             {
-                Provinces *newCapitalProvince;
-                newCapitalProvince = &provincesMap[xCoordinate][yCoordinate];
-                if (participantIndexTemp == 0)
-                {
-                    newCapitalProvince->setProvinceIdentifier('P');
-                }
-                else
-                {
-                    newCapitalProvince->setProvinceIdentifier('E');
-                }
-                participantsList[participantIndexTemp].addProvince(*newCapitalProvince);
+                //Cout can choose this province to be a capital
+                provincesMap[xCoordinate][yCoordinate].changeBelongsToParticipant(participantIndexTemp);
+                provincesMap[xCoordinate][yCoordinate].provinceIsACapital();
+                participantsList[participantIndexTemp].addProvince(xCoordinate, yCoordinate);
             }
             else
             {
-                repeatMap = 'Y';
+                repeatMap = 'N';
             }
-        }
+        } while (repeatMap == 'Y');
     }
-
+    cout << "Create commanders" << endl;
     //create initial commander object for each participant, add it to that participant's list of commanders
     for (int participantIndexTemp = 0; participantIndexTemp <= opponentNumber; participantIndexTemp++)
     {
         Participants* newParticipant = &participantsList[participantIndexTemp];
-        char commanderIdentifier = newParticipant->getCommanderIdentifier(0);
-        CommanderProfile newCommander(1, commanderIdentifier, 1);
+        CommanderProfile newCommander(1, getNewName(), 1);
         newCommander.changeCoordinates(newParticipant->getCapitalCoordinate('X'), newParticipant->getCapitalCoordinate('Y'));
-        newParticipant->addCommander(newCommander);
+        allCommanders[currentParticipantIndex].push_back(newCommander);
+    }
 
-        newParticipant->removeCommanderIdentifier(0);
+    cout << "Initialize resources " << endl;
+    //Add resources to enemy participants/players based on difficulty
+    for (int x = 1; x <= opponentNumber; x++)
+    {
+        cout << "X: " << x << endl;
+        for (int y = 0; y < 5; y++)
+        {
+            cout << "Y: " << y << endl;
+            //Select a province from a participant, select resource index y and add amount of resources (last parameter)
+            //[x][0] is the x coordinate, [x][1] is the y coordinate
+            int xCoordinate = participantsList[x].listOfProvincesX[0];
+            int yCoordinate = participantsList[x].listOfProvincesY[0];
+            provincesMap[xCoordinate][yCoordinate].addResources(y, initialResources[y] * enemyDifficulty);
+        }
     }
 }
 void gamePlay()
@@ -350,241 +330,6 @@ void playerAction(int turn)
 
 
 
-void playerScout(int xCoordinate, int yCoordinate) /*So much to fix here... truly so much*/
-{
-    int enemyProvinceLevel = provincesMap[xCoordinate][yCoordinate].findProvinceLevel();
-    std::cout << "Province selected to scout: (" << translateCoordinate(xCoordinate, 'x', 'O') << ", " << translateCoordinate(yCoordinate, 'y', 'O') << ") ";
-    std::cout << " Level of this province: " << enemyProvinceLevel << endl << endl;
-    string playerScoutString;
-    provincesCanSelect.clear();
-    std::cout << "You can only scout this unit if one of your provinces or armies is next to it... " << endl;
-    for (int a = -1; a <= 1; a++) /*Identify the surrounding units that can scout, add them to vectors (their coordinates)*/
-    {
-        for (int b = -1; b <= 1; b++)
-        {
-            if (xCoordinate + a >= 0 && xCoordinate + a < continentSize)
-            {
-                if (yCoordinate + b >= 0 && yCoordinate + b < continentSize)
-                {
-                    switch (provincesMap[xCoordinate + a][yCoordinate + b].getProvinceIdentifier())
-                    {
-                    case 'P':
-                    case 'p':
-                    case 'H':
-                    {
-                        provincesCanSelect.push_back(provincesMap[xCoordinate + a][yCoordinate + b]);
-                        break;
-                    }
-                    }
-                }
-            }
-        }
-    }
-
-    if (provincesCanSelect.size() > 0)
-    {
-        if (provincesMap[xCoordinate][yCoordinate].getCommandersPresent() == 1)
-        {
-            string proceedWithScout;
-            std::cout << "You have " << provincesCanSelect.size() << " provinces or armies next to the target. Below is a list of units that can scout the target.";
-            std::cout << " Please note that the higher the level of the scouting unit, the more accurate the results of the scout report are (The level of the target unit is " << enemyProvinceLevel << "). " << endl << endl;
-
-            vector <int> unitLevels = showUnitsCanScout(provincesCanSelect);
-            int cutOffThingy = unitLevels[0];
-            unitLevels.erase(unitLevels.begin());
-            std::cout << endl;
-            std::cout << "Please enter the number of the unit you would like to select: ";
-            getline(cin, playerScoutString);
-            int scoutWithThis = checkInt(unitLevels, playerScoutString);
-            scoutWithThis--;
-            int xCoordinateThingy = 0;
-            int yCoordinateThingy = 0;
-            int unitAccuracyLevel = 0;
-            std::cout << "Proceed scout action with unit at (" << translateCoordinate(xCoordinateThingy, 'x', 'O') << ", " << translateCoordinate(yCoordinateThingy, 'y', 'O') << ")? (Y/N) ";
-            char proceedWithScoutChar = getChar(" ", "YN", 2);
-            if (proceedWithScoutChar == 'Y')
-            {
-                int accuracy = 50;
-                if (unitLevels[scoutWithThis] > enemyProvinceLevel)
-                {
-                    for (int x = unitLevels[scoutWithThis]; x >= enemyProvinceLevel; x--)
-                    {
-                        accuracy += 5;
-                    }
-                }
-                if (unitLevels[scoutWithThis] < enemyProvinceLevel)
-                {
-                    for (int x = unitLevels[scoutWithThis]; x <= enemyProvinceLevel; x++)
-                    {
-                        accuracy -= 5;
-                    }
-                }
-
-                if (accuracy > 100)
-                {
-                    accuracy = 100;
-                }
-                if (accuracy < 0)
-                {
-                    accuracy = 0;
-                }
-                scoutLogCalculationsProvince(xCoordinate, yCoordinate, accuracy);/*fix this-- add functionality to differentiate between province and commander scout stuff*/
-            }
-        }
-        else
-        {
-            std::cout << "There are multiple enemy units at this location... please pick the enemy unit you would like to scout:" << endl;//fix this--identify which enemy to scout if there are multiple enemies at a province
-            //...*code to find the unit, find which enemy pariticipant it belongs to and which army commander if applicable
-            int whichParticipant = 0;//fix this
-            int accuracy = 0;
-            int commanderIndex = 0;//FIX THISSSSSSSSSSSS
-            string target;
-            if (target == "Commadner")
-            {
-                scoutLogCalculationsCommander(commanderIndex, accuracy);
-            }
-            else
-            {
-                scoutLogCalculationsProvince(xCoordinate, yCoordinate, accuracy);
-            }
-        }
-    }
-    else
-    {
-        std::cout << "No player provinces or armies are around the target... " << endl;
-    }
-    std::cout << "Returning to previous menu" << endl << endl;
-} /*fix this-- needs to be reviewed*/
-vector<int> showUnitsCanScout(vector <Provinces>& provincesCanSelect)
-{
-    Participants* participant;
-    participant = &participantsList[*pAParticipantIndex];
-
-    vector <int> unitLevels = { 0 };
-    std::cout << "\033[;34m";
-    vector <CommanderProfile*> commandersCanSelect;
-    char commanderThingy = ' ';
-    int provinceIndex = 0;
-    int commanderIndex = 0;
-    //For all the provinces in the vector
-    for (int x = 0; x < provincesCanSelect.size(); x++)
-    {
-        //For all the commanders in each province in the vector
-        for (int a = 0; a < provincesCanSelect[x].getCommandersPresent(); a++)
-        {
-            //Finds a province, returns that province
-            provinceIndex = findProvinceIndex(provincesCanSelect[x].getCoordinate('X'), provincesCanSelect[x].getCoordinate('Y'));//Find the index of the current province
-            commanderIndex = participant->returnProvince(provinceIndex).returnCommanderIndex(a);
-            commandersCanSelect.push_back(participant->returnCommander(commanderIndex));
-        }
-    }
-    std::cout << "Provinces that can scout: " << endl;
-    for (int a = 0; a < provincesCanSelect.size(); a++)
-    {
-        unitLevels.push_back(provincesCanSelect[a].findProvinceLevel());
-        std::cout << a + 1 << ": (" << translateCoordinate(provincesCanSelect[a].getCoordinate('X'), 'x', 'O') << ", " << 
-            translateCoordinate(provincesCanSelect[a].getCoordinate('Y'), 'y', 'O') << "); ";
-        std::cout << "Unit level: " << unitLevels.back();
-    }
-    int cutOffProvinceCommanderThingy = (int)unitLevels.size() - 1;
-    unitLevels[0] = cutOffProvinceCommanderThingy;
-
-    std::cout << "Commanders that can scout: " << endl;
-    for (int a = 0; a < provincesCanSelect.size(); a++)
-    {
-        unitLevels.push_back(commandersCanSelect[a]->getCommanderLevel());
-        std::cout << a + a << ": (" << translateCoordinate(commandersCanSelect[a]->getCoordinate('X'), 'x', 'O') << ", " << translateCoordinate(commandersCanSelect[a]->getCoordinate('Y'), 'y', 'O') << "); ";
-        std::cout << "Unit level: " << unitLevels.back();
-    }
-    std::cout << endl;
-    std::cout << "\033[;0m";
-    return unitLevels;
-}
-
-int findUnitLevel(int xCoordinate, int yCoordinate, char identifier)//Fix this--- it's a mess
-{
-    int unitLevel = 0;
-    char commanderChar = ' ';
-    Participants* newParticipant = &participantsList[*pAParticipantIndex];
-    switch (identifier)
-    {
-    case 'C': //If the unit is a commander
-    {
-        //If there is only one commander in this province (passed through coordinates)
-        if (provincesMap[xCoordinate][yCoordinate].getCommandersPresent() == 1)
-        {
-            //Searches through all the commanders
-            for (int x = 0; x < participantsList[*pAParticipantIndex].howManyCommanders(); x++)
-            {
-                //If the passed coordinates match the coordinates of one of the commanders in the list,
-                //return that commander's level
-                if (xCoordinate == newParticipant->returnCommander(x)->getCoordinate('X') && 
-                    yCoordinate == newParticipant->returnCommander(x)->getCoordinate('Y'))
-                {
-                    return newParticipant->returnCommander(x)->getCommanderLevel();
-                }
-            }
-        }
-    }
-    case 'P':
-    {
-        if (provincesMap[xCoordinate][yCoordinate].getCommandersPresent() == 0)
-        {
-            return provincesMap[xCoordinate][yCoordinate].findProvinceLevel();
-        }
-    }
-    default:
-        return 0;//if something goes wrong
-    }
-}
-void scoutLogCalculationsCommander(int commanderIndex, int accuracy)/*fix this-- unfinished*/
-{
-    Participants* newParticipant = &participantsList[actualParticipantIndex];
-    //figure something out so that does scout log report for object depending on type-- different object needed for province, commander
-    /*Higher accuracy = more accurate scout log-- default is 50% accuracy (if there are 10 food resources in a province,
-    the margin is 50%-- 5-15 units. 100 accuracy is the most accurate, 0 accuracy is the least accurate*/
-    double newAccuracy = (double)accuracy / 100;
-    newAccuracy = 1 - newAccuracy;
-    double accuracyAdjustedValueOne;
-    int accuracyAdjustedValueTwo;
-    int fooOne;
-    int fooTwo;
-    int findRange;
-    srand(time(NULL));
-    for (int x = 0; x < 20; x++)
-    {
-        findRange = newParticipant->returnCommander(commanderIndex)->getCommanderStat(x);
-        accuracyAdjustedValueOne = findRange * newAccuracy;
-        fooOne = findRange - (int)accuracyAdjustedValueOne;
-        fooTwo = findRange + (int)accuracyAdjustedValueOne;
-        accuracyAdjustedValueTwo = rand() % fooOne + fooTwo;
-        newParticipant->returnCommander(commanderIndex)->updateCommanderScoutReport(x, accuracyAdjustedValueTwo);
-    }
-    newParticipant->returnCommander(commanderIndex)->updateCommanderScoutReport(20, turn);
-    newParticipant->returnCommander(commanderIndex)->updateCommanderScoutReport(21, accuracy);
-}
-void scoutLogCalculationsProvince(int xCoordinate, int yCoordinate, int accuracy)
-{
-    double newAccuracy = (double)accuracy / 100;
-    newAccuracy = 1 - newAccuracy;
-    double accuracyAdjustedValueOne;
-    int accuracyAdjustedValueTwo;
-    int fooOne;
-    int fooTwo;
-    int findRange;
-    srand(time(NULL));
-    for (int x = 0; x < 20; x++) //fix this
-    {
-        findRange = provincesMap[xCoordinate][yCoordinate].getProvinceStats(x);
-        accuracyAdjustedValueOne = findRange * newAccuracy;
-        fooOne = findRange - (int)accuracyAdjustedValueOne;
-        fooTwo = findRange + (int)accuracyAdjustedValueOne;
-        accuracyAdjustedValueTwo = rand() % fooOne + fooTwo;
-        provincesMap[xCoordinate][yCoordinate].updateProvinceScoutLog(x, accuracyAdjustedValueTwo);
-    }
-    provincesMap[xCoordinate][yCoordinate].updateProvinceScoutLog(20, turn);
-    provincesMap[xCoordinate][yCoordinate].updateProvinceScoutLog(21, accuracy);
-}
 
 void viewPlayerMap()
 {
@@ -625,31 +370,34 @@ void viewPlayerMap()
 }
 void selectUnitOriginal(int xCoordinate, int yCoordinate)
 {
-    char charAtPoint = provincesMap[xCoordinate][yCoordinate].getProvinceIdentifier();
-    switch (charAtPoint)
+    if (provincesMap[xCoordinate][yCoordinate].getBelongsToParticipant() == currentParticipantIndex)//If belongs to participant
     {
-    case 'P':
-    case 'p':
         selectPlayerProvince(xCoordinate, yCoordinate);
-        break;
-    case 'E':
-    case 'e':
+    }
+    else if (provincesMap[xCoordinate][yCoordinate].getBelongsToParticipant() == -1)//If empty province
+    {
+        if (provincesMap[xCoordinate][yCoordinate].commandersPresentIndex.size() > 0)//If there are more than 0 commnaders
+        {
+            if (allCommanders[currentParticipantIndex][provincesMap[xCoordinate][yCoordinate].returnCommanderIndex(0)].returnBelongsToParticipant() == currentParticipantIndex) //If the army here belongs to the participant
+            {
+                playerUnitAction(xCoordinate, yCoordinate);
+            }
+            else
+            {
+                selectEnemyAction(xCoordinate, yCoordinate);
+            }
+        }
+    }
+    else //If enemy province
+    {
         selectEnemyProvince(xCoordinate, yCoordinate);
-        break;
-    case 'H':
-        std::cout << "This is one of your units " << endl;
-        playerUnitAction(xCoordinate, yCoordinate); /*fix this*/
-        break;
-    case 'V':
-        std::cout << "This is an enmy unit. " << endl;
-        selectEnemyAction(xCoordinate, yCoordinate);
-        break;
     }
 }
 void selectPlayerProvince(int xCoordinate, int yCoordinate)
 {
-    if (provincesMap[xCoordinate][yCoordinate].getProvinceIdentifier() == 'P')
-    {
+    if (participantsList[provincesMap[xCoordinate][yCoordinate].getBelongsToParticipant()].findProvinceIndexWithCoordinates(xCoordinate, yCoordinate)
+        == 0)
+    { 
         std::cout << "This is your capital province ";
     }
     else
@@ -682,9 +430,11 @@ void selectPlayerProvince(int xCoordinate, int yCoordinate)
 }
 void selectEnemyProvince(int xCoordinate, int yCoordinate)
 {
-    if (provincesMap[xCoordinate][yCoordinate].getProvinceIdentifier() == 'E')
+
+    if (participantsList[provincesMap[xCoordinate][yCoordinate].getBelongsToParticipant()].findProvinceIndexWithCoordinates(xCoordinate, yCoordinate)
+        == 0)
     {
-        std::cout << "This is the enemy's capital province ";
+        std::cout << "This is an enemy capital province ";
     }
     else
     {
@@ -704,8 +454,11 @@ void selectEnemyProvince(int xCoordinate, int yCoordinate)
         break;
     }
     case 'S':
-        playerScout(xCoordinate, yCoordinate);
+    {
+        ScoutMA newScout(xCoordinate, yCoordinate);
+        newScout.selectTargetToScout();
         break;
+    }
     case 'V':
     {
         if (scoutLogTurnLevel[xCoordinate][yCoordinate][0] != -1)
@@ -764,6 +517,7 @@ void provinceReportLog(char whatReportChar, int xCoordinate, int yCoordinate)
 }
 void playerUnitAction(int xCoordinate, int yCoordinate)
 {
+    std::cout << "This is one of your armies " << endl;
     Participants* newParticipant = &participantsList[*pAParticipantIndex];
 
     char repeatPlayerUnitAction = 'Y';
@@ -775,18 +529,18 @@ void playerUnitAction(int xCoordinate, int yCoordinate)
         case 'P':
         {
             //find index of commander unit
-            int commanderIdentifier = 0;
+            int commanderIndex = 0;
             for (int x = 0; x < newParticipant->howManyCommanders(); x++)
             {
-                if (newParticipant->returnCommander(x)->getCoordinate('X') == xCoordinate && newParticipant->returnCommander(x)->getCoordinate('Y') == yCoordinate)
+                if (newParticipant->listOfProvincesX[x] == xCoordinate && newParticipant->listOfProvincesY[x] == yCoordinate)
                 {
-                    commanderIdentifier = x;
+                    commanderIndex = x;
                     x = newParticipant->howManyCommanders();
                 }
             }
-            if (newParticipant->returnCommander(commanderIdentifier)->hasCommanderMoved() == 'N')
+            if (allCommanders[currentParticipantIndex][commanderIndex].hasCommanderMoved() == 'N')
             {
-                moveUnit(participantCoordinates[0][0], participantCoordinates[0][1], 0, commanderIdentifier);/*fix this*/
+                allCommanders[currentParticipantIndex][commanderIndex].moveUnit(participantCoordinates[0][0], participantCoordinates[0][1]);/*fix this*/
             }
             else
                 std::cout << "This unit has already moved this turn... returning to the View Map action menu " << endl << endl;
@@ -805,6 +559,7 @@ void playerUnitAction(int xCoordinate, int yCoordinate)
 }
 void selectEnemyAction(int xCoordinate, int yCoordinate)/*finish this*/
 {
+    std::cout << "This is an enmy army. " << endl;
     char repeatSelectEnemyAction = 'Y';
     do
     {
@@ -861,7 +616,7 @@ void pauseGame()
     {
         for (int y = 0; y < continentSize; y++)
         {
-            gameCode += provincesMap[x][y].getProvinceIdentifier();
+            gameCode += provincesMap[x][y].getBelongsToParticipant();
         }
     }
     std::cout << "Game ended... " << endl;
@@ -883,16 +638,16 @@ void testingSkip()
 void initializeValues()
 {
     /*Basically create the map-- make each province an object of Provinces*/
-    char fooThingyChar = ' ';
     for (int x = 0; x < continentSize; x++)
     {
         vector <Provinces> vectorThingy;
+        provincesMap.push_back(vectorThingy);
         for (int y = 0; y < continentSize; y++)
         {
-            Provinces newProvince;
-            vectorThingy.push_back(newProvince);
+            Provinces newProvince(x, y, -1);
+            provincesMap[x].push_back(newProvince);
         }
-        provincesMap.push_back(vectorThingy);
+
     }
 
     /*Initialize scoutLogTurnLevel such that there are no values in them at first*/
@@ -911,31 +666,24 @@ void initializeValues()
 void addNewCommander()
 {
     //Creates new participant
-    Participants* newParticipant = &participantsList[actualParticipantIndex];
+    Participants* newParticipant = &participantsList[currentParticipantIndex];
 
-    //Adds commander letter identifier to commander from a list of identifiers
-    char commanderIdentifier = newParticipant->getCommanderIdentifier(0);
-    newParticipant->removeCommanderIdentifier(0);
-
-    //Create new CommanderProfile object
-    int commanderIndex = newParticipant->howManyCommanders();
-    CommanderProfile newCommander(1, commanderIdentifier, commanderIndex);
-
-    //Add object to participant **fix this so adds commander by reference rather than by value.
-    newParticipant->addCommander(newCommander);
+    CommanderProfile newCommander(1, getNewName(), 1);
+    newCommander.changeCoordinates(newParticipant->getCapitalCoordinate('X'), newParticipant->getCapitalCoordinate('Y'));
+    allCommanders[currentParticipantIndex].push_back(newCommander);
 }
 
 
 int findProvinceIndex(int xCoordinate, int yCoordinate)
 {
-    Participants *newParticipant;
+    Participants* newParticipant;
     newParticipant = &participantsList[*pAParticipantIndex];
     //For each province the participant has
-    for (int x = 0; x < newParticipant -> howManyProvinces(); x++)
+    for (int x = 0; x < newParticipant->howManyProvinces(); x++)
     {
         //If the coordinates passed to the function are equal to a province's coordinates from the list
-        if (xCoordinate == newParticipant->returnProvince(x).getCoordinate('X') && 
-            yCoordinate == newParticipant->returnProvince(x).getCoordinate('Y'))
+        if (xCoordinate == newParticipant->listOfProvincesX[x] &&
+            yCoordinate == newParticipant->listOfProvincesY[x])
         {
             //This is the province's index in listOfProvinces
             return x;

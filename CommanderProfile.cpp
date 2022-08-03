@@ -1,8 +1,14 @@
 #include "CommanderProfile.h"
 #include "AllUnits.h"
+#include "AttackMA.h"
 
-extern string provinceResourcesNames [5];
-extern string troopNames [5];
+extern vector <vector <Provinces>> provincesMap;
+extern vector <Participants> participantsList;
+extern string provinceResourcesNames[5];
+extern string troopNames[5];
+extern int turn;
+extern int continentSize;
+extern int currentParticipantIndex;
 
 /*Constructors*/
 CommanderProfile::CommanderProfile()
@@ -11,9 +17,7 @@ CommanderProfile::CommanderProfile()
     {
         commanderArmyStats[x] = 0;
     }
-    commanderIdentifier = '0';
     commanderLevel = 1;
-    commanderIndex = 0;
     for (int x = 0; x < 22; x++)
     {
         commanderScoutReport[x] = 0;
@@ -21,8 +25,11 @@ CommanderProfile::CommanderProfile()
     hasMoved = 'N';
     maxTroops = 0;
     totalMaxResources = 0;
+    indexInList = 0;
+    changeUnitName("Unnamed");
+
 }
-CommanderProfile::CommanderProfile(int level, char identifier, int index)
+CommanderProfile::CommanderProfile(int level, string name, int index)
 {
     for (int x = 0; x < sizeof(commanderScoutReport) / sizeof(int); x++)
     {
@@ -30,7 +37,6 @@ CommanderProfile::CommanderProfile(int level, char identifier, int index)
     }
 
     commanderLevel = level;
-    commanderIdentifier = identifier;
 
     for (int x = 0; x < 5; x++)
     {
@@ -57,7 +63,8 @@ CommanderProfile::CommanderProfile(int level, char identifier, int index)
     namesOfMAN[19] = "Army Food consumption";
     maxTroops = commanderLevel * 10;
     totalMaxResources = 0;
-    commanderIndex = index;
+    indexInList = index;
+    changeUnitName(name);
 }
 /*Destructor*/
 CommanderProfile::~CommanderProfile()
@@ -66,10 +73,6 @@ CommanderProfile::~CommanderProfile()
 }
 
 /*Accessor Functions*/
-char CommanderProfile::getCommanderIdentifier()
-{
-    return commanderIdentifier;
-}
 void CommanderProfile::printCommanderStats()
 {
     //print out stats
@@ -103,19 +106,20 @@ char CommanderProfile::hasCommanderMoved()
 {
     return hasMoved;
 }
+int CommanderProfile::returnIndexInList()
+{
+    return indexInList;
+}
+int CommanderProfile::returnBelongsToParticipant()
+{
+    return belongsToParticipant;
+}
+
 
 /*Mutator Functions*/
-void CommanderProfile::changeCommanderCoordinates(int xCoordinate, int yCoordinate)
-{
-
-}
 void CommanderProfile::changeCommanderStat(int index, int amount)
 {
     commanderArmyStats[index] += amount;
-}
-void CommanderProfile::changeCommanderIdentifier(char identifier)
-{
-    commanderIdentifier = identifier;
 }
 void CommanderProfile::changeCoordinates(int xCoordinate, int yCoordinate)
 {
@@ -135,4 +139,123 @@ void CommanderProfile::resetCommanderMoved()
     hasMoved = 'N';
 }
 
+void CommanderProfile::completeCommanderScoutReport(int accuracy)
+{
+    /*Higher accuracy = more accurate scout log-- default is 50% accuracy (if there are 10 food resources in a province,
+    the margin is 50%-- 5-15 units. 100 accuracy is the most accurate, 0 accuracy is the least accurate*/
+    double newAccuracy = (double)accuracy / 100;
+    newAccuracy = 1 - newAccuracy;
+    double accuracyAdjustedValueOne;
+    int accuracyAdjustedValueTwo;
+    int fooOne;
+    int fooTwo;
+    int findRange;
+    srand(time(NULL));
+    for (int x = 0; x < 20; x++)
+    {
+        findRange = getCommanderStat(x);
+        accuracyAdjustedValueOne = findRange * newAccuracy;
+        fooOne = findRange - (int)accuracyAdjustedValueOne;
+        fooTwo = findRange + (int)accuracyAdjustedValueOne;
+        accuracyAdjustedValueTwo = rand() % fooOne + fooTwo;
+        updateCommanderScoutReport(x, accuracyAdjustedValueTwo);
+    }
+    updateCommanderScoutReport(20, turn);
+    updateCommanderScoutReport(21, accuracy);
+}
 
+
+
+
+void CommanderProfile::moveUnit(int xCoordinate, int yCoordinate)
+{
+    vector <Provinces*> provincesCanSelect;
+    if (hasCommanderMoved() == 'N')
+    {
+
+        std::cout << "The coordinates of the chosen unit unit are: ";
+        std::cout << "(" << translateCoordinate(xCoordinate, 'y', 'O') << ", " << translateCoordinate(yCoordinate, 'x', 'O') << ") " << endl;
+        std::cout << endl;
+        std::cout << "You can only move this unit to one of the provinces adjacent to the province it is in. " << endl;
+
+        for (int x = -1; x <= 1; x++) /*Identify all the provinces that the player can move a unit to*/
+        {
+            for (int y = -1; y <= 1; y++)
+            {
+                //Check to see if the coordinates are in bounds (not outside of the map size)
+                if (/*X coordinate stuff*/x >= 0 && x < continentSize && /*Y coordinate stuff*/y >= 0 && y < continentSize)
+                {
+                    //Make sure province isn't the starting province
+                    if (x != 0 || y != 0)
+                    {
+                        //Add province to list of provinces can move to
+                        provincesCanSelect.push_back(&provincesMap[x + getCoordinate('X')][y + getCoordinate ('Y')]);
+                    }
+                }
+            }
+        }
+        
+        //The participant slects coordiantes
+        vector<int> XYCoordinates = getCoordinates(2);
+        int moveToXTwo = XYCoordinates[0];
+        int moveToYTwo = XYCoordinates[1];
+        int provinceIndexSelected = 0;
+        char provinceIsInList = 'N'; //Initialize as province is not in list (have to repeat process)
+        //Find the province (out of the list) elected using the coordinates chosen
+        for (int x = 0; x < provincesCanSelect.size(); x++)
+        {
+            if (moveToXTwo == provincesCanSelect[x]->getCoordinate('X') && moveToXTwo == provincesCanSelect[x]->getCoordinate('Y'))
+            {
+                provinceIndexSelected = x;
+                provinceIsInList = 'Y';//Province is in list, don't have to repeat process
+            }
+        }
+
+        //For display
+        int moveToX = translateCoordinate(moveToXTwo, 'x', 'O');
+        int moveToY = translateCoordinate(moveToYTwo, 'y', 'O');
+
+        string confirmMove;
+        char attackScenario = 'P';/*P is for peace, A is for attack*/
+        //If province is in the list
+        if (provinceIsInList == 'Y')
+        {
+            Provinces* provinceSelected = provincesCanSelect[provinceIndexSelected];
+            if (provinceSelected->getBelongsToParticipant() != currentParticipantIndex)
+            {
+                attackScenario = 'A';
+                std::cout << "Moving here will cause your unit to attack any enemy units stationed at this province." << endl;
+            }
+            std::cout << "Confirm moving your unit to (" << moveToX << ", " << moveToY << ")? (Y/N) ";
+
+            //If participants confirms movement
+            if (getChar("Replacement", "YN", 2) == 'Y')
+            {
+                //If it's peaceful (moving to one of their own provinces)
+                if (attackScenario == 'P')
+                {
+                    changeCoordinates(moveToXTwo, moveToYTwo);
+
+                    provinceSelected->addCommanderProvince(indexInList);
+                }
+                //If scenario is attack
+                else
+                {
+                    AttackMA newAttackMA(xCoordinate, yCoordinate, moveToXTwo, moveToYTwo, indexInList, belongsToParticipant);
+                    newAttackMA.playerAttack();
+                }
+            }
+        }
+        else
+        {
+            cout << "Invalid province selected... please try again. " << endl;
+            //Recursion until suitable coordinates are chosen
+            moveUnit(xCoordinate, yCoordinate);
+        }
+    }
+    else
+    {
+        std::cout << "This unit has already moved this turn. Please pick another unit. " << endl;
+    }
+    std::cout << "Returning to previous menu... " << endl << endl;
+}/* unfinished*/

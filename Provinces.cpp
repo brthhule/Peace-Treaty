@@ -7,12 +7,15 @@
 
 using namespace std;
 
+extern vector <Participants> participantsList;
+extern int currentParticipantIndex;
 extern string provinceResourcesNames[5];
 extern string buildingNames[6];
 extern string troopNames[5];
 extern int provinceBuildingsProductionNumbers[6];
 extern int initialResources[5];
 extern int troopsCP[5];
+extern int turn;
 
 //constructors
 Provinces::Provinces()
@@ -36,12 +39,18 @@ Provinces::Provinces()
 	provinceStats[26] = &foodConsumption;
 	maxGarrison = findMaxGarrison();
 	maxInfirmaryCapacity = findMaxInfirmaryCapacity();
+
 	provinceLevel = 1;
-	provinceIdentifier = '0';
+	belongsToParticipant = -1;
 }
-Provinces::Provinces(int sendXCoordinate, int sendYCoordinate)
+Provinces::Provinces(int sendXCoordinate, int sendYCoordinate, int index)
 {
-	for (int x = 0; sizeof(provinceScoutReport); x++)
+	//Initialize building levels
+	for (int x = 0; x < sizeof(buildingLevels) / sizeof(int); x++)
+	{
+		buildingLevels[x] = 1;
+	}
+	for (int x = 0; x < sizeof(provinceScoutReport) / sizeof(int); x++)
 	{
 		provinceScoutReport[x] = 0;
 	}
@@ -61,19 +70,17 @@ Provinces::Provinces(int sendXCoordinate, int sendYCoordinate)
 	maxGarrison = findMaxGarrison();
 	maxInfirmaryCapacity = findMaxInfirmaryCapacity();
 	provinceLevel = 1;
-	provinceIdentifier = '0';
 	unitXCoordinate = sendXCoordinate;
 	unitYCoordinate = sendYCoordinate;
+	isACapital = 'N';
+	belongsToParticipant = index;
 }
 
-//Accessors
+
+//Province stats
 int Provinces::getProvinceStats(int index)
 {
 	return *provinceStats[index];
-}
-int Provinces::findProvinceScoutLog(int index)
-{
-	return provinceScoutReport[index];
 }
 int Provinces::findMaxGarrison()
 {
@@ -83,6 +90,96 @@ int Provinces::findMaxGarrison()
 int Provinces::findMaxInfirmaryCapacity()
 {
 	return (buildingLevels[6] * 10);
+}
+int Provinces::findProvinceLevel()
+{
+	provinceLevel = 0;
+	for (int x = 0; x < sizeof(buildingLevels) / sizeof(int); x++)
+	{
+		provinceLevel += buildingLevels[x];
+	}
+	provinceLevel /= 6;
+	return provinceLevel;
+}
+int Provinces::getTroopsTrainedThisTurn()
+{
+	return troopsTrainedThisTurn;
+}
+
+//Scout stuff
+void Provinces::updateProvinceScoutLog(int index, int value)
+{
+	provinceScoutReport[index] = value;
+}
+void Provinces::completeProvinceScoutReport(int accuracy)
+{
+	double newAccuracy = (double)accuracy / 100;
+	newAccuracy = 1 - newAccuracy;
+	double accuracyAdjustedValueOne;
+	int accuracyAdjustedValueTwo;
+
+	int fooOne;
+	int fooTwo;
+	int findRange;
+	srand(time(NULL));
+
+	for (int x = 0; x < 20; x++) //fix this
+	{
+		findRange = *provinceStats[x];
+		accuracyAdjustedValueOne = findRange * newAccuracy;
+		fooOne = findRange - (int)accuracyAdjustedValueOne;
+		fooTwo = findRange + (int)accuracyAdjustedValueOne;
+		accuracyAdjustedValueTwo = rand() % fooOne + fooTwo;
+		updateProvinceScoutLog(x, accuracyAdjustedValueTwo);
+	}
+	updateProvinceScoutLog(20, turn);
+	updateProvinceScoutLog(21, accuracy);
+}
+int Provinces::findProvinceScoutLog(int index)
+{
+	return provinceScoutReport[index];
+}
+
+
+//Province stuff
+void Provinces::updateProvinceResources()
+{
+	for (int x = 0; x < sizeof(buildingsProduction) / sizeof(int) - 1; x++)
+	{
+		resourcesPresent[x] += buildingsProduction[x];
+	}
+}
+char Provinces::isProvinceACapitalQuestion()
+{
+	return isACapital;
+}
+
+//Other
+void Provinces::setCoordinates(int xCoordinate, int yCoordinate)
+{
+	unitXCoordinate = xCoordinate;
+	unitYCoordinate = yCoordinate;
+}
+void Provinces::provinceIsACapital()
+{
+	for (int x = 0; x < 5; x++)
+	{
+		resourcesPresent[x] = initialStats[x];
+		buildingLevels[x] = 1;
+	}
+	buildingLevels[5] = 1;
+	buildingLevels[6] = 1;
+	isACapital = 'Y';
+}
+void Provinces::resetTroopsTrainedThisTurn()
+{
+	troopsTrainedThisTurn = 0;
+}
+
+//Building Stuff
+void Provinces::increaseBuildingLevel(int index, int amount)
+{
+	resourcesPresent[index] += amount;
 }
 void Provinces::printBuildingStats()
 {
@@ -106,54 +203,9 @@ void Provinces::printBuildingStats()
 
 
 }
-char Provinces::getProvinceIdentifier()
-{
-	return provinceIdentifier;
-}
 int Provinces::getBuildingLevel(int index)
 {
 	return buildingLevels[index];
-}
-int Provinces::findProvinceLevel()
-{
-	provinceLevel = 0;
-	for (int x = 0; x < sizeof(buildingLevels) / sizeof(int); x++)
-	{
-		provinceLevel += buildingLevels[x];
-	}
-	provinceLevel /= 6;
-	return provinceLevel;
-}
-int Provinces::getCommandersPresent()
-{
-	return commandersPresent;
-}
-int Provinces::returnCommanderPresentIdentifier(int index)
-{
-	return listOfCommandersPresent[index];
-}
-
-int Provinces::returnCommanderIndex(int index)
-{
-	return commandersPresentIndices[index];
-}
-int Provinces::getTroopsTrainedThisTurn()
-{
-	return troopsTrainedThisTurn;
-}
-int Provinces::returnProvinceParticipantIndex()
-{
-	return provinceParticipantIndex;
-}
-
-/*Mutator Functions*/
-void Provinces::updateProvinceScoutLog(int index, int value)
-{
-	provinceScoutReport[index] = value;
-}
-void Provinces::setProvinceIdentifier(char identifier)
-{
-	provinceIdentifier = identifier;
 }
 void Provinces::updateBuildingsProduction()
 {
@@ -162,46 +214,18 @@ void Provinces::updateBuildingsProduction()
 		buildingsProduction[x] = buildingLevels[x] * provinceBuildingsProductionNumbers[x];
 	}
 }
-void Provinces::updateProvinceResources()
+
+//Commander Stuff
+void Provinces::addCommanderProvince(int commanderIndex)
 {
-	for (int x = 0; x < sizeof(buildingsProduction) / sizeof(int) - 1; x++)
-	{
-		resourcesPresent[x] += buildingsProduction[x];
-	}
+	commandersPresentIndex.push_back(commanderIndex);
 }
-void Provinces::addCommandersPresent(int amount)
+void Provinces::removeCommanderProvince(int commanderIndex)
 {
-	commandersPresent += amount;
-}
-void Provinces::removeCommandersPresent(int amount)
-{
-	commandersPresent -= amount;
-}
-void Provinces::setCoordinates(int xCoordinate, int yCoordinate)
-{
-	unitXCoordinate = xCoordinate;
-	unitYCoordinate = yCoordinate;
-}
-void Provinces::provinceIsACapital(char identifier)
-{
-	for (int x = 0; x < 5; x++)
-	{
-		resourcesPresent[x] = initialStats[x];
-		buildingLevels[x] = 1;
-	}
-	buildingLevels[5] = 1;
-	buildingLevels[6] = 1;
-	commandersPresent += 1;
-}
-void Provinces::resetTroopsTrainedThisTurn()
-{
-	troopsTrainedThisTurn = 0;
+	commandersPresentIndex.erase(commandersPresentIndex.begin() + commanderIndex);
 }
 
-//Mutator Functions
-//void Provinces::removeTroops(int troopIndex, int troopAmount)
-
-void Provinces::increaseBuildingLevel(int index, int amount)
+int Provinces::returnCommanderIndex(int index)
 {
-	resourcesPresent[index] += amount;
+	return commandersPresentIndex[index];
 }

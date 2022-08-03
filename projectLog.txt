@@ -62,7 +62,21 @@ July 23: 1 hour, 20 min			  80 min
 July 24: 1 hour, 15 min			  75 min
 July 25: 2 hours, 20 min		  140 min
 
-Log:								Total: 56.32 hours
+
+
+July 27: 2 hours, 5 min			  125 min
+July 28: 55 min					  55 min
+July 29: 35 min					  35 min
+July 30: 2 hours, 25 min		  145 min
+August 1: 1 hour, 40 min		  100 min
+August 2: 2 hours, 5 min		  125 min
+
+
+
+
+
+
+Log:								Total: 66.07 hours
 June 10th - June 15th: 7 hours-
   developed introduction
   develoepd framework for player attack, build, and train
@@ -255,9 +269,51 @@ July 25: 2 hours, 20 min
 AttackMA class (Have to sort out how the program knows what target to attack)
 	9:45 pm - 10:20 (35 min): Sorted out errors, getting "'&' requires I-value error" now ??????
 
-July 27:
+July 27: 2 hours, 5 min
 	5:40 pm - 6:55 pm (1 hour, 15 min): Fixed the I-value errors by just deleting the CommanderProfile pointers and just using
 Participants objects)... still getting errors (tried using template to merge checkChar and checkInt into one)
 	10:50 pm - 10:55 pm (5 min): Got rid of getValue, caused too many errors, not worth it
 	10:55 pm - 11:40 pm (45 min): Made it so that addCommander in Participants returns value by reference rather than by value...
 This way, data that has to be mutated/modified can be
+
+July 28: 55 min
+    11:15 pm - 12:10 pm (55 min): Working on ScoutMA class... everything is messed up-- have to figure out how scoutLogCalculations is gonna work, differentiating between Provinces and CommanderProfile scout reports
+
+July 29: 35 min
+	10:00 pm - 10:15 pm (15 min): Working on ScoutMA-- wondering how I'm gonna keep track of the provinces and commanders
+	11:30 pm - 11:50 pm (20 min): Worked on ScoutMA (playerScout function-- figured out how to differentiate between picking a province or commander target)
+
+July 30: 2 hours, 25 min
+	10:00 pm - 11:30 pm (1 hour, 30 min): Finished working on ScoutMA (I think), now getting errors about Provinces and CommanderProfile.h
+(stuff like "missing type specificer - int assumed. Note: C++ does not support default-int", don't know where these errors are coming from...
+the text editor doesn't show anything red as incorrect, maybe I just have to do some restructuring ??????)
+	8:45 pm - 9:40 pm (55 min): Worked on debugging code, need to do some work regarding Commander info (like which participants it belongs to)
+
+August 1: 1 hour, 40 min
+	8:00 pm - 9:40 pm (1 hour, 40 min): Did some debugging, ran into errors with how Commander and Provinces are returned through returnCommander and returnProvince...
+I think I have to make listOfCommanders and listOfProvinces public variables in Participants so I can access objects directly rather than through
+functions... yeah, I'm going all in on making listOfCommanders a public variable and accessing it directly
+
+August 2: 2 hours, 5 min
+	5:45 pm - 6:25 pm (40 min): Plan is working, getting less errors (100 something instead of 200 something), gonna keep going
+	8:15 pm - 8:35 pm (20 min): Have so much work to do.... having problems with the program handling CommanderProfile, gonna have to do something
+similar to provincesMap for commanders
+	9:40 pm - 9:50 pm (10 min): Ironed out all the errors... It seems like I can only use CommanderProfile and Provinces in the main file, had to 
+modify Participants to accomodate this (Participants objects store information like commander index and province x/y coordinates to identify which
+element in allCommanders or provincesMap (2D vectors storing all provinces and commanders) need to be accessed). Basically, I went back in time to before
+I implemented the use of objects to simplify things (for the most part, still use objects to streamline informaiton and stuff). Program now runs again.
+However, still getting vector out of range error thingy--- ?????????
+	9:50 pm - 10:25 pm (35 min): Traced back code, found error happened in the code segment before generateNewContinent-- the one initializing 
+the resources of each province. Continued tracing code, got a new error after I put the initializing resources loop inside of generateNewContinent...
+error is in the Province 3 parameter overload constructor. Figured out that in the constructor, I forgot to add the x < argument thingy to say how many times
+the loop for the scout log thingy should run, now having a problem in generateNewContinent in the create capitals loop thing... waiting as debugger says
+cannot open the file thingy
+	10:30 pm - 10:50 pm (20 min): Got showMap to work, still getting error with create map functionality though
+
+
+
+
+
+Last PC update: August 2 @ 10:55 pm
+Last Repl update:
+

@@ -11,33 +11,39 @@ using namespace std;
 class CommanderProfile : public AllUnits
 {
 public:
-	//default constructor
+	//Constructors
 	CommanderProfile();
-
-	//Overload constructors
-	CommanderProfile(int commanderLevel, char identifier, int index);
-
+	CommanderProfile(int commanderLevel, string name, int index);
 	//Destructor
 	~CommanderProfile();
 
-	//Accessor functions
-	int getCommanderStat(int index);
-	int printCommanderScoutReport(int idex);
-	int getCommanderLevel();
 
+	//Accessor functions
+
+	//Stats stuff
+	int getCommanderStat(int index);
+	void printCommanderStats();
+	void changeCommanderStat(int index, int amount);
+
+	//Scout report stuff 
+	void updateCommanderScoutReport(int index, int value);
+	void completeCommanderScoutReport(int accuracy);
+	int printCommanderScoutReport(int idex);
+
+	//Other commander stuff
+	int getCommanderLevel();
+	void addCommanderLevel(int amount);
+
+	//Moving
+	void moveUnit(int xCoordinate, int yCoordinate);
 	char hasCommanderMoved();
-	char getCommanderIdentifier();
+	void resetCommanderMoved();
+
 
 	void changeCoordinates(int xCoordinate, int yCoordinate);
-	void printCommanderStats();
 
-	//Mutator Functions
-	void changeCommanderCoordinates(int xCoordinate, int yCoordinate);
-	void changeCommanderStat(int index, int amount);
-	void changeCommanderIdentifier(char identifier);
-	void updateCommanderScoutReport(int index, int value);
-	void addCommanderLevel(int amount);
-	void resetCommanderMoved();
+	int returnIndexInList();
+	int returnBelongsToParticipant();
 
 private:
 	int* commanderArmyStats[20];/*
@@ -88,10 +94,8 @@ private:
 [21] = accuracy of scout report*/
 	int maxTroops;//check
 	int totalMaxResources;
-	int commanderIndex;
-
-	char commanderIdentifier;
 	char hasMoved;
+	int belongsToParticipant;
 
 	string MANDescriptions[5] = { "Resources in", "Troops present in", "Troops injured in", "Other stats of" };//check
 	string namesOfMAN[20];//check

@@ -12,6 +12,7 @@ using namespace std;
 extern vector <vector<Provinces>> provincesMap;
 extern string buildingNames[6];
 extern string provinceResourcesNames[5];
+extern int currentParticipantIndex;
 
 BuildMA::BuildMA()
 {
@@ -43,16 +44,13 @@ void BuildMA::findProvinceCoordinates()
         }
         else
         {
-            switch (provincesMap[provinceXCoordinate][provinceYCoordinate].getProvinceIdentifier())
+            if (provincesMap[provinceXCoordinate][provinceYCoordinate].getBelongsToParticipant() == currentParticipantIndex)
             {
-            case 'P':
-            case 'p':
-            case 'H':
                 playerBuildFunction();
-                break;
-            default:
+            }
+            else
+            {
                 std::cout << "Invalid province elected. Please try again. " << endl;
-                break;
             }
             std::cout << endl;
         }

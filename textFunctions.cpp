@@ -15,6 +15,7 @@ extern string troopNames[5];
 extern int playerTroopsLost[5];
 extern int initialResources[5];
 extern int continentSize;
+extern int currentParticipantIndex;
 
 void synopsis()
 {
@@ -300,14 +301,11 @@ void printListOfProvinces()
     {
         for (int b = 0; b < continentSize; b++)
         {
-            switch (provincesMap[a][b].getProvinceIdentifier())
+            if (provincesMap[a][b].getBelongsToParticipant() == currentParticipantIndex)
             {
-            case 'P':
-            case 'p':
                 x = translateCoordinate(b, 'x', 'O');
                 y = translateCoordinate(a, 'y', 'O');
                 std::cout << "(" << x << ", " << y << ") " << endl;
-                break;
             }
         }
     }

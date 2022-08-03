@@ -8,6 +8,7 @@ using namespace std;
 extern vector <vector <Provinces>> provincesMap;
 extern string troopNames[5];
 extern string provinceResourcesNames[5];
+extern int currentParticipantIndex;
 
 TrainMA::TrainMA()
 {
@@ -49,9 +50,7 @@ void TrainMA::TrainMAFunction()
     }
     int maxAmountOfTroopsBarracksCanTrain = newProvinceList->getBuildingLevel(5) * 2;
 
-    std::cout << "What tier troop do you want to train? (1/2/3/4/5) ";
-    std::getline(cin, trainTroopsString);
-    trainTroop = checkInt(trainTroopsAVTwo, trainTroopsString);
+    trainTroop = getInt("What tier troop do you want to train? (1/2/3/4/5) ", trainTroopsAVTwo, 1);
 
     if (trainTroop <= troopTier)
     {
@@ -64,10 +63,8 @@ void TrainMA::TrainMAFunction()
         }
 
         std::cout << "How many tier " << troopTier << " troops do you want to train (troops trained in this barracks: " << newProvinceList->getTroopsTrainedThisTurn() << "/" << maxAmountOfTroopsBarracksCanTrain << ")? ";
-        std::getline(cin, amountOfTroopsString);
-        cout << endl;
+        amountOfTroops = getInt("Replacement", amountOfTroopsAV, 2);
 
-        amountOfTroops = checkInt(amountOfTroopsAV, amountOfTroopsString);
         int requiredResources[5] = { 0 };
         for (int x = 0; x < 5; x++)
         {
@@ -153,16 +150,13 @@ void TrainMA::findProvinceCoordinates()
         }
         else
         {
-            switch (provincesMap[provinceXCoordinate][provinceYCoordinate].getProvinceIdentifier())
+            if (provincesMap[provinceXCoordinate][provinceYCoordinate].getBelongsToParticipant() == currentParticipantIndex)
             {
-            case 'P':
-            case 'p':
-            case 'H':
                 TrainMAFunction();
-                break;
-            default:
+            }
+            else
+            {
                 std::cout << "Invalid province elected. Please try again. " << endl;
-                break;
             }
             std::cout << endl;
         }

@@ -7,44 +7,43 @@
 #include "CommanderProfile.h"
 #include "Provinces.h"
 
+using namespace std;
 
 class Participants
 {
 public:
-    //constructors
+                    //constructors
     Participants();
 
-    //Accessors
+    //Capital stuff
+        //Accessors
     int getCapitalCoordinate(int whichCoordinate);
-    int findProvinceWithCoordinates(int provinceXCoordinate, int provinceYCoordinate);
-    char returnGetProvinceIdentifier(int xCoordinate, int yCoordinate);
-    char getCommanderIdentifier(int index);
-    CommanderProfile *returnCommander(int index);
-    Provinces returnProvince(int index);
-    int howManyProvinces();
-    int howManyCommanders();
-
-
-    //Mutators
+        //Mutators
     void updateCapitalCoordinates(int whichCoordinate, int value);
-    void addCommander(CommanderProfile &newCommanderProfile);
-    void addProvince(Provinces newProvince);
-    void addResourcesToProvince(int provinceXCoordinate, int provinceYCoordinate, int resourceIndex, int resourceAmount);
-    void removeCommanderIdentifier(int index);
-    void updateCommanderIdentifiers();
+
+    //Commander stuff
+        //Accessors
+    int howManyCommanders();
+    int findCommanderIndex(string commanderName);
+        //Mutators
+    //Province stuff
+        //Accessors
+    int howManyProvinces();
+    int findProvinceIndexWithCoordinates(int provinceXCoordinate, int provinceYCoordinate);
+        //Mutators
+    void addProvince(int xCoordinate, int yCoordinate);
 
     //Public variables
     int* participantCapitalX = &capitalCoordinates[0];
     int* participantCapitalY = &capitalCoordinates[1];
     int capitalCoordinates[2];
-    vector <char> commanderIdentifiersList;
-    vector <char> commanderIdentifiers;
+    //std::vector <CommanderProfile> listOfCommanders;
+    vector <int> listOfProvincesX;//Includes the capital province in this
+    vector <int> listOfProvincesY;
+
+
+
 
 private:
-    vector <CommanderProfile> listOfCommanders;
-    vector <Provinces> listOfProvinces;//Includes the capital province in this
-    char generalCommanderIdentifiers[26] = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
-    
-
 };
 #endif
