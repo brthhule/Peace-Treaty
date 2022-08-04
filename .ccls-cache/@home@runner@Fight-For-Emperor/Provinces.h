@@ -4,14 +4,16 @@
 #include <vector>
 #include <iostream>
 
-#include "AllUnits.h"
+#include "Provinces.h"
+#include "Participants.h"
+#include "CommanderProfile.h"
 
 class Provinces : public AllUnits
 {
 public:
 	/*Constructors*/
 	Provinces();
-	Provinces(int xCoordinate, int yCoordinate);
+	Provinces(int xCoordinate, int yCoordinate, int index);
 
 	/*Destructor*/
 
@@ -21,36 +23,28 @@ public:
 	int findMaxGarrison();
 	int findMaxInfirmaryCapacity();
 	int getBuildingLevel(int index);
-	int getCommandersPresent();
-	int returnCommanderPresentIdentifier(int index);
+
 	int returnCommanderIndex(int index);
 	int getTroopsTrainedThisTurn();
 	int findProvinceLevel();
-	int returnProvinceParticipantIndex();
-
 
 	void printBuildingStats();
-
-	char getProvinceIdentifier();
+	char isProvinceACapitalQuestion();
 
 	/*Mutator Functions*/
 	void updateProvinceScoutLog(int index, int value);
 	void updateBuildingsProduction();
 	void updateProvinceResources();
-	void setProvinceIdentifier(char identifier);
-	void addCommandersPresent(int amount);
-	void removeCommandersPresent(int amount);
+	void addCommanderProvince(int commanderIndex);
+	void removeCommanderProvince(int commanderIndex);
 	void setCoordinates(int xCoordinate, int yCoordinate);
-	void provinceIsACapital(char identifier);
+	void provinceIsACapital();
 	void resetTroopsTrainedThisTurn();
 	void increaseBuildingLevel(int index, int amount);
-    void completeProvinceScoutReport(int accuracy);
+	void completeProvinceScoutReport(int accuracy);
 
 	//public variables
-	char provinceIdentifier;
-	int commandersPresent;
-	vector <int> commandersPresentIndices;
-	std::vector <char> listOfCommandersPresent;
+	vector <int> commandersPresentIndex;
 
 	//from AllUnits
 	//Accessor Functions
@@ -105,8 +99,7 @@ private:
 
 	int initialStats[5] = { 5, 4, 3, 2, 1 };
 
-
-	int provinceParticipantIndex;
+	char isACapital;
 };
 
 #endif

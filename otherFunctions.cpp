@@ -43,11 +43,9 @@ using namespace std;
 extern vector<vector <Provinces>> provincesMap;
 extern vector < vector <CommanderProfile>> allCommanders;
 extern vector <Provinces> provincesCanSelect;
-extern char mapMoveUnit[15][15];
 extern int provinceBuildingsProductionNumbers[6];
 extern int continentSize;
 extern int playerTroopsLost[5];
-extern int scoutLogTurnLevel[15][15][2];
 extern int troopsCP[5];
 extern vector <Participants> participantsList;
 extern int currentParticipantIndex;
@@ -136,15 +134,7 @@ int calculatePlayerValues(int decision)
     cout << "Something went wrong" << endl;
     return -1;
 }
-string convertPCIToString(vector <char> playerCommanderIdentifiers)
-{
-    string convertedString;
-    for (char conversion : playerCommanderIdentifiers)
-    {
-        convertedString.push_back(conversion);
-    }
-    return convertedString;
-}
+
 vector<int> getCoordinates(int identifier)/*Might have have to fix this (check if the coordinate stuff is right)*/
 {
     vector <int> XYCoordinates;/*[0] = x coordinate, [1] = y coordinate*/
@@ -322,7 +312,6 @@ int getInt(string textToDisplay, vector <int> acceptableValues, int caseInstance
     std::getline(cin, userInput);
     return checkInt(acceptableValues, userInput);
 }
-
 int checkInt(vector<int>& acceptableValuesTwo, string input)
 {
     vector <string> acceptableValuesOne;
@@ -354,7 +343,6 @@ int checkInt(vector<int>& acceptableValuesTwo, string input)
     } while (repeat == 'Y');
     return -1;
 }
-
 char getChar(string textToDisplay, string acceptableValues, int caseInstance)
 {
     string userInput;
@@ -405,7 +393,7 @@ char checkChar(string stringAV, string input)
 
 void findTotalPlayerUnits(int totalPlayerUnits[5])
 {
-    for (int x = 0; x < sizeof(totalPlayerUnits) / sizeof(int); x++)
+    for (int x = 0; x < 5; x++)
     {
         totalPlayerUnits[x] = 0;
     }
@@ -583,4 +571,39 @@ char findVowel(int randomNumber)
         break;
     }
     return characterThingy;
+}
+
+void initializeValues()
+{
+    /*Basically create the map-- make each province an object of Provinces*/
+    for (int x = 0; x < continentSize; x++)
+    {
+        vector <Provinces> vectorThingy;
+        provincesMap.push_back(vectorThingy);
+        for (int y = 0; y < continentSize; y++)
+        {
+            Provinces newProvince(x, y, -1);
+            provincesMap[x].push_back(newProvince);
+        }
+
+    }
+
+
+}
+
+int getRandomCoordinate()
+{
+    srand(time(0));
+    int coordinate = rand() % (continentSize - 1);
+    return coordinate;
+}
+
+int findAmountOfEnemyProvinces()
+{
+    int amountOfProvinces = 0;
+    for (int x = 1; x < participantsList.size(); x++)
+    {
+        amountOfProvinces += participantsList[x].howManyProvinces();
+    }
+    return amountOfProvinces;
 }

@@ -14,6 +14,7 @@ class Participants
 public:
                     //constructors
     Participants();
+    Participants(int pIndex);
 
     //Capital stuff
         //Accessors
@@ -25,7 +26,9 @@ public:
         //Accessors
     int howManyCommanders();
     int findCommanderIndex(string commanderName);
+    void addNewCommander();
         //Mutators
+        
     //Province stuff
         //Accessors
     int howManyProvinces();
@@ -41,9 +44,11 @@ public:
     vector <int> listOfProvincesX;//Includes the capital province in this
     vector <int> listOfProvincesY;
 
-
+    int playerTroopsLost[5] = { 0,0,0,0,0 };
+    int totalPlayerUnits[5] = { 0,0,0,0,0 }; /*0) Militia, 1) Guards, 2) Cavalry, 3) Knights, 4) Paladins*/
 
 
 private:
+    int participantIndex;
 };
 #endif

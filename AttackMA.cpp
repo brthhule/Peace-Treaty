@@ -12,7 +12,6 @@ extern int enemyDifficulty;
 
 extern vector <vector <Provinces>> provincesMap;
 extern vector <vector <CommanderProfile>> allCommanders;
-extern int playerTroopsLost[5];
 extern int troopsCP[5];
 extern string provinceResourcesNames[5];
 extern vector <Participants> participantsList;
@@ -191,7 +190,7 @@ void AttackMA::playerCommitAttackWin(int oldResources[5])
 
     for (int a = 0; lostCombatPower > 0; a++)
     {
-        battleCalculations(lostCombatPower, deadTroops, playerTroopsLost, a);
+        battleCalculations(lostCombatPower, deadTroops, a);
         for (int x = 0; x < 5; x++)
         {
             injuredTroops[x] = deadTroops[x] / (2 * enemyDifficulty);
@@ -242,7 +241,7 @@ void AttackMA::playerCommitAttackWin(int oldResources[5])
         /*fix this-- add attack functionality, differences in CP and stuff*/
     }
 }
-void AttackMA::battleCalculations(int lostCombatPower, int deadTroops[5], int playerTroopsLost[5], int a)
+void AttackMA::battleCalculations(int lostCombatPower, int deadTroops[5], int a)
 {
     Participants* attackingParticipant = &participantsList[currentParticipantIndex];
 
@@ -254,7 +253,7 @@ void AttackMA::battleCalculations(int lostCombatPower, int deadTroops[5], int pl
     case 3:
     {
         int b = a + 5;
-        battleCalculationsTwo(lostCombatPower, deadTroops, playerTroopsLost, b);
+        battleCalculationsTwo(lostCombatPower, deadTroops, b);
         break;
     }
     case 4:
@@ -265,18 +264,18 @@ void AttackMA::battleCalculations(int lostCombatPower, int deadTroops[5], int pl
                 lostCombatPower -= troopsCP[a];
                 deadTroops[a] ++;
                 allCommanders[currentParticipantIndex][commanderIndex].removeTroops(9, 1);
-                playerTroopsLost[a] += 1;
+                participantsList[currentParticipantIndex].playerTroopsLost[a] += 1;
             }
         }
         a = -1;
         break;
     }
 }
-void AttackMA::battleCalculationsTwo(int& lostCombatPower, int deadTroops[5], int playerTroopsLost[5], int identifier)/*fix this*/
+void AttackMA::battleCalculationsTwo(int& lostCombatPower, int deadTroops[5], int troopIndex)/*fix this*/
 {
     Participants* playerParticipant = &participantsList[currentParticipantIndex];
 
-    int z = abs(4 - identifier);
+    int z = abs(4 - troopIndex);
 
     for (int b = 0; b < troopsCP[z]; b++)
     {
@@ -288,10 +287,10 @@ void AttackMA::battleCalculationsTwo(int& lostCombatPower, int deadTroops[5], in
         {
             if (lostCombatPower > 0)
             {
-                lostCombatPower -= troopsCP[identifier];
-                deadTroops[identifier] ++;
-                allCommanders[currentParticipantIndex][commanderIndex].removeTroops(identifier, 1);
-                playerTroopsLost[identifier] += 1;
+                lostCombatPower -= troopsCP[troopIndex];
+                deadTroops[troopIndex] ++;
+                allCommanders[currentParticipantIndex][commanderIndex].removeTroops(troopIndex, 1);
+                participantsList[currentParticipantIndex].playerTroopsLost[troopIndex] += 1;
             }
             else
                 b = troopsCP[z];

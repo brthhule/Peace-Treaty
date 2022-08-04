@@ -16,6 +16,8 @@ ScoutMA::ScoutMA(int targetXCoordinateV, int targetYCoordinateV)
 
     targetParticipantIndex = provincesMap[targetXCoordinateV][targetYCoordinateV].getBelongsToParticipant();
     enemyLevel = 0;
+    targetInformation[0] = 0;
+    targetInformation[1] = 0;
 }
 
 void ScoutMA::selectTargetToScout() /*So much to fix here... truly so much.... make sure to simplify things later on*/

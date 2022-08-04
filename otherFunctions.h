@@ -20,7 +20,7 @@ int checkInt(vector<int>& acceptableValuesTwo, string input);
 void showMap();
 void updateprovinceResources();
 
-string convertPCIToString(vector <char> playerCommanderIdentifiers);
+void initializeValues();
 
 vector<int> getCoordinates(int identifier);
 vector<int> getTrainBuildCoordinates();
@@ -32,3 +32,8 @@ string createRandomName();
 char findConsonant(int randomNumber);
 char findVowel(int randomNumber);
 
+int getRandomCoordinate();
+
+
+
+int findAmountOfEnemyProvinces();

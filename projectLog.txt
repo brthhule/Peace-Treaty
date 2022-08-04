@@ -21,6 +21,7 @@ Key words to look out for (ctrl f)
 - "delete this" delete these lines of code if code works without it
 - "test" check if code works
 - Update participants so that Participants passes objects like commanders by reference rather than
+- Have to finish working on ScoutMA
 
 
 resources
@@ -41,6 +42,7 @@ June 26: 1 hour, 45 min           105 min
 June 27: 2 hours, 15 min          135 min
 June 29: 1 hour                   60 min
 June 30: 3 hours, 50 min          230 min
+
 July 1: 1 hour                    60 min
 July 2: 1 hour                    60 min
 July 4: 1 hour, 44 min            104 min
@@ -61,22 +63,17 @@ July 20: 2 hours, 5 min			  125 min
 July 23: 1 hour, 20 min			  80 min
 July 24: 1 hour, 15 min			  75 min
 July 25: 2 hours, 20 min		  140 min
-
-
-
 July 27: 2 hours, 5 min			  125 min
 July 28: 55 min					  55 min
 July 29: 35 min					  35 min
 July 30: 2 hours, 25 min		  145 min
+
 August 1: 1 hour, 40 min		  100 min
 August 2: 2 hours, 5 min		  125 min
+August 3: 1 hour, 20 min		  80 min
 
 
-
-
-
-
-Log:								Total: 66.07 hours
+Log:								Total: 67.4 hours
 June 10th - June 15th: 7 hours-
   developed introduction
   develoepd framework for player attack, build, and train
@@ -310,8 +307,12 @@ the loop for the scout log thingy should run, now having a problem in generateNe
 cannot open the file thingy
 	10:30 pm - 10:50 pm (20 min): Got showMap to work, still getting error with create map functionality though
 
-
-
+August 3: 1 hour, 20 min
+	5:20 - 5:40 pm (20 min): Deleted findProvinceIndex (from main) function because is redundant of findProvinceIndexWithCoordinates in Provinces, moved addNewCommander
+from main to Participants. Having problems with create capitals loop in generateNewContinent-- same coordinates keep getting generated?????
+	9:20 pm - 10:20 pm (1 hour): did some more work consolidating information and stuff. Main thing I did: moved the map main action stuff to the newly created MapMA
+class. Main file went down from ~2000 lines to ~300 lines... found a lot of issues (especially in AllUnits and CommanderProfile-- how to initialize and
+keep track of indexInList and other stuff)
 
 
 Last PC update: August 2 @ 10:55 pm

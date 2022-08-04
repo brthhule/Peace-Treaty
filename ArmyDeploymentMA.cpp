@@ -21,10 +21,10 @@ extern int initialResources[5];
 extern int currentParticipantIndex;
 
 
-ArmyDeploymentMA::ArmyDeploymentMA(int xCoordinate, int yCoordinate)
+ArmyDeploymentMA::ArmyDeploymentMA()
 {
-    capitalX = xCoordinate;
-    capitalY = yCoordinate;
+    capitalX = participantsList[currentParticipantIndex].getCapitalCoordinate('X'); 
+    capitalY = participantsList[currentParticipantIndex].getCapitalCoordinate('Y');
 }
 void ArmyDeploymentMA::armyDeploymentMF()
 {
@@ -255,7 +255,7 @@ training fails*/
 void ArmyDeploymentMA::deployCommanderMF()
 {
     Participants* newParticipant = &participantsList[currentParticipantIndex];
-    int commandersInCapital = provincesMap[capitalX][capitalY].commandersPresentIndex.size();
+    int commandersInCapital = (int)provincesMap[capitalX][capitalY].commandersPresentIndex.size();
 
     if (commandersInCapital == 0)
     {
@@ -300,7 +300,7 @@ void ArmyDeploymentMA::deployCommanderMF()
                 {
                     if (newCommander3->hasCommanderMoved() == 'N')
                     {
-                        newCommander3->moveUnit(xThingyTwo, yThingyTwo);
+                        newCommander3->moveUnit();
                         returnToMenu = 'Y';
                     }
                     else

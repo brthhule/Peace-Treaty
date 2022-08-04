@@ -674,3 +674,48 @@ int Provinces::getCommandersPresent()
 {
 	return commandersPresentIndex.size();
 }
+
+int findProvinceIndex(int xCoordinate, int yCoordinate)
+{
+    Participants* newParticipant;
+    newParticipant = &participantsList[*pAParticipantIndex];
+    //For each province the participant has
+    for (int x = 0; x < newParticipant->howManyProvinces(); x++)
+    {
+        //If the coordinates passed to the function are equal to a province's coordinates from the list
+        if (xCoordinate == newParticipant->listOfProvincesX[x] &&
+            yCoordinate == newParticipant->listOfProvincesY[x])
+        {
+            //This is the province's index in listOfProvinces
+            return x;
+        }
+    }
+    return -1;//In case something goes wrong
+}
+
+string convertPCIToString(vector <char> playerCommanderIdentifiers)
+{
+    string convertedString;
+    for (char conversion : playerCommanderIdentifiers)
+    {
+        convertedString.push_back(conversion);
+    }
+    return convertedString;
+}
+
+char mapMoveUnit[15][15] = { 'N' };
+
+
+    /*Initialize scoutLogTurnLevel such that there are no values in them at first*/
+    for (int a = 0; a < continentSize; a++)
+    {
+        for (int b = 0; b < continentSize; b++)
+        {
+            for (int d = 0; d <= 1; d++)
+            {
+                scoutLogTurnLevel[a][b][d] = -1;
+            }
+        }
+    }
+
+//int provinceResources[15][15][5] = { 0 }; /*food, wood, ore, gold, mana*/

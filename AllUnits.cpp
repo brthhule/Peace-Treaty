@@ -17,6 +17,7 @@ extern int provinceBuildingsProductionNumbers[6];
 extern string provinceResourcesNames[5];
 extern string buildingNames[6];
 extern string troopNames[5];
+extern int currentParticipantIndex;//Fix this at some point-- make sure right index is sent to constructor
 
 //Constructor
 AllUnits::AllUnits()
@@ -31,6 +32,8 @@ AllUnits::AllUnits()
 	totalTroops = 0;
 	foodConsumption = 0;
 	canSelectThisUnit = 'N';
+	belongsToParticipant = currentParticipantIndex;
+	indexInList = 0;//Fix this
 }
 AllUnits::AllUnits(char unitIdentifier)
 {
@@ -45,7 +48,7 @@ AllUnits::AllUnits(char unitIdentifier)
 	foodConsumption = 0;
 	canSelectThisUnit = 'N';
 	indexInList = 0;//Fix this
-	belongsToParticipant = 0;
+	belongsToParticipant = currentParticipantIndex;
 
 }
 
@@ -157,4 +160,10 @@ void AllUnits::changeIndexInList(int index)
 void AllUnits::changeCanSelectThisUnit()
 {
 	canSelectThisUnit = 'Y';
+}
+
+void AllUnits::changeCoordinates(int xCoordinate, int yCoordinate)
+{
+	unitXCoordinate = xCoordinate;
+	unitYCoordinate = yCoordinate;
 }

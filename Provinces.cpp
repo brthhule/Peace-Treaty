@@ -42,6 +42,8 @@ Provinces::Provinces()
 
 	provinceLevel = 1;
 	belongsToParticipant = -1;
+	scoutLogTurnLevel[0] = -1;
+	scoutLogTurnLevel[1] = -1;
 }
 Provinces::Provinces(int sendXCoordinate, int sendYCoordinate, int index)
 {
@@ -74,6 +76,8 @@ Provinces::Provinces(int sendXCoordinate, int sendYCoordinate, int index)
 	unitYCoordinate = sendYCoordinate;
 	isACapital = 'N';
 	belongsToParticipant = index;
+	scoutLogTurnLevel[0] = -1;
+	scoutLogTurnLevel[1] = -1;
 }
 
 

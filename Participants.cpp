@@ -9,9 +9,15 @@ extern vector <vector <CommanderProfile>> allCommanders;
 //Constructors
 Participants::Participants()
 {
-    //Initialize commanderIdentifiersList to be generalCommanderIdentifiers
     capitalCoordinates[0] = 0;
     capitalCoordinates[1] = 0;
+    participantIndex = -1;
+}
+Participants::Participants(int pIndex)
+{
+    capitalCoordinates[0] = 0;
+    capitalCoordinates[1] = 0;
+    participantIndex = pIndex;
 }
 //Accessors
 int Participants::getCapitalCoordinate(int whichCoordinate)
@@ -36,7 +42,7 @@ int Participants::howManyProvinces()
 }
 int Participants::howManyCommanders()
 {
-    return allCommanders[currentParticipantIndex].size();
+    return (int) allCommanders[currentParticipantIndex].size();
 }
 int Participants::findCommanderIndex(string commanderName)
 {
@@ -63,6 +69,10 @@ void Participants::addProvince(int xCoordinate, int yCoordinate)
     listOfProvincesY.push_back(yCoordinate);
 }
 
-
-
-
+void Participants::addNewCommander()
+{
+    //Creates new participant
+    CommanderProfile newCommander(1, getNewName(), 1);
+    newCommander.changeCoordinates(getCapitalCoordinate('X'), getCapitalCoordinate('Y'));
+    allCommanders[currentParticipantIndex].push_back(newCommander);
+}

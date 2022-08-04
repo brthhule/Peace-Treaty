@@ -106,26 +106,13 @@ char CommanderProfile::hasCommanderMoved()
 {
     return hasMoved;
 }
-int CommanderProfile::returnIndexInList()
-{
-    return indexInList;
-}
-int CommanderProfile::returnBelongsToParticipant()
-{
-    return belongsToParticipant;
-}
-
 
 /*Mutator Functions*/
 void CommanderProfile::changeCommanderStat(int index, int amount)
 {
     commanderArmyStats[index] += amount;
 }
-void CommanderProfile::changeCoordinates(int xCoordinate, int yCoordinate)
-{
-    unitXCoordinate = xCoordinate;
-    unitYCoordinate = yCoordinate;
-}
+
 void CommanderProfile::updateCommanderScoutReport(int index, int value)
 {
     commanderScoutReport[index] = value;
@@ -165,16 +152,13 @@ void CommanderProfile::completeCommanderScoutReport(int accuracy)
 }
 
 
-
-
-void CommanderProfile::moveUnit(int xCoordinate, int yCoordinate)
+void CommanderProfile::moveUnit()
 {
     vector <Provinces*> provincesCanSelect;
     if (hasCommanderMoved() == 'N')
     {
-
         std::cout << "The coordinates of the chosen unit unit are: ";
-        std::cout << "(" << translateCoordinate(xCoordinate, 'y', 'O') << ", " << translateCoordinate(yCoordinate, 'x', 'O') << ") " << endl;
+        std::cout << "(" << translateCoordinate(unitXCoordinate, 'y', 'O') << ", " << translateCoordinate(unitYCoordinate, 'x', 'O') << ") " << endl;
         std::cout << endl;
         std::cout << "You can only move this unit to one of the provinces adjacent to the province it is in. " << endl;
 
@@ -189,7 +173,7 @@ void CommanderProfile::moveUnit(int xCoordinate, int yCoordinate)
                     if (x != 0 || y != 0)
                     {
                         //Add province to list of provinces can move to
-                        provincesCanSelect.push_back(&provincesMap[x + getCoordinate('X')][y + getCoordinate ('Y')]);
+                        provincesCanSelect.push_back(&provincesMap[x + unitXCoordinate][y + unitYCoordinate]);
                     }
                 }
             }
@@ -241,8 +225,8 @@ void CommanderProfile::moveUnit(int xCoordinate, int yCoordinate)
                 //If scenario is attack
                 else
                 {
-                    AttackMA newAttackMA(xCoordinate, yCoordinate, moveToXTwo, moveToYTwo, indexInList, belongsToParticipant);
-                    newAttackMA.playerAttack();
+                    AttackMA newAttackMA(unitXCoordinate, unitYCoordinate, moveToXTwo, moveToYTwo, indexInList, belongsToParticipant);
+                    newAttackMA.playerAttack();//fix this-- don't need to pass unitXCoordinate, can just use indexInList
                 }
             }
         }
@@ -250,7 +234,7 @@ void CommanderProfile::moveUnit(int xCoordinate, int yCoordinate)
         {
             cout << "Invalid province selected... please try again. " << endl;
             //Recursion until suitable coordinates are chosen
-            moveUnit(xCoordinate, yCoordinate);
+            moveUnit();
         }
     }
     else
