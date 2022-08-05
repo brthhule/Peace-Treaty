@@ -137,7 +137,6 @@ void CommanderProfile::completeCommanderScoutReport(int accuracy)
     int fooOne;
     int fooTwo;
     int findRange;
-    srand(time(NULL));
     for (int x = 0; x < 20; x++)
     {
         findRange = getCommanderStat(x);
@@ -180,9 +179,10 @@ void CommanderProfile::moveUnit()
         }
         
         //The participant slects coordiantes
-        vector<int> XYCoordinates = getCoordinates(2);
-        int moveToXTwo = XYCoordinates[0];
-        int moveToYTwo = XYCoordinates[1];
+        int moveToXTwo = 0;
+        int moveToYTwo = 0;
+        getCoordinates(2, moveToXTwo, moveToYTwo);
+
         int provinceIndexSelected = 0;
         char provinceIsInList = 'N'; //Initialize as province is not in list (have to repeat process)
         //Find the province (out of the list) elected using the coordinates chosen

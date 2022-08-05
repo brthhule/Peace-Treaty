@@ -9,10 +9,10 @@
 
 using namespace std;
 extern vector <vector <Provinces>> provincesMap;
+extern vector <Participants> participantsList;
 extern string provinceResourcesNames[5];
 extern string buildingNames[6];
 extern string troopNames[5];
-extern int playerTroopsLost[5];
 extern int initialResources[5];
 extern int continentSize;
 extern int currentParticipantIndex;
@@ -127,11 +127,10 @@ void viewAllStatsFunction()
 {
     string literallyAnyRandomCharacter;
     std::cout << "\033[;34m";//NW
-    std::cout << "Militia lost: " << playerTroopsLost[0] << endl;
-    std::cout << "Guards lost: " << playerTroopsLost[1] << endl;
-    std::cout << "Cavalry lost: " << playerTroopsLost[2] << endl;
-    std::cout << "Knights lost: " << playerTroopsLost[3] << endl;
-    std::cout << "Paladins lost: " << playerTroopsLost[4] << endl;
+    for (int x = 0; x < 5; x++)
+    {
+        std::cout << troopNames[x] << " lost: " << participantsList[currentParticipantIndex].playerTroopsLost[x] << endl;
+    }
     std::cout << "Total troops lost: " << calculatePlayerValues(2) << endl << endl;
     std::cout << "\033[;0m";//NW
 
@@ -251,6 +250,7 @@ char listOfActions(int identifier)
     //SetConsoleTextAttribute(console_color, 15); //WO
     cout << "Enter the letter of the action you want to complete (enter 'H' to see help to know what to do): ";
     std::getline(cin, userInput);
+    stringToSend += 'H';
     userInputChar = checkChar(stringToSend, userInput);
     return userInputChar;
 

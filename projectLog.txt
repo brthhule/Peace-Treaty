@@ -23,6 +23,32 @@ Key words to look out for (ctrl f)
 - Update participants so that Participants passes objects like commanders by reference rather than
 - Have to finish working on ScoutMA
 
+/*How to use colors: */
+/*On Linux, you can change the current foreground and background color by writing special character sequences into the output. Write the ESC escape character (octal "\033", hex \x1b), followed by an opening square bracket [. The color definition will follow next, termniated by a lowercase m.
+
+The color definition is a series of numbers, separated by semicolons. In order to make the text color red (number 31),
+you can write "\033[31m" which will make any following output red. If you want yellow text (33) on blue background (44),
+you write "\033[31;44m". To reset everything back to the default colors, you write "\033[0m".
+
+
+         foreground background
+black        30         40
+red          31         41
+green        32         42
+yellow       33         43
+blue         34         44
+magenta      35         45
+cyan         36         46
+white        37         47
+Additionally, you can use these:
+
+reset             0  (everything back to normal)
+bold/bright       1  (often a brighter shade of the same colour)
+underline         4
+inverse           7  (swap foreground and background colours)
+bold/bright off  21
+underline off    24
+inverse off      27*/
 
 resources
 - https://www.educba.com/c-plus-plus-graphics/ graphics
@@ -314,7 +340,14 @@ from main to Participants. Having problems with create capitals loop in generate
 class. Main file went down from ~2000 lines to ~300 lines... found a lot of issues (especially in AllUnits and CommanderProfile-- how to initialize and
 keep track of indexInList and other stuff)
 
+August 4: 
+	9:45 pm - 10:35 pm (50 min): Figured out what was wrong with rand-- called srand multiple times each time I had to get a random number (just had to call it once,
+in main). Figured out create commanders-- error was because added CommanderProfile objects to allCommanders[participantIndexTemp], didn't push 
+CommanderProfile vectors to allCommanders yet though.  Something was wrong with BuildMA in which trying to enter the x coordinate would result in
+a vector subscript out of range error, fixed it by making getCoordinates work by taking parameters passed by reference rather than returning a vector.
+Modified listOfActions so that when picking something to do, help would also be included (stringToSend += 'H';). Made the text color in
+printBuildingStats and printResources brighter by using 1m. Getting LNK1168 error (cannot open... exe for writing)
 
-Last PC update: August 2 @ 10:55 pm
+Last PC update: August 4 @ 10:35 pm
 Last Repl update:
 

@@ -22,8 +22,8 @@ void updateprovinceResources();
 
 void initializeValues();
 
-vector<int> getCoordinates(int identifier);
-vector<int> getTrainBuildCoordinates();
+void getCoordinates(int identifier, int& xCoordinate, int& yCoordinate);
+void getTrainBuildCoordinates(int& xCoordinate, int& yCoordinate);
 
 void findTotalPlayerUnits(int totalPlayerUnits[5]);
 

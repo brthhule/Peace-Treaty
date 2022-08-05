@@ -7,37 +7,16 @@
 #include <string.h>
 #include <string>
 #include <vector>
+#include <cstdlib>
+#include <time.h>
+#include <stdlib.h>  
+#include <ctime>
+
+
 //#include <windows.h> //WO
 #include <stdlib.h>
 #include "AttackMA.h"
 #include "Participants.h"
-
-/*How to use colors: */
-/*On Linux, you can change the current foreground and background color by writing special character sequences into the output. Write the ESC escape character (octal "\033", hex \x1b), followed by an opening square bracket [. The color definition will follow next, termniated by a lowercase m.
-
-The color definition is a series of numbers, separated by semicolons. In order to make the text color red (number 31),
-you can write "\033[31m" which will make any following output red. If you want yellow text (33) on blue background (44),
-you write "\033[31;44m". To reset everything back to the default colors, you write "\033[0m".
-
-
-         foreground background
-black        30         40
-red          31         41
-green        32         42
-yellow       33         43
-blue         34         44
-magenta      35         45
-cyan         36         46
-white        37         47
-Additionally, you can use these:
-
-reset             0  (everything back to normal)
-bold/bright       1  (often a brighter shade of the same colour)
-underline         4
-inverse           7  (swap foreground and background colours)
-bold/bright off  21
-underline off    24
-inverse off      27*/
 
 using namespace std;
 extern vector<vector <Provinces>> provincesMap;
@@ -45,7 +24,6 @@ extern vector < vector <CommanderProfile>> allCommanders;
 extern vector <Provinces> provincesCanSelect;
 extern int provinceBuildingsProductionNumbers[6];
 extern int continentSize;
-extern int playerTroopsLost[5];
 extern int troopsCP[5];
 extern vector <Participants> participantsList;
 extern int currentParticipantIndex;
@@ -117,7 +95,7 @@ int calculatePlayerValues(int decision)
     case 2:
     {
         int totalTroopsLost = 0;
-        for (int x : playerTroopsLost)
+        for (int x : participantsList[currentParticipantIndex].playerTroopsLost)
         {
             totalTroopsLost += x;
         }
@@ -135,21 +113,15 @@ int calculatePlayerValues(int decision)
     return -1;
 }
 
-vector<int> getCoordinates(int identifier)/*Might have have to fix this (check if the coordinate stuff is right)*/
+void getCoordinates(int identifier, int& xCoordinate, int& yCoordinate)/*Might have have to fix this (check if the coordinate stuff is right)*/
 {
-    vector <int> XYCoordinates;/*[0] = x coordinate, [1] = y coordinate*/
-    string actualXString;
-    string actualYString;
-
-    vector<int> actualCoordinatesAVTwo;
-
+    vector<int> actualCoordinatesAVTwo = {-1};
     for (int x = 1; x <= continentSize; x++)
     {
         actualCoordinatesAVTwo.push_back(x);
     }
-    actualCoordinatesAVTwo.push_back(-1);
-    string phrase;
 
+    string phrase;
     switch (identifier)
     {
     case 1:
@@ -163,28 +135,27 @@ vector<int> getCoordinates(int identifier)/*Might have have to fix this (check i
     }
 
     std::cout << "Enter the x coordinate " << phrase << " (Enter '-1' to go back to previous menu) : ";
-    XYCoordinates[0] = getInt("Replacement", actualCoordinatesAVTwo, 2);
-    if (XYCoordinates[0] != -1)
+    xCoordinate = getInt("Replacement", actualCoordinatesAVTwo, 2);
+    if (xCoordinate != -1)
     {
         std::cout << "Enter the y coordinate " << phrase << " (Enter '-1' to go back to previous menu) : ";
-        XYCoordinates[1] = getInt("Replacement", actualCoordinatesAVTwo, 2);
+        yCoordinate = getInt("Replacement", actualCoordinatesAVTwo, 2);
         std::cout << endl;
 
-        if (XYCoordinates[1] != 1)
+        if (yCoordinate != 1)
         {
-            int replacement = XYCoordinates[0];
-            XYCoordinates[0] = translateCoordinate(XYCoordinates[1], 'y', 'I');
-            XYCoordinates[1] = translateCoordinate(replacement, 'x', 'I');
+            int replacement = xCoordinate;
+            xCoordinate = translateCoordinate(yCoordinate, 'y', 'I');
+            yCoordinate = translateCoordinate(replacement, 'x', 'I');
         }
     }
-    return XYCoordinates;
 }//Can make this an array
-vector<int> getTrainBuildCoordinates()
+void getTrainBuildCoordinates(int& xCoordinate, int& yCoordinate)
 {
     showMap();
     printListOfProvinces();
 
-    return getCoordinates(1);
+    return getCoordinates(1, xCoordinate, yCoordinate);
 }
 
 void showMap()
@@ -456,7 +427,6 @@ string createRandomName()
     string name = "";
     int randomNumber = 0;
     char characterThingy = ' ';
-    srand(time(0));
     for (int x = 0; x < 4; x++)
     {
         if (x % 2 == 0)//if even
@@ -593,9 +563,7 @@ void initializeValues()
 
 int getRandomCoordinate()
 {
-    srand(time(0));
-    int coordinate = rand() % (continentSize - 1);
-    return coordinate;
+    return rand() % continentSize;
 }
 
 int findAmountOfEnemyProvinces()

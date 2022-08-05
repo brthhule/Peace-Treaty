@@ -100,6 +100,7 @@ int AllUnits::returnIndexInList()
 void AllUnits::printResources()
 {
 	std::cout << "\033[;34m";
+	std::cout << "\033[;1m";
 	std::cout << "Resources present: " << endl;
 	for (int x = 0; x < 5; x++)
 	{

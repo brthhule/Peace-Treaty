@@ -35,15 +35,9 @@ public:
 	void addCommanderLevel(int amount);
 
 	//Moving
-	void moveUnit(int xCoordinate, int yCoordinate);
+	void moveUnit();
 	char hasCommanderMoved();
 	void resetCommanderMoved();
-
-
-	void changeCoordinates(int xCoordinate, int yCoordinate);
-
-	int returnIndexInList();
-	int returnBelongsToParticipant();
 
 private:
 	int* commanderArmyStats[20];/*
@@ -95,7 +89,6 @@ private:
 	int maxTroops;//check
 	int totalMaxResources;
 	char hasMoved;
-	int belongsToParticipant;
 
 	string MANDescriptions[5] = { "Resources in", "Troops present in", "Troops injured in", "Other stats of" };//check
 	string namesOfMAN[20];//check

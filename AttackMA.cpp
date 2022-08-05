@@ -96,9 +96,7 @@ void AttackMA::playerAttack() /*fix this*/
 
             do
             {
-                vector <int> XYCoordinates = getCoordinates(3);
-                attackUnitWithX = XYCoordinates[0];
-                attackUnitWithY = XYCoordinates[1];
+                getCoordinates(3, attackUnitWithX, attackUnitWithY);
                 std::cout << endl;
                 if (attackUnitWithX == -1 || attackUnitWithY == -1)
                 {

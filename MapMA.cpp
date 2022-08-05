@@ -10,8 +10,6 @@
 #include "ScoutMA.h"
 #include "AttackMA.h"
 #include "TrainMA.h"
-extern int scoutLogTurnLevel[15][15][2];
-
 using namespace std;
 
 extern int currentParticipantIndex;
@@ -41,9 +39,7 @@ void MapMA::viewPlayerMap()
         {
         case 'P':
         {
-            vector <int> XYCoordinates = getCoordinates(1);
-            xCoordinate = XYCoordinates[0];
-            yCoordinate = XYCoordinates[1];
+            getCoordinates(1, xCoordinate, yCoordinate);
             if (xCoordinate != -1 && yCoordinate != -1)
             {
                 selectUnitOriginal();
@@ -154,7 +150,7 @@ void MapMA::selectEnemyProvince()
     }
     case 'V':
     {
-        if (scoutLogTurnLevel[xCoordinate][yCoordinate][0] != -1)
+        if (provincesMap[xCoordinate][yCoordinate].scoutLogTurnLevel[0] != -1)
         {
             if (getChar("View scout log for this province? (Y/N) ", "YN", 1) == 'Y')/*Ask user if they want to view scout log, get char, go to scoutLogFunction if 'Y'*/
             {
@@ -227,7 +223,7 @@ void MapMA::scoutLogFunction()
     char repeatScoutLog = 'N';
     char whatReportChar;
 
-    std::cout << "Turn of scout report: " << scoutLogTurnLevel[xCoordinate][yCoordinate][0] << "; Level of report: " << scoutLogTurnLevel[xCoordinate][yCoordinate][1] << endl << endl;
+    std::cout << "Turn of scout report: " << provincesMap[xCoordinate][yCoordinate].scoutLogTurnLevel[0] << "; Level of report: " << provincesMap[xCoordinate][yCoordinate].scoutLogTurnLevel[1] << endl << endl;
     do
     {
         whatReportChar = listOfActions(11);

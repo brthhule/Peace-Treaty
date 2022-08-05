@@ -29,14 +29,16 @@ BuildMA::BuildMA(int xCoordinate, int yCoordinate)
 void BuildMA::findProvinceCoordinates()
 {
     char repeatThisOne = 'Y';
-    vector <int> XYCoordinates;
+
     do
     {
-        XYCoordinates.clear();
+        provinceXCoordinate = 0;
+        provinceYCoordinate = 0;
+
         std::cout << "Welcome to the Player Build menu" << endl << endl;
-        XYCoordinates = getTrainBuildCoordinates();
-        provinceXCoordinate = XYCoordinates[0];
-        provinceYCoordinate = XYCoordinates[1];
+        getTrainBuildCoordinates(provinceXCoordinate, provinceYCoordinate);
+
+
         if (provinceXCoordinate == -1 || provinceYCoordinate == -1)
         {
             repeatThisOne = 'N';

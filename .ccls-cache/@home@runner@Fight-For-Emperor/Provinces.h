@@ -35,10 +35,11 @@ public:
 	void updateProvinceScoutLog(int index, int value);
 	void updateBuildingsProduction();
 	void updateProvinceResources();
-	void addCommanderProvince(int commanderIndex);
-	void removeCommanderProvince(int commanderIndex);
 	void setCoordinates(int xCoordinate, int yCoordinate);
 	void provinceIsACapital();
+	void addCommanderProvince(int commanderIndex);
+	void removeCommanderProvince(int commanderIndex);
+
 	void resetTroopsTrainedThisTurn();
 	void increaseBuildingLevel(int index, int amount);
 	void completeProvinceScoutReport(int accuracy);
@@ -78,9 +79,6 @@ private:
 [24] infirmary level
 [25] total CP
 [26] food consumption*/
-	int provinceScoutReport[28] = {};/*
-[27] = turn number of scout report
-[28] = accuracy of scout report*/
 	int provinceLevel;
 	int maxGarrison;
 	int maxInfirmaryCapacity;
@@ -100,6 +98,12 @@ private:
 	int initialStats[5] = { 5, 4, 3, 2, 1 };
 
 	char isACapital;
+
+	int provinceScoutReport[28] = {};/*
+[27] = turn number of scout report
+[28] = accuracy of scout report*/
+
+	int scoutLogTurnLevel[2];//[0] is the turn of the scout report, [1] is the scout log level
 };
 
 #endif

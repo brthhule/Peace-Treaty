@@ -134,14 +134,10 @@ void TrainMA::TrainMAFunction()
 void TrainMA::findProvinceCoordinates()
 {
     char repeatThisOne = 'Y';
-    vector <int> XYCoordinates;
     do
     {
-        XYCoordinates.clear();
         cout << "Welcome to the Player Train menu" << endl << endl;
-        XYCoordinates = getTrainBuildCoordinates();
-        provinceXCoordinate = XYCoordinates[0];
-        provinceYCoordinate = XYCoordinates[1];
+        getTrainBuildCoordinates(provinceXCoordinate, provinceYCoordinate);
 
         if (provinceXCoordinate == -1 || provinceYCoordinate == -1)
         {

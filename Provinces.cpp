@@ -125,8 +125,6 @@ void Provinces::completeProvinceScoutReport(int accuracy)
 	int fooOne;
 	int fooTwo;
 	int findRange;
-	srand(time(NULL));
-
 	for (int x = 0; x < 20; x++) //fix this
 	{
 		findRange = *provinceStats[x];
@@ -188,6 +186,7 @@ void Provinces::increaseBuildingLevel(int index, int amount)
 void Provinces::printBuildingStats()
 {
 	cout << "\033[;34m";
+	std::cout << "\033[;1m";
 	for (int x = 0; x < 6; x++)
 	{
 		buildingsProduction[x] = buildingLevels[x] * provinceBuildingsProductionNumbers[x];

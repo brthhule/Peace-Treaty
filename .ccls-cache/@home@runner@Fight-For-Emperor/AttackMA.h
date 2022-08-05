@@ -16,8 +16,8 @@ public:
 	void playerAttack();
 	void playerCommitAttack();
 	void playerCommitAttackWin(int oldResources[5]);
-	void battleCalculations(int lostCombatPower, int deadTroops[5], int playerTroopsLost[5], int a);
-	void battleCalculationsTwo(int& lostCombatPower, int deadTroops[5], int playerTroopsLost[5], int identifier);
+	void battleCalculations(int lostCombatPower, int deadTroops[5], int a);
+	void battleCalculationsTwo(int& lostCombatPower, int deadTroops[5], int troopIndex);
 private:
 	int unitAttackingX;
 	int unitAttackingY;
