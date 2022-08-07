@@ -11,7 +11,8 @@
 #include <time.h>
 #include <stdlib.h>  
 #include <ctime>
-
+#include <chrono>
+#include <thread>
 
 //#include <windows.h> //WO
 #include <stdlib.h>
@@ -142,12 +143,12 @@ void getCoordinates(int identifier, int& xCoordinate, int& yCoordinate)/*Might h
         yCoordinate = getInt("Replacement", actualCoordinatesAVTwo, 2);
         std::cout << endl;
 
-        if (yCoordinate != 1)
+        /*if (yCoordinate != 1)
         {
             int replacement = xCoordinate;
-            xCoordinate = translateCoordinate(yCoordinate, 'y', 'I');
-            yCoordinate = translateCoordinate(replacement, 'x', 'I');
-        }
+            xCoordinate = translateCoordinate(yCoordinate, 'x', 'I');
+            yCoordinate = translateCoordinate(replacement, 'y', 'I');
+        }*/
     }
 }//Can make this an array
 void getTrainBuildCoordinates(int& xCoordinate, int& yCoordinate)
@@ -392,6 +393,7 @@ void findTotalPlayerUnits(int totalPlayerUnits[5])
 
 string getNewName()
 {
+    cout << "getNewName" << endl;
     Participants* newParticipant = &participantsList[currentParticipantIndex];
     string newName = " ";  
     char repeatGetName = 'N';
@@ -401,7 +403,8 @@ string getNewName()
     {
         repeatGetName = 'N';
         newName = createRandomName();
-        for (int x = 0; x < newParticipant->howManyProvinces(); x++)
+        cout << "Check provincs" << endl;
+        for (int x = 0; x < newParticipant->howManyProvinces(); x++) //If any provinces of the participant have the name
         {
             Provinces* newProvince = &provincesMap[newParticipant->listOfProvincesX[x]][newParticipant->listOfProvincesY[x]];
             if (newName == newProvince -> getUnitName())
@@ -409,14 +412,20 @@ string getNewName()
                 repeatGetName = 'Y';
             }
         }
-
-        for (int x = 0; x < newParticipant->howManyCommanders(); x++)
+        cout << "Check commanders" << endl;
+        for (int x = 0; x < newParticipant->howManyCommanders(); x++)//If any commanders have the name
         {
             CommanderProfile* newCommander = &allCommanders[currentParticipantIndex][x];
             if (newName == newCommander->getUnitName())
             {
-                repeatGetName = 'N';
+                repeatGetName = 'Y';
             }
+        }
+        cout << "Compare to participant kingdom name" << endl;
+        cout << "Kingdom name: " << newParticipant -> getKingdomName () << endl;
+        if (newParticipant -> getKingdomName() == newName)
+        {
+            repeatGetName = 'Y';
         }
     } while (repeatGetName == 'Y');
 
@@ -424,6 +433,7 @@ string getNewName()
 }
 string createRandomName()
 {
+    cout << "Create random name" << endl;
     string name = "";
     int randomNumber = 0;
     char characterThingy = ' ';
@@ -543,7 +553,7 @@ char findVowel(int randomNumber)
     return characterThingy;
 }
 
-void initializeValues()
+void createMap()
 {
     /*Basically create the map-- make each province an object of Provinces*/
     for (int x = 0; x < continentSize; x++)
@@ -557,8 +567,6 @@ void initializeValues()
         }
 
     }
-
-
 }
 
 int getRandomCoordinate()
@@ -574,4 +582,13 @@ int findAmountOfEnemyProvinces()
         amountOfProvinces += participantsList[x].howManyProvinces();
     }
     return amountOfProvinces;
+}
+
+void clearScreen()
+{
+    std::cout << "Clearing screen. " << endl;
+    chrono::seconds dura(1);
+    this_thread::sleep_for(dura);
+    //system("cls"); /*Windows only*/
+    system("clear"); /*Non-Windows*/
 }

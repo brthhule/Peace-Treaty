@@ -9,20 +9,31 @@ extern vector <vector <CommanderProfile>> allCommanders;
 //Constructors
 Participants::Participants()
 {
-    capitalCoordinates[0] = 0;
-    capitalCoordinates[1] = 0;
+    capitalX = 0;
+    capitalY = 0;
     participantIndex = -1;
+    kingdomName = " ";
 }
 Participants::Participants(int pIndex)
 {
-    capitalCoordinates[0] = 0;
-    capitalCoordinates[1] = 0;
+    capitalX = 0;
+    capitalY = 0;
     participantIndex = pIndex;
+    kingdomName = " ";
 }
 //Accessors
-int Participants::getCapitalCoordinate(int whichCoordinate)
+int Participants::getCapitalCoordinate(char whichCoordinate)
 {
-    return capitalCoordinates[whichCoordinate];//whichCoordinate = 0 for x coordinate, 1 for y
+    switch (whichCoordinate)
+    {
+    case 'X':
+        return capitalX;
+        break;
+    case 'Y':
+        return capitalY;
+        break;
+    }
+    return -1;//if something goes wrong
 }
 int Participants::findProvinceIndexWithCoordinates(int provinceXCoordinate, int provinceYCoordinate)
 {
@@ -58,9 +69,10 @@ int Participants::findCommanderIndex(string commanderName)
 
 
 //Mutators
-void Participants::updateCapitalCoordinates(int whichCoordinate, int value)
+void Participants::updateCapitalCoordinates(int xCoordinate, int yCoordinate)
 {
-    capitalCoordinates[whichCoordinate] = value;
+    capitalX = xCoordinate;
+    capitalY = yCoordinate;
 }
 
 void Participants::addProvince(int xCoordinate, int yCoordinate)
@@ -75,4 +87,14 @@ void Participants::addNewCommander()
     CommanderProfile newCommander(1, getNewName(), 1);
     newCommander.changeCoordinates(getCapitalCoordinate('X'), getCapitalCoordinate('Y'));
     allCommanders[currentParticipantIndex].push_back(newCommander);
+}
+
+void Participants::setKingdomName(string newName)
+{
+    kingdomName = newName;
+}
+
+string Participants::getKingdomName()
+{
+    return kingdomName;
 }

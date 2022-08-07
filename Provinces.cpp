@@ -58,7 +58,8 @@ Provinces::Provinces(int sendXCoordinate, int sendYCoordinate, int index)
 	}
 	for (int x = 0; x < 5; x++)
 	{
-		provinceStats[x] = &resourcesPresent[x];
+		provinceStats[x] = &resourcesPresent[x]; //Set pointer to parent array
+		*provinceStats[x] = initialResources[x];
 		provinceStats[x + 6] = &troopsPresent[x];
 		provinceStats[x + 18] = &buildingLevels[x];
 	}
@@ -186,7 +187,6 @@ void Provinces::increaseBuildingLevel(int index, int amount)
 void Provinces::printBuildingStats()
 {
 	cout << "\033[;34m";
-	std::cout << "\033[;1m";
 	for (int x = 0; x < 6; x++)
 	{
 		buildingsProduction[x] = buildingLevels[x] * provinceBuildingsProductionNumbers[x];

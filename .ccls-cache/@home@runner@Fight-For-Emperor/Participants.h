@@ -18,9 +18,9 @@ public:
 
     //Capital stuff
         //Accessors
-    int getCapitalCoordinate(int whichCoordinate);
+    int getCapitalCoordinate(char whichCoordinate);
         //Mutators
-    void updateCapitalCoordinates(int whichCoordinate, int value);
+    void updateCapitalCoordinates(int xCoordinate, int yCoordinate);
 
     //Commander stuff
         //Accessors
@@ -37,9 +37,9 @@ public:
     void addProvince(int xCoordinate, int yCoordinate);
 
     //Public variables
-    int* participantCapitalX = &capitalCoordinates[0];
-    int* participantCapitalY = &capitalCoordinates[1];
-    int capitalCoordinates[2];
+
+    int capitalX;
+    int capitalY;
     //std::vector <CommanderProfile> listOfCommanders;
     vector <int> listOfProvincesX;//Includes the capital province in this
     vector <int> listOfProvincesY;
@@ -47,8 +47,13 @@ public:
     int playerTroopsLost[5] = { 0,0,0,0,0 };
     int totalPlayerUnits[5] = { 0,0,0,0,0 }; /*0) Militia, 1) Guards, 2) Cavalry, 3) Knights, 4) Paladins*/
 
+    void setKingdomName(string newName);
+    string getKingdomName();
+
+
 
 private:
     int participantIndex;
+    string kingdomName;
 };
 #endif

@@ -207,7 +207,7 @@ void ArmyDeploymentMA::trainCommanders()
     {
         if (currentPlayerCommanders < maxAmountOfCommanders) /*if amount of commanders is less than max (not at max capacity)*/
         {
-            printCostsToTrainAnotherCommander(trainArmyCommanderCosts, currentPlayerCommanders);
+            printCostsToTrainAnotherCommander(trainArmyCommanderCosts);
             char failCommanderTraining = 'S';
 
             if (getChar("Proceed with upgrade? (Y/N) ", "YN", 1) == 'Y')
@@ -348,4 +348,21 @@ void ArmyDeploymentMA::printCostsToUpgradeACommander(int commanderUpgradeCosts[5
         commanderUpgradeCosts[x] *= initialResources[x];
         std::cout << provinceResourcesNames[x] << ": " << commanderUpgradeCosts[x] << endl;
     }
+}
+
+void ArmyDeploymentMA::printCostsToTrainAnotherCommander(int trainArmyCommanderCosts[5])
+{
+    std::cout << endl;
+    std::cout << "The following is the cost to train another commander: " << endl;
+    for (int x = 0; x < 5; x++) /*calculate and print costs to train another commander (more expensive than the last)*/
+    {
+        trainArmyCommanderCosts[x] = (int) allCommanders[currentParticipantIndex].size() * 10;
+        trainArmyCommanderCosts[x] *= initialResources[x];
+        std::cout << provinceResourcesNames[x] << ": " << trainArmyCommanderCosts[x] << endl;
+    }
+    std::cout << endl;
+
+    cout << "The following are the resources currently in your capital: << endl;" << endl;
+    provincesMap[participantsList[currentParticipantIndex].getCapitalCoordinate('X')]
+        [participantsList[currentParticipantIndex].getCapitalCoordinate('Y')].printResources();
 }

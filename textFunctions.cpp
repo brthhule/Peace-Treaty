@@ -20,10 +20,9 @@ extern int currentParticipantIndex;
 void synopsis()
 {
     cout << "- Welcome to Fight For Emperor" << endl;
-    cout << "- In a large continent, filled with various kingdoms, you are a monarch vying for the status of emporer." << endl;
-    cout << "- In a distant land, in a distant world, in a distant reality, there lies a land run by evil. In this solo play adventure, work to defeat those enemies that roam the land and unify the now broken empire. Expand your kingdom and rule the world!" << endl;
-    cout << "- Build buildings, develop research, and train troops to conquer foreign lands and become the mightiest Emperor." << endl;
-    cout << "- Although players cannot save their complete data, a portion of the land that they gained in the previous game (as well as the amount of resources available) will be available (through a code) " << endl << endl;
+    cout << "- In a large continent, filled with various kingdoms, you are a monarch seeking to unit the land; you will defeat the other kingdoms and become emperorer." << endl;
+    cout << "- Develop buildings, train troops, and use logistics and battle strategies to conquer enemy provinces." << endl;
+    cout << "- Although players cannot save their complete data, a portion of the land that they gained in the previous game (as well as the amount of resources available) will be available through a code " << endl << endl;
 }
 
 void playerUnitActionHelp()
@@ -274,20 +273,6 @@ void casualtyReport(int deadTroops[5], int injuredTroops[5])
     for (int x = 0; x < 5; x++) /*print out deaths*/
     {
         std::cout << troopNames[x] << " injured: " << injuredTroops[x] << endl;
-    }
-    std::cout << endl;
-}
-
-void printCostsToTrainAnotherCommander(int trainArmyCommanderCosts[5], int currentPlayerCommanders
-)
-{
-    std::cout << endl;
-    std::cout << "The following is the cost to train another commander: " << endl;
-    for (int x = 0; x < 5; x++) /*calculate and print costs to train another commander (more expensive than the last)*/
-    {
-        trainArmyCommanderCosts[x] = (currentPlayerCommanders + 1) * 10;
-        trainArmyCommanderCosts[x] *= initialResources[x];
-        std::cout << provinceResourcesNames[x] << ": " << trainArmyCommanderCosts[x] << endl;
     }
     std::cout << endl;
 }

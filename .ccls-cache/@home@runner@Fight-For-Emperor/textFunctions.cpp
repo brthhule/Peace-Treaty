@@ -9,20 +9,20 @@
 
 using namespace std;
 extern vector <vector <Provinces>> provincesMap;
+extern vector <Participants> participantsList;
 extern string provinceResourcesNames[5];
 extern string buildingNames[6];
 extern string troopNames[5];
-extern int playerTroopsLost[5];
 extern int initialResources[5];
 extern int continentSize;
+extern int currentParticipantIndex;
 
 void synopsis()
 {
     cout << "- Welcome to Fight For Emperor" << endl;
-    cout << "- In a large continent, filled with various kingdoms, you are a monarch vying for the status of emporer." << endl;
-    cout << "- In a distant land, in a distant world, in a distant reality, there lies a land run by evil. In this solo play adventure, work to defeat those enemies that roam the land and unify the now broken empire. Expand your kingdom and rule the world!" << endl;
-    cout << "- Build buildings, develop research, and train troops to conquer foreign lands and become the mightiest Emperor." << endl;
-    cout << "- Although players cannot save their complete data, a portion of the land that they gained in the previous game (as well as the amount of resources available) will be available (through a code) " << endl << endl;
+    cout << "- In a large continent, filled with various kingdoms, you are a monarch seeking to unit the land; you will defeat the other kingdoms and become emperorer." << endl;
+    cout << "- Develop buildings, train troops, and use logistics and battle strategies to conquer enemy provinces." << endl;
+    cout << "- Although players cannot save their complete data, a portion of the land that they gained in the previous game (as well as the amount of resources available) will be available through a code " << endl << endl;
 }
 
 void playerUnitActionHelp()
@@ -126,11 +126,10 @@ void viewAllStatsFunction()
 {
     string literallyAnyRandomCharacter;
     std::cout << "\033[;34m";//NW
-    std::cout << "Militia lost: " << playerTroopsLost[0] << endl;
-    std::cout << "Guards lost: " << playerTroopsLost[1] << endl;
-    std::cout << "Cavalry lost: " << playerTroopsLost[2] << endl;
-    std::cout << "Knights lost: " << playerTroopsLost[3] << endl;
-    std::cout << "Paladins lost: " << playerTroopsLost[4] << endl;
+    for (int x = 0; x < 5; x++)
+    {
+        std::cout << troopNames[x] << " lost: " << participantsList[currentParticipantIndex].playerTroopsLost[x] << endl;
+    }
     std::cout << "Total troops lost: " << calculatePlayerValues(2) << endl << endl;
     std::cout << "\033[;0m";//NW
 
@@ -250,6 +249,7 @@ char listOfActions(int identifier)
     //SetConsoleTextAttribute(console_color, 15); //WO
     cout << "Enter the letter of the action you want to complete (enter 'H' to see help to know what to do): ";
     std::getline(cin, userInput);
+    stringToSend += 'H';
     userInputChar = checkChar(stringToSend, userInput);
     return userInputChar;
 
@@ -277,20 +277,6 @@ void casualtyReport(int deadTroops[5], int injuredTroops[5])
     std::cout << endl;
 }
 
-void printCostsToTrainAnotherCommander(int trainArmyCommanderCosts[5], int currentPlayerCommanders
-)
-{
-    std::cout << endl;
-    std::cout << "The following is the cost to train another commander: " << endl;
-    for (int x = 0; x < 5; x++) /*calculate and print costs to train another commander (more expensive than the last)*/
-    {
-        trainArmyCommanderCosts[x] = (currentPlayerCommanders + 1) * 10;
-        trainArmyCommanderCosts[x] *= initialResources[x];
-        std::cout << provinceResourcesNames[x] << ": " << trainArmyCommanderCosts[x] << endl;
-    }
-    std::cout << endl;
-}
-
 void printListOfProvinces()
 {
     std::cout << "Here is a list of your provinces: " << endl;
@@ -300,14 +286,11 @@ void printListOfProvinces()
     {
         for (int b = 0; b < continentSize; b++)
         {
-            switch (provincesMap[a][b].getProvinceIdentifier())
+            if (provincesMap[a][b].getBelongsToParticipant() == currentParticipantIndex)
             {
-            case 'P':
-            case 'p':
                 x = translateCoordinate(b, 'x', 'O');
                 y = translateCoordinate(a, 'y', 'O');
                 std::cout << "(" << x << ", " << y << ") " << endl;
-                break;
             }
         }
     }

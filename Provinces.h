@@ -90,7 +90,6 @@ private:
 	int totalMaxResources;
 	int troopsTrainedThisTurn;
 
-	int resourcesPresent[5];
 	int troopsPresent[5];
 	int troopsInjured[5];
 	int totalCP;

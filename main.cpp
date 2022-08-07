@@ -5,8 +5,7 @@
 #include <string.h>
 #include<stdio.h>
 #include <stdlib.h>
-#include <chrono>
-#include <thread>
+
 #include <vector>
 #include <math.h>
 #include <algorithm>
@@ -32,15 +31,19 @@ using namespace std;
 
 char introduction(char startOrResume);
 void resumeGame();
-void startGame();
-void generateNewContinent();
+void startGame(string kingdomName);
+void generateNewContinent(string kingdomName);
 void gamePlay();
 void playerAction(int turn);
 void endScreen();
 void testingSkip();
 void pauseGame();
-
+void createCommanders();
 void viewPlayerStats();
+void createCapitals();
+void initializeResources();
+char randomPlayerActionChar();
+void clearScreen();
 
 
 /*Enemy turn*/
@@ -97,7 +100,7 @@ int main()/*main code*/
         std::getline(cin, kingdomName);
         std::cout << endl;
         std::cout << "The kingdom of " << kingdomName << " has been created! " << endl;
-        startGame();
+        startGame(kingdomName);
         break;
     case '1':
         testingSkip();
@@ -117,7 +120,7 @@ void resumeGame() /*download data from previous game fix this*/
     std::getline(cin, gameCode);
     /*use global variables to figure out code*/
 }
-void startGame()
+void startGame(string kingdomName)
 {
     std::string continentSizeString;
     vector<int> continentSizeAVTwo = { 5, 10, 15 };
@@ -135,79 +138,36 @@ void startGame()
     enemyDifficulty = getInt("What gameplay difficulty do you want (1-3): ", { 1,2,3 }, 1); 
     std::cout << "Gameplay difficulty " << enemyDifficulty << " selected. " << endl << endl;
 
-    generateNewContinent();
+    generateNewContinent(kingdomName);
 }
-void generateNewContinent()
+void generateNewContinent(string kingdomName)
 {
-    initializeValues();
-    char repeatMap = 'N';
-
+    createMap();
+    cout << "Create Participants" << endl;
     for (int v = 0; v <= opponentNumber; v++)
     {
         Participants newParticipant (v);
         participantsList.push_back(newParticipant);
     }
-    /*For each participant, generate random x and y values, see if the province associated with these values (coordinates) is empty. If it's empty, change the province identifier and add it to a partipant's
-    list of provinces. If it's not empty, repeatMap is 'Y' and the process repeats*/
-    for (int participantIndexTemp = 0; participantIndexTemp <= opponentNumber; participantIndexTemp++)
-    {
-        do
-        {
-            repeatMap = 'N';
-            int xCoordinate = getRandomCoordinate();
-            int yCoordinate = getRandomCoordinate();
-            if (provincesMap[xCoordinate][yCoordinate].getBelongsToParticipant() == -1)
-            {
-                //Cout can choose this province to be a capital
-                provincesMap[xCoordinate][yCoordinate].changeBelongsToParticipant(participantIndexTemp);
-                provincesMap[xCoordinate][yCoordinate].provinceIsACapital();
-                participantsList[participantIndexTemp].addProvince(xCoordinate, yCoordinate);
-                participantsList[participantIndexTemp].updateCapitalCoordinates(xCoordinate, yCoordinate);
-            }
-            else
-            {
-                repeatMap = 'Y';
-            }
-        } while (repeatMap == 'Y');
-    }
+    cout << "Create Capitals" << endl;
+    createCapitals();
+    createCommanders();
+    initializeResources();
 
-    //cout << "Create commanders 1" << endl;
-    //create initial commander object for each participant, add it to that participant's list of commanders
-    for (int x = 0; x <= opponentNumber; x++)
+    //Set participant names
+    for (int a = 1; a <= opponentNumber; a++)
     {
-        vector <CommanderProfile> listOfCommandersList;
-        allCommanders.push_back(listOfCommandersList);
+        participantsList[a].setKingdomName(getNewName());
     }
-    //cout << "Create commanders 2" << endl;
-    for (int participantIndexTemp = 0; participantIndexTemp <= opponentNumber; participantIndexTemp++)
-    {
-        CommanderProfile newCommander(1, getNewName(), 1);
-        allCommanders[participantIndexTemp].push_back(newCommander);
-        allCommanders[participantIndexTemp][0].changeCoordinates(participantsList[participantIndexTemp].getCapitalCoordinate('X'), 
-            participantsList[participantIndexTemp].getCapitalCoordinate('Y'));
-    }
+    participantsList[0].setKingdomName(kingdomName);
 
-
-    int xCoordinate = 0;
-    int yCoordinate = 0;
-    //cout << "Initialize resources " << endl;
-    //Add resources to enemy participants/players based on difficulty
-    for (int participantIndexTemp = 1; participantIndexTemp <= opponentNumber; participantIndexTemp++)
-    {
-        //Select a province from a participant, select resource index y and add amount of resources (last parameter)
-//[x][0] is the x coordinate, [x][1] is the y coordinate
-        xCoordinate = participantsList[participantIndexTemp].listOfProvincesX[0];
-        yCoordinate = participantsList[participantIndexTemp].listOfProvincesY[0];
-
-        for (int resourceIndex = 0; resourceIndex < 5; resourceIndex++)
-        {
-            provincesMap[xCoordinate][yCoordinate].addResources(resourceIndex, initialResources[resourceIndex] * enemyDifficulty);
-        }
-    }
 }
 void gamePlay()
 {
-    //cout << "Start gameplay" << endl;
+    cout << "Start gameplay" << endl;
+    string literallyAnything = " ";
+    cout << "Enter anything to proceed to the main menu (screen will clear): ";
+    getline(cin, literallyAnything);
     while (findAmountOfEnemyProvinces () > 0 && participantsList[0].howManyCommanders() > 0 && continueGame == 'Y')
     {
         playerAction(turn);
@@ -240,16 +200,22 @@ void playerAction(int turn)
     char repeatPlayerAction = 'Y';
     do
     {
-        std::cout << "Clearing screen. " << endl;
-        chrono::seconds dura(1);
-        this_thread::sleep_for(dura);
-        system("cls"); /*Windows only*/
-        //system("clear"); /*Non-Windows*/
+        clearScreen();
 
         std::cout << "Turn: " << turn << endl << endl;
         std::cout << "Welcome to the Main menu " << endl;
-        char courseOfAction = listOfActions(4);
+        char courseOfAction = ' ';
+        if (currentParticipantIndex == 0) //If the participant is the player
+        {
+            courseOfAction = listOfActions(4);
+        }
+        else //If the participant is the AI
+        {
+            courseOfAction = randomPlayerActionChar();
+        }
+
         std::cout << endl;
+        clearScreen();
 
         switch (courseOfAction)
         {
@@ -362,5 +328,111 @@ void testingSkip()
     continentSize = 5;
     opponentNumber = 2;
     enemyDifficulty = 2;
-    generateNewContinent();
+    generateNewContinent("Kingdom Name");
 }
+
+void createCommanders()
+{
+    //cout << "Create commanders 1" << endl;
+    //create initial commander object for each participant, add it to that participant's list of commanders
+    for (int x = 0; x <= opponentNumber; x++)
+    {
+        vector <CommanderProfile> listOfCommandersList;
+        allCommanders.push_back(listOfCommandersList);
+    }
+    //cout << "Create commanders 2" << endl;
+    for (int participantIndexTemp = 0; participantIndexTemp <= opponentNumber; participantIndexTemp++)
+    {
+        //cout << "participantIndexTemp: " << participantIndexTemp << endl;
+        CommanderProfile newCommander(1, getNewName(), 1);
+        allCommanders[participantIndexTemp].push_back(newCommander);
+        allCommanders[participantIndexTemp][0].changeCoordinates(participantsList[participantIndexTemp].getCapitalCoordinate('X'),
+            participantsList[participantIndexTemp].getCapitalCoordinate('Y'));
+    }
+}
+
+void createCapitals()
+{
+    char repeatMap = 'N';
+    //cout << "Create capitals" << endl;
+    /*For each participant, generate random x and y values, see if the province associated with these values (coordinates) is empty. If it's empty, change the province identifier and add it to a partipant's
+    list of provinces. If it's not empty, repeatMap is 'Y' and the process repeats*/
+    for (int participantIndexTemp = 0; participantIndexTemp <= opponentNumber; participantIndexTemp++)
+    {
+        do
+        {
+            repeatMap = 'N';
+            int xCoordinate = getRandomCoordinate();
+            int yCoordinate = getRandomCoordinate();
+            //cout << "X: " << xCoordinate << endl;
+            //cout << "Y: " << yCoordinate << endl;
+            //cout << endl;
+            if (provincesMap[xCoordinate][yCoordinate].getBelongsToParticipant() == -1)
+            {
+                //Cout can choose this province to be a capital
+                provincesMap[xCoordinate][yCoordinate].changeBelongsToParticipant(participantIndexTemp);
+                provincesMap[xCoordinate][yCoordinate].provinceIsACapital();
+                participantsList[participantIndexTemp].addProvince(xCoordinate, yCoordinate);
+                participantsList[participantIndexTemp].updateCapitalCoordinates(xCoordinate, yCoordinate);
+
+            }
+            else
+            {
+                repeatMap = 'Y';
+            }
+        } while (repeatMap == 'Y');
+    }
+}
+
+void initializeResources()
+{
+    //showMap();
+    int xCoordinate = 0;
+    int yCoordinate = 0;
+    //cout << "Initialize resources " << endl;
+    //Add resources to enemy participants/players based on difficulty
+    for (int participantIndexTemp = 1; participantIndexTemp <= opponentNumber; participantIndexTemp++)
+    {
+        //cout << "participantIndexTemp: " << participantIndexTemp << endl;
+        //Select a province from a participant, select resource index y and add amount of resources (last parameter)
+//[x][0] is the x coordinate, [x][1] is the y coordinate
+        xCoordinate = participantsList[participantIndexTemp].getCapitalCoordinate('X');
+        yCoordinate = participantsList[participantIndexTemp].getCapitalCoordinate('Y');
+        //cout << "X: " << xCoordinate << endl;
+        //cout << "Y: " << yCoordinate << endl;
+        for (int resourceIndex = 0; resourceIndex < 5; resourceIndex++)
+        {
+            //cout << "resourceIndex: " << resourceIndex << endl;
+            provincesMap[xCoordinate][yCoordinate].addResources(resourceIndex, initialResources[resourceIndex] * enemyDifficulty);
+        }
+    }
+}
+
+char randomPlayerActionChar()
+{
+    int randomNumber = rand() % 6;//Random number 0 to 5 (inclusive)
+    char randomChar = ' ';
+    switch (randomNumber)
+    {
+    case 0:
+        randomChar = 'B';
+        break;
+    case 1:
+        randomChar = 'T';
+        break;
+    case 2:
+        randomChar = 'V';
+        break;
+    case 3:
+        randomChar = 'M';
+        break;
+    case 4:
+        randomChar = 'A';
+        break;
+    case 5:
+        randomChar = 'G';
+        break;
+    }
+    return randomChar;
+}
+

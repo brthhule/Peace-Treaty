@@ -46,6 +46,8 @@ public:
 
 	//public variables
 	vector <int> commandersPresentIndex;
+	int scoutLogTurnLevel[2];//[0] is the turn of the scout report, [1] is the scout log level
+
 
 	//from AllUnits
 	//Accessor Functions
@@ -88,7 +90,6 @@ private:
 	int totalMaxResources;
 	int troopsTrainedThisTurn;
 
-	int resourcesPresent[5];
 	int troopsPresent[5];
 	int troopsInjured[5];
 	int totalCP;
@@ -103,7 +104,6 @@ private:
 [27] = turn number of scout report
 [28] = accuracy of scout report*/
 
-	int scoutLogTurnLevel[2];//[0] is the turn of the scout report, [1] is the scout log level
 };
 
 #endif

@@ -18,7 +18,6 @@ void upgradeBuildingsHelp(); //fix this
 
 void viewAllStatsFunction();
 void casualtyReport(int deadTroops[5], int injuredTroops[5]);
-void printCostsToTrainAnotherCommander(int trainArmyCommanderCosts[5], int currentPlayerCommanders);
 
 char listOfActions(int identifier);
 

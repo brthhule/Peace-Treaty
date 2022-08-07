@@ -20,10 +20,10 @@ int checkInt(vector<int>& acceptableValuesTwo, string input);
 void showMap();
 void updateprovinceResources();
 
-void initializeValues();
+void createMap();
 
-vector<int> getCoordinates(int identifier);
-vector<int> getTrainBuildCoordinates();
+void getCoordinates(int identifier, int& xCoordinate, int& yCoordinate);
+void getTrainBuildCoordinates(int& xCoordinate, int& yCoordinate);
 
 void findTotalPlayerUnits(int totalPlayerUnits[5]);
 
@@ -37,3 +37,5 @@ int getRandomCoordinate();
 
 
 int findAmountOfEnemyProvinces();
+
+void clearScreen ();

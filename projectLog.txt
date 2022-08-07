@@ -219,7 +219,7 @@ July 12: 1 hour
     10:50 pm - 11:50 pm (1 hour): Worked on playerScout functions, encountered a lot of erros (the segmentation fault error keeps popping up (maybe use visual studio instead of repl?))
 
 July 13: 50 min
-	8:30 pm - 9:20 pm (50 min): Tried fixing errors and stuff, tried moving some functions to otherFunctions.cpp (like initializeValues),
+	8:30 pm - 9:20 pm (50 min): Tried fixing errors and stuff, tried moving some functions to otherFunctions.cpp (like createMap),
 ran into some errors (something with the strings in the .h files). For some reason, got an abort error when running program-- after it says "gameplay _
 selected", the program crashes...
 
@@ -346,8 +346,30 @@ in main). Figured out create commanders-- error was because added CommanderProfi
 CommanderProfile vectors to allCommanders yet though.  Something was wrong with BuildMA in which trying to enter the x coordinate would result in
 a vector subscript out of range error, fixed it by making getCoordinates work by taking parameters passed by reference rather than returning a vector.
 Modified listOfActions so that when picking something to do, help would also be included (stringToSend += 'H';). Made the text color in
-printBuildingStats and printResources brighter by using 1m. Getting LNK1168 error (cannot open... exe for writing)
+printBuildingStats and printResources brighter by using 1m. Getting LNK1168 error (cannot open... exe for writing). Works some times, not other times...
+no idea why
 
-Last PC update: August 4 @ 10:35 pm
-Last Repl update:
+August 5:
+	11:30 am - 11:35 am (5 min): Tried to do some debugging, just added comments to see where things are. I think the program is failing because of
+something in initialize resources.
+	10:30 pm - 11:00 pm (30 min): Trying to debug. Figured out the issue: in initializeResources, used getCapitalCoordinate, but the parameters were formmated
+as (int whichCoordinate, int value). To keep track of capital coordinates, array int capitalCoordinates [2] was used in the Participants class.
+Changed this so that instead of an array, used capitalX and capitalY. Also changed getCapitalCoordinate so parameters was (char whichCoordinate).
+	11:10 pm - 10:20 pm (10 min): deleted the 1m thing... didn't make text brighter, just made it white. Having trouble with getting coordinates for BuildMA. When I enter
+the coordinates graphically (normally), doens't work. When I enter coordinates as array/vector/machine sensible coordinates, it works ????
+Getting LNK1168 error...
 
+August 6:
+    10:30 pm - 11:10 pm (35 min): Tried to make names for the AI. Developed getKingdomName and setKingdomName in Participants. I tried setting the participant
+names when the participants were created, but createNewName needs there to be more than 0 commanders in the list of commnaders or else the list is null (can't 
+return list of commanders sie if it's null). Had to move the name generation stuff to the end of generateNewContinent, works now. Have developed framework for 
+working with AI and probability of actions and stuff (Read below)
+
+For the AI, have an array like this: int AIActionProbability = [how many actions there are] = {1, 2, 3, 4, 5}
+
+The difference between each element's value affects the probability. For example, since the difference between each element is 1, they will all have an equally likely chance of happening. However, if the array was like this {1, 2, 8, 9, 10}, the differences are the same across the board except for between indices 1 and 2. This means that all other values have the same chance of occurring, but the action that happens between said indices has a greater chance of happening. Applying this, it would be something like: if (randomNumberGenerated >= AIActionProbability[0] && <= AIActionProbability[1]), do some particiular action.
+
+Last PC update: August 5 @ 11:37 am
+Last Repl update: August 6 @ 11:12 pm
+
+Last Repl upload: August 5 ~ 11:37 am

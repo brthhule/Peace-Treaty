@@ -18,6 +18,8 @@ public:
 	void upgradeCommanders();
 	void viewArmyOverview();
 	void deployCommanderMF();
+	void printCostsToTrainAnotherCommander(int trainArmyCommanderCosts[5]);
+
 
 	void deployCommanderDisplayInformation(int commandersInCapital);
 private:
