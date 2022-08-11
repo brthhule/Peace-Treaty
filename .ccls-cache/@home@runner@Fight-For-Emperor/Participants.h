@@ -55,5 +55,11 @@ public:
 private:
     int participantIndex;
     string kingdomName;
+
+    //Figure out sizes later
+    int AIMainAction [5];
+    int AIBuildMA [2];
+    int AITroopMA [3];
+
 };
 #endif

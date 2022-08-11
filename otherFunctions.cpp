@@ -14,7 +14,6 @@
 #include <chrono>
 #include <thread>
 
-//#include <windows.h> //WO
 #include <stdlib.h>
 #include "AttackMA.h"
 #include "Participants.h"
@@ -30,41 +29,7 @@ extern vector <Participants> participantsList;
 extern int currentParticipantIndex;
 
 
-int translateCoordinate(int coordinate, char indicator, char whichWay)
-{
-    /*replacement = xCoordinate;
-    xCoordinate = translateCoordinate(yCoordinate, 'y', 'I');
-    yCoordinate = translateCoordinate (replacement, 'x', 'I');*/
-    int translation = 0;
-    switch (whichWay)
-    {
-    case 'I':
-        switch (indicator)
-        {
-        case 'x':
-            translation = coordinate - 1;
-            break;
 
-        case 'y':
-            translation = continentSize - coordinate;
-            break;
-        }
-        break;
-    case 'O':
-        switch (indicator)
-        {
-        case 'x':
-            translation = coordinate + 1;
-            break;
-        case 'y':
-            translation = continentSize - coordinate;
-            translation = abs(translation);
-            break;
-        }
-        break;
-    }
-    return translation;
-}
 int calculatePlayerValues(int decision)
 {
     switch (decision)
@@ -114,50 +79,8 @@ int calculatePlayerValues(int decision)
     return -1;
 }
 
-void getCoordinates(int identifier, int& xCoordinate, int& yCoordinate)/*Might have have to fix this (check if the coordinate stuff is right)*/
-{
-    vector<int> actualCoordinatesAVTwo = {-1};
-    for (int x = 1; x <= continentSize; x++)
-    {
-        actualCoordinatesAVTwo.push_back(x);
-    }
 
-    string phrase;
-    switch (identifier)
-    {
-    case 1:
-        phrase = "of the province you want to select";
-        break;
-    case 2:
-        phrase = "of the province you want to move to";
-        break;
-    case 3:
-        phrase = "of the army you want to use to attack the target with";
-    }
 
-    std::cout << "Enter the x coordinate " << phrase << " (Enter '-1' to go back to previous menu) : ";
-    xCoordinate = getInt("Replacement", actualCoordinatesAVTwo, 2);
-    if (xCoordinate != -1)
-    {
-        std::cout << "Enter the y coordinate " << phrase << " (Enter '-1' to go back to previous menu) : ";
-        yCoordinate = getInt("Replacement", actualCoordinatesAVTwo, 2);
-        std::cout << endl;
-
-        /*if (yCoordinate != 1)
-        {
-            int replacement = xCoordinate;
-            xCoordinate = translateCoordinate(yCoordinate, 'x', 'I');
-            yCoordinate = translateCoordinate(replacement, 'y', 'I');
-        }*/
-    }
-}//Can make this an array
-void getTrainBuildCoordinates(int& xCoordinate, int& yCoordinate)
-{
-    showMap();
-    printListOfProvinces();
-
-    return getCoordinates(1, xCoordinate, yCoordinate);
-}
 
 void showMap()
 {
@@ -281,7 +204,9 @@ int getInt(string textToDisplay, vector <int> acceptableValues, int caseInstance
     {
         std::cout << textToDisplay;
     }
+    cout << "\033[31m";
     std::getline(cin, userInput);
+    cout << "\033[0m";
     return checkInt(acceptableValues, userInput);
 }
 int checkInt(vector<int>& acceptableValuesTwo, string input)
@@ -310,7 +235,9 @@ int checkInt(vector<int>& acceptableValuesTwo, string input)
         std::cout << endl;
         std::cout << "Invalid character entered. Please try again." << endl;
         std::cout << "Please enter a valid number: ";
+        cout << "\033[31m";
         std::getline(cin, input);
+        cout << "\033[0m";
 
     } while (repeat == 'Y');
     return -1;
@@ -322,7 +249,9 @@ char getChar(string textToDisplay, string acceptableValues, int caseInstance)
     {
         std::cout << textToDisplay;
     }
+    cout << "\033[31m";
     std::getline(cin, userInput);
+    cout << "\033[0m";
     return checkChar(acceptableValues, userInput);
 }
 char checkChar(string stringAV, string input)
@@ -357,7 +286,9 @@ char checkChar(string stringAV, string input)
         std::cout << endl;
         std::cout << "Invalid character entered. Please try again. " << endl;
         std::cout << "Please enter a valid character: ";
+        cout << "\033[31m";
         std::getline(cin, input);
+        cout << "\033[0m";
 
     } while (goodToGo == 'B');
     return '1'; /*added this bc the debugger said that not all control paths return a value*/
@@ -393,7 +324,7 @@ void findTotalPlayerUnits(int totalPlayerUnits[5])
 
 string getNewName()
 {
-    cout << "getNewName" << endl;
+    //cout << "getNewName" << endl;
     Participants* newParticipant = &participantsList[currentParticipantIndex];
     string newName = " ";  
     char repeatGetName = 'N';
@@ -403,7 +334,7 @@ string getNewName()
     {
         repeatGetName = 'N';
         newName = createRandomName();
-        cout << "Check provincs" << endl;
+        //cout << "Check provinces" << endl;
         for (int x = 0; x < newParticipant->howManyProvinces(); x++) //If any provinces of the participant have the name
         {
             Provinces* newProvince = &provincesMap[newParticipant->listOfProvincesX[x]][newParticipant->listOfProvincesY[x]];
@@ -412,7 +343,7 @@ string getNewName()
                 repeatGetName = 'Y';
             }
         }
-        cout << "Check commanders" << endl;
+        //cout << "Check commanders" << endl;
         for (int x = 0; x < newParticipant->howManyCommanders(); x++)//If any commanders have the name
         {
             CommanderProfile* newCommander = &allCommanders[currentParticipantIndex][x];
@@ -421,8 +352,8 @@ string getNewName()
                 repeatGetName = 'Y';
             }
         }
-        cout << "Compare to participant kingdom name" << endl;
-        cout << "Kingdom name: " << newParticipant -> getKingdomName () << endl;
+        //cout << "Compare to participant kingdom name" << endl;
+        //cout << "Kingdom name: " << newParticipant -> getKingdomName () << endl;
         if (newParticipant -> getKingdomName() == newName)
         {
             repeatGetName = 'Y';
@@ -433,7 +364,7 @@ string getNewName()
 }
 string createRandomName()
 {
-    cout << "Create random name" << endl;
+    //cout << "Create random name" << endl;
     string name = "";
     int randomNumber = 0;
     char characterThingy = ' ';
@@ -569,10 +500,6 @@ void createMap()
     }
 }
 
-int getRandomCoordinate()
-{
-    return rand() % continentSize;
-}
 
 int findAmountOfEnemyProvinces()
 {
@@ -586,7 +513,9 @@ int findAmountOfEnemyProvinces()
 
 void clearScreen()
 {
+    cout << "\033[32m";
     std::cout << "Clearing screen. " << endl;
+    cout << "\033[0m";
     chrono::seconds dura(1);
     this_thread::sleep_for(dura);
     //system("cls"); /*Windows only*/

@@ -8,6 +8,8 @@
 
 #include "CommanderProfile.h"
 #include "Participants.h"
+#include "coordinateFunctions.h"
+
 
 using namespace std;
 extern int maxAmountOfCommanders;

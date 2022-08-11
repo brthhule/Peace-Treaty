@@ -2,6 +2,9 @@
 #include "AllUnits.h"
 #include "AttackMA.h"
 
+#include "coordinateFunctions.h"
+
+
 extern vector <vector <Provinces>> provincesMap;
 extern vector <Participants> participantsList;
 extern string provinceResourcesNames[5];

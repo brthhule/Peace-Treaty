@@ -1,11 +1,12 @@
-#include "textFunctions.h"
-#include "otherFunctions.h"
 #include <iostream>
 #include <string.h>
 #include <string>
-//#include <windows.h> //WO
 #include <stdlib.h>
 #include "Provinces.h"
+#include "textFunctions.h"
+#include "otherFunctions.h"
+#include "coordinateFunctions.h"
+
 
 using namespace std;
 extern vector <vector <Provinces>> provincesMap;
@@ -134,13 +135,13 @@ void viewAllStatsFunction()
     std::cout << "\033[;0m";//NW
 
     cout << "Enter any character to go back to the Main menu: ";
+    cout << "\033[31m";
     getline(cin, literallyAnyRandomCharacter);
+    cout << "\033[0m";
 }
 
 char listOfActions(int identifier)
 {
-    string userInput = " ";
-    char userInputChar = ' ';
     string stringToSend = " ";
     /*cout << "- ()" << endl;*/
     /*HANDLE console_color;
@@ -247,12 +248,8 @@ char listOfActions(int identifier)
 
     cout << "\033[;0m"; //NW
     //SetConsoleTextAttribute(console_color, 15); //WO
-    cout << "Enter the letter of the action you want to complete (enter 'H' to see help to know what to do): ";
-    std::getline(cin, userInput);
     stringToSend += 'H';
-    userInputChar = checkChar(stringToSend, userInput);
-    return userInputChar;
-
+    return getChar("Enter the letter of the action you want to complete (enter 'H' to see help to know what to do): ", stringToSend, 1);
 }
 
 void upgradeBuildingsHelp()

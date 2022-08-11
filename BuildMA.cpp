@@ -6,6 +6,11 @@
 #include "otherFunctions.h"
 #include "Provinces.h"
 #include "textFunctions.h"
+#include "Participants.h"
+#include "coordinateFunctions.h"
+
+extern vector <Participants> participantsList;
+extern int continentSize;
 
 using namespace std;
 
@@ -38,6 +43,16 @@ void BuildMA::findProvinceCoordinates()
         std::cout << "Welcome to the Player Build menu" << endl << endl;
         getTrainBuildCoordinates(provinceXCoordinate, provinceYCoordinate);
 
+        //cout << "X: " << provinceXCoordinate << endl;
+        //cout << "Y: " << provinceYCoordinate << endl;
+    
+        if (provinceXCoordinate == continentSize && provinceYCoordinate == 1)
+        {
+            //weird exception in translating units-- everything else units, except for the bottom left province
+            //cout << "Continent size: " << continentSize << endl;
+            provinceXCoordinate = continentSize - 1;
+            provinceYCoordinate = continentSize - 1;
+        }
 
         if (provinceXCoordinate == -1 || provinceYCoordinate == -1)
         {
@@ -52,7 +67,11 @@ void BuildMA::findProvinceCoordinates()
             }
             else
             {
+                string anyInput = " ";
                 std::cout << "Invalid province elected. Please try again. " << endl;
+                cout << "Enter anything to proceed back to the Player Build menu (Screen will clear) ";
+                std::getline (cin, anyInput);
+                clearScreen();
             }
             std::cout << endl;
         }
@@ -61,6 +80,9 @@ void BuildMA::findProvinceCoordinates()
 void BuildMA::playerBuildFunction()
 {
     std::cout << "---------- Start printing province information ----------" << endl;
+    cout << "\033[34m";
+    cout << "Province of kingdom " << participantsList[provincesMap[provinceXCoordinate][provinceYCoordinate].getBelongsToParticipant()].getKingdomName() << endl << endl;
+    cout << "\033[0m";
     provincesMap[provinceXCoordinate][provinceYCoordinate].printResources();
     provincesMap[provinceXCoordinate][provinceYCoordinate].printBuildingStats();
     std::cout << "---------- End printing province information ----------" << endl << endl;
@@ -82,6 +104,7 @@ void BuildMA::playerBuildFunction()
         std::cout << endl;
     } while (repeatPlayerBuildFunction == 'Y');
     std::cout << "Returning to previous menu... " << endl;
+    clearScreen();
 }
 void BuildMA::upgradeBuildings()
 {
@@ -107,14 +130,19 @@ void BuildMA::upgradeBuildings()
                     x = 6;
                 }
             }
-            std::cout << buildingNames[buildingNumber] << " selected " << endl;
+            cout << endl << "\033[34m";
+            std::cout << buildingNames[buildingNumber] << " selected " << endl << endl;
             std::cout << "The following is the cost of the upgrade: " << endl; //here
             for (int x = 0; x < 5; x++)
             {
                 requiredResources[x] = (int)requiredResourcesBuildings[buildingNumber][x] * newProvince->getBuildingLevel(x);
                 std::cout << provinceResourcesNames[x] << ": " << requiredResources[x] << endl;
             }
+
+            cout << "The following are how many resources are in this province: " << endl;
+            newProvince->printResources();
             std::cout << endl;
+            std::cout << "\033[34m" << endl;
             char upgradeProceed = getChar("Proceed with upgrade? (Y/N) ", "YN", 1);
 
             if (upgradeProceed == 'Y')

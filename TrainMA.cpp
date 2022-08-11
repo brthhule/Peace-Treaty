@@ -2,6 +2,7 @@
 #include "textFunctions.h"
 #include "AllUnits.h"
 #include "Provinces.h"
+#include "coordinateFunctions.h"
 
 using namespace std;
 

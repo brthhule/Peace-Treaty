@@ -2,6 +2,9 @@
 #include "Provinces.h"
 #include "Participants.h"
 
+#include "coordinateFunctions.h"
+
+
 extern vector <vector <Provinces>> provincesMap;
 extern vector <Participants> participantsList;
 extern vector <vector <CommanderProfile>> allCommanders;

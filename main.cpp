@@ -15,6 +15,7 @@
 
 #include "AllUnits.h"
 #include "CommanderProfile.h"
+#include "coordinateFunctions.h"
 #include "otherFunctions.h"
 #include "TrainMA.h"
 #include "Provinces.h"
@@ -97,9 +98,11 @@ int main()/*main code*/
         break;
     case 'S':
         std::cout << "What is your kingdom name? ";
+        cout << "\033[31m";
         std::getline(cin, kingdomName);
+        cout << "\033[0m";
         std::cout << endl;
-        std::cout << "The kingdom of " << kingdomName << " has been created! " << endl;
+        std::cout << "The kingdom of \033[31m" << kingdomName << "\033[0m has been created! " << endl;
         startGame(kingdomName);
         break;
     case '1':
@@ -117,7 +120,9 @@ void resumeGame() /*download data from previous game fix this*/
 {
     string gameCode;
     std::cout << "Please enter the game code of your previous game: ";
+    cout << "\033[31m";
     std::getline(cin, gameCode);
+    cout << "\033[0m";
     /*use global variables to figure out code*/
 }
 void startGame(string kingdomName)
@@ -143,13 +148,13 @@ void startGame(string kingdomName)
 void generateNewContinent(string kingdomName)
 {
     createMap();
-    cout << "Create Participants" << endl;
+    //cout << "Create Participants" << endl;
     for (int v = 0; v <= opponentNumber; v++)
     {
         Participants newParticipant (v);
         participantsList.push_back(newParticipant);
     }
-    cout << "Create Capitals" << endl;
+    //cout << "Create Capitals" << endl;
     createCapitals();
     createCommanders();
     initializeResources();
@@ -164,10 +169,12 @@ void generateNewContinent(string kingdomName)
 }
 void gamePlay()
 {
-    cout << "Start gameplay" << endl;
+    //cout << "Start gameplay" << endl;
     string literallyAnything = " ";
     cout << "Enter anything to proceed to the main menu (screen will clear): ";
+    cout << "\033[31m";
     getline(cin, literallyAnything);
+    cout << "\033[0m";
     while (findAmountOfEnemyProvinces () > 0 && participantsList[0].howManyCommanders() > 0 && continueGame == 'Y')
     {
         playerAction(turn);
