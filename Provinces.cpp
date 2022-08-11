@@ -44,6 +44,7 @@ Provinces::Provinces()
 	belongsToParticipant = -1;
 	scoutLogTurnLevel[0] = -1;
 	scoutLogTurnLevel[1] = -1;
+    troopsTrainedThisTurn = 0;
 }
 Provinces::Provinces(int sendXCoordinate, int sendYCoordinate, int index)
 {
@@ -79,6 +80,7 @@ Provinces::Provinces(int sendXCoordinate, int sendYCoordinate, int index)
 	belongsToParticipant = index;
 	scoutLogTurnLevel[0] = -1;
 	scoutLogTurnLevel[1] = -1;
+    troopsTrainedThisTurn = 0;
 }
 
 
@@ -231,4 +233,9 @@ void Provinces::removeCommanderProvince(int commanderIndex)
 int Provinces::returnCommanderIndex(int index)
 {
 	return commandersPresentIndex[index];
+}
+
+void Provinces::addTroopsTrainedThisTurn(int amount)
+{
+    troopsTrainedThisTurn += amount;
 }

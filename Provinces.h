@@ -4,7 +4,6 @@
 #include <vector>
 #include <iostream>
 
-#include "Provinces.h"
 #include "Participants.h"
 #include "CommanderProfile.h"
 
@@ -43,6 +42,7 @@ public:
 	void resetTroopsTrainedThisTurn();
 	void increaseBuildingLevel(int index, int amount);
 	void completeProvinceScoutReport(int accuracy);
+    void addTroopsTrainedThisTurn(int amount);
 
 	//public variables
 	vector <int> commandersPresentIndex;

@@ -382,6 +382,7 @@ if (provinceXCoordinate == continentSize && provinceYCoordinate == 1)
     provinceXCoordinate = continentSize - 1;
     provinceYCoordinate = continentSize - 1;
 }
+    11:10 am - 11:50 am (40 min): Contined working on getTrainBuildCoordinates-- adjusted the input branch of the translateCoordinate tree to be the abs of coordinate - continentSize rather than continentSize - coordinate. Did some aesthetic stuff like adding information and adding spaces
 
 
 

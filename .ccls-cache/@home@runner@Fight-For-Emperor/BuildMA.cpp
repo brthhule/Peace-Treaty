@@ -42,9 +42,6 @@ void BuildMA::findProvinceCoordinates()
 
         std::cout << "Welcome to the Player Build menu" << endl << endl;
         getTrainBuildCoordinates(provinceXCoordinate, provinceYCoordinate);
-
-        //cout << "X: " << provinceXCoordinate << endl;
-        //cout << "Y: " << provinceYCoordinate << endl;
     
         if (provinceXCoordinate == continentSize && provinceYCoordinate == 1)
         {
@@ -79,9 +76,11 @@ void BuildMA::findProvinceCoordinates()
 }
 void BuildMA::playerBuildFunction()
 {
+    clearScreen();
     std::cout << "---------- Start printing province information ----------" << endl;
     cout << "\033[34m";
-    cout << "Province of kingdom " << participantsList[provincesMap[provinceXCoordinate][provinceYCoordinate].getBelongsToParticipant()].getKingdomName() << endl << endl;
+    cout << "Province of kingdom " << participantsList[provincesMap[provinceXCoordinate][provinceYCoordinate].getBelongsToParticipant()].getKingdomName() << endl;
+    cout << "Coordinates: (" << translateCoordinate(provinceYCoordinate, 'x', 'O') << ", " << translateCoordinate(provinceXCoordinate, 'y', 'O') << ") " << endl << endl;
     cout << "\033[0m";
     provincesMap[provinceXCoordinate][provinceYCoordinate].printResources();
     provincesMap[provinceXCoordinate][provinceYCoordinate].printBuildingStats();
@@ -130,6 +129,7 @@ void BuildMA::upgradeBuildings()
                     x = 6;
                 }
             }
+            cout << "---------- Start printing information----------" << endl;
             cout << endl << "\033[34m";
             std::cout << buildingNames[buildingNumber] << " selected " << endl << endl;
             std::cout << "The following is the cost of the upgrade: " << endl; //here
@@ -138,11 +138,10 @@ void BuildMA::upgradeBuildings()
                 requiredResources[x] = (int)requiredResourcesBuildings[buildingNumber][x] * newProvince->getBuildingLevel(x);
                 std::cout << provinceResourcesNames[x] << ": " << requiredResources[x] << endl;
             }
-
+            cout << endl;
             cout << "The following are how many resources are in this province: " << endl;
             newProvince->printResources();
-            std::cout << endl;
-            std::cout << "\033[34m" << endl;
+            cout << "----------End printing informatio----------" << endl;
             char upgradeProceed = getChar("Proceed with upgrade? (Y/N) ", "YN", 1);
 
             if (upgradeProceed == 'Y')

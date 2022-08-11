@@ -48,7 +48,7 @@ int translateCoordinate(int coordinate, char indicator, char whichWay)
             break;
 
         case 'y':
-            translation = continentSize - coordinate;
+            translation = coordinate - continentSize;
             translation = abs(translation);
             break;
         }
@@ -92,17 +92,22 @@ void getCoordinates(int identifier, int& xCoordinate, int& yCoordinate)/*Might h
 
     std::cout << "Enter the x coordinate " << phrase << " (Enter '-1' to go back to previous menu) : ";
     xCoordinate = getInt("Replacement", actualCoordinatesAVTwo, 2);
+    cout << "X: " << xCoordinate << endl;
     if (xCoordinate != -1)
     {
         std::cout << "Enter the y coordinate " << phrase << " (Enter '-1' to go back to previous menu) : ";
         yCoordinate = getInt("Replacement", actualCoordinatesAVTwo, 2);
         std::cout << endl;
-
+        cout << "Y: " << yCoordinate << endl;
+ 
         if (yCoordinate != 1)
         {
             int replacement = xCoordinate;
             xCoordinate = translateCoordinate(yCoordinate, 'y', 'I');
             yCoordinate = translateCoordinate(replacement, 'x', 'I');
+
+            cout << "X: " << xCoordinate << endl;
+            cout << "Y: " << yCoordinate << endl;
         }
     }
 }//Can make this an array
@@ -113,8 +118,6 @@ void getTrainBuildCoordinates(int& xCoordinate, int& yCoordinate)
     printListOfProvinces();
 
     return getCoordinates(1, xCoordinate, yCoordinate);
-
-    
 }
 
 int getRandomCoordinate()
