@@ -84,7 +84,7 @@ int calculatePlayerValues(int decision)
 
 void showMap()
 {
-
+    cout << "Map: " <
     int thingy = continentSize;
     for (int x = 0; x < continentSize; x++)
     {

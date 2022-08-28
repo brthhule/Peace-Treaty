@@ -143,7 +143,7 @@ void TrainMA::TrainMAFunction()
                 repeatOuterDoLoop = 'Y';
                 cout << "Amount of troops selected exceeds the training capacity of the barracks... please try again" << endl;
             }
-        } while (outerDoLoop == 'Y')
+        } while (repeatOuterDoLoop == 'Y');
     }
 
 }

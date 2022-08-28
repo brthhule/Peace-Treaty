@@ -383,10 +383,12 @@ if (provinceXCoordinate == continentSize && provinceYCoordinate == 1)
     provinceYCoordinate = continentSize - 1;
 }
     11:10 am - 11:50 am (40 min): Contined working on getTrainBuildCoordinates-- adjusted the input branch of the translateCoordinate tree to be the abs of coordinate - continentSize rather than continentSize - coordinate. Did some aesthetic stuff like adding information and adding spaces
+    5:55 pm - 6:05 pm (10 min): Updated formating for printResources and printBuildingStats, stil getting erros when coordinates being entered are on the first y column (y = 1) on the map shown. I think it's being read as -1 or something (the y coordinate), because the x coordinate if statement (to check if it isn't -1) goes through, but the code printing out x and y after entering the y coordinate isn't being printed
 
-
+August 27: 15 min
+    11:15 pm - 11:30 pm (15 min): Started to modify the screen so that it always shows the map instead of having an option to see the map
 
 Last PC update: August 5 @ 11:37 am
-Last Repl update: August 7 @ 9:00 pm
+Last Repl update: August 27 @ 11:30 pm
 
 Last Repl upload: August 5 ~ 11:37 am

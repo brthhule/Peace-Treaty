@@ -99,11 +99,11 @@ int AllUnits::returnIndexInList()
 
 void AllUnits::printResources()
 {
-	std::cout << "\033[;34m";
-	std::cout << "Resources present: " << endl;
+	std::cout << "Resources present in this province: " << endl;
+    std::cout << "\033[;34m";
 	for (int x = 0; x < 5; x++)
 	{
-		cout << provinceResourcesNames[x] << ": " << resourcesPresent[x] << endl;
+		cout << "- " << provinceResourcesNames[x] << ": " << resourcesPresent[x] << endl;
 	}
 	std::cout << endl;
 	cout << "\033[;0m";

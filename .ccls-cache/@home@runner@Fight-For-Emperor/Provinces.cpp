@@ -188,15 +188,16 @@ void Provinces::increaseBuildingLevel(int index, int amount)
 }
 void Provinces::printBuildingStats()
 {
-	cout << "\033[;34m";
 	for (int x = 0; x < 6; x++)
 	{
 		buildingsProduction[x] = buildingLevels[x] * provinceBuildingsProductionNumbers[x];
 	}
-	std::cout << "Buildings in this province: " << endl << endl;
+    cout << "\033[;34m";
+
+	std::cout << "Building stats of this province: " << endl;
 	for (int x = 0; x < 5; x++)
 	{
-		std::cout << buildingNames[x] << " (" << buildingNames[x].substr(0, 1) << ") " << endl;
+		std::cout << "- " << buildingNames[x] << " (" << buildingNames[x].substr(0, 1) << ") " << endl;
 		std::cout << "    Level: " << buildingLevels[x] << endl;
 		std::cout << "    " << provinceResourcesNames[x] << " production rate : " << buildingsProduction[x] << endl;
 	}

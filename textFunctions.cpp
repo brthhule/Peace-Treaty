@@ -148,7 +148,7 @@ char listOfActions(int identifier)
     console_color = GetStdHandle(STD_OUTPUT_HANDLE); //WO
     SetConsoleTextAttribute(console_color, 12);*/
     cout << "\033[;31m";
-    cout << "---------- Here is a list of actions you can do: ----------" << endl;
+    cout << "---------- List of Operations: ----------" << endl;
     switch (identifier)
     {
     case 1: /*selectEnemyAction*/
@@ -175,14 +175,14 @@ char listOfActions(int identifier)
     }
     case 4: /*playerAction*/
     {
-        std::cout << "- Build Infrastructure (B) " << endl;
-        std::cout << "- Train Troops (T) " << endl;
-        std::cout << "- View Your Stats (V) " << endl;
-        std::cout << "- View the Map (M) " << endl;
-        std::cout << "- View Army Deployment (A) " << endl;
-        std::cout << "- Go to Next Turn (G)" << endl;
-        std::cout << "- Pause game (P) " << endl;
-        stringToSend = "BTVMAGPH";
+        std::cout << "- Buildings (B) " << endl;
+        std::cout << "- Training (T) " << endl;
+        std::cout << "- Stats (S) " << endl;
+        std::cout << "- Select Unit (U) " << endl;
+        std::cout << "- Deployment (D) " << endl;
+        std::cout << "- Next Turn (N)" << endl;
+        std::cout << "- Pause (P) " << endl;
+        stringToSend = "BTSUDNP";
         break;
     }
     case 5: /*armyDeployment*/
@@ -244,7 +244,7 @@ char listOfActions(int identifier)
         break;
     }
     }
-    std::cout << "-------------------- End of list --------------------------" << endl << endl;
+    std::cout << "-------------- End List: ----------------" << endl << endl;
 
     cout << "\033[;0m"; //NW
     //SetConsoleTextAttribute(console_color, 15); //WO

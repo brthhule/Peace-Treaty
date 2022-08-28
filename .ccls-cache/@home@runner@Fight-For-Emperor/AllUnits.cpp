@@ -17,6 +17,7 @@ extern int provinceBuildingsProductionNumbers[6];
 extern string provinceResourcesNames[5];
 extern string buildingNames[6];
 extern string troopNames[5];
+extern int currentParticipantIndex;//Fix this at some point-- make sure right index is sent to constructor
 
 //Constructor
 AllUnits::AllUnits()
@@ -30,7 +31,9 @@ AllUnits::AllUnits()
 	totalCP = 0;
 	totalTroops = 0;
 	foodConsumption = 0;
-    canSelectThisUnit = 'N';
+	canSelectThisUnit = 'N';
+	belongsToParticipant = currentParticipantIndex;
+	indexInList = 0;//Fix this
 }
 AllUnits::AllUnits(char unitIdentifier)
 {
@@ -43,7 +46,9 @@ AllUnits::AllUnits(char unitIdentifier)
 	totalCP = 0;
 	totalTroops = 0;
 	foodConsumption = 0;
-    canSelectThisUnit = 'N';
+	canSelectThisUnit = 'N';
+	indexInList = 0;//Fix this
+	belongsToParticipant = currentParticipantIndex;
 
 }
 
@@ -61,17 +66,6 @@ int AllUnits::getCommanderArmyCP()
 int AllUnits::getTroopsPresent(int troopTypeIndex)
 {
 	return troopsPresent[troopTypeIndex];
-}
-void AllUnits::printResources()
-{
-	std::cout << "\033[;34m";
-	std::cout << "Resources present: " << endl;
-	for (int x = 0; x < 5; x++)
-	{
-		cout << provinceResourcesNames[x] << ": " << resourcesPresent[x] << endl;
-	}
-	std::cout << endl;
-	cout << "\033[;0m";
 }
 int AllUnits::getTotalCP()
 {
@@ -94,16 +88,35 @@ int AllUnits::getCoordinate(char identifier)
 		return '-1';//in case something bad happen
 	}
 }
-int AllUnits::getBelongsToParticipant ()
+int AllUnits::getBelongsToParticipant()
 {
-    return belongsToParticipant;
+	return belongsToParticipant;
+}
+int AllUnits::returnIndexInList()
+{
+	return indexInList;
 }
 
-int AllUnits::returnIndexInList ()
+void AllUnits::printResources()
 {
-    return indexInList;
+	std::cout << "Resources present in this province: " << endl;
+    std::cout << "\033[;34m";
+	for (int x = 0; x < 5; x++)
+	{
+		cout << "- " << provinceResourcesNames[x] << ": " << resourcesPresent[x] << endl;
+	}
+	std::cout << endl;
+	cout << "\033[;0m";
 }
 
+string AllUnits::getUnitName()
+{
+	return unitName;
+}
+void AllUnits::changeUnitName(string name)
+{
+	unitName = name;
+}
 
 //Mutator Functions
 void AllUnits::addTroops(int troopsAdd[5])
@@ -121,6 +134,7 @@ void AllUnits::removeTroops(int troopIndex, int troopAmount)
 {
 	troopsPresent[troopIndex] -= troopAmount;
 }
+
 void AllUnits::addResources(int resourceIndex, int resourceAmount)
 {
 
@@ -129,27 +143,27 @@ void AllUnits::subtractResources(int index, int amount)
 {
 	resourcesPresent[index] -= amount;
 }
+
 void AllUnits::addInjuredTroops(int troopIndex, int troopAmount)
 {
 	troopsInjured[troopIndex] += troopAmount;
 }
 
-void AllUnits::resetCanSelectThisUnit()
+void AllUnits::changeBelongsToParticipant(int index)
 {
-    canSelectThisUnit = 'N';
+	belongsToParticipant = index;
 }
-
-void AllUnits::changeBelongsToParticipant (int index)
+void AllUnits::changeIndexInList(int index)
 {
-    belongsToParticipant = index;
+	indexInList = index;
 }
-
-void AllUnits::changeIndexInList (int index)
-{
-    indexInList = index;
-}
-
 void AllUnits::changeCanSelectThisUnit()
 {
-    canSelectThisUnit = 'Y';
+	canSelectThisUnit = 'Y';
+}
+
+void AllUnits::changeCoordinates(int xCoordinate, int yCoordinate)
+{
+	unitXCoordinate = xCoordinate;
+	unitYCoordinate = yCoordinate;
 }

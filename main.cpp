@@ -211,6 +211,7 @@ void playerAction(int turn)
 
         std::cout << "Turn: " << turn << endl << endl;
         std::cout << "Welcome to the Main menu " << endl;
+        showMap();
         char courseOfAction = ' ';
         if (currentParticipantIndex == 0) //If the participant is the player
         {
@@ -223,7 +224,13 @@ void playerAction(int turn)
 
         std::cout << endl;
         clearScreen();
-
+        /*std::cout << "- Buildings (B) " << endl;
+        std::cout << "- Training (T) " << endl;
+        std::cout << "- Stats (S) " << endl;
+        std::cout << "- Select Unit (U) " << endl;
+        std::cout << "- Deployment (D) " << endl;
+        std::cout << "- Next Turn (N)" << endl;
+        std::cout << "- Pause (P) " << endl;*/
         switch (courseOfAction)
         {
         case 'B':
@@ -239,22 +246,22 @@ void playerAction(int turn)
             newTrainMA.TrainMAFunction();
             break;
         }
-        case 'V':
+        case 'S':
             viewPlayerStats();
             break;
-        case 'M':
+        case 'U':
         {
             MapMA newMap;
             newMap.viewPlayerMap();
             break;
         }
-        case 'A':
+        case 'D':
         {
             ArmyDeploymentMA newArmyDeploymentMA;
             newArmyDeploymentMA.armyDeploymentMF();
             break;
         }
-        case 'G':
+        case 'N':
             repeatPlayerAction = 'N';
             break;
         case 'H':

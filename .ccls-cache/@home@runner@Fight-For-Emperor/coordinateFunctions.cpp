@@ -98,8 +98,8 @@ void getCoordinates(int identifier, int& xCoordinate, int& yCoordinate)/*Might h
         std::cout << "Enter the y coordinate " << phrase << " (Enter '-1' to go back to previous menu) : ";
         yCoordinate = getInt("Replacement", actualCoordinatesAVTwo, 2);
         std::cout << endl;
-        cout << "Y: " << yCoordinate
-
+        cout << "Y: " << yCoordinate << endl;
+ 
         if (yCoordinate != 1)
         {
             int replacement = xCoordinate;
