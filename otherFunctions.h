@@ -28,4 +28,4 @@ char findVowel(int randomNumber);
 
 int findAmountOfEnemyProvinces();
 
-void clearScreen();
+void clearScreen ();

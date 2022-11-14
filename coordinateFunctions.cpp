@@ -71,7 +71,7 @@ int translateCoordinate(int coordinate, char indicator, char whichWay)
 
 void getCoordinates(int identifier, int& xCoordinate, int& yCoordinate)/*Might have have to fix this (check if the coordinate stuff is right)*/
 {
-    vector<int> actualCoordinatesAVTwo = { -1 };
+    vector<int> actualCoordinatesAVTwo = {-1};
     for (int x = 1; x <= continentSize; x++)
     {
         actualCoordinatesAVTwo.push_back(x);
@@ -99,7 +99,7 @@ void getCoordinates(int identifier, int& xCoordinate, int& yCoordinate)/*Might h
         yCoordinate = getInt("Replacement", actualCoordinatesAVTwo, 2);
         std::cout << endl;
         cout << "Y: " << yCoordinate << endl;
-
+ 
         if (yCoordinate != 1)
         {
             int replacement = xCoordinate;

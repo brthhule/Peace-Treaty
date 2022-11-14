@@ -71,7 +71,7 @@ void TrainMA::TrainMAFunction()
             repeatOuterDoLoop = 'N';
             std::cout << "How many tier " << troopTier << " troops do you want to train (troops trained in this barracks: " << newProvinceList->getTroopsTrainedThisTurn() << "/" << maxAmountOfTroopsBarracksCanTrain << ")? ";
             amountOfTroops = getInt("Replacement", amountOfTroopsAV, 2);
-
+    
             if (amountOfTroops <= maxAmountOfTroopsBarracksCanTrain - newProvinceList->getTroopsTrainedThisTurn())
             {
                 int requiredResources[5] = { 0 };
@@ -89,12 +89,12 @@ void TrainMA::TrainMAFunction()
                 char repeatProceedWithTraining = 'Y';
                 string proceedWithTrainingString;
                 vector <char> proceedWithTrainingThree = { 'P', 'S', 'M' };
-
+        
                 do
                 {
                     char proceedWithTraining = listOfActions(6);
                     std::cout << endl;
-
+        
                     switch (proceedWithTraining)
                     {
                     case 'P':
@@ -108,7 +108,7 @@ void TrainMA::TrainMAFunction()
                                 trainingFail = 'F';
                             }
                         }
-
+        
                         if (trainingFail == 'F')
                         {
                             std::cout << "Training failed" << endl;

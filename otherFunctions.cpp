@@ -149,7 +149,7 @@ void showMap()
                     cout << letter << identifierThingy << "* ";
                 }
             }
-            cout << "\033[;0m";
+            cout << "\033[;0m"; 
         }
         cout << endl;
     }
@@ -326,7 +326,7 @@ string getNewName()
 {
     //cout << "getNewName" << endl;
     Participants* newParticipant = &participantsList[currentParticipantIndex];
-    string newName = " ";
+    string newName = " ";  
     char repeatGetName = 'N';
 
     //Check to make sure that the name isn't used by any other units the participant has
@@ -338,7 +338,7 @@ string getNewName()
         for (int x = 0; x < newParticipant->howManyProvinces(); x++) //If any provinces of the participant have the name
         {
             Provinces* newProvince = &provincesMap[newParticipant->listOfProvincesX[x]][newParticipant->listOfProvincesY[x]];
-            if (newName == newProvince->getUnitName())
+            if (newName == newProvince -> getUnitName())
             {
                 repeatGetName = 'Y';
             }
@@ -354,7 +354,7 @@ string getNewName()
         }
         //cout << "Compare to participant kingdom name" << endl;
         //cout << "Kingdom name: " << newParticipant -> getKingdomName () << endl;
-        if (newParticipant->getKingdomName() == newName)
+        if (newParticipant -> getKingdomName() == newName)
         {
             repeatGetName = 'Y';
         }
@@ -518,6 +518,6 @@ void clearScreen()
     cout << "\033[0m";
     chrono::seconds dura(1);
     this_thread::sleep_for(dura);
-    system("cls"); /*Windows only*/
-    //system("clear"); /*Non-Windows*/
+    //system("cls"); /*Windows only*/
+    system("clear"); /*Non-Windows*/
 }

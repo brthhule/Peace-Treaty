@@ -34,38 +34,45 @@ BuildMA::BuildMA(int xCoordinate, int yCoordinate)
 void BuildMA::findProvinceCoordinates()
 {
     char repeatThisOne = 'Y';
-    provinceXCoordinate, provinceYCoordinate = 0;
 
-    std::cout << "Welcome to the Player Build menu" << endl << endl;
-    getTrainBuildCoordinates(provinceXCoordinate, provinceYCoordinate);
+    do
+    {
+        provinceXCoordinate = 0;
+        provinceYCoordinate = 0;
 
-    if (provinceXCoordinate == continentSize && provinceYCoordinate == 1){
-        //weird exception in translating units-- everything else units, except for the bottom left province
-        //cout << "Continent size: " << continentSize << endl;
-        provinceXCoordinate = continentSize - 1;
-        provinceYCoordinate = continentSize - 1;
-    }
-
-    if (provinceXCoordinate == -1 || provinceYCoordinate == -1){
-        repeatThisOne = 'N';
-        std::cout << "Returning to Main menu... " << endl;
-    }
-    else{
-        if (provincesMap[provinceXCoordinate][provinceYCoordinate].getBelongsToParticipant() == currentParticipantIndex){
-            playerBuildFunction();
+        std::cout << "Welcome to the Player Build menu" << endl << endl;
+        getTrainBuildCoordinates(provinceXCoordinate, provinceYCoordinate);
+    
+        if (provinceXCoordinate == continentSize && provinceYCoordinate == 1)
+        {
+            //weird exception in translating units-- everything else units, except for the bottom left province
+            //cout << "Continent size: " << continentSize << endl;
+            provinceXCoordinate = continentSize - 1;
+            provinceYCoordinate = continentSize - 1;
         }
-        else{
-            string anyInput = " ";
-            std::cout << "Invalid province elected. Please try again. " << endl;
-            cout << "Enter anything to proceed back to the Player Build menu (Screen will clear) ";
-            std::getline(cin, anyInput);
-            clearScreen();
+
+        if (provinceXCoordinate == -1 || provinceYCoordinate == -1)
+        {
+            repeatThisOne = 'N';
+            std::cout << "Returning to Main menu... " << endl;
         }
-        std::cout << endl;
-    }
-    if (repeatThisOne == 'Y'){
-        findProvinceCoordinates();
-    }
+        else
+        {
+            if (provincesMap[provinceXCoordinate][provinceYCoordinate].getBelongsToParticipant() == currentParticipantIndex)
+            {
+                playerBuildFunction();
+            }
+            else
+            {
+                string anyInput = " ";
+                std::cout << "Invalid province elected. Please try again. " << endl;
+                cout << "Enter anything to proceed back to the Player Build menu (Screen will clear) ";
+                std::getline (cin, anyInput);
+                clearScreen();
+            }
+            std::cout << endl;
+        }
+    } while (repeatThisOne == 'Y');
 }
 void BuildMA::playerBuildFunction()
 {
@@ -82,12 +89,15 @@ void BuildMA::playerBuildFunction()
     char upgradeBuilding = ' ';
     char repeatPlayerBuildFunction = 'Y';
 
-    do{
+    do
+    {
         upgradeBuilding = listOfActions(7);
-        if (upgradeBuilding == 'U'){
+        if (upgradeBuilding == 'U')
+        {
             upgradeBuildings();
         }
-        else{
+        else
+        {
             repeatPlayerBuildFunction = 'N';
         }
         std::cout << endl;
@@ -166,7 +176,6 @@ void BuildMA::upgradeBuildings()
             upgradeBuildingsHelp();
         }
         upgradeAnotherBuildingChar = getChar("Upgrade another building (Y/N): ", "YN", 1);
-
     } while (upgradeAnotherBuildingChar == 'Y');
     std::cout << "Returning to Build Infrastructure action menu. " << endl;
 }

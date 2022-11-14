@@ -180,7 +180,7 @@ void CommanderProfile::moveUnit()
                 }
             }
         }
-
+        
         //The participant slects coordiantes
         int moveToXTwo = 0;
         int moveToYTwo = 0;

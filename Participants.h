@@ -12,14 +12,14 @@ using namespace std;
 class Participants
 {
 public:
-    //constructors
+                    //constructors
     Participants();
     Participants(int pIndex);
 
     //Capital stuff
         //Accessors
     int getCapitalCoordinate(char whichCoordinate);
-    //Mutators
+        //Mutators
     void updateCapitalCoordinates(int xCoordinate, int yCoordinate);
 
     //Commander stuff
@@ -27,13 +27,13 @@ public:
     int howManyCommanders();
     int findCommanderIndex(string commanderName);
     void addNewCommander();
-    //Mutators
-
-//Province stuff
-    //Accessors
+        //Mutators
+        
+    //Province stuff
+        //Accessors
     int howManyProvinces();
     int findProvinceIndexWithCoordinates(int provinceXCoordinate, int provinceYCoordinate);
-    //Mutators
+        //Mutators
     void addProvince(int xCoordinate, int yCoordinate);
 
     //Public variables
@@ -57,9 +57,9 @@ private:
     string kingdomName;
 
     //Figure out sizes later
-    int AIMainAction[5];
-    int AIBuildMA[2];
-    int AITroopMA[3];
+    int AIMainAction [5];
+    int AIBuildMA [2];
+    int AITroopMA [3];
 
 };
 #endif
