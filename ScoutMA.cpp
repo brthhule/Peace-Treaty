@@ -51,7 +51,7 @@ void ScoutMA::selectTargetToScout() /*So much to fix here... truly so much.... m
         targetInformation[1] = participantsList[targetParticipantIndex].
             findProvinceIndexWithCoordinates(targetXCoordinate, targetYCoordinate);
         unitType = "Province ";
-        unitName = enemyProvince-> getUnitName();
+        unitName = enemyProvince->getUnitName();
         enemyLevel = enemyProvince->findProvinceLevel();
     }
     else

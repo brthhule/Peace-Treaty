@@ -25,7 +25,7 @@ extern int currentParticipantIndex;
 
 ArmyDeploymentMA::ArmyDeploymentMA()
 {
-    capitalX = participantsList[currentParticipantIndex].getCapitalCoordinate('X'); 
+    capitalX = participantsList[currentParticipantIndex].getCapitalCoordinate('X');
     capitalY = participantsList[currentParticipantIndex].getCapitalCoordinate('Y');
 }
 void ArmyDeploymentMA::armyDeploymentMF()
@@ -133,7 +133,7 @@ void ArmyDeploymentMA::upgradeCommanders() /*fix this-- finish making it*/
 void ArmyDeploymentMA::viewArmyOverview()
 {
     Participants* newParticipant = &participantsList[currentParticipantIndex];
-    vector <int> listOfOptions = {-1};
+    vector <int> listOfOptions = { -1 };
     for (int x = 0; x < newParticipant->howManyCommanders(); x++)
     {
         listOfOptions.push_back(x + 1);
@@ -286,7 +286,7 @@ void ArmyDeploymentMA::deployCommanderMF()
             if (commanderLetterIdentifier != 1)
             {
                 int indexToSelect = commanderLetterIdentifier - 1;
-                CommanderProfile*  newCommander3 = &allCommanders[currentParticipantIndex][indexToSelect];
+                CommanderProfile* newCommander3 = &allCommanders[currentParticipantIndex][indexToSelect];
 
                 newCommander3->printCommanderStats();
 
@@ -358,7 +358,7 @@ void ArmyDeploymentMA::printCostsToTrainAnotherCommander(int trainArmyCommanderC
     std::cout << "The following is the cost to train another commander: " << endl;
     for (int x = 0; x < 5; x++) /*calculate and print costs to train another commander (more expensive than the last)*/
     {
-        trainArmyCommanderCosts[x] = (int) allCommanders[currentParticipantIndex].size() * 10;
+        trainArmyCommanderCosts[x] = (int)allCommanders[currentParticipantIndex].size() * 10;
         trainArmyCommanderCosts[x] *= initialResources[x];
         std::cout << provinceResourcesNames[x] << ": " << trainArmyCommanderCosts[x] << endl;
     }

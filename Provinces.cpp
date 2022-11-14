@@ -44,7 +44,7 @@ Provinces::Provinces()
 	belongsToParticipant = -1;
 	scoutLogTurnLevel[0] = -1;
 	scoutLogTurnLevel[1] = -1;
-    troopsTrainedThisTurn = 0;
+	troopsTrainedThisTurn = 0;
 }
 Provinces::Provinces(int sendXCoordinate, int sendYCoordinate, int index)
 {
@@ -80,7 +80,7 @@ Provinces::Provinces(int sendXCoordinate, int sendYCoordinate, int index)
 	belongsToParticipant = index;
 	scoutLogTurnLevel[0] = -1;
 	scoutLogTurnLevel[1] = -1;
-    troopsTrainedThisTurn = 0;
+	troopsTrainedThisTurn = 0;
 }
 
 
@@ -192,7 +192,7 @@ void Provinces::printBuildingStats()
 	{
 		buildingsProduction[x] = buildingLevels[x] * provinceBuildingsProductionNumbers[x];
 	}
-    cout << "\033[;34m";
+	cout << "\033[;34m";
 
 	std::cout << "Building stats of this province: " << endl;
 	for (int x = 0; x < 5; x++)
@@ -238,5 +238,5 @@ int Provinces::returnCommanderIndex(int index)
 
 void Provinces::addTroopsTrainedThisTurn(int amount)
 {
-    troopsTrainedThisTurn += amount;
+	troopsTrainedThisTurn += amount;
 }

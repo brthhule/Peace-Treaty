@@ -388,7 +388,11 @@ if (provinceXCoordinate == continentSize && provinceYCoordinate == 1)
 August 27: 15 min
     11:15 pm - 11:30 pm (15 min): Started to modify the screen so that it always shows the map instead of having an option to see the map
 
-Last PC update: August 5 @ 11:37 am
-Last Repl update: August 27 @ 11:30 pm
+November 8:
+	3:40 pm - 4:00 pm (20 min): Did some cleaning up, made some do while functions into recursion statements, trying to make code more readible
+as I jump back into things. Getting LNK1168 error
 
-Last Repl upload: August 5 ~ 11:37 am
+Last PC update: November 8 @ 4:00 pm
+Last Repl update: November 13 ~ 9:50 pm
+
+Last Repl upload: November 13 ~ 9:50 pm

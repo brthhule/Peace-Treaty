@@ -100,7 +100,7 @@ int AllUnits::returnIndexInList()
 void AllUnits::printResources()
 {
 	std::cout << "Resources present in this province: " << endl;
-    std::cout << "\033[;34m";
+	std::cout << "\033[;34m";
 	for (int x = 0; x < 5; x++)
 	{
 		cout << "- " << provinceResourcesNames[x] << ": " << resourcesPresent[x] << endl;

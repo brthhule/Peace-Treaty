@@ -53,7 +53,7 @@ int Participants::howManyProvinces()
 }
 int Participants::howManyCommanders()
 {
-    return (int) allCommanders[currentParticipantIndex].size();
+    return (int)allCommanders[currentParticipantIndex].size();
 }
 int Participants::findCommanderIndex(string commanderName)
 {

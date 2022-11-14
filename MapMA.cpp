@@ -21,7 +21,7 @@ extern vector <Participants> participantsList;
 extern string troopNames[5];
 extern int troopsCP[5];
 
-MapMA::MapMA ()
+MapMA::MapMA()
 {
     xCoordinate = 0;
     yCoordinate = 0;

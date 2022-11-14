@@ -42,6 +42,7 @@ void pauseGame();
 void createCommanders();
 void viewPlayerStats();
 void createCapitals();
+void createCapitals2 (int participantIndexTempArg);
 void initializeResources();
 char randomPlayerActionChar();
 void clearScreen();
@@ -139,8 +140,8 @@ void startGame(string kingdomName)
     opponentNumber = getInt("How many kingdoms will you fight? (1, 2, 3) ", { 1, 2, 3 }, 1);
 
     maxAmountOfCommanders = continentSize;
-    
-    enemyDifficulty = getInt("What gameplay difficulty do you want (1-3): ", { 1,2,3 }, 1); 
+
+    enemyDifficulty = getInt("What gameplay difficulty do you want (1-3): ", { 1,2,3 }, 1);
     std::cout << "Gameplay difficulty " << enemyDifficulty << " selected. " << endl << endl;
 
     generateNewContinent(kingdomName);
@@ -151,7 +152,7 @@ void generateNewContinent(string kingdomName)
     //cout << "Create Participants" << endl;
     for (int v = 0; v <= opponentNumber; v++)
     {
-        Participants newParticipant (v);
+        Participants newParticipant(v);
         participantsList.push_back(newParticipant);
     }
     //cout << "Create Capitals" << endl;
@@ -175,7 +176,7 @@ void gamePlay()
     cout << "\033[31m";
     getline(cin, literallyAnything);
     cout << "\033[0m";
-    while (findAmountOfEnemyProvinces () > 0 && participantsList[0].howManyCommanders() > 0 && continueGame == 'Y')
+    while (findAmountOfEnemyProvinces() > 0 && participantsList[0].howManyCommanders() > 0 && continueGame == 'Y')
     {
         playerAction(turn);
         AITurn();
@@ -373,28 +374,27 @@ void createCapitals()
     list of provinces. If it's not empty, repeatMap is 'Y' and the process repeats*/
     for (int participantIndexTemp = 0; participantIndexTemp <= opponentNumber; participantIndexTemp++)
     {
-        do
-        {
-            repeatMap = 'N';
-            int xCoordinate = getRandomCoordinate();
-            int yCoordinate = getRandomCoordinate();
-            //cout << "X: " << xCoordinate << endl;
-            //cout << "Y: " << yCoordinate << endl;
-            //cout << endl;
-            if (provincesMap[xCoordinate][yCoordinate].getBelongsToParticipant() == -1)
-            {
-                //Cout can choose this province to be a capital
-                provincesMap[xCoordinate][yCoordinate].changeBelongsToParticipant(participantIndexTemp);
-                provincesMap[xCoordinate][yCoordinate].provinceIsACapital();
-                participantsList[participantIndexTemp].addProvince(xCoordinate, yCoordinate);
-                participantsList[participantIndexTemp].updateCapitalCoordinates(xCoordinate, yCoordinate);
+        createCapitals2(participantIndexTemp);
+    }
+}
 
-            }
-            else
-            {
-                repeatMap = 'Y';
-            }
-        } while (repeatMap == 'Y');
+void createCaptals2(int participantIndexTempArg)
+{
+    int xCoordinate = getRandomCoordinate();
+    int yCoordinate = getRandomCoordinate();
+    Provinces *newProvince = &provincesMap[xCoordinate][yCoordinate];
+
+    if (newProvince->getBelongsToParticipant() == -1)
+    {
+        //Cout can choose this province to be a capital
+        newProvince->changeBelongsToParticipant(participantIndexTempArg);
+        newProvince->provinceIsACapital();
+        participantsList[participantIndexTempArg].addProvince(xCoordinate, yCoordinate);
+        participantsList[participantIndexTempArg].updateCapitalCoordinates(xCoordinate, yCoordinate);
+    }
+    else
+    {
+        createCapitals2(participantIndexTempArg);
     }
 }
 
