@@ -86,7 +86,7 @@ void CommanderProfile::printCommanderStats()
         std::cout << MANDescriptions[a] << " this army: " << endl;
         for (int b = 0; b < 5; b++)
         {
-            std::cout << "- " << namesOfMAN[c] << ": " << commanderArmyStats[c] << endl;
+            std::cout << "- " << namesOfMAN[c] << ": " << *commanderArmyStats[c] << endl;
             c++;
         }
     }

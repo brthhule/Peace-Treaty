@@ -719,3 +719,4 @@ char mapMoveUnit[15][15] = { 'N' };
     }
 
 //int provinceResources[15][15][5] = { 0 }; /*food, wood, ore, gold, mana*/
+

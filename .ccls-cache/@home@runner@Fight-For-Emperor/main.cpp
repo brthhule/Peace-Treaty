@@ -30,14 +30,13 @@
 
 using namespace std;
 
-char introduction(char startOrResume);
+char introduction();
 void resumeGame();
 void startGame(string kingdomName);
 void generateNewContinent(string kingdomName);
 void gamePlay();
 void playerAction(int turn);
 void endScreen();
-void testingSkip();
 void pauseGame();
 void createCommanders();
 void viewPlayerStats();
@@ -82,14 +81,14 @@ int initialResources[5] = { 5, 4, 3, 2, 1 };
 string provinceResourcesNames[5] = { "Food", "Wood", "Ore", "Gold", "Mana" };
 char continueGame = 'Y';
 
+string kingdomName = " ";
+
 
 
 int main()/*main code*/
 {
     srand(time(0));
-    string kingdomName = " ";
-    char startOrResume = ' ';
-    startOrResume = introduction(startOrResume);
+    char startOrResume = introduction();
 
     switch (startOrResume)
     {
@@ -105,13 +104,10 @@ int main()/*main code*/
         std::cout << "The kingdom of \033[31m" << kingdomName << "\033[0m has been created! " << endl;
         startGame(kingdomName);
         break;
-    case '1':
-        testingSkip();
-        break;
     }
     gamePlay();
 }
-char introduction(char startOrResume)/*introduce player to game synopsis*/
+char introduction()/*introduce player to game synopsis*/
 {
     synopsis();
     return listOfActions(3);
@@ -224,13 +220,7 @@ void playerAction(int turn)
 
         std::cout << endl;
         clearScreen();
-        /*std::cout << "- Buildings (B) " << endl;
-        std::cout << "- Training (T) " << endl;
-        std::cout << "- Stats (S) " << endl;
-        std::cout << "- Select Unit (U) " << endl;
-        std::cout << "- Deployment (D) " << endl;
-        std::cout << "- Next Turn (N)" << endl;
-        std::cout << "- Pause (P) " << endl;*/
+
         switch (courseOfAction)
         {
         case 'B':
@@ -296,53 +286,37 @@ void AITurn()
 
 void viewPlayerStats()
 {
+    cout << "Kingdom name: " << kingdomName << endl << endl;
     int totalPlayerUnits[5];
     findTotalPlayerUnits(totalPlayerUnits);
-    for (int x = 0; x < 5; x++)
-    {
-        std::cout << "Total " << provinceResourcesNames[x] << ": " << totalPlayerResources[x] << endl;
-    }
+    
+    for (int x = 0; x < 5; x++){
+        std::cout << "Total " << provinceResourcesNames[x] << ": " << totalPlayerResources[x] << endl;}
+    
     std::cout << endl;
-    for (int x = 0; x < 5; x++)
-    {
-        std::cout << "Total " << troopNames[x] << " alive: " << totalPlayerUnits[x] << endl;
-    }
-    int playerCP = calculatePlayerValues(1);
-    std::cout << "Your total army combat power: " << playerCP << endl;
-    std::cout << endl;
+    
+    for (int x = 0; x < 5; x++){
+        std::cout << "Total " << troopNames[x] << " alive: " << totalPlayerUnits[x] << endl;}
+    
+    std::cout << "Your total army combat power: " << calculatePlayerValues(1) << endl;
     std::cout << "Your numnber of provinces: " << participantsList[0].howManyProvinces() << endl << endl;
 
-    switch (getChar("View all stats? (Y/N) ", "YN", 1))
-    {
+    switch (getChar("View all stats? (Y/N) ", "YN", 1)){
     case 'Y':
         viewAllStatsFunction();
     case 'N':
         std::cout << "Returning to menu" << endl;
-        break;
-    }
+        break;}
 }
-void pauseGame()
-{
-    string gameCode;
-    gameCode += continentSize;
-    for (int x = 0; x < continentSize; x++)
-    {
-        for (int y = 0; y < continentSize; y++)
-        {
+void pauseGame(){
+    string gameCode; gameCode += continentSize;
+    
+    for (int x = 0; x < continentSize; x++){
+        for (int y = 0; y < continentSize; y++){
             gameCode += provincesMap[x][y].getBelongsToParticipant();
         }
     }
-    std::cout << "Game ended... " << endl;
-    std::cout << "Here is your game code (Copy this code and paste it when using the 'Resume Game' functionality): " << gameCode << endl << endl;
-}
-
-
-void testingSkip()
-{
-    continentSize = 5;
-    opponentNumber = 2;
-    enemyDifficulty = 2;
-    generateNewContinent("Kingdom Name");
+    std::cout << "Game ended... \nHere is your game code (Copy this code and paste it when using the 'Resume Game' functionality): " << gameCode << endl << endl;
 }
 
 void createCommanders()
