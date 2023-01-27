@@ -10,6 +10,7 @@
 #include "ScoutMA.h"
 #include "AttackMA.h"
 #include "TrainMA.h"
+#include "Lists.h"
 #include "coordinateFunctions.h"
 
 using namespace std;
@@ -35,7 +36,8 @@ void MapMA::viewPlayerMap()
     do
     {
         std::cout << "Welcome to the View Map action menu" << endl;
-        whatToDo = listOfActions(8);
+        Lists newList (8);
+        whatToDo = newList.listOfActions();
 
         switch (whatToDo)
         {
@@ -49,8 +51,11 @@ void MapMA::viewPlayerMap()
             break;
         }
         case 'H':
-            playerMapHelp();
+        {
+            Lists newLists (8);
+            newLists.listOfHelp();
             break;
+        }
         default:
             std::cout << "Returning to the previous menu." << endl;
             repeatViewPlayerMap = 'N';
@@ -61,13 +66,14 @@ void MapMA::viewPlayerMap()
 }
 void MapMA::selectUnitOriginal()
 {
-    if (provincesMap[xCoordinate][yCoordinate].getBelongsToParticipant() == currentParticipantIndex)//If belongs to participant
+    Provinces *newMap = &provincesMap[xCoordinate][yCoordinate];
+    if (newMap->getBelongsToParticipant() == currentParticipantIndex)//If belongs to participant
     {
         selectPlayerProvince();
     }
-    else if (provincesMap[xCoordinate][yCoordinate].getBelongsToParticipant() == -1)//If empty province
+    else if (newMap->getBelongsToParticipant() == -1)//If empty province
     {
-        if (provincesMap[xCoordinate][yCoordinate].commandersPresentIndex.size() > 0)//If there are more than 0 commnaders
+        if (newMap->commandersPresentIndex.size() > 0)//If there are more than 0 commnaders
         {
             if (allCommanders[currentParticipantIndex][provincesMap[xCoordinate][yCoordinate].returnCommanderIndex(0)].getBelongsToParticipant() == currentParticipantIndex) //If the army here belongs to the participant
             {
@@ -97,7 +103,8 @@ void MapMA::selectPlayerProvince()
     }
     std::cout << endl << endl;
 
-    char selectPlayerCapitalAction = listOfActions(9);
+    Lists newList (9);
+    char selectPlayerCapitalAction = newList.listOfActions();
 
     switch (selectPlayerCapitalAction)
     {
@@ -134,7 +141,8 @@ void MapMA::selectEnemyProvince()
     std::cout << endl << endl;
 
     std::cout << "Welcome to the Enemy Provinces Action Selection menu " << endl;
-    char selectUnitEnemyProvinceChar = listOfActions(10);
+    Lists newLists (10);
+    char selectUnitEnemyProvinceChar = newLists.listOfActions(10);
 
     switch (selectUnitEnemyProvinceChar)
     {
@@ -201,7 +209,7 @@ void MapMA::playerUnitAction()
             break;
         }
         case 'H':
-            playerUnitActionHelp();
+            listOfHelp(2);
             break;
         case 'M':
             std::cout << "Returning to menu... " << endl;

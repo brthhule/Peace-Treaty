@@ -399,6 +399,9 @@ November 23
     10:25 - 10:35 (10 min): Added kingdonName to viewPlayerStats. Found it somewhat hard to find the viewPlayerStats function to add this change; may have to consider developing a way to find functions easier. Eliminated an unneccessary parameter: introduction function in main.cpp used startOrResume as a paramater when it wouldn't be used to find out listOfActions(3), so took it out. Note: code looks extremely cluncky and difficult to navigate, have to find a way to clean up code I don't need
     10:35 - 11:00 (25 min): Looked around for things to clean up, came across viewArmyOverview. After selecting a commander, the stats would go to the addresses of what the stats were (because the stats function used an array that held pointers to the variables with the states, forgot to add the *). Troops injured is correct (start off all 0), but the other stats are off (ex, food starts off as -2213361676, this shouldn't happen). Have to keep looking through and cleaning code
 
+January 27
+    12:40 am - 2:00 am (1 hour, 20 min): Refined listOfActions so that each case didn't have to mention m to return to menu-- moved it so it's right before the help menu. Consolidated the help functions in textFunctions to one function-- listOfHelp. Ran into some problems, tried making a Lists class to handle listOfActions and listOfHelp. In the process of updating everything to the new changes.
+
 
 Last PC update: August 5 @ 11:37 am
 Last Repl update: November 13 @ 10:11 pm

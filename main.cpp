@@ -21,6 +21,7 @@
 #include "Provinces.h"
 #include "textFunctions.h"
 #include "Participants.h"
+#include "Lists.h"
 
 #include "BuildMA.h"
 #include "ArmyDeploymentMA.h"
@@ -96,6 +97,7 @@ int main()/*main code*/
         resumeGame();
         break;
     case 'S':
+    {
         std::cout << "What is your kingdom name? ";
         cout << "\033[31m";
         std::getline(cin, kingdomName);
@@ -104,6 +106,13 @@ int main()/*main code*/
         std::cout << "The kingdom of \033[31m" << kingdomName << "\033[0m has been created! " << endl;
         startGame(kingdomName);
         break;
+    }
+    case 'H':
+    {
+        Lists newLists (3);
+        newLists.listOfHelp();
+        break;
+    }
     }
     gamePlay();
 }
@@ -256,7 +265,7 @@ void playerAction(int turn)
             break;
         case 'H':
         {
-            playerActionHelp();
+            listOfHelp(4);
             char whenYouDoneChar = getChar(" ", "P", 2);
             break;
         }

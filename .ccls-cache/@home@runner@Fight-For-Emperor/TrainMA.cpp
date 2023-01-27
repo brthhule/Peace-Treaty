@@ -3,6 +3,7 @@
 #include "AllUnits.h"
 #include "Provinces.h"
 #include "coordinateFunctions.h"
+#include "Lists.h"
 
 using namespace std;
 
@@ -92,7 +93,8 @@ void TrainMA::TrainMAFunction()
         
                 do
                 {
-                    char proceedWithTraining = listOfActions(6);
+                    Lists newList (6);
+                    char proceedWithTraining = newList.listOfActions();
                     std::cout << endl;
         
                     switch (proceedWithTraining)

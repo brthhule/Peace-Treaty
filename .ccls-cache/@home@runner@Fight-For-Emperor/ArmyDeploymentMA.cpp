@@ -9,6 +9,7 @@
 #include "CommanderProfile.h"
 #include "Participants.h"
 #include "coordinateFunctions.h"
+#include "Lists.h""
 
 
 using namespace std;
@@ -37,7 +38,8 @@ void ArmyDeploymentMA::armyDeploymentMF()
     do
     {
         std::cout << "Welcome to the Army Deployment action menu" << endl;
-        armyDeploymentActionChar = listOfActions(5);
+        Lists newList (5);
+        armyDeploymentActionChar = newList.listOfActions();
         std::cout << endl;
 
         switch (armyDeploymentActionChar)
@@ -57,8 +59,11 @@ void ArmyDeploymentMA::armyDeploymentMF()
             break;
         }
         case 'H':
-            armyDeploymentHelp(maxAmountOfCommanders);
+        {
+            Lists newList (5);
+            newList.listOfHelp();
             break;
+        }
         case 'M':
             repeatArmyDeployment = 'N';
             break;

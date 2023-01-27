@@ -8,6 +8,7 @@
 #include "textFunctions.h"
 #include "Participants.h"
 #include "coordinateFunctions.h"
+#include "Lists.h""
 
 extern vector <Participants> participantsList;
 extern int continentSize;
@@ -91,7 +92,8 @@ void BuildMA::playerBuildFunction()
 
     do
     {
-        upgradeBuilding = listOfActions(7);
+        Lists newList (7);
+        upgradeBuilding = newList.listOfActions();
         if (upgradeBuilding == 'U')
         {
             upgradeBuildings();
@@ -173,7 +175,8 @@ void BuildMA::upgradeBuildings()
         }
         else
         {
-            upgradeBuildingsHelp();
+            Lists newList (12);
+            newList.listOfHelp();
         }
         upgradeAnotherBuildingChar = getChar("Upgrade another building (Y/N): ", "YN", 1);
     } while (upgradeAnotherBuildingChar == 'Y');
