@@ -12,54 +12,47 @@ using namespace std;
 class Participants
 {
 public:
-                    //constructors
-    Participants();
-    Participants(int pIndex);
+	//constructors
+	Participants();
 
-    //Capital stuff
-        //Accessors
-    int getCapitalCoordinate(char whichCoordinate);
-        //Mutators
-    void updateCapitalCoordinates(int xCoordinate, int yCoordinate);
+	//Capital stuff
+	Provinces* getCapital();
+	void setCapital(Provinces *newProvince);
 
-    //Commander stuff
-        //Accessors
-    int howManyCommanders();
-    int findCommanderIndex(string commanderName);
-    void addNewCommander();
-        //Mutators
-        
-    //Province stuff
-        //Accessors
-    int howManyProvinces();
-    int findProvinceIndexWithCoordinates(int provinceXCoordinate, int provinceYCoordinate);
-        //Mutators
-    void addProvince(int xCoordinate, int yCoordinate);
+	//Commander stuff
+	int commandersNum();
+	int findCommanderIndex(string commanderName);
+	void addCommander();
+			
+	//Province stuff
+	int provincesNum();
+	Provinces *findProvince(int x, int y);
+	void addProvince(Provinces *newProvince);
 
-    //Public variables
+	//Create participant
+	void setKingdomName(string newName);
+	string getKingdomName();
+	void initialCapRSS();
+	void createCapital();
+	void setKingdomName ();
+	
 
-    int capitalX;
-    int capitalY;
-    //std::vector <CommanderProfile> listOfCommanders;
-    vector <int> listOfProvincesX;//Includes the capital province in this
-    vector <int> listOfProvincesY;
-
-    int playerTroopsLost[5] = { 0,0,0,0,0 };
-    int totalPlayerUnits[5] = { 0,0,0,0,0 }; /*0) Militia, 1) Guards, 2) Cavalry, 3) Knights, 4) Paladins*/
-
-    void setKingdomName(string newName);
-    string getKingdomName();
-
-
+	int playerTroopsLost[5] = { 0,0,0,0,0 };
+	int totalPlayerUnits[5] = { 0,0,0,0,0 }; /*0) Militia, 1) Guards, 2) Cavalry, 3) Knights, 4) Paladins*/
 
 private:
-    int participantIndex;
-    string kingdomName;
+	string kingdomName = " ";
 
-    //Figure out sizes later
-    int AIMainAction [5];
-    int AIBuildMA [2];
-    int AITroopMA [3];
+	vector <Provinces*> provincesList;
+	vector <CommanderProfile*> commandersList;
+	int capitalIndex;
+
+	//Figure out sizes later
+	int AIMainAction [5];
+	int AIBuildMA [2];
+	int AITroopMA [3];
+
+	int pMaxCommanders;
 
 };
 #endif

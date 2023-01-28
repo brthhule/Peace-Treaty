@@ -32,7 +32,7 @@ CommanderProfile::CommanderProfile()
     changeUnitName("Unnamed");
 
 }
-CommanderProfile::CommanderProfile(int level, string name, int index)
+CommanderProfile::CommanderProfile(int level, string name)
 {
     for (int x = 0; x < sizeof(commanderScoutReport) / sizeof(int); x++)
     {
@@ -153,6 +153,26 @@ void CommanderProfile::completeCommanderScoutReport(int accuracy)
     updateCommanderScoutReport(21, accuracy);
 }
 
+vector <Provinces*> CommanderProfile::moveUnitOne()
+{
+	vector <Provinces*> vectorThingy;
+	for (int x = -1; x <= 1; x++) /*Identify all the provinces that the player can move a unit to*/
+	{
+		for (int y = -1; y <= 1; y++)
+		{
+			//Check to see if the coordinates are in bounds (not outside of the map size)
+			if (/*X coordinate stuff*/x >= 0 && x < continentSize && /*Y coordinate stuff*/y >= 0 && y < continentSize)
+			{
+				//Make sure province isn't the starting province
+				if (x != 0 || y != 0)
+				{
+					//Add province to list of provinces can move to
+					vectorThingy.push_back(&provincesMap[x + unitXCoordinate][y + unitYCoordinate]);
+					}
+				}
+		}
+	}
+}
 
 void CommanderProfile::moveUnit()
 {
@@ -164,22 +184,7 @@ void CommanderProfile::moveUnit()
         std::cout << endl;
         std::cout << "You can only move this unit to one of the provinces adjacent to the province it is in. " << endl;
 
-        for (int x = -1; x <= 1; x++) /*Identify all the provinces that the player can move a unit to*/
-        {
-            for (int y = -1; y <= 1; y++)
-            {
-                //Check to see if the coordinates are in bounds (not outside of the map size)
-                if (/*X coordinate stuff*/x >= 0 && x < continentSize && /*Y coordinate stuff*/y >= 0 && y < continentSize)
-                {
-                    //Make sure province isn't the starting province
-                    if (x != 0 || y != 0)
-                    {
-                        //Add province to list of provinces can move to
-                        provincesCanSelect.push_back(&provincesMap[x + unitXCoordinate][y + unitYCoordinate]);
-                    }
-                }
-            }
-        }
+				provincesCanSelect = moveUnitOne ();
         
         //The participant slects coordiantes
         int moveToXTwo = 0;
@@ -221,7 +226,7 @@ void CommanderProfile::moveUnit()
                 //If it's peaceful (moving to one of their own provinces)
                 if (attackScenario == 'P')
                 {
-                    changeCoordinates(moveToXTwo, moveToYTwo);
+                    setLocation(&provincesMap[moveToXTwo][moveToYTwo]);
 
                     provinceSelected->addCommanderProvince(indexInList);
                 }
@@ -246,3 +251,9 @@ void CommanderProfile::moveUnit()
     }
     std::cout << "Returning to previous menu... " << endl << endl;
 }/* unfinished*/
+
+
+void CommanderProfile::setLocation(Provinces *newProvince);
+{
+	provinceLocation = newProvince;
+}

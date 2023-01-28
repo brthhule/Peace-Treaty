@@ -402,6 +402,8 @@ November 23
 January 27
     12:40 am - 2:00 am (1 hour, 20 min): Refined listOfActions so that each case didn't have to mention m to return to menu-- moved it so it's right before the help menu. Consolidated the help functions in textFunctions to one function-- listOfHelp. Ran into some problems, tried making a Lists class to handle listOfActions and listOfHelp. In the process of updating everything to the new changes.
 
+January 28:
+	2:50 am - 4:15 am (): Worked on consolidating the main file; working on going back to an object-based game rather than mainly using arrays and references to keep track of things. I think the problem I had in the past was that I did things like vector <CommanderProfile> *commandersList instead of <CommanderProfile*>, have to do more research on how to make it work. Brought some participant creation stuff from the main file to Participants.cpp/.h
 
 Last PC update: August 5 @ 11:37 am
 Last Repl update: November 13 @ 10:11 pm

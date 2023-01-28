@@ -23,7 +23,6 @@ public:
 	int getCoordinate(char identifier);
 	int getBelongsToParticipant();
 	int returnIndexInList();
-	void changeCoordinates(int xCoordinate, int yCoordinate);
 	string getUnitName();
 
 	//Mutator Functions

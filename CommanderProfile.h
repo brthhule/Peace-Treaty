@@ -13,7 +13,7 @@ class CommanderProfile : public AllUnits
 public:
 	//Constructors
 	CommanderProfile();
-	CommanderProfile(int commanderLevel, string name, int index);
+	CommanderProfile(int commanderLevel, string name);
 	//Destructor
 	~CommanderProfile();
 
@@ -24,6 +24,7 @@ public:
 	int getCommanderStat(int index);
 	void printCommanderStats();
 	void changeCommanderStat(int index, int amount);
+	void setLocation (Provinces *newProvince);
 
 	//Scout report stuff 
 	void updateCommanderScoutReport(int index, int value);
@@ -36,6 +37,7 @@ public:
 
 	//Moving
 	void moveUnit();
+	vector <Provinces*> moveUnitOne ();
 	char hasCommanderMoved();
 	void resetCommanderMoved();
 
@@ -92,6 +94,7 @@ private:
 
 	string MANDescriptions[5] = { "Resources in", "Troops present in", "Troops injured in", "Other stats of" };//check
 	string namesOfMAN[20];//check
+	Provinces *provinceLocation;
 };
 
 #endif
