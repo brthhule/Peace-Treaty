@@ -35,13 +35,21 @@ public:
 	void initialCapRSS();
 	void createCapital();
 	void setKingdomName ();
+  bool isAlive();
+	bool isPlayer();
+	void createAsPlayer (bool choice);
+	void viewStats();
+	vector<int> calculatePlayerValues (int decision);
+	Provinces *getProvince (int index);
 	
-
-	int playerTroopsLost[5] = { 0,0,0,0,0 };
-	int totalPlayerUnits[5] = { 0,0,0,0,0 }; /*0) Militia, 1) Guards, 2) Cavalry, 3) Knights, 4) Paladins*/
+	int findAllUnits();//Create funciton
+	vector <int> troopsLost = { 0,0,0,0,0 };
+	vector <int> totalUnits = { 0,0,0,0,0 }; /*0) Militia, 1) Guards, 2) Cavalry, 3) 
+Knights, 4) Paladins*/
 
 private:
 	string kingdomName = " ";
+	bool playerStatus;//true = player, false = AI
 
 	vector <Provinces*> provincesList;
 	vector <CommanderProfile*> commandersList;

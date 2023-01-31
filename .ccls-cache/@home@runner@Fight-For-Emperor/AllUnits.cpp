@@ -162,8 +162,3 @@ void AllUnits::changeCanSelectThisUnit()
 	canSelectThisUnit = 'Y';
 }
 
-void AllUnits::changeCoordinates(int xCoordinate, int yCoordinate)
-{
-	unitXCoordinate = xCoordinate;
-	unitYCoordinate = yCoordinate;
-}

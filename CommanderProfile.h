@@ -8,7 +8,7 @@
 
 using namespace std;
 
-class CommanderProfile : public AllUnits
+class CommanderProfile: public AllUnits
 {
 public:
 	//Constructors

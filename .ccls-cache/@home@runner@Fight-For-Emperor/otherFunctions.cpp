@@ -30,54 +30,7 @@ extern int currentParticipantIndex;
 
 
 
-int calculatePlayerValues(int decision)
-{
-    switch (decision)
-    {
-    case 1:
-    {
-        int totalTroopsCP = 0;
-        int amountOfTroops[5] = {};
-        //findTotalTroopsCPFunction
-        for (int x = 0; x < continentSize; x++)//find troops in provinces-- might be better to create a list of provinces per player? Don't
-            //have to search through provinces that belong to other participants
-        {
-            for (int y = 0; y < continentSize; y++)
-            {
-                if (provincesMap[x][y].getBelongsToParticipant() == currentParticipantIndex)
-                {
-                    totalTroopsCP += provincesMap[x][y].getTotalCP();
-                }
-            }
-        }
-        for (int b = 0; b < participantsList[currentParticipantIndex].howManyCommanders(); b++)
-        {
 
-            totalTroopsCP += allCommanders[currentParticipantIndex][b].getTotalCP();
-        }
-        return totalTroopsCP;
-        break;
-    }
-    case 2:
-    {
-        int totalTroopsLost = 0;
-        for (int x : participantsList[currentParticipantIndex].playerTroopsLost)
-        {
-            totalTroopsLost += x;
-        }
-        return totalTroopsLost;
-        break;
-    }
-    case 3:
-        break;
-    default:
-        cout << "Something went wrong... " << endl;
-        return -1;
-        break;
-    }
-    cout << "Something went wrong" << endl;
-    return -1;
-}
 
 
 
@@ -294,74 +247,43 @@ char checkChar(string stringAV, string input)
     return '1'; /*added this bc the debugger said that not all control paths return a value*/
 }
 
-void findTotalPlayerUnits(int totalPlayerUnits[5])
-{
-    for (int x = 0; x < 5; x++)
-    {
-        totalPlayerUnits[x] = 0;
-    }
-    for (int x = 0; x < continentSize; x++)
-    {
-        for (int y = 0; y < continentSize; y++)
-        {
-            if (provincesMap[x][y].getBelongsToParticipant() == currentParticipantIndex)
-            {
-                for (int a = 0; a < 5; a++)
-                {
-                    totalPlayerUnits[a] += provincesMap[x][y].getTroopsPresent(a);
-                }
-            }
-        }
-    }
-    for (int b = 0; b < participantsList[currentParticipantIndex].howManyCommanders(); b++)
-    {
-        for (int c = 0; c < 5; c++)
-        {
-            totalPlayerUnits[c] += allCommanders[currentParticipantIndex][b].getTroopsPresent(c);
-        }
-    }
-}
 
-string getNewName()
-{
-    //cout << "getNewName" << endl;
-    Participants* newParticipant = &participantsList[currentParticipantIndex];
-    string newName = " ";  
-    char repeatGetName = 'N';
 
+string getNewName(Participants *newP)
+{
+	Participants *participant = newP;
+  string newName = " ";  
+  char repeatGetName = 'N';
+	newName = getNewNameTwo(participant, newName);
     //Check to make sure that the name isn't used by any other units the participant has
-    do
-    {
-        repeatGetName = 'N';
-        newName = createRandomName();
-        //cout << "Check provinces" << endl;
-        for (int x = 0; x < newParticipant->howManyProvinces(); x++) //If any provinces of the participant have the name
-        {
-            Provinces* newProvince = &provincesMap[newParticipant->listOfProvincesX[x]][newParticipant->listOfProvincesY[x]];
-            if (newName == newProvince -> getUnitName())
-            {
-                repeatGetName = 'Y';
-            }
-        }
-        //cout << "Check commanders" << endl;
-        for (int x = 0; x < newParticipant->howManyCommanders(); x++)//If any commanders have the name
-        {
-            CommanderProfile* newCommander = &allCommanders[currentParticipantIndex][x];
-            if (newName == newCommander->getUnitName())
-            {
-                repeatGetName = 'Y';
-            }
-        }
-        //cout << "Compare to participant kingdom name" << endl;
-        //cout << "Kingdom name: " << newParticipant -> getKingdomName () << endl;
-        if (newParticipant -> getKingdomName() == newName)
-        {
-            repeatGetName = 'Y';
-        }
-    } while (repeatGetName == 'Y');
 
     return newName;
 }
+string getNewNameTwo(Participants *participant, string &newName)
+{
+	newName = createRandomName();
+	//cout << "Check provinces" << endl;
+	for (int x = 0; x < participant->provincesNum(); x++) //If any provinces of the participant have the name
+	{
+		Provinces* newProvince = participant->getProvince(x);
+		if (newName == newProvince -> getProvinceName())
+		{
+			getNewNameTwo(participant, newName);
+		}
+	}
+	//cout << "Check commanders" << endl;
+	for (int x = 0; x < participant->commandersNum(); x++)
+	{
+		CommanderProfile* newCommander = &allCommanders[currentParticipantIndex][x];
+		if (newName == newCommander->getUnitName())
+		{
+			getNewNameTwo(participant, newName);
+		}
+	}
+
+
+}
+
 string createRandomName()
 {
     //cout << "Create random name" << endl;
@@ -501,15 +423,7 @@ void createMap()
 }
 
 
-int findAmountOfEnemyProvinces()
-{
-    int amountOfProvinces = 0;
-    for (int x = 1; x < participantsList.size(); x++)
-    {
-        amountOfProvinces += participantsList[x].howManyProvinces();
-    }
-    return amountOfProvinces;
-}
+
 
 void clearScreen()
 {
@@ -520,4 +434,15 @@ void clearScreen()
     this_thread::sleep_for(dura);
     //system("cls"); /*Windows only*/
     system("clear"); /*Non-Windows*/
+}
+
+void pauseGame(){
+    string gameCode; gameCode += continentSize;
+    
+    for (int x = 0; x < continentSize; x++){
+        for (int y = 0; y < continentSize; y++){
+            gameCode += provincesMap[x][y].getBelongsToParticipant();
+        }
+    }
+    std::cout << "Game ended... \nHere is your game code (Copy this code and paste it when using the 'Resume Game' functionality): " << gameCode << endl << endl;
 }

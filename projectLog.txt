@@ -405,6 +405,12 @@ January 27
 January 28:
 	2:50 am - 4:15 am (): Worked on consolidating the main file; working on going back to an object-based game rather than mainly using arrays and references to keep track of things. I think the problem I had in the past was that I did things like vector <CommanderProfile> *commandersList instead of <CommanderProfile*>, have to do more research on how to make it work. Brought some participant creation stuff from the main file to Participants.cpp/.h
 
+January 30:
+  5 min - Added isAlive function to Participants, added it to gameplay functionality
+
+January 31:
+	12:30 am - 1:35 am (1 hour, 5 min): Moved some stuff from main to Participants, finished the general structure for PlayerAction, Worked on CommanderProfile and Participants classes
+
 Last PC update: August 5 @ 11:37 am
 Last Repl update: November 13 @ 10:11 pm
 

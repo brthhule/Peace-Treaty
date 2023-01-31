@@ -9,10 +9,10 @@ extern int currentParticipantIndex;
 extern int initialResources [5];
 extern vector <vector <Provinces*>> provincesMap;
 
-//Constructors
-Participants::Participants()
+//Constructor
+Participants::Participants ()
 {
-  createCapital();
+	createCapital();
 	addCommander();
 	initialCapRSS();
   setKingdomName();
@@ -115,4 +115,63 @@ void Participants::setKingdomName(string newName)
 string Participants::getKingdomName()
 {
     return kingdomName;
+}
+
+bool Participants::isAlive()
+{
+  if (provincesNum() > 0 && commandersNum() > 0)
+  {
+    return true;
+  }
+  return false;
+}
+
+void Participants::createAsPlayer(bool choice)
+{
+	playerStatus = choice;
+}
+
+void Participants::viewStats()
+{
+    cout << "Kingdom name: " << kingdomName << "\n\n";
+    int totalPlayerUnits[5];
+    findTotalPlayerUnits(totalPlayerUnits);
+    
+    for (int x = 0; x < 5; x++){
+        std::cout << "Total " << provinceResourcesNames[x] << ": " << totalPlayerResources[x] << endl;}
+    
+    std::cout << endl;
+    
+    for (int x = 0; x < 5; x++){
+        std::cout << "Total " << troopNames[x] << " alive: " << totalPlayerUnits[x] << endl;}
+    
+    std::cout << "Your total army combat power: " << calculatePlayerValues(1) << endl;
+    std::cout << "Your numnber of provinces: " << participantsList[0]->provincesNum() << "\n\n";
+
+    switch (getChar("View all stats? (Y/N) ", "YN", 1)){
+    case 'Y':
+        viewAllStatsFunction();
+    case 'N':
+        std::cout << "Returning to menu" << endl;
+        break;}
+}
+
+vector<int> Participants::calculatePlayerValues(int decision)
+{
+    switch (decision)
+    {
+    case 1:
+    {
+			return totalUnits;
+    }
+    case 2:
+    {
+        return troopsLost;
+    }
+    }
+}
+
+Provinces *Participants::getProvince(int index)
+{
+	return provincesList[index];
 }

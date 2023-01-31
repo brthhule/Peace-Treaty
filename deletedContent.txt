@@ -829,3 +829,41 @@ void introductionHelp ()
     cout << endl;
     std::cout << "\033[;0m"; //NW
 }
+
+int findAmountOfEnemyProvinces()
+{
+    int amountOfProvinces = 0;
+    for (int x = 1; x < participantsList.size(); x++)
+    {
+        amountOfProvinces += participantsList[x].howManyProvinces();
+    }
+    return amountOfProvinces;
+}
+
+void findTotalPlayerUnits(int totalPlayerUnits[5])
+{
+    for (int x = 0; x < 5; x++)
+    {
+        totalPlayerUnits[x] = 0;
+    }
+    for (int x = 0; x < continentSize; x++)
+    {
+        for (int y = 0; y < continentSize; y++)
+        {
+            if (provincesMap[x][y].getBelongsToParticipant() == currentParticipantIndex)
+            {
+                for (int a = 0; a < 5; a++)
+                {
+                    totalPlayerUnits[a] += provincesMap[x][y].getTroopsPresent(a);
+                }
+            }
+        }
+    }
+    for (int b = 0; b < participantsList[currentParticipantIndex].howManyCommanders(); b++)
+    {
+        for (int c = 0; c < 5; c++)
+        {
+            totalPlayerUnits[c] += allCommanders[currentParticipantIndex][b].getTroopsPresent(c);
+        }
+    }
+}

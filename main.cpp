@@ -42,11 +42,7 @@ void resumeGame();
 void startGame(string kingdomName);
 void generateNewContinent(string kingdomName);
 void gamePlay();
-void playerAction(int turn);
 void endScreen();
-void pauseGame();
-void viewPlayerStats();
-char randomPlayerActionChar();
 
 
 void AITurn();
@@ -72,7 +68,6 @@ int initialResources[5] = { 5, 4, 3, 2, 1 };
 int troopsCP[5] = { 1,2,4,8,16 };
 int provinceBuildingsProductionNumbers[6] = { 5,4,3,2,1,2 };
 
-char continueGame = 'Y';
 string kingdomName = " ";
 int totalMaxCommanders = 0;
 
@@ -135,197 +130,61 @@ void startGame(string kingdomName)
 }
 void generateNewContinent(string kingdomName)
 {
-    createMap();
-    for (int x = 0; x <= pNum; x++)
-    {
-        Participants newParticipant;
-        participantsList.push_back(&newParticipant);
-    }
+	createMap();
+	int players = getInt("How many human players are there (including yourself, up to 10)", {1,2,3,4,5,6,7,8,9,10}, 1);
+	for (int x = 0; x <= pNum; x++)
+	{
+		Participants newParticipant;
+		
+		if (x < players)
+			newParticipant.createAsPlayer(true);
+		else
+			newParticipant.createAsPlayer (false);
+		
+		participantsList.push_back(&newParticipant);
+	}
 }
 void gamePlay()
 {
 	string literallyAnything = " ";
 	getInt ("Enter '0' to proceed (screen will clear): \033[31m", {0}, 1);
 	cout << "\033[0m";
-	while (findAmountOfEnemyProvinces () > 0 && participantsList[0]->commandersNum() > 0 && continueGame == 'Y')
+	while (participantsList[0]->isAlive())
 	{
 		for (int x = 0; x < pNum; x++)
 		{
-			PlayerAction newPlayerAction (x);
+			PlayerAction newPlayerAction (participantsList[x]);
+			int nextPlayer = newPlayerAction.initialDecision();
+			if (nextPlayer == -2)
+			{
+				main();
+			}
 		}
-		playerAction();
-		AITurn();
 		turn++;
 		updateprovinceResources();
 	}
 	endScreen();
 }
+
 void endScreen()
 {
-    if (findAmountOfEnemyProvinces() == 0)
-    {
-        std::cout << "Congratulations, you have successfully conquered your enemies and now reign as the Emporer!";
-    }
-    if (participantsList[0]->provincesNum() == 0)
-    {
-        std::cout << "Your enemies have defeated you.";
-    }
-    std::cout << endl;
-    char playAgain = getChar("Play again? (Y/N) ", "YN", 1);
-    if (playAgain == 'Y')
-    {
-        main();
-    }
-}
-
-void playerAction()
-{
-	char repeatPlayerAction = 'Y';
-	do
+	for (int x = 0; x <= pNum; x++)
 	{
-			clearScreen();
-
-			std::cout << "Turn: " << turn << endl << endl;
-			std::cout << "Welcome to the Main menu " << endl;
-			showMap();
-			char courseOfAction = ' ';
-			if (currentParticipantIndex == 0) //If the participant is the player
-			{
-				Lists newList (4);
-				courseOfAction = newList.listOfActions();
-			}
-			else //If the participant is the AI
-			{
-					courseOfAction = randomPlayerActionChar();
-			}
-
-			std::cout << endl;
-			clearScreen();
-
-			switch (courseOfAction)
-			{
-			case 'B':
-			{
-					BuildMA newBuildMA(-1, -1);
-					newBuildMA.findProvinceCoordinates();
-					break;
-			}
-			case 'T':
-			{
-					TrainMA newTrainMA(1, 1);/*Constructor with no arguments didn't work (???)*/
-					newTrainMA.findProvinceCoordinates();
-					newTrainMA.TrainMAFunction();
-					break;
-			}
-			case 'S':
-					viewPlayerStats();
-					break;
-			case 'U':
-			{
-					MapMA newMap;
-					newMap.viewPlayerMap();
-					break;
-			}
-			case 'D':
-			{
-					ArmyDeploymentMA newArmyDeploymentMA;
-					newArmyDeploymentMA.armyDeploymentMF();
-					break;
-			}
-			case 'N':
-					repeatPlayerAction = 'N';
-					break;
-			case 'H':
-			{
-					listOfHelp(4);
-					char whenYouDoneChar = getChar(" ", "P", 2);
-					break;
-			}
-			case 'P':
-			{
-					char pauseGameQuestionChar = getChar("Pausing the game will end this session of gameplay. Proceed? (Y/N): ", "YN", 1);
-					if (pauseGameQuestionChar == 'Y')
-					{
-							pauseGame();
-							repeatPlayerAction = 'N';
-							continueGame = 'N';
-					}
-					std::cout << "Returning to the Main menu... " << endl;
-					break;
-			}
-			}
-	} while (repeatPlayerAction == 'Y');
-}
-
-void AITurn()
-{
-    for (int x = 1; x <= opponentNumber; x++)
-    {
-        //Execute AI turn stuff here
-    }
-}
-
-void viewPlayerStats()
-{
-    cout << "Kingdom name: " << kingdomName << endl << endl;
-    int totalPlayerUnits[5];
-    findTotalPlayerUnits(totalPlayerUnits);
-    
-    for (int x = 0; x < 5; x++){
-        std::cout << "Total " << provinceResourcesNames[x] << ": " << totalPlayerResources[x] << endl;}
-    
-    std::cout << endl;
-    
-    for (int x = 0; x < 5; x++){
-        std::cout << "Total " << troopNames[x] << " alive: " << totalPlayerUnits[x] << endl;}
-    
-    std::cout << "Your total army combat power: " << calculatePlayerValues(1) << endl;
-    std::cout << "Your numnber of provinces: " << participantsList[0]->provincesNum() << "\n\n";
-
-    switch (getChar("View all stats? (Y/N) ", "YN", 1)){
-    case 'Y':
-        viewAllStatsFunction();
-    case 'N':
-        std::cout << "Returning to menu" << endl;
-        break;}
-}
-void pauseGame(){
-    string gameCode; gameCode += continentSize;
-    
-    for (int x = 0; x < continentSize; x++){
-        for (int y = 0; y < continentSize; y++){
-            gameCode += provincesMap[x][y].getBelongsToParticipant();
-        }
-    }
-    std::cout << "Game ended... \nHere is your game code (Copy this code and paste it when using the 'Resume Game' functionality): " << gameCode << endl << endl;
+		if (participantsList[x]->isAlive())
+			std::cout << "Congratulatios to kingdom " << participantsList[x]->getKingdomName() << " for winning. You have successfully conquered your enemies and now reign as the Emperor! \n";
+	}
+	char playAgain = getChar("Play again? (Y/N) ", "YN", 1);
+	if (playAgain == 'Y')
+	{
+			main();
+	}
 }
 
 
-char randomPlayerActionChar()
-{
-    int randomNumber = rand() % 6;//Random number 0 to 5 (inclusive)
-    char randomChar = ' ';
-    switch (randomNumber)
-    {
-    case 0:
-        randomChar = 'B';
-        break;
-    case 1:
-        randomChar = 'T';
-        break;
-    case 2:
-        randomChar = 'V';
-        break;
-    case 3:
-        randomChar = 'M';
-        break;
-    case 4:
-        randomChar = 'A';
-        break;
-    case 5:
-        randomChar = 'G';
-        break;
-    }
-    return randomChar;
-}
+
+
+
+
+
+
 

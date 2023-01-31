@@ -30,6 +30,8 @@ public:
 	void printBuildingStats();
 	char isProvinceACapitalQuestion();
 
+	string getProvinceName();
+
 	/*Mutator Functions*/
 	void updateProvinceScoutLog(int index, int value);
 	void updateBuildingsProduction();
@@ -42,7 +44,7 @@ public:
 	void resetTroopsTrainedThisTurn();
 	void increaseBuildingLevel(int index, int amount);
 	void completeProvinceScoutReport(int accuracy);
-    void addTroopsTrainedThisTurn(int amount);
+  void addTroopsTrainedThisTurn(int amount);
 
 	//public variables
 	vector <int> commandersPresentIndex;
@@ -103,6 +105,7 @@ private:
 	int provinceScoutReport[28] = {};/*
 [27] = turn number of scout report
 [28] = accuracy of scout report*/
+
 
 };
 
