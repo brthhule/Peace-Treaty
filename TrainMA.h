@@ -2,17 +2,17 @@
 #include <iostream>
 #include <vector>
 
+#include "Provinces.h"
+
 class TrainMA
 {
 public:
 	//constructor
-	TrainMA();
-	TrainMA(int xCoordinate, int yCoordinate);
+	TrainMA(Provinces *newP);
 	//other functions
 	void TrainMAFunction();
-	void findProvinceCoordinates();
+	vector <Provinces*> getTrainProvince();
 private:
-	int provinceXCoordinate;
-	int provinceYCoordinate;
+	Provinces *province;
 };
 

@@ -6,13 +6,14 @@
 
 #include "Participants.h"
 #include "CommanderProfile.h"
+#include "AllUnits.h"
 
 class Provinces : public AllUnits
 {
 public:
 	/*Constructors*/
 	Provinces();
-	Provinces(int xCoordinate, int yCoordinate, int index);
+	Provinces(int xCoordinate, int yCoordinate, Participants *newParticipant);
 
 	/*Destructor*/
 
@@ -31,7 +32,10 @@ public:
 	char isProvinceACapitalQuestion();
 
 	string getProvinceName();
-
+  void setDeleteProvince ()
+  {
+    deleteProvince = true;
+  }
 	/*Mutator Functions*/
 	void updateProvinceScoutLog(int index, int value);
 	void updateBuildingsProduction();
@@ -40,11 +44,19 @@ public:
 	void provinceIsACapital();
 	void addCommanderProvince(int commanderIndex);
 	void removeCommanderProvince(int commanderIndex);
-
+	void changeParticipant (Participants *part);
 	void resetTroopsTrainedThisTurn();
 	void increaseBuildingLevel(int index, int amount);
 	void completeProvinceScoutReport(int accuracy);
   void addTroopsTrainedThisTurn(int amount);
+
+  int getCoordinate(char identifier);
+  string printCoordinates();
+  bool deleteStatus();
+
+  
+
+
 
 	//public variables
 	vector <int> commandersPresentIndex;
@@ -100,12 +112,17 @@ private:
 
 	int initialStats[5] = { 5, 4, 3, 2, 1 };
 
-	char isACapital;
+	bool isACapital;
 
 	int provinceScoutReport[28] = {};/*
 [27] = turn number of scout report
 [28] = accuracy of scout report*/
+  bool isNeutral;
 
+  int provinceX;
+  int provinceY;
+  Participants *participant;
+  bool deleteProvince;
 
 };
 

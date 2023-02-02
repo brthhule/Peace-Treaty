@@ -1,3 +1,4 @@
+
 Need to do:
 - set up gameplay-- build, train, attack, scout functionality
 - set up enemy gameplay-- use random number system to build, train, attack, or scout
@@ -410,6 +411,18 @@ January 30:
 
 January 31:
 	12:30 am - 1:35 am (1 hour, 5 min): Moved some stuff from main to Participants, finished the general structure for PlayerAction, Worked on CommanderProfile and Participants classes
+
+February 1:
+  1 min - Deleted changeCanSelectThisUnit function in ALlUnits and leftover functions from previous edits
+  1:55 - 2:00 pm: Started working on TrainMA-- adding objects to it
+  2:05 - 2:20 pm: Kept working on TrainMA-- developing getCoordinates function
+
+February 2:
+  1:55 - 2:20 pm (25 min): Deleted contented in Provinces relating to Capital status because there is already infrastructure for this in Participants. Did some work with MapMA.cpp. Have to do some fixing to update the connection between Provinces and Participants relating to capital status as well as connected what participant goes with what provinces to what provinces belong under what Participant
+
+Changes: 
+- Replaced findProvinceCoordinates with getTrainProvince ()
+- Replaced getTrainBuildCoordinates and getCoordinates with getCoords;
 
 Last PC update: August 5 @ 11:37 am
 Last Repl update: November 13 @ 10:11 pm

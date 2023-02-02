@@ -60,16 +60,15 @@ int Participants::commandersNum()
   commandersList.size();
 }
 
-int Participants::findCommanderIndex(string commanderName)
+int Participants::findCommanderIndex(CommanderProfile *commander)
 {
   for (int x = 0; x < commandersNum(); x++) /*find index of chosen commander unit*/
   {
-		if (commanderName == commandersList[x]->getUnitName())
+		if (&commander == &commandersList[x])
 		{
 				return x;
 		}
 	}
-	return -1;//if something goes wrong
 }
 void Participants::initialCapRSS()
 {

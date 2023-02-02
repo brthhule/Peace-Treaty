@@ -1,13 +1,14 @@
 #include <iostream>
+#include "Participants.h""
 
 class MapMA
 {
 public:
 	//Constructors
-	MapMA();
+	MapMA(Participants *newParticipant);
 
 	void viewPlayerMap();
-	void selectUnitOriginal();
+	void selectUnitOriginal(Provinces *selectedProvince);
 	void selectPlayerProvince();
 	void playerUnitAction();
 	void selectEnemyAction();
@@ -15,8 +16,8 @@ public:
 
 	void scoutLogFunction();
 	void provinceReportLog(char whatReportChar);
+  Participants *returnParticipant();
 
 private:
-	int xCoordinate;
-	int yCoordinate;
+	Participants *participant;
 };

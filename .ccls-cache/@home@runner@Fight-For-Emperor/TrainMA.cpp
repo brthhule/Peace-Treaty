@@ -4,6 +4,7 @@
 #include "Provinces.h"
 #include "coordinateFunctions.h"
 #include "Lists.h"
+#include "Provinces.h"
 
 using namespace std;
 
@@ -13,15 +14,9 @@ extern string troopNames[5];
 extern string provinceResourcesNames[5];
 extern int currentParticipantIndex;
 
-TrainMA::TrainMA()
+TrainMA::TrainMA(Provinces *newP)
 {
-    provinceXCoordinate = 0;
-    provinceYCoordinate = 0;
-}
-TrainMA::TrainMA(int xCoordinate, int yCoordinate)
-{
-    provinceXCoordinate = xCoordinate;
-    provinceYCoordinate = yCoordinate;
+   province = newP;
 }
 
 void TrainMA::TrainMAFunction()
@@ -104,7 +99,7 @@ void TrainMA::TrainMAFunction()
                         char trainingFail = 'S';
                         for (int a = 0; a < 5; a++)
                         {
-                            newProvinceList->subtractResources(a, requiredResources[a]);
+                            newProvinceList->addRSS(a, requiredResources[a] * -1);
                             if (newProvinceList->getResource(a) < 0)
                             {
                                 trainingFail = 'F';
@@ -150,30 +145,26 @@ void TrainMA::TrainMAFunction()
 
 }
 
-void TrainMA::findProvinceCoordinates()
+vector <Provinces*> TrainMA::getTrainProvince()
 {
-    char repeatThisOne = 'Y';
-    do
-    {
-        cout << "Welcome to the Player Train menu" << endl << endl;
-        getTrainBuildCoordinates(provinceXCoordinate, provinceYCoordinate);
+  cout << "Welcome to the Player Train menu" << endl << endl;
+  getTrainBuildCoordinates(provinceXCoordinate, provinceYCoordinate);
 
-        if (provinceXCoordinate == -1 || provinceYCoordinate == -1)
-        {
-            repeatThisOne = 'N';
-            cout << "Returning to Main menu... " << endl;
-        }
-        else
-        {
-            if (provincesMap[provinceXCoordinate][provinceYCoordinate].getBelongsToParticipant() == currentParticipantIndex)
-            {
-                TrainMAFunction();
-            }
-            else
-            {
-                std::cout << "Invalid province elected. Please try again. " << endl;
-            }
-            std::cout << endl;
-        }
-    } while (repeatThisOne == 'Y');
+  if (provinceXCoordinate == -1 || provinceYCoordinate == -1)
+  {
+      repeatThisOne = 'N';
+      cout << "Returning to Main menu... " << endl;
+  }
+  else
+  {
+      if (provincesMap[provinceXCoordinate][provinceYCoordinate].getBelongsToParticipant() == currentParticipantIndex)
+      {
+          TrainMAFunction();
+      }
+      else
+      {
+          std::cout << "Invalid province elected. Please try again. " << endl;
+      }
+      std::cout << endl;
+  }
 }

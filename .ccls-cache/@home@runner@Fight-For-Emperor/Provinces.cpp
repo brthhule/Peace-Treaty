@@ -3,6 +3,7 @@
 
 #include "Provinces.h"
 #include "AllUnits.h"
+#include "coordinateFunctions.h""
 #include "textFunctions.h"
 
 using namespace std;
@@ -41,12 +42,13 @@ Provinces::Provinces()
 	maxInfirmaryCapacity = findMaxInfirmaryCapacity();
 
 	provinceLevel = 1;
-	belongsToParticipant = -1;
+	isNeutral = true;
 	scoutLogTurnLevel[0] = -1;
 	scoutLogTurnLevel[1] = -1;
     troopsTrainedThisTurn = 0;
+  deleteProvince = false;
 }
-Provinces::Provinces(int sendXCoordinate, int sendYCoordinate, int index)
+Provinces::Provinces(int sendXCoordinate, int sendYCoordinate, Participants *newParticipant)
 {
 	//Initialize building levels
 	for (int x = 0; x < sizeof(buildingLevels) / sizeof(int); x++)
@@ -74,13 +76,15 @@ Provinces::Provinces(int sendXCoordinate, int sendYCoordinate, int index)
 	maxGarrison = findMaxGarrison();
 	maxInfirmaryCapacity = findMaxInfirmaryCapacity();
 	provinceLevel = 1;
-	unitXCoordinate = sendXCoordinate;
-	unitYCoordinate = sendYCoordinate;
-	isACapital = 'N';
-	belongsToParticipant = index;
+  
+	provinceX = sendXCoordinate;
+	provinceY = sendYCoordinate;
+  
+	participant = newParticipant;
 	scoutLogTurnLevel[0] = -1;
 	scoutLogTurnLevel[1] = -1;
     troopsTrainedThisTurn = 0;
+  deleteProvince = false;
 }
 
 
@@ -154,10 +158,6 @@ void Provinces::updateProvinceResources()
 		resourcesPresent[x] += buildingsProduction[x];
 	}
 }
-char Provinces::isProvinceACapitalQuestion()
-{
-	return isACapital;
-}
 
 //Other
 void Provinces::setCoordinates(int xCoordinate, int yCoordinate)
@@ -174,7 +174,7 @@ void Provinces::provinceIsACapital()
 	}
 	buildingLevels[5] = 1;
 	buildingLevels[6] = 1;
-	isACapital = 'Y';
+
 }
 void Provinces::resetTroopsTrainedThisTurn()
 {
@@ -239,4 +239,32 @@ int Provinces::returnCommanderIndex(int index)
 void Provinces::addTroopsTrainedThisTurn(int amount)
 {
     troopsTrainedThisTurn += amount;
+}
+
+void Provinces::changeParticipant(Participants *part)
+{
+  participant = part;
+}
+
+int Provinces::getCoordinate (char identifier)
+{
+  switch (identifier)
+  {
+    case 'X':
+      return xCoord;
+    case 'Y':
+      return yCoord;
+    default:
+      return -1;//in case something bad happen
+  }
+}
+
+string Provinces::printCoordinates()
+{
+  cout << "(" << translateCoordinate(xCoord, 'x', 'O') << ", " << translateCoordinate(yCoord, 'y', 'O') << ") "
+}
+
+bool Provinces::deleteStatus()
+{
+  return deleteProvince();
 }

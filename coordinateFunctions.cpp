@@ -20,17 +20,11 @@
 #include "otherFunctions.h"
 
 using namespace std;
-extern vector<vector <Provinces>> provincesMap;
-extern vector < vector <CommanderProfile>> allCommanders;
-extern vector <Provinces> provincesCanSelect;
+extern vector<vector <Provinces*>> provincesMap;
 extern int provinceBuildingsProductionNumbers[6];
 extern int continentSize;
 extern int troopsCP[5];
 extern vector <Participants> participantsList;
-extern int currentParticipantIndex;
-
-//Just copied and pasted the stuff above from otherFunctions.h, take out why you don't need later
-
 
 int translateCoordinate(int coordinate, char indicator, char whichWay)
 {
@@ -69,56 +63,48 @@ int translateCoordinate(int coordinate, char indicator, char whichWay)
     return translation;
 }
 
-void getCoordinates(int identifier, int& xCoordinate, int& yCoordinate)/*Might have have to fix this (check if the coordinate stuff is right)*/
+Provinces* getCoords(int identifier)/*Add funcitonality to add safety incase innvalid values are entered for the coordinates*/
 {
     vector<int> actualCoordinatesAVTwo = {-1};
     for (int x = 1; x <= continentSize; x++)
     {
         actualCoordinatesAVTwo.push_back(x);
     }
-
+    showMap();
     string phrase;
     switch (identifier)
     {
     case 1:
+        printListOfProvinces();
         phrase = "of the province you want to select";
         break;
     case 2:
+        printListOfProvinces();
         phrase = "of the province you want to move to";
         break;
     case 3:
         phrase = "of the army you want to use to attack the target with";
     }
-
     std::cout << "Enter the x coordinate " << phrase << " (Enter '-1' to go back to previous menu) : ";
-    xCoordinate = getInt("Replacement", actualCoordinatesAVTwo, 2);
+    int xCoordinate = getInt("Replacement", actualCoordinatesAVTwo, 2);
     cout << "X: " << xCoordinate << endl;
     if (xCoordinate != -1)
     {
         std::cout << "Enter the y coordinate " << phrase << " (Enter '-1' to go back to previous menu) : ";
-        yCoordinate = getInt("Replacement", actualCoordinatesAVTwo, 2);
+        int yCoordinate = getInt("Replacement", actualCoordinatesAVTwo, 2);
         std::cout << endl;
         cout << "Y: " << yCoordinate << endl;
  
-        if (yCoordinate != 1)
+        if (yCoordinate != -1)
         {
             int replacement = xCoordinate;
             xCoordinate = translateCoordinate(yCoordinate, 'y', 'I');
             yCoordinate = translateCoordinate(replacement, 'x', 'I');
-
-            cout << "X: " << xCoordinate << endl;
-            cout << "Y: " << yCoordinate << endl;
+          return provincesMap[xCoordinate][yCoordinate];
         }
     }
+    exit(0);//May need to use an alternative method by using a fake Provinces object that gets delted later
 }//Can make this an array
-
-void getTrainBuildCoordinates(int& xCoordinate, int& yCoordinate)
-{
-    showMap();
-    printListOfProvinces();
-
-    return getCoordinates(1, xCoordinate, yCoordinate);
-}
 
 int getRandomCoordinate()
 {

@@ -9,7 +9,5 @@ using namespace std;
 
 int translateCoordinate(int coordinate, char indicator, char whichWay);
 
-void getCoordinates(int identifier, int& xCoordinate, int& yCoordinate);
-void getTrainBuildCoordinates(int& xCoordinate, int& yCoordinate);
-
+Provinces* getCoordinates(int identifier);
 int getRandomCoordinate();

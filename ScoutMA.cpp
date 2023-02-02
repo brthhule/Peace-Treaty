@@ -12,32 +12,26 @@ extern int currentParticipantIndex;
 extern int continentSize;
 extern int turn;
 
-ScoutMA::ScoutMA(int targetXCoordinateV, int targetYCoordinateV)
+ScoutMA::ScoutMA(Participants *newParticipant, Provinces *newProvince)
 {
-    targetXCoordinate = targetXCoordinateV;
-    targetYCoordinate = targetYCoordinateV;
-
-    targetParticipantIndex = provincesMap[targetXCoordinateV][targetYCoordinateV].getBelongsToParticipant();
-    enemyLevel = 0;
-    targetInformation[0] = 0;
-    targetInformation[1] = 0;
+  participant = newParticipant;
+   targetProvince = newProvince; 
 }
 
 void ScoutMA::selectTargetToScout() /*So much to fix here... truly so much.... make sure to simplify things later on*/
 {
-    Provinces* enemyProvince = &provincesMap[targetXCoordinate][targetYCoordinate];
     Participants* enemyParticipant = &participantsList[targetParticipantIndex];
-    Participants* attackingParticipant = &participantsList[currentParticipantIndex];
+
     string unitType = " ";
     vector <int> acceptableValues;
     string unitName = " ";
-    std::cout << "Coordinates selected to scout: (" << translateCoordinate(targetXCoordinate, 'x', 'O') << ", " << translateCoordinate(targetYCoordinate, 'y', 'O') << ") ";
+    std::cout << "Coordinates selected to scout: ";
 
     cout << "The following units are at these coordinates: " << endl;
-    cout << "1) Province " << enemyProvince->getUnitName() << " (Level " << enemyProvince->findProvinceLevel() << ") " << endl;
+    cout << "1) Province " << targetProvince->getUnitName() << " (Level " << targetProvince->findProvinceLevel() << ") " << endl;
     acceptableValues.push_back(1);
 
-    for (int b = 0; b < enemyProvince->commandersPresentIndex.size(); b++)
+    for (int b = 0; b < targetProvince->commandersPresentIndex.size(); b++)
     {
         CommanderProfile& newCommander = allCommanders[targetParticipantIndex][enemyProvince->returnCommanderIndex(b)];
         cout << b + 2 << ") Commander " << newCommander.getUnitName() << " (Level " << newCommander.getCommanderLevel() << ") " << endl;

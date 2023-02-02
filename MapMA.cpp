@@ -15,18 +15,16 @@
 
 using namespace std;
 
-extern int currentParticipantIndex;
 extern vector <vector <Provinces>> provincesMap;
-extern vector <vector <CommanderProfile>> allCommanders;
 extern vector <Participants> participantsList;
 extern string troopNames[5];
 extern int troopsCP[5];
 
-MapMA::MapMA ()
+MapMA::MapMA (Participants *newParticipant)
 {
-    xCoordinate = 0;
-    yCoordinate = 0;
+  participant = newParticipant;
 }
+
 void MapMA::viewPlayerMap()
 {
     char whatToDo = ' ';
@@ -43,8 +41,8 @@ void MapMA::viewPlayerMap()
         {
         case 'P':
         {
-            getCoordinates(1, xCoordinate, yCoordinate);
-            if (xCoordinate != -1 && yCoordinate != -1)
+            Provinces *province = getCoords(1);
+            if (province->deleteStatus() != true)
             {
                 selectUnitOriginal();
             }
@@ -64,14 +62,17 @@ void MapMA::viewPlayerMap()
         }
     } while (repeatViewPlayerMap == 'Y');
 }
-void MapMA::selectUnitOriginal()
+Participants* MapMA::returnParticipant()
 {
-    Provinces *newMap = &provincesMap[xCoordinate][yCoordinate];
-    if (newMap->getBelongsToParticipant() == currentParticipantIndex)//If belongs to participant
+  return participant;
+}
+void MapMA::selectUnitOriginal(Provinces *selectedProvince)
+{
+    if (selectedProvince->returnParticipant() == participant)//If belongs to participant
     {
         selectPlayerProvince();
     }
-    else if (newMap->getBelongsToParticipant() == -1)//If empty province
+    else if (selectedProvince->getBelongsToParticipant() == -1)//If empty province
     {
         if (newMap->commandersPresentIndex.size() > 0)//If there are more than 0 commnaders
         {

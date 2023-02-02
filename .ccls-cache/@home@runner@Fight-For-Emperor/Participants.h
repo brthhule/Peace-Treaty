@@ -21,7 +21,7 @@ public:
 
 	//Commander stuff
 	int commandersNum();
-	int findCommanderIndex(string commanderName);
+	int findCommanderIndex(CommanderProfile *commander);
 	void addCommander();
 			
 	//Province stuff
