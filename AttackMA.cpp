@@ -1,10 +1,5 @@
 #include "AttackMA.h"
-#include <iostream>
-#include <vector>
-#include <string>
-#include "CommanderProfile.h"
-#include "Participants.h"
-#include "coordinateFunctions.h"
+
 
 using namespace std;
 

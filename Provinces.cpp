@@ -1,23 +1,4 @@
-#include <iostream>
-#include <vector>
-
 #include "Provinces.h"
-#include "AllUnits.h"
-#include "coordinateFunctions.h""
-#include "textFunctions.h"
-
-using namespace std;
-
-extern vector <Participants> participantsList;
-extern int currentParticipantIndex;
-extern string provinceResourcesNames[5];
-extern string buildingNames[6];
-extern string troopNames[5];
-extern int provinceBuildingsProductionNumbers[6];
-extern int initialResources[5];
-extern int troopsCP[5];
-extern int turn;
-
 //constructors
 Provinces::Provinces()
 {
@@ -62,7 +43,7 @@ Provinces::Provinces(int sendXCoordinate, int sendYCoordinate, Participants *new
 	for (int x = 0; x < 5; x++)
 	{
 		provinceStats[x] = &resourcesPresent[x]; //Set pointer to parent array
-		*provinceStats[x] = initialResources[x];
+		provinceStats[x] = &initialResources[x];
 		provinceStats[x + 6] = &troopsPresent[x];
 		provinceStats[x + 18] = &buildingLevels[x];
 	}
@@ -267,4 +248,13 @@ string Provinces::printCoordinates()
 bool Provinces::deleteStatus()
 {
   return deleteProvince;
+}
+
+void Provinces::addResources(int index, int amount)
+{
+	resourcesPresent[index] += amount;
+}
+int Provinces::getR(int index)
+{
+	return resourcesPresent[index];
 }

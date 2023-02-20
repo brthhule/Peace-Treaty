@@ -2,7 +2,10 @@
 #include <iostream>
 #include <vector>
 
-#include "Provinces.h"
+#include "Units.h"
+#include "textFunctions.h"
+#include "coordinateFunctions.h"
+#include "Lists.h"
 
 class TrainMA
 {

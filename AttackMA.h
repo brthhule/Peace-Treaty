@@ -1,7 +1,10 @@
 #include <iostream>
 #include <string>
+#include <vector>
 
-#include "CommanderProfile.h"
+
+#include "Units.h"
+#include "coordinateFunctions.h"
 
 using namespace std;
 

@@ -1,29 +1,45 @@
-#pragma once
 #include <iostream>
 #include <string>
+#include <vector>
+
+#include "otherFunctions.h"
+#include "textFunctions.h"
+#include "Participants.h"
+#include "Provinces.h"
+#include "Lists.h"
+#include "coordinateFunctions.h"
+#include "CommanderProfile.h"
+
 using namespace std;
+
 class ArmyDeploymentMA
 {
 public:
 	//constructor
 	ArmyDeploymentMA();
-	ArmyDeploymentMA(int xCoordinate, int yCoordinate);
+	ArmyDeploymentMA(Participants *newP);
 
 	//Accessors
-	void printCostsToUpgradeACommander(int commanderUpgradeCosts[5], int indexOfCommander);
+	void printCosts(vector<int>costs, string type);
 
 	//Other Function stuff
 	void armyDeploymentMF();
 	void trainCommanders();
-	void upgradeCommanders();
+	void proceedWithTraining(vector <int> trainCosts);
+	void upgradeCommandersOne();
+	void upgradeCommandersTwo();
 	void viewArmyOverview();
 	void deployCommanderMF();
-	void printCostsToTrainAnotherCommander(int trainArmyCommanderCosts[5]);
+
+	CommanderProfile *selectCommander(char &successfulSelection);
 
 
 	void deployCommanderDisplayInformation(int commandersInCapital);
 private:
 	int capitalX;
 	int capitalY;
+	Participants *participant;
+	Provinces *capitalProvince;
+	int commandersNum;
 };
 

@@ -1,31 +1,12 @@
 #include "otherFunctions.h"
-#include "textFunctions.h"
-#include "Provinces.h"
-#include "CommanderProfile.h"
-#include "AllUnits.h"
-#include <iostream>
-#include <string.h>
-#include <string>
-#include <vector>
-#include <cstdlib>
-#include <time.h>
-#include <stdlib.h>  
-#include <ctime>
-#include <chrono>
-#include <thread>
 
-#include <stdlib.h>
-#include "AttackMA.h"
-#include "Participants.h"
 
 using namespace std;
 extern vector<vector <Provinces>> provincesMap;
-extern vector < vector <CommanderProfile>> allCommanders;
 extern vector <Provinces> provincesCanSelect;
 extern int provinceBuildingsProductionNumbers[6];
 extern int continentSize;
 extern int troopsCP[5];
-extern vector <Participants> participantsList;
 extern int currentParticipantIndex;
 
 
@@ -249,40 +230,7 @@ char checkChar(string stringAV, string input)
 
 
 
-string getNewName(Participants *newP)
-{
-	Participants *participant = newP;
-  string newName = " ";  
-  char repeatGetName = 'N';
-	newName = getNewNameTwo(participant, newName);
-    //Check to make sure that the name isn't used by any other units the participant has
 
-    return newName;
-}
-string getNewNameTwo(Participants *participant, string &newName)
-{
-	newName = createRandomName();
-	//cout << "Check provinces" << endl;
-	for (int x = 0; x < participant->provincesNum(); x++) //If any provinces of the participant have the name
-	{
-		Provinces* newProvince = participant->getProvince(x);
-		if (newName == newProvince -> getProvinceName())
-		{
-			getNewNameTwo(participant, newName);
-		}
-	}
-	//cout << "Check commanders" << endl;
-	for (int x = 0; x < participant->commandersNum(); x++)
-	{
-		CommanderProfile* newCommander = &allCommanders[currentParticipantIndex][x];
-		if (newName == newCommander->getUnitName())
-		{
-			getNewNameTwo(participant, newName);
-		}
-	}
-
-
-}
 
 string createRandomName()
 {

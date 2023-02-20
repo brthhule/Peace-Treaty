@@ -1,10 +1,5 @@
 #include "TrainMA.h"
-#include "textFunctions.h"
-#include "AllUnits.h"
-#include "Provinces.h"
-#include "coordinateFunctions.h"
-#include "Lists.h"
-#include "Provinces.h"
+
 
 using namespace std;
 

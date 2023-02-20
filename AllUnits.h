@@ -3,21 +3,21 @@
 
 #include <string>
 #include <iostream>
-#include "otherFunctions.h"
-#include "Participants.h""
 
+#include "Participants.h"
 using namespace std;
 
 class AllUnits
 {
 public:
 	//constructor
-	AllUnits(Participants *part);
+	AllUnits();
+	AllUnits(int index);
 
 	int getCommanderArmyCP();
 	int getTroopsPresent(int troopTypeIndex);
 	int getTotalCP();
-	Participants *participantBelong();
+	int getParticipantIndex();
 	
 
 	//Troops Functions
@@ -48,7 +48,7 @@ protected:
 	int xCoord = 0;
 	int yCoord = 0;
 	char canSelectThisUnit;
-	Participants *participant;//Participant index of the Participant object a unit belongs to
+	int participantIndex;
 	string unitName;
 };
 

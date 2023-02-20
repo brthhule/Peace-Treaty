@@ -15,10 +15,10 @@
 
 
 //Player infrastructure
-#include "Participants.h"
-#include "AllUnits.h"
 #include "Provinces.h"
+#include "Participants.h"
 #include "CommanderProfile.h"
+
 
 //Miscellaneous
 #include "coordinateFunctions.h"

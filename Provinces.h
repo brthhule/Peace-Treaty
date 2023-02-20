@@ -1,12 +1,17 @@
 #ifndef PROVINCES_H
 #define PROVINCES_H
 
-#include <vector>
-#include <iostream>
-
-#include "Participants.h"
-#include "CommanderProfile.h"
 #include "AllUnits.h"
+
+extern vector <Participants> participantsList;
+extern int currentParticipantIndex;
+extern string provinceResourcesNames[5];
+extern string buildingNames[6];
+extern string troopNames[5];
+extern int provinceBuildingsProductionNumbers[6];
+extern int initialResources[5];
+extern int troopsCP[5];
+extern int turn;
 
 class Provinces : public AllUnits
 {
@@ -28,6 +33,9 @@ public:
 	int getTroopsTrainedThisTurn();
 	int findProvinceLevel();
 
+	void addResources(int index, int amount);
+	int getR (int index);
+
 	void printBuildingStats();
 	char isProvinceACapitalQuestion();
 
@@ -44,7 +52,7 @@ public:
 	void provinceIsACapital();
 	void addCommanderProvince(int commanderIndex);
 	void removeCommanderProvince(int commanderIndex);
-	void changeParticipant (Participants *part);
+	void changeParticipant (Participants &part);
 	void resetTroopsTrainedThisTurn();
 	void increaseBuildingLevel(int index, int amount);
 	void completeProvinceScoutReport(int accuracy);

@@ -1,8 +1,12 @@
 #include <iostream>
 #include <string.h>
 #include <vector>
+#include <string>
+#include <stdlib.h>
 
-#include "AllUnits.h"
+#include "Units.h"
+#include "otherFunctions.h"
+#include "coordinateFunctions.h"
 
 using namespace std;
 

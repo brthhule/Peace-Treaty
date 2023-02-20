@@ -1,3 +1,2 @@
 AttackMA.o AttackMA.d : AttackMA.cpp AttackMA.h CommanderProfile.h AllUnits.h \
-  otherFunctions.h Participants.h Provinces.h textFunctions.h \
-  coordinateFunctions.h
+  Participants.h Provinces.h textFunctions.h coordinateFunctions.h

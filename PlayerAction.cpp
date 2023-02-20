@@ -1,11 +1,5 @@
 #include "PlayerAction.h"
-#include "Lists.h"
-#include "BuildMA.h"
-#include "TrainMA.h"
-#include "otherFunctions.h"
-#include "ArmyDeploymentMA.h"
-#include "MapMA.h"
-#include <cmath>
+
 
 using namespace std;
 extern int turn;

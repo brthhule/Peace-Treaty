@@ -1,3 +1,2 @@
-ScoutMA.o ScoutMA.d : ScoutMA.cpp ScoutMA.h Provinces.h Participants.h \
-  CommanderProfile.h AllUnits.h otherFunctions.h textFunctions.h \
-  coordinateFunctions.h
+ScoutMA.o ScoutMA.d : ScoutMA.cpp ScoutMA.h Provinces.h CommanderProfile.h \
+  AllUnits.h Participants.h textFunctions.h coordinateFunctions.h

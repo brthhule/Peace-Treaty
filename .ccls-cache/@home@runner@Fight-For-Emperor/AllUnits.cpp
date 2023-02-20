@@ -1,11 +1,6 @@
-
-#include <string>
-#include <iostream>
 #include "AllUnits.h"
-#include "CommanderProfile.h"
-#include "Provinces.h"
-
 using namespace std;
+
 /*int resourcesPresent[5];
 	int troopsPresent[5];
 	int troopsInjured[5];
@@ -20,7 +15,7 @@ extern string troopNames[5];
 extern int currentParticipantIndex;//Fix this at some point-- make sure right index is sent to constructor
 
 //Constructor
-AllUnits::AllUnits(Participants *part)
+AllUnits::AllUnits(int index)
 {
 	for (int x = 0; x < 5; x++)
 	{
@@ -32,11 +27,9 @@ AllUnits::AllUnits(Participants *part)
 	totalTroops = 0;
 	foodConsumption = 0;
 	canSelectThisUnit = 'N';
-	participant = part;
+	participantIndex = index;
 
 }
-
-
 
 //Accessor Functions
 int AllUnits::getResource(int resourceIndex)
@@ -61,7 +54,7 @@ int AllUnits::getTotalCP()
 	return totalCP;
 }
 
-Participants* AllUnits::participantBelong()
+int AllUnits::getParticipantIndex()
 {
 	return participant;
 }
@@ -113,4 +106,6 @@ void AllUnits::addInjuredTroops(int troopIndex, int troopAmount)
 {
 	troopsInjured[troopIndex] += troopAmount;
 }
+
+
 

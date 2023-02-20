@@ -1,8 +1,5 @@
 #include "ScoutMA.h"
-#include "Provinces.h"
-#include "Participants.h"
 
-#include "coordinateFunctions.h"
 
 
 extern vector <vector <Provinces>> provincesMap;

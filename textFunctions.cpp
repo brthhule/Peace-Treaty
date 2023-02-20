@@ -1,11 +1,7 @@
-#include <iostream>
-#include <string.h>
-#include <string>
-#include <stdlib.h>
-#include "Provinces.h"
+
+
 #include "textFunctions.h"
-#include "otherFunctions.h"
-#include "coordinateFunctions.h"
+
 
 
 using namespace std;

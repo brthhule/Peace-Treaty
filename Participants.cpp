@@ -1,10 +1,13 @@
 #include <iostream>
 #include <vector>
 #include "Participants.h"
-#include "otherFunctions.h"
-#include "coordinateFunctions.h"
+
 
 using namespace std;
+
+#include <iostream>
+#include "Units.h"
+
 extern int currentParticipantIndex;
 extern int initialResources [5];
 extern vector <vector <Provinces*>> provincesMap;
@@ -173,4 +176,54 @@ vector<int> Participants::calculatePlayerValues(int decision)
 Provinces *Participants::getProvince(int index)
 {
 	return provincesList[index];
+}
+
+string Participants::getNewName(Participants *newP)
+{
+	Participants *participant = newP;
+  string newName = " ";  
+  char repeatGetName = 'N';
+	newName = getNewNameTwo(participant, newName);
+    //Check to make sure that the name isn't used by any other units the participant has
+
+    return newName;
+}
+string Participants::getNewNameTwo(Participants *participant, string &newName)
+{
+	newName = createRandomName();
+	//cout << "Check provinces" << endl;
+	for (int x = 0; x < participant->provincesNum(); x++) //If any provinces of the participant have the name
+	{
+		Provinces* newProvince = participant->getProvince(x);
+		if (newName == newProvince -> getProvinceName())
+		{
+			getNewNameTwo(participant, newName);
+		}
+	}
+	//cout << "Check commanders" << endl;
+	for (int x = 0; x < participant->commandersNum(); x++)
+	{
+		CommanderProfile* newCommander = &allCommanders[currentParticipantIndex][x];
+		if (newName == newCommander->getUnitName())
+		{
+			getNewNameTwo(participant, newName);
+		}
+	}
+
+
+}
+
+CommanderProfile *Participants::getCommander(int index)
+{
+	return commandersList[index];
+}
+
+vector <int> Participants::getTrainCosts ()
+{
+	return trainCosts;
+}
+
+int Participants::getMaxCommanders()
+{
+	return maxCommanders;
 }

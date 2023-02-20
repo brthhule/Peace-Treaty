@@ -1,10 +1,21 @@
+#ifndef OTHERFUNCTIONS
+#define OTHERFUNCTIONS
+
 #include <iostream>
 #include <string.h>
 #include <string>
 #include <vector>
+#include <cstdlib>
+#include <time.h>
+#include <stdlib.h>  
+#include <ctime>
+#include <chrono>
+#include <thread>
+#include <stdlib.h>
 
-#include "AllUnits.h"
-#include "Participants.h"
+#include "textFunctions.h"
+#include "AttackMA.h"
+#include "Units.h"
 
 using namespace std;
 
@@ -15,13 +26,11 @@ char checkChar(string inputAV, string input);
 int getInt(string textToDisplay, vector <int> acceptableValues, int caseInstance);
 int checkInt(vector<int>& acceptableValuesTwo, string input);
 void pauseGame();
-string getNewNameTwo (Participants *participant, string &newName);
 
 void showMap();
 void updateprovinceResources();
 void createMap();
 
-string getNewName(Participants *newP);
 string createRandomName();
 char findConsonant(int randomNumber);
 char findVowel(int randomNumber);
@@ -29,3 +38,5 @@ char findVowel(int randomNumber);
 int findAmountOfEnemyProvinces();
 
 void clearScreen ();
+
+#endif

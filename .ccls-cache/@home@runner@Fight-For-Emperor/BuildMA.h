@@ -1,3 +1,12 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include "otherFunctions.h"
+#include "textFunctions.h"
+#include "Units.h"
+#include "coordinateFunctions.h"
+#include "Lists.h"
+
 class BuildMA
 {
 public:

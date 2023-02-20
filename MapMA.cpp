@@ -1,19 +1,5 @@
-#include <iostream>
-
-#include "otherFunctions.h"
 #include "MapMA.h"
-#include "textFunctions.h"
-#include "Provinces.h"
-#include "CommanderProfile.h"
-#include "Participants.h"
-#include "BuildMA.h"
-#include "ScoutMA.h"
-#include "AttackMA.h"
-#include "TrainMA.h"
-#include "Lists.h"
-#include "coordinateFunctions.h"
 
-using namespace std;
 
 extern vector <vector <Provinces>> provincesMap;
 extern vector <Participants> participantsList;

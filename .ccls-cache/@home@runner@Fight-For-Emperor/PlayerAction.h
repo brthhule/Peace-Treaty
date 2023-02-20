@@ -1,5 +1,16 @@
+#ifndef PLAYERACTION
+#define PLAYERACTION
+
 #include <iostream>
-#include "Participants.h""
+#include <cmath>
+
+#include "Units.h"
+#include "Lists.h"
+#include "BuildMA.h"
+#include "TrainMA.h"
+#include "otherFunctions.h"
+#include "ArmyDeploymentMA.h"
+#include "MapMA.h"
 
 using namespace std;
 
@@ -13,3 +24,5 @@ public:
 private:
 	Participants *participant;
 }
+
+#endif

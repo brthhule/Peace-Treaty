@@ -1,13 +1,8 @@
-#ifndef PARTICIPANTS_H
-#define PARTICIPANTS_H
-
 #include <iostream>
 #include <vector>
 
-#include "CommanderProfile.h"
-#include "Provinces.h"
-
 using namespace std;
+
 
 class Participants
 {
@@ -15,14 +10,19 @@ public:
 	//constructors
 	Participants();
 
+	#include "otherFunctions.h"
+	#include "coordinateFunctions.h"
+
 	//Capital stuff
 	Provinces* getCapital();
 	void setCapital(Provinces *newProvince);
-
+	string getNewName(Participants *newP);
+string getNewNameTwo (Participants *participant, string &newName);
 	//Commander stuff
 	int commandersNum();
 	int findCommanderIndex(CommanderProfile *commander);
 	void addCommander();
+	CommanderProfile* getCommander(int index);
 			
 	//Province stuff
 	int provincesNum();
@@ -41,7 +41,11 @@ public:
 	void viewStats();
 	vector<int> calculatePlayerValues (int decision);
 	Provinces *getProvince (int index);
-	
+
+	int getMaxCommanders ();
+		
+	vector <int> getTrainCosts();
+
 	int findAllUnits();//Create funciton
 	vector <int> troopsLost = { 0,0,0,0,0 };
 	vector <int> totalUnits = { 0,0,0,0,0 }; /*0) Militia, 1) Guards, 2) Cavalry, 3) 
@@ -59,8 +63,6 @@ private:
 	int AIMainAction [5];
 	int AIBuildMA [2];
 	int AITroopMA [3];
-
-	int pMaxCommanders;
-
+vector <int> trainCosts = {5, 4, 3, 2, 1};
+	int maxCommanders;
 };
-#endif

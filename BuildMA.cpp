@@ -1,14 +1,5 @@
-#include <iostream>
-#include <vector>
-#include <string>
-
 #include "BuildMA.h"
-#include "otherFunctions.h"
-#include "Provinces.h"
-#include "textFunctions.h"
-#include "Participants.h"
-#include "coordinateFunctions.h"
-#include "Lists.h""
+
 
 extern vector <Participants> participantsList;
 extern int continentSize;

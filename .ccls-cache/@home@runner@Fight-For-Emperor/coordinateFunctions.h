@@ -2,8 +2,18 @@
 #include <string.h>
 #include <string>
 #include <vector>
+#include <cstdlib>
+#include <time.h>
+#include <stdlib.h>  
+#include <ctime>
+#include <chrono>
+#include <thread>
+#include <stdlib.h>
 
-#include "AllUnits.h"
+#include "Units.h"
+#include "textFunctions.h"
+#include "AttackMA.h"
+#include "otherFunctions.h"
 
 using namespace std;
 

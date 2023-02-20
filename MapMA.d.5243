@@ -1,0 +1,3 @@
+MapMA.o: MapMA.cpp otherFunctions.h AllUnits.h MapMA.h textFunctions.h \
+  Provinces.h CommanderProfile.h BuildMA.h ScoutMA.h AttackMA.h \
+  TrainMA.h Lists.h coordinateFunctions.h

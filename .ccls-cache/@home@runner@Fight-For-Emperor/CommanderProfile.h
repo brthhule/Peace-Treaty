@@ -1,12 +1,4 @@
-#ifndef COMMANDERPROFILE_H
-#define COMMANDERPROFILE_H
-
-#include <iostream>
 #include "AllUnits.h"
-#include "Provinces.h"
-#include "textFunctions.h"
-
-using namespace std;
 
 class CommanderProfile: public AllUnits
 {
@@ -33,13 +25,18 @@ public:
 
 	//Other commander stuff
 	int getCommanderLevel();
-	void addCommanderLevel(int amount);
+	void addCommanderLevel();
+	vector <int> getUpgradeCosts();
+	string getCommanderName();
+	vector <int> getTrainCosts();
 
 	//Moving
 	void moveUnit();
 	vector <Provinces*> moveUnitOne ();
 	char hasCommanderMoved();
 	void resetCommanderMoved();
+
+	int returnCoordinate(char which);
 
 private:
 	int* commanderArmyStats[20];/*
@@ -95,6 +92,7 @@ private:
 	string MANDescriptions[5] = { "Resources in", "Troops present in", "Troops injured in", "Other stats of" };//check
 	string namesOfMAN[20];//check
 	Provinces *provinceLocation;
-};
 
-#endif
+	vector <int> costToUpgrade = {5, 4, 3, 2, 1};
+
+};
