@@ -1,3 +1,6 @@
+#ifndef ARMYDEPLOYMENTMA_H
+#define ARMYDEPLOYMENTMA_H
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -43,3 +46,4 @@ private:
 	int commandersNum;
 };
 
+#endif

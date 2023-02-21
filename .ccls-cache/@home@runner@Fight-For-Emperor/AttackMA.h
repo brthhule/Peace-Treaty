@@ -1,10 +1,12 @@
+#ifndef ATTACKMA_H
+#define ATTACKMA_H
+
 #include <iostream>
 #include <string>
 #include <vector>
 
-
-#include "Units.h"
 #include "coordinateFunctions.h"
+#include "Participants.h"
 
 using namespace std;
 
@@ -31,3 +33,5 @@ private:
 	vector <int> commandersBeingAttackedIndices;
 	int enemyParticipantIndex;
 };
+
+#endif

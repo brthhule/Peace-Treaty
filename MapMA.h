@@ -1,15 +1,19 @@
+#ifndef MAPMA_H
+#define MAPMA_H
+
 #include <iostream>
-#include "Units.h"
 
 #include "otherFunctions.h"
 #include "textFunctions.h"
-#include "Units.h"
 #include "BuildMA.h"
 #include "ScoutMA.h"
 #include "AttackMA.h"
 #include "TrainMA.h"
 #include "Lists.h"
 #include "coordinateFunctions.h"
+
+#include "Participants.h"
+#include "Provinces.h"
 
 using namespace std;
 
@@ -33,3 +37,5 @@ public:
 private:
 	Participants *participant;
 };
+
+#endif

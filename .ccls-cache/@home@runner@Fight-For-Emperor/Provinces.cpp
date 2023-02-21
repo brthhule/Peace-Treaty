@@ -29,7 +29,7 @@ Provinces::Provinces()
     troopsTrainedThisTurn = 0;
   deleteProvince = false;
 }
-Provinces::Provinces(int sendXCoordinate, int sendYCoordinate, Participants *newParticipant)
+Provinces::Provinces(int sendXCoordinate, int sendYCoordinate, int pIndex)
 {
 	//Initialize building levels
 	for (int x = 0; x < sizeof(buildingLevels) / sizeof(int); x++)
@@ -61,7 +61,7 @@ Provinces::Provinces(int sendXCoordinate, int sendYCoordinate, Participants *new
 	provinceX = sendXCoordinate;
 	provinceY = sendYCoordinate;
   
-	participant = newParticipant;
+	participantIndex = pIndex;
 	scoutLogTurnLevel[0] = -1;
 	scoutLogTurnLevel[1] = -1;
     troopsTrainedThisTurn = 0;

@@ -50,7 +50,7 @@ void BuildMA::findProvinceCoordinates()
         }
         else
         {
-            if (provincesMap[provinceXCoordinate][provinceYCoordinate].getBelongsToParticipant() == currentParticipantIndex)
+            if (provincesMap[provinceXCoordinate][provinceYCoordinate].getParticipantIndex() == currentParticipantIndex)
             {
                 playerBuildFunction();
             }
@@ -71,7 +71,7 @@ void BuildMA::playerBuildFunction()
     clearScreen();
     std::cout << "---------- Start printing province information ----------" << endl;
     cout << "\033[34m";
-    cout << "Province of kingdom " << participantsList[provincesMap[provinceXCoordinate][provinceYCoordinate].getBelongsToParticipant()].getKingdomName() << endl;
+    cout << "Province of kingdom " << participantsList[provincesMap[provinceXCoordinate][provinceYCoordinate].getParticipantIndex()].getKingdomName() << endl;
     cout << "Coordinates: (" << translateCoordinate(provinceYCoordinate, 'x', 'O') << ", " << translateCoordinate(provinceXCoordinate, 'y', 'O') << ") " << endl << endl;
     cout << "\033[0m";
     provincesMap[provinceXCoordinate][provinceYCoordinate].printResources();
@@ -142,7 +142,7 @@ void BuildMA::upgradeBuildings()
                 char failOrWork = 'W'; /*delete this? not necessary-- will always return 'Y'*/
                 for (int x = 0; x < 5; x++)
                 {
-                    newProvince->subtractResources(x, requiredResources[x]);
+                    newProvince->addRSS(x, requiredResources[x] * -1);
                     if (newProvince->getResource(x) < 0)
                     {
                         failOrWork = 'F';

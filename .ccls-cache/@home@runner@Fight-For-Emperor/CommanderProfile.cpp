@@ -1,7 +1,6 @@
 #include "CommanderProfile.h"
 
 extern vector<vector<Provinces>> provincesMap;
-extern vector<Participants> participantsList;
 extern string provinceResourcesNames[5];
 extern string troopNames[5];
 extern int turn;
@@ -20,7 +19,7 @@ CommanderProfile::CommanderProfile() {
   hasMoved = 'N';
   maxTroops = 0;
   totalMaxResources = 0;
-  indexInList = 0;
+  commadnerIndex = 0;
   changeUnitName("Unnamed");
 }
 CommanderProfile::CommanderProfile(int level, string name) {
@@ -53,7 +52,7 @@ CommanderProfile::CommanderProfile(int level, string name) {
   namesOfMAN[19] = "Army Food consumption";
   maxTroops = commanderLevel * 10;
   totalMaxResources = 0;
-  indexInList = index;
+  commanderIndex = index;
   changeUnitName(name);
 }
 /*Destructor*/

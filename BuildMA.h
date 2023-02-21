@@ -1,9 +1,11 @@
+#ifndef BUILDMA_H
+#define BUILDMA_H
+
 #include <iostream>
 #include <vector>
 #include <string>
 #include "otherFunctions.h"
 #include "textFunctions.h"
-#include "Units.h"
 #include "coordinateFunctions.h"
 #include "Lists.h"
 
@@ -29,3 +31,4 @@ private:
 	double requiredResourcesBarracks [5] = {1, 1, 1, 1, 0.2};*/
 };
 
+#endif

@@ -1,23 +1,5 @@
-#include "otherFunctions.h"
-#include "textFunctions.h"
-#include "Provinces.h"
-#include "CommanderProfile.h"
-#include "AllUnits.h"
-#include <iostream>
-#include <string.h>
-#include <string>
-#include <vector>
-#include <cstdlib>
-#include <time.h>
-#include <stdlib.h>  
-#include <ctime>
-#include <chrono>
-#include <thread>
-#include <stdlib.h>
-#include "AttackMA.h"
-#include "Participants.h"
 #include "coordinateFunctions.h"
-#include "otherFunctions.h"
+
 
 using namespace std;
 extern vector<vector <Provinces*>> provincesMap;

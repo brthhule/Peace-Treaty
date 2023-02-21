@@ -38,7 +38,7 @@ void showMap()
         {
             char letter = ' ';//Fix this later
             char identifierThingy = ' ';
-            if (provincesMap[x][y].getBelongsToParticipant() == currentParticipantIndex)
+            if (provincesMap[x][y].getParticipantIndex() == currentParticipantIndex)
             {
                 std::cout << "\033[;34m";
                 identifierThingy = 'H';
@@ -51,7 +51,7 @@ void showMap()
                     letter = 'p';
                 }
             }
-            else if (provincesMap[x][y].getBelongsToParticipant() != -1)
+            else if (provincesMap[x][y].getParticipantIndex() != -1)
             {
                 cout << "\033[;31m";
                 identifierThingy = 'V';
@@ -389,7 +389,7 @@ void pauseGame(){
     
     for (int x = 0; x < continentSize; x++){
         for (int y = 0; y < continentSize; y++){
-            gameCode += provincesMap[x][y].getBelongsToParticipant();
+            gameCode += provincesMap[x][y].getParticipantIndex();
         }
     }
     std::cout << "Game ended... \nHere is your game code (Copy this code and paste it when using the 'Resume Game' functionality): " << gameCode << endl << endl;

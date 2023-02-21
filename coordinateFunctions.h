@@ -1,3 +1,6 @@
+#ifndef COORDINATEFUNCTIONS_H
+#define COORDINATEFUNCTIONS_H
+
 #include <iostream>
 #include <string.h>
 #include <string>
@@ -10,7 +13,7 @@
 #include <thread>
 #include <stdlib.h>
 
-#include "Units.h"
+#include "Provinces.h"
 #include "textFunctions.h"
 #include "AttackMA.h"
 #include "otherFunctions.h"
@@ -21,3 +24,5 @@ int translateCoordinate(int coordinate, char indicator, char whichWay);
 
 Provinces* getCoordinates(int identifier);
 int getRandomCoordinate();
+
+#endif

@@ -1,0 +1,4 @@
+main.o: main.cpp Provinces.h AllUnits.h Participants.h otherFunctions.h \
+  textFunctions.h coordinateFunctions.h AttackMA.h CommanderProfile.h \
+  Lists.h BuildMA.h ArmyDeploymentMA.h ScoutMA.h MapMA.h TrainMA.h \
+  PlayerAction.h

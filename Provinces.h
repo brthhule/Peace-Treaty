@@ -2,9 +2,8 @@
 #define PROVINCES_H
 
 #include "AllUnits.h"
+#include "coordinateFunctions.h"
 
-extern vector <Participants> participantsList;
-extern int currentParticipantIndex;
 extern string provinceResourcesNames[5];
 extern string buildingNames[6];
 extern string troopNames[5];
@@ -18,7 +17,7 @@ class Provinces : public AllUnits
 public:
 	/*Constructors*/
 	Provinces();
-	Provinces(int xCoordinate, int yCoordinate, Participants *newParticipant);
+	Provinces(int xCoordinate, int yCoordinate, int pIndex);
 
 	/*Destructor*/
 
@@ -52,7 +51,7 @@ public:
 	void provinceIsACapital();
 	void addCommanderProvince(int commanderIndex);
 	void removeCommanderProvince(int commanderIndex);
-	void changeParticipant (Participants &part);
+	void changeParticipant (int num);
 	void resetTroopsTrainedThisTurn();
 	void increaseBuildingLevel(int index, int amount);
 	void completeProvinceScoutReport(int accuracy);
@@ -129,8 +128,9 @@ private:
 
   int provinceX;
   int provinceY;
-  Participants *participant;
   bool deleteProvince;
+
+	int participantIndex;
 
 };
 

@@ -8,7 +8,6 @@ extern int continentSize;
 extern int enemyDifficulty;
 
 extern vector <vector <Provinces>> provincesMap;
-extern vector <vector <CommanderProfile>> allCommanders;
 extern int troopsCP[5];
 extern string provinceResourcesNames[5];
 extern vector <Participants> participantsList;

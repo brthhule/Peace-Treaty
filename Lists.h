@@ -1,3 +1,6 @@
+#ifndef LISTS_H
+#define LISTS_H
+
 #include <iostream>
 
 class Lists
@@ -24,3 +27,5 @@ public:
     private:
         int identifier;
 };
+
+#endif

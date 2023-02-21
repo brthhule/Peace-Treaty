@@ -15,7 +15,6 @@
 
 #include "textFunctions.h"
 #include "AttackMA.h"
-#include "Units.h"
 
 using namespace std;
 

@@ -1,5 +1,10 @@
+#ifndef PARTICIPANTS_H
+#define PARTICIPANTS_H
+
 #include <iostream>
 #include <vector>
+#include "Provinces.h"
+#include "CommanderProfile.h"
 
 using namespace std;
 
@@ -41,6 +46,8 @@ string getNewNameTwo (Participants *participant, string &newName);
 	void viewStats();
 	vector<int> calculatePlayerValues (int decision);
 	Provinces *getProvince (int index);
+	void setParticipantIndex(int num);
+	int getParticipantIndex();
 
 	int getMaxCommanders ();
 		
@@ -65,4 +72,7 @@ private:
 	int AITroopMA [3];
 vector <int> trainCosts = {5, 4, 3, 2, 1};
 	int maxCommanders;
+	int participantIndex;
 };
+
+#endif

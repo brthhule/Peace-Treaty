@@ -1,10 +1,10 @@
-#ifndef PLAYERACTION
-#define PLAYERACTION
+#ifndef PLAYERACTION_H
+#define PLAYERACTION_H
 
 #include <iostream>
 #include <cmath>
 
-#include "Units.h"
+#include "Participants.h"
 #include "Lists.h"
 #include "BuildMA.h"
 #include "TrainMA.h"

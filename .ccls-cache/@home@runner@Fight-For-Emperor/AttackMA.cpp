@@ -1,8 +1,5 @@
 #include "AttackMA.h"
-#include <iostream>
-#include <vector>
-#include <string>
-#include "coordinateFunctions.h"
+
 
 using namespace std;
 

@@ -1,4 +1,8 @@
+#ifndef COMMANDERPROFILE_H
+#define COMMANDERPROFILE_H
+
 #include "AllUnits.h"
+#include "Provinces.h"
 
 class CommanderProfile: public AllUnits
 {
@@ -94,5 +98,8 @@ private:
 	Provinces *provinceLocation;
 
 	vector <int> costToUpgrade = {5, 4, 3, 2, 1};
+	int commanderIndex;
 
 };
+
+#endif

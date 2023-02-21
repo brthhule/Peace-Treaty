@@ -1,8 +1,11 @@
+#ifndef TRAINMA_H
+#define TRAINMA_H
+
 #include <iostream>
 #include <iostream>
 #include <vector>
 
-#include "Units.h"
+#include "Provinces.h"
 #include "textFunctions.h"
 #include "coordinateFunctions.h"
 #include "Lists.h"
@@ -18,4 +21,6 @@ public:
 private:
 	Provinces *province;
 };
+
+#endif
 

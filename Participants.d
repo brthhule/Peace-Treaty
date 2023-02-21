@@ -1,3 +1,3 @@
-Participants.o Participants.d : Participants.cpp Participants.h Provinces.h \
-  CommanderProfile.h AllUnits.h textFunctions.h otherFunctions.h \
-  coordinateFunctions.h
+Participants.o Participants.d : Participants.cpp Participants.h Provinces.h AllUnits.h \
+  coordinateFunctions.h textFunctions.h otherFunctions.h AttackMA.h \
+  CommanderProfile.h

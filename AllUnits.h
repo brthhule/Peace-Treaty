@@ -4,7 +4,6 @@
 #include <string>
 #include <iostream>
 
-#include "Participants.h"
 using namespace std;
 
 class AllUnits
@@ -40,7 +39,7 @@ protected:
 	int troopsInjured[5];
 	int totalCP;
 	int totalTroops;
-	int fooParticdConsumption;
+	int foodConsumption;
 
 	int initialStats[5] = { 5, 4, 3, 2, 1 };
 

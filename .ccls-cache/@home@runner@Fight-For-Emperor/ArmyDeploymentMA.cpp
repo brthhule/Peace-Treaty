@@ -102,7 +102,7 @@ void ArmyDeploymentMA::upgradeCommandersTwo() {
 	char proceedWithUpgradeQuestion = getChar("Proceed with upgrade? ", "YN", 1);
   if (proceedWithUpgradeQuestion == 'Y') {
 
-    vector<int> commanderCosts = newCommander-getCommanderUpgradeCosts();
+    vector<int> commanderCosts = newCommander->getCommanderUpgradeCosts();
     for (int x = 0; x < 5; x++) {
       capitalProvince->addResources(x, commanderCosts[x] * -1);
       if (capitalProvince->getR(x) < 0) {

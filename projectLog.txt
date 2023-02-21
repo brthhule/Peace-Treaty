@@ -56,51 +56,86 @@ resources
 https://stackoverflow.com/questions/313970/how-to-convert-an-instance-of-stdstring-to-lower-case
 
 				Log Overview           Minute Conversion
-June 10th: June 15th: 7 hours     420 min
-June 16th: 45 min                 45 min
-June 19th: 2 hours                120 min
-June 20th: 1 hour, 40 min         100 min
-June 21nd: 20 min                 20 min
-June 22nd: 30 min                 30 min
-June 23rd: 30 min                 30 min
-June 24: 1 hour, 30 min           90 min
-June 25: 2 hours, 35 min          155 min
-June 26: 1 hour, 45 min           105 min
-June 27: 2 hours, 15 min          135 min
-June 29: 1 hour                   60 min
-June 30: 3 hours, 50 min          230 min
+June 10th: June 15th: 7 hours     420 
+June 16th: 45 min                 45 
+June 19th: 2 hours                120 
+June 20th: 1 hour, 40 min         100 
+June 21nd: 20 min                 20 
+June 22nd: 30 min                 30 
+June 23rd: 30 min                 30 
+June 24: 1 hour, 30 min           90 
+June 25: 2 hours, 35 min          155 
+June 26: 1 hour, 45 min           105 
+June 27: 2 hours, 15 min          135 
+June 29: 1 hour                   60 
+June 30: 3 hours, 50 min          230 
 
-July 1: 1 hour                    60 min
-July 2: 1 hour                    60 min
-July 4: 1 hour, 44 min            104 min
-July 5th: 30 min                  30 min
-July 6th: 1 hour, 40 min          100 min
-July 7th: 1 hour, 15 min          75 min
-July 9th: 1 hour, 55 min          115 min
-July 10: 55 min                   55 min
-July 11: 55 min                   55 min
-July 12: 1 hour                   60 min
-July 13: 50 min					  50 min
-July 15: 1 hour, 15 min			  75 min
-July 16: 3 hours, 30 min          210 min
-July 17: 2 hours, 15 min          135 min
-July 18: 2 hours, 40 min		  160 min
-July 19: 1 hour, 15 min           75 min
-July 20: 2 hours, 5 min			  125 min
-July 23: 1 hour, 20 min			  80 min
-July 24: 1 hour, 15 min			  75 min
-July 25: 2 hours, 20 min		  140 min
-July 27: 2 hours, 5 min			  125 min
-July 28: 55 min					  55 min
-July 29: 35 min					  35 min
-July 30: 2 hours, 25 min		  145 min
+June Total: 25 hours, 40 min			1540
 
-August 1: 1 hour, 40 min		  100 min
-August 2: 2 hours, 5 min		  125 min
-August 3: 1 hour, 20 min		  80 min
+July 1: 1 hour                    60 
+July 2: 1 hour                    60 
+July 4: 1 hour, 40 min            100
+July 5th: 30 min                  30 
+July 6th: 1 hour, 40 min          100 
+July 7th: 1 hour, 15 min          75 
+July 9th: 1 hour, 55 min          115 
+July 10: 55 min                   55 
+July 11: 55 min                   55 
+July 12: 1 hour                   60 
+July 13: 50 min					  				50 
+July 15: 1 hour, 15 min			  		75 
+July 16: 3 hours, 30 min          210 
+July 17: 2 hours, 15 min          135 
+July 18: 2 hours, 40 min		 			160 
+July 19: 1 hour, 15 min           75 
+July 20: 2 hours, 5 min			  		125 
+July 23: 1 hour, 20 min			  		80 
+July 24: 1 hour, 15 min			  		75 
+July 25: 2 hours, 20 min		  		140 
+July 27: 2 hours, 5 min			  		125 
+July 28: 55 min					  				55 
+July 29: 35 min					  				35 
+July 30: 2 hours, 25 min		  		145 
+
+July Total: 36 hours, 35 min			2195 
+
+August 1: 1 hour, 40 min		  		100 
+August 2: 2 hours, 5 min		  		125 
+August 3: 1 hour, 20 min		  		80 
+August 4: 50 min									50
+August 5: 45 min									45
+August 6: 35 min									35
+August 7: 20 min									20
+August 11: 1 hour, 45 min					105
+August 27: 15 min									15
+
+August Total: 9 hours, 35 min		575
+
+September Total: 0								0
+October Total: 0									0
+
+November 8: 20 min								20
+November 13: 5 min								5
+November 23: 35 min								35
+
+November Total: 1 hour						60
+
+January 27: 1 hour, 20 min				80
+January 28: 1 hour, 25 min				85
+January 30: 5 min									5
+January 31: 1 hour, 5 min					65
+
+January Total: 3 hours, 55 min		235
+
+February 1: 20 min								20
+February 2: 25 min								25
+February 18: 1 hour, 15 min				75
+February 19: 2 hours, 30 min			150
+
+February Total: 4 hours, 30 min		270
 
 
-Log:								Total: 67.4 hours
+Log:								Total: 81 hours, 15 min - 4875 min
 June 10th - June 15th: 7 hours-
   developed introduction
   develoepd framework for player attack, build, and train
@@ -341,7 +376,7 @@ from main to Participants. Having problems with create capitals loop in generate
 class. Main file went down from ~2000 lines to ~300 lines... found a lot of issues (especially in AllUnits and CommanderProfile-- how to initialize and
 keep track of indexInList and other stuff)
 
-August 4: 
+August 4: 50 min
 	9:45 pm - 10:35 pm (50 min): Figured out what was wrong with rand-- called srand multiple times each time I had to get a random number (just had to call it once,
 in main). Figured out create commanders-- error was because added CommanderProfile objects to allCommanders[participantIndexTemp], didn't push 
 CommanderProfile vectors to allCommanders yet though.  Something was wrong with BuildMA in which trying to enter the x coordinate would result in
@@ -350,7 +385,7 @@ Modified listOfActions so that when picking something to do, help would also be 
 printBuildingStats and printResources brighter by using 1m. Getting LNK1168 error (cannot open... exe for writing). Works some times, not other times...
 no idea why
 
-August 5:
+August 5: 45 min
 	11:30 am - 11:35 am (5 min): Tried to do some debugging, just added comments to see where things are. I think the program is failing because of
 something in initialize resources.
 	10:30 pm - 11:00 pm (30 min): Trying to debug. Figured out the issue: in initializeResources, used getCapitalCoordinate, but the parameters were formmated
@@ -360,7 +395,7 @@ Changed this so that instead of an array, used capitalX and capitalY. Also chang
 the coordinates graphically (normally), doens't work. When I enter coordinates as array/vector/machine sensible coordinates, it works ????
 Getting LNK1168 error...
 
-August 6:
+August 6: 35 min
     10:30 pm - 11:10 pm (35 min): Tried to make names for the AI. Developed getKingdomName and setKingdomName in Participants. I tried setting the participant
 names when the participants were created, but createNewName needs there to be more than 0 commanders in the list of commnaders or else the list is null (can't 
 return list of commanders sie if it's null). Had to move the name generation stuff to the end of generateNewContinent, works now. Have developed framework for 
@@ -370,10 +405,10 @@ For the AI, have an array like this: int AIActionProbability = [how many actions
 
 The difference between each element's value affects the probability. For example, since the difference between each element is 1, they will all have an equally likely chance of happening. However, if the array was like this {1, 2, 8, 9, 10}, the differences are the same across the board except for between indices 1 and 2. This means that all other values have the same chance of occurring, but the action that happens between said indices has a greater chance of happening. Applying this, it would be something like: if (randomNumberGenerated >= AIActionProbability[0] && <= AIActionProbability[1]), do some particiular action.
 
-August 7:
+August 7: 20 min
     8:40 pm - 9:00 pm (20 min): Did some aesthetic stuff -- user input now comes up as red text in the console. Started working on developing framework for AI action stuff
 
-August 11:
+August 11: 1 hour, 45 min
     12:40 am - 1:35 am (55 min): Working on BuildMA, created coordinateFunctions.h to keep track of coordinate-related functions and organize otherFunctions.h. Working on getTrainBuildCoordinates to return the right coordinates. Fixec it for the most part, program ends when I enter (5, 1), but it translates everything else (I think it's a problem with the range or something). Figured it out (I think): added the following code to BuildMA in findProvinceCoordinates function
 
 if (provinceXCoordinate == continentSize && provinceYCoordinate == 1)
@@ -396,36 +431,39 @@ as I jump back into things. Getting LNK1168 error
 November 13: 5 min
     10:05 - 10:10 pm (5 min): I think trying to include recursion is what threw the program off; I reverted to the August 27 save.
 
-November 23
+November 23: 35 min
     10:25 - 10:35 (10 min): Added kingdonName to viewPlayerStats. Found it somewhat hard to find the viewPlayerStats function to add this change; may have to consider developing a way to find functions easier. Eliminated an unneccessary parameter: introduction function in main.cpp used startOrResume as a paramater when it wouldn't be used to find out listOfActions(3), so took it out. Note: code looks extremely cluncky and difficult to navigate, have to find a way to clean up code I don't need
     10:35 - 11:00 (25 min): Looked around for things to clean up, came across viewArmyOverview. After selecting a commander, the stats would go to the addresses of what the stats were (because the stats function used an array that held pointers to the variables with the states, forgot to add the *). Troops injured is correct (start off all 0), but the other stats are off (ex, food starts off as -2213361676, this shouldn't happen). Have to keep looking through and cleaning code
 
-January 27
+January 27: 1 hour, 20 min
     12:40 am - 2:00 am (1 hour, 20 min): Refined listOfActions so that each case didn't have to mention m to return to menu-- moved it so it's right before the help menu. Consolidated the help functions in textFunctions to one function-- listOfHelp. Ran into some problems, tried making a Lists class to handle listOfActions and listOfHelp. In the process of updating everything to the new changes.
 
-January 28:
-	2:50 am - 4:15 am (): Worked on consolidating the main file; working on going back to an object-based game rather than mainly using arrays and references to keep track of things. I think the problem I had in the past was that I did things like vector <CommanderProfile> *commandersList instead of <CommanderProfile*>, have to do more research on how to make it work. Brought some participant creation stuff from the main file to Participants.cpp/.h
+January 28: 1 hour, 25 min
+	2:50 am - 4:15 am (1 hour, 25 min): Worked on consolidating the main file; working on going back to an object-based game rather than mainly using arrays and references to keep track of things. I think the problem I had in the past was that I did things like vector <CommanderProfile> *commandersList instead of <CommanderProfile*>, have to do more research on how to make it work. Brought some participant creation stuff from the main file to Participants.cpp/.h
 
-January 30:
+January 30: 5 min
   5 min - Added isAlive function to Participants, added it to gameplay functionality
 
-January 31:
+January 31: 1 hour, 5 min
 	12:30 am - 1:35 am (1 hour, 5 min): Moved some stuff from main to Participants, finished the general structure for PlayerAction, Worked on CommanderProfile and Participants classes
 
-February 1:
+February 1: 20 min
   1 min - Deleted changeCanSelectThisUnit function in ALlUnits and leftover functions from previous edits
-  1:55 - 2:00 pm: Started working on TrainMA-- adding objects to it
-  2:05 - 2:20 pm: Kept working on TrainMA-- developing getCoordinates function
+  1:55 - 2:00 pm (5 min): Started working on TrainMA-- adding objects to it
+  2:05 - 2:20 pm (15 min): Kept working on TrainMA-- developing getCoordinates function
 
-February 2:
+February 2: 25 min
   1:55 - 2:20 pm (25 min): Deleted contented in Provinces relating to Capital status because there is already infrastructure for this in Participants. Did some work with MapMA.cpp. Have to do some fixing to update the connection between Provinces and Participants relating to capital status as well as connected what participant goes with what provinces to what provinces belong under what Participant
 
-February 18:
-	12:25 am - 1:40 am: Making fixes so program works, going through Provinces.h. Problem with getting inheritance from AllUnits workng. I think the issue is circular dependency-- have to figure out what headers are doing what. I think I found the issue: AllUnits includes Participants, Participants includes AllUnits. I think I have to merge AllUnits and Participants to a singular Participants file to eliminate circular dependency and consolidate it to one header file. Created headersAllocation.txt to see what headers are including what other headers. Also, CommanderProfile has Provinces and Provinces has Commander Profile. I'm going to consolidate Participants and AllUnits and then CommanderProfile and Provinces separately. If I need to combine the new files together, I will if problems continue. Coming up with issue "makeL *** No rule to make target 'Participants.h', needed by main.d'. Stop." I think I need to reorganize the files more so that information is more streamlined and classes/files only get access to what they need
+February 18: 1 hour, 15 min
+	12:25 am - 1:40 am (1 hour, 15 min): Making fixes so program works, going through Provinces.h. Problem with getting inheritance from AllUnits workng. I think the issue is circular dependency-- have to figure out what headers are doing what. I think I found the issue: AllUnits includes Participants, Participants includes AllUnits. I think I have to merge AllUnits and Participants to a singular Participants file to eliminate circular dependency and consolidate it to one header file. Created headersAllocation.txt to see what headers are including what other headers. Also, CommanderProfile has Provinces and Provinces has Commander Profile. I'm going to consolidate Participants and AllUnits and then CommanderProfile and Provinces separately. If I need to combine the new files together, I will if problems continue. Coming up with issue "makeL *** No rule to make target 'Participants.h', needed by main.d'. Stop." I think I need to reorganize the files more so that information is more streamlined and classes/files only get access to what they need
 
-February 19:
-	4:10  - 4:55 pm: New approach: returning to the previous unit information system (Participants, CommanderProfile, Provinces, AllUnits). Trying to organize things so they make more sense. I think the problem is that when I wrote these files, I did a sloppy job and only considered how they worked by themselves, ignoring inter connectivity. Working on ArmyDeploymentMA Class. Changed the constructors to use Participant *newP instead of passing coordinates to get the capital of the intended participant. Going to work on Commander upgrades-- might move this to the CommanderProfile class
-	6:05 pm - 7:50 pm: I don't think I can move the ArmyDeployment upgrade Commander class because it uses both CommanderProfile and Provinces, and moving it to CommanderProfile would mean that Commanderprofile uses provinces, which may lead to provinces using CommanderProfile and perpetuating circular dependency. Ironed out upgradeCommandersTwo in ArmyDeploymentMA. Created selectCommander method and updated viewArmyOverview method (7:10 pm). Changed it so that instead of using Participants to keep track of what unit belongs to what participant in AllUnits, it would use participantIndex (7:18)-- working on trainCommanders. trainCommanders is very similar to upgradeCommanders; might combine the two. Merged printCostsToTrainAnotherCommander with the one for upgrading to create printCosts (7:37). Worked on trainCommanders and created proceedWtihTraining-- it shoudl all be fine now. Getting some errors in trainCommanders (things like "'missing "" terminating character'"). I think it should resolve itself.
+February 19: 2 hours, 30 min
+	4:10  - 4:55 pm (45 min): New approach: returning to the previous unit information system (Participants, CommanderProfile, Provinces, AllUnits). Trying to organize things so they make more sense. I think the problem is that when I wrote these files, I did a sloppy job and only considered how they worked by themselves, ignoring inter connectivity. Working on ArmyDeploymentMA Class. Changed the constructors to use Participant *newP instead of passing coordinates to get the capital of the intended participant. Going to work on Commander upgrades-- might move this to the CommanderProfile class
+	6:05 pm - 7:50 pm (1 hour, 45 min): I don't think I can move the ArmyDeployment upgrade Commander class because it uses both CommanderProfile and Provinces, and moving it to CommanderProfile would mean that Commanderprofile uses provinces, which may lead to provinces using CommanderProfile and perpetuating circular dependency. Ironed out upgradeCommandersTwo in ArmyDeploymentMA. Created selectCommander method and updated viewArmyOverview method (7:10 pm). Changed it so that instead of using Participants to keep track of what unit belongs to what participant in AllUnits, it would use participantIndex (7:18)-- working on trainCommanders. trainCommanders is very similar to upgradeCommanders; might combine the two. Merged printCostsToTrainAnotherCommander with the one for upgrading to create printCosts (7:37). Worked on trainCommanders and created proceedWtihTraining-- it shoudl all be fine now. Getting some errors in trainCommanders (things like "'missing "" terminating character'"). I think it should resolve itself.
+
+February 20:
+	10:55 - 11:25 pm (30 min): Added #ifndef directives to each header file. Deleted instances of Units.h. Getting unknown type name 'Provinces' error in Participants. I think I have to find a way to incorporate Participants in Provinces so Provinces doesn't need Participants. Same issue with CommanderProfile. Fixed these issues-- CommanderProfile, AllUnits, and Provinces no longer have instances of Participants. New error: MapMA is having trouble operating with other classes/functions. Have to do a rewrite in the near future-- I think I have to make it so that MapMA picks a commanderProfile or Provinces object because it still uses the previous coordinate system with the allCommanders double vector.
 
 Changes: 
 - Replaced findProvinceCoordinates with getTrainProvince ()

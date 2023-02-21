@@ -54,11 +54,11 @@ Participants* MapMA::returnParticipant()
 }
 void MapMA::selectUnitOriginal(Provinces *selectedProvince)
 {
-    if (selectedProvince->returnParticipant() == participant)//If belongs to participant
+    if (selectedProvince->getParticipantIndex() == participant)//If belongs to participant
     {
         selectPlayerProvince();
     }
-    else if (selectedProvince->getBelongsToParticipant() == -1)//If empty province
+    else if (selectedProvince->getParticipantIndex() == -1)//If empty province
     {
         if (newMap->commandersPresentIndex.size() > 0)//If there are more than 0 commnaders
         {

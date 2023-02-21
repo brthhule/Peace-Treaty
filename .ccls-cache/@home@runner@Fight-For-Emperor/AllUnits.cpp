@@ -56,7 +56,7 @@ int AllUnits::getTotalCP()
 
 int AllUnits::getParticipantIndex()
 {
-	return participant;
+	return participantIndex;
 }
 
 void AllUnits::printResources()

@@ -4,10 +4,6 @@
 
 
 using namespace std;
-
-#include <iostream>
-#include "Units.h"
-
 extern int currentParticipantIndex;
 extern int initialResources [5];
 extern vector <vector <Provinces*>> provincesMap;
@@ -226,4 +222,14 @@ vector <int> Participants::getTrainCosts ()
 int Participants::getMaxCommanders()
 {
 	return maxCommanders;
+}
+
+void Participants::setParticipantIndex(int num)
+{
+	participantIndex = num;
+}
+
+int Participants::getParticipantIndex()
+{
+	return participantIndex;
 }

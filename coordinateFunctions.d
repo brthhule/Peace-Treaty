@@ -1,3 +1,3 @@
-coordinateFunctions.o coordinateFunctions.d : coordinateFunctions.cpp otherFunctions.h \
-  Participants.h Provinces.h CommanderProfile.h AllUnits.h \
-  textFunctions.h AttackMA.h coordinateFunctions.h
+coordinateFunctions.o coordinateFunctions.d : coordinateFunctions.cpp coordinateFunctions.h \
+  Provinces.h AllUnits.h textFunctions.h otherFunctions.h AttackMA.h \
+  Participants.h CommanderProfile.h
