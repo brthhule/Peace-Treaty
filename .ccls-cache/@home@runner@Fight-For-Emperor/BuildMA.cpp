@@ -1,175 +1,132 @@
 #include "BuildMA.h"
+#define print(x) cout << x;
+#define println(x) cout << x << endl;
 
-
-extern vector <Participants> participantsList;
+extern vector<Participants> participantsList;
 extern int continentSize;
 
 using namespace std;
 
-extern vector <vector<Provinces>> provincesMap;
+extern vector<vector<Provinces>> provincesMap;
 extern string buildingNames[6];
 extern string provinceResourcesNames[5];
 extern int currentParticipantIndex;
 
-BuildMA::BuildMA()
-{
-    provinceXCoordinate = 0;
-    provinceYCoordinate = 0;
-}
-BuildMA::BuildMA(int xCoordinate, int yCoordinate)
-{
-    provinceXCoordinate = xCoordinate;
-    provinceYCoordinate = yCoordinate;
-
+BuildMA::BuildMA() { province = findProvince(); }
+BuildMA::BuildMA(Provinces *newProvince, Participants *newParticipant) {
+  province = newProvince;
+  participant = newParticipant;
 }
 
-void BuildMA::findProvinceCoordinates()
-{
-    char repeatThisOne = 'Y';
+Provinces *BuildMA::findProvince() {
+  std::cout << "Welcome to the Player Build menu" << endl << endl;
+  vector<int> coords = getCoords(1);
 
-    do
-    {
-        provinceXCoordinate = 0;
-        provinceYCoordinate = 0;
+  province = &provincesMap[coords[0]][coords[1]];
 
-        std::cout << "Welcome to the Player Build menu" << endl << endl;
-        getTrainBuildCoordinates(provinceXCoordinate, provinceYCoordinate);
-    
-        if (provinceXCoordinate == continentSize && provinceYCoordinate == 1)
-        {
-            //weird exception in translating units-- everything else units, except for the bottom left province
-            //cout << "Continent size: " << continentSize << endl;
-            provinceXCoordinate = continentSize - 1;
-            provinceYCoordinate = continentSize - 1;
-        }
-
-        if (provinceXCoordinate == -1 || provinceYCoordinate == -1)
-        {
-            repeatThisOne = 'N';
-            std::cout << "Returning to Main menu... " << endl;
-        }
-        else
-        {
-            if (provincesMap[provinceXCoordinate][provinceYCoordinate].getParticipantIndex() == currentParticipantIndex)
-            {
-                playerBuildFunction();
-            }
-            else
-            {
-                string anyInput = " ";
-                std::cout << "Invalid province elected. Please try again. " << endl;
-                cout << "Enter anything to proceed back to the Player Build menu (Screen will clear) ";
-                std::getline (cin, anyInput);
-                clearScreen();
-            }
-            std::cout << endl;
-        }
-    } while (repeatThisOne == 'Y');
+  if (coords[0] != -1) {
+      if (province->getParticipantIndex() == participant->getParticipantIndex() {
+      playerBuildFunction();
+      } else {
+      string anyInput = " ";
+      print("Invalid province elected. Please try again. \nEnter anything to "
+            "proceed back to the Player Build menu (Screen will clear) ");
+      std::getline(cin, anyInput);
+      clearScreen();
+      }
+      std::cout << endl;
+  }
 }
-void BuildMA::playerBuildFunction()
-{
-    clearScreen();
-    std::cout << "---------- Start printing province information ----------" << endl;
-    cout << "\033[34m";
-    cout << "Province of kingdom " << participantsList[provincesMap[provinceXCoordinate][provinceYCoordinate].getParticipantIndex()].getKingdomName() << endl;
-    cout << "Coordinates: (" << translateCoordinate(provinceYCoordinate, 'x', 'O') << ", " << translateCoordinate(provinceXCoordinate, 'y', 'O') << ") " << endl << endl;
-    cout << "\033[0m";
-    provincesMap[provinceXCoordinate][provinceYCoordinate].printResources();
-    provincesMap[provinceXCoordinate][provinceYCoordinate].printBuildingStats();
-    std::cout << "---------- End printing province information ----------" << endl << endl;
 
-    char upgradeBuilding = ' ';
-    char repeatPlayerBuildFunction = 'Y';
+void BuildMA::playerBuildFunction() {
+  clearScreen();
+  println(
+      "---------- Start printing province information ----------\n\033[34m");
+  println("Province of kingdom " + participant->getKingdomName());
+  cout << "Coordinates: ("
+       << translateCoordinate(province->getCoordinate('X'), 'x', 'O') << ", "
+       << translateCoordinate(province->getCoordinate('Y'), 'y', 'O')
+       << ") \n\n\033[0m";
 
-    do
-    {
-        Lists newList (7);
-        upgradeBuilding = newList.listOfActions();
-        if (upgradeBuilding == 'U')
-        {
-            upgradeBuildings();
-        }
-        else
-        {
-            repeatPlayerBuildFunction = 'N';
-        }
-        std::cout << endl;
-    } while (repeatPlayerBuildFunction == 'Y');
+  province->printResources();
+  province->printBuildingStats();
+  println("---------- End printing province information ----------\n");
+
+  char upgradeBuilding = ' ';
+  char repeatPlayerBuildFunction = 'Y';
+
+  Lists newList(7);
+  upgradeBuilding = newList.listOfActions();
+  if (upgradeBuilding == 'U') {
+    upgradeBuildings();
+    playerBuildFunction();
+    std::cout << endl;
+  } else {
     std::cout << "Returning to previous menu... " << endl;
     clearScreen();
+  }
 }
-void BuildMA::upgradeBuildings()
-{
-    Provinces* newProvince;
-    newProvince = &provincesMap[provinceXCoordinate][provinceYCoordinate];
-    string upgradeAnotherBuildingString;
-    char upgradeAnotherBuildingChar = 'Y';
-    int requiredResources[5] = { 0 };
-    int buildingNumber = 0;
-    string buildingLetterString;
-    string buildingLetterList = "FLQMCBH";
 
-    do
-    {
-        char buildingLetter = getChar("Enter the first letter of the building you want to upgrade (enter 'H' for help): ", buildingLetterList, 1);
-        if (buildingLetter != 'H')
-        {
-            for (int x = 0; x < 6; x++)
-            {
-                if (buildingLetter == buildingLetterList.at(x))
-                {
-                    buildingNumber = x;
-                    x = 6;
-                }
-            }
-            cout << "---------- Start printing information----------" << endl;
-            cout << endl << "\033[34m";
-            std::cout << buildingNames[buildingNumber] << " selected " << endl << endl;
-            std::cout << "The following is the cost of the upgrade: " << endl; //here
-            for (int x = 0; x < 5; x++)
-            {
-                requiredResources[x] = (int)requiredResourcesBuildings[buildingNumber][x] * newProvince->getBuildingLevel(x);
-                std::cout << provinceResourcesNames[x] << ": " << requiredResources[x] << endl;
-            }
-            cout << endl;
-            cout << "The following are how many resources are in this province: " << endl;
-            newProvince->printResources();
-            cout << "----------End printing informatio----------" << endl;
-            char upgradeProceed = getChar("Proceed with upgrade? (Y/N) ", "YN", 1);
+void BuildMA::upgradeBuildings() {
+  int requiredResources[5] = {0};
+  int buildingNumber = 0;
+  string buildingLetterList = "FLQMCBH";
 
-            if (upgradeProceed == 'Y')
-            {
-                char failOrWork = 'W'; /*delete this? not necessary-- will always return 'Y'*/
-                for (int x = 0; x < 5; x++)
-                {
-                    newProvince->addRSS(x, requiredResources[x] * -1);
-                    if (newProvince->getResource(x) < 0)
-                    {
-                        failOrWork = 'F';
-                    }
-                }
+  char buildingLetter = getChar("Enter the first letter of the building you want to upgrade (enter 'H' for help): ", "FLQMCBH", 1);
+	
+  if (buildingLetter != 'H') {
+    for (int x = 0; x < 6; x++) {
+      if (buildingLetter == buildingLetterList.at(x)) {
+        buildingNumber = x;
+        x = 6;
+      }
+    }
 
-                if (failOrWork == 'F')
-                {
-                    for (int x = 0; x < 5; x++)
-                    {
-                        newProvince->addResources(x, requiredResources[x]);
-                    }
-                    std::cout << "Upgrade failed. Not enough resources. " << endl;
-                }
-                else
-                {
-                    std::cout << "Upgrade successful." << endl << endl;
-                    newProvince->increaseBuildingLevel(buildingNumber, 1);
-                }
-            }
+    printInformation(buildingNumber, requiredResources);
+    char upgradeProceed = getChar("Proceed with upgrade? (Y/N) ", "YN", 1);
+
+    if (upgradeProceed == 'Y') {
+      bool upgradeSuccess = true;
+      for (int x = 0; x < 5; x++) {
+        province->addRSS(x, requiredResources[x] * -1);
+        if (province->getResource(x) < 0) {
+          upgradeSuccess = false;
         }
-        else
-        {
-            Lists newList (12);
-            newList.listOfHelp();
+      }
+
+      if (upgradeSuccess == false) {
+        for (int x = 0; x < 5; x++) {
+          province->addResources(x, requiredResources[x]);
         }
-        upgradeAnotherBuildingChar = getChar("Upgrade another building (Y/N): ", "YN", 1);
-    } while (upgradeAnotherBuildingChar == 'Y');
-    std::cout << "Returning to Build Infrastructure action menu. " << endl;
+        println("Upgrade failed. Not enough resources. ");
+      } else {
+        println("Upgrade successful.\n");
+        province->increaseBuildingLevel(buildingNumber, 1);
+      }
+    }
+  } else {
+    Lists newList(12);
+    newList.listOfHelp();
+  }
+	
+  char upgradeAgain = getChar("Upgrade another building (Y/N): ", "YN", 1);
+  if (upgradeAgain == 'Y') {
+    upgradeBuildings();
+  }
+  std::cout << "Returning to Build Infrastructure action menu. " << endl;
+}
+
+void BuildMA::printInformation(int buildingNumber, int requiredResources[5]) {
+  cout << "---------- Start printing information----------\n\n\033[34m";
+  println(buildingNames[buildingNumber] + " selected \n");
+  println("The following is the cost of the upgrade: ");
+  for (int x = 0; x < 5; x++) {
+    requiredResources[x] = (int)requiredResourcesBuildings[buildingNumber][x] *
+                           province->getBuildingLevel(x);
+    std::cout << provinceResourcesNames[x] << ": " << requiredResources[x]
+              << endl;
+  }
+  println("\nThe following are how many resources are in this province: ");
+  province->printResources();
+  cout << "----------End printing informatio----------" << endl;
 }

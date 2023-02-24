@@ -7,6 +7,15 @@
 
 #include "coordinateFunctions.h"
 #include "Participants.h"
+#include "Provinces.h"
+#include "CommanderProfile.h"
+
+extern vector <Participants> participantsList;
+extern vector<vector<Provinces>> provincesMap;
+extern int continentSize;
+extern int enemyDifficulty;
+extern int troopsCP[5];
+extern string provinceResourcesNames[5];
 
 using namespace std;
 
@@ -15,7 +24,7 @@ class AttackMA
 public:
 	//constructor
 	AttackMA();
-	AttackMA(int xCoordinatearg, int yCoordinatearg, int enemyXarg, int enemyYarg, int participantIndexarg, int commanderIndexarg);
+	AttackMA(vector<int> unitAttackingArg, vector <int> unitAttackedArg, Participants * attackingParticipantArg, CommanderProfile* commanderArg);
 
 	//Function stuff
 	void playerAttack();
@@ -24,14 +33,13 @@ public:
 	void battleCalculations(int lostCombatPower, int deadTroops[5], int a);
 	void battleCalculationsTwo(int& lostCombatPower, int deadTroops[5], int troopIndex);
 private:
-	int unitAttackingX;
-	int unitAttackingY;
-	int unitBeingAttackedX;
-	int unitBeingAttackedY;
-	int participantIndex;
-	int commanderIndex;
+	vector <int> unitAttacking;
+	vector <int> unitAttacked;
+	Participants * attackingParticipant;//player
+	Participants * attackedParticipant;//enemy
+
+	CommanderProfile * commander;
 	vector <int> commandersBeingAttackedIndices;
-	int enemyParticipantIndex;
 };
 
 #endif

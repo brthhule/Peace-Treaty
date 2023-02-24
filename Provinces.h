@@ -3,6 +3,7 @@
 
 #include "AllUnits.h"
 #include "coordinateFunctions.h"
+#include "CommanderProfile.h"
 
 extern string provinceResourcesNames[5];
 extern string buildingNames[6];
@@ -31,12 +32,13 @@ public:
 	int returnCommanderIndex(int index);
 	int getTroopsTrainedThisTurn();
 	int findProvinceLevel();
+	CommanderProfile * returnCommander (int index);
 
 	void addResources(int index, int amount);
 	int getR (int index);
 
 	void printBuildingStats();
-	char isProvinceACapitalQuestion();
+	bool isCapital();
 
 	string getProvinceName();
   void setDeleteProvince ()
@@ -48,7 +50,7 @@ public:
 	void updateBuildingsProduction();
 	void updateProvinceResources();
 	void setCoordinates(int xCoordinate, int yCoordinate);
-	void provinceIsACapital();
+	void initializeCapital();//provinceIsACapital
 	void addCommanderProvince(int commanderIndex);
 	void removeCommanderProvince(int commanderIndex);
 	void changeParticipant (int num);
@@ -66,7 +68,7 @@ public:
 
 
 	//public variables
-	vector <int> commandersPresentIndex;
+	vector <vector<int>> commanders; /*[x][0] = index, [x][1] = which participant they belong to*/
 	int scoutLogTurnLevel[2];//[0] is the turn of the scout report, [1] is the scout log level
 
 

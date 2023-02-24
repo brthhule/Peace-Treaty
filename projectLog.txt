@@ -20,9 +20,8 @@ how battle functionality works... Consider if all enemy defending units are grou
 Key words to look out for (ctrl f)
 - "fix this" things that need to be addressed
 - "delete this" delete these lines of code if code works without it
-- "test" check if code works
-- Update participants so that Participants passes objects like commanders by reference rather than
 - Have to finish working on ScoutMA
+- Fix AttackMA
 
 /*How to use colors: */
 /*On Linux, you can change the current foreground and background color by writing special character sequences into the output. Write the ESC escape character (octal "\033", hex \x1b), followed by an opening square bracket [. The color definition will follow next, termniated by a lowercase m.
@@ -464,6 +463,10 @@ February 19: 2 hours, 30 min
 
 February 20:
 	10:55 - 11:25 pm (30 min): Added #ifndef directives to each header file. Deleted instances of Units.h. Getting unknown type name 'Provinces' error in Participants. I think I have to find a way to incorporate Participants in Provinces so Provinces doesn't need Participants. Same issue with CommanderProfile. Fixed these issues-- CommanderProfile, AllUnits, and Provinces no longer have instances of Participants. New error: MapMA is having trouble operating with other classes/functions. Have to do a rewrite in the near future-- I think I have to make it so that MapMA picks a commanderProfile or Provinces object because it still uses the previous coordinate system with the allCommanders double vector.
+
+February 23:
+	9:00 - 10:30 pm (1 hour, 30 min): Ran program to see what's wrong; error: unknown type name 'Provinces' in coordinateFunctions.h-- coordinateFunctions includes Provinces and Provinces includes coordinateFunctions; I need to change the getCoords function to return a vector of x and y coordinates instead of returning a province. Problems with TrainMA and MapMA constructors-- candidate constructor not viable... no arguments were provided. Fixed the coordinateFunctions issue. Going to rewrite MapMA now. (10:21) Ran into issues with BuildMA constructor because it required passing two cooridinates instead of a provinces object. Changed it to a proinces object instead of coordinates, ended up rewriting BuildMA. I think that because MapMA has the other main actions in it, I have to do the other ones first in order to fix MapMA.
+	10:30pm - 11:05 pm (35 min): Ran into error with CommanderProfile. moveUnit and moveUnitOne use Provinces, but CommanderProfile can't have Provinces because they both inherit from AllUnits. Created Mobility class to take care of this-- take the moveUnit methods out of CommanderProfile and put them into a more isolated file that doesn't go under AllUnits. Changed moveUnits to moveUnitsOne and moveUnitsOne to moveUnitsTwo for better understanding. (10:47) Done with mobility class. I'm pretty sure there might be some logic errors, but there are no outstanding issues right now that will prevent the program from running other than the AttackMA function-- I have to go in and fix this (has coordinates passed to it one at a time; I want to pass vectors of coordinates to be organized). Changed the AttackMA constructor to take on vectors and Participants and CommanderProfile objects. AttackMA is a hot mess right now, like, hot hot. Going to come back to this later. Problem with AttackMA: doesn't like that it has Provinces, CommanderProfile, and Participants all imported into one file. IDK what to do here-- have to check this out later
 
 Changes: 
 - Replaced findProvinceCoordinates with getTrainProvince ()

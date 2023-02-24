@@ -2,7 +2,7 @@
 #define COMMANDERPROFILE_H
 
 #include "AllUnits.h"
-#include "Provinces.h"
+#include <vector>
 
 class CommanderProfile: public AllUnits
 {
@@ -20,7 +20,7 @@ public:
 	int getCommanderStat(int index);
 	void printCommanderStats();
 	void changeCommanderStat(int index, int amount);
-	void setLocation (Provinces *newProvince);
+	void setLocation (vector <int> pCoords);
 
 	//Scout report stuff 
 	void updateCommanderScoutReport(int index, int value);
@@ -35,8 +35,6 @@ public:
 	vector <int> getTrainCosts();
 
 	//Moving
-	void moveUnit();
-	vector <Provinces*> moveUnitOne ();
 	char hasCommanderMoved();
 	void resetCommanderMoved();
 
@@ -95,7 +93,7 @@ private:
 
 	string MANDescriptions[5] = { "Resources in", "Troops present in", "Troops injured in", "Other stats of" };//check
 	string namesOfMAN[20];//check
-	Provinces *provinceLocation;
+	vector <int> coords;
 
 	vector <int> costToUpgrade = {5, 4, 3, 2, 1};
 	int commanderIndex;

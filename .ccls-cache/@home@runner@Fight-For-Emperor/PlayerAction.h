@@ -4,7 +4,8 @@
 #include <iostream>
 #include <cmath>
 
-#include "Participants.h"#include "Lists.h"
+#include "Participants.h"
+#include "Lists.h"
 #include "BuildMA.h"
 #include "TrainMA.h"
 #include "otherFunctions.h"

@@ -229,7 +229,7 @@ void Participants::setParticipantIndex(int num)
 	participantIndex = num;
 }
 
-void Participants::getParticipantIndex()
+int Participants::getParticipantIndex()
 {
 	return participantIndex;
 }

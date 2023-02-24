@@ -143,10 +143,10 @@ void Provinces::updateProvinceResources()
 //Other
 void Provinces::setCoordinates(int xCoordinate, int yCoordinate)
 {
-	unitXCoordinate = xCoordinate;
-	unitYCoordinate = yCoordinate;
+	xCoord = xCoordinate;
+	yCoord = yCoordinate;
 }
-void Provinces::provinceIsACapital()
+void Provinces::initializeCapital()
 {
 	for (int x = 0; x < 5; x++)
 	{
@@ -222,9 +222,9 @@ void Provinces::addTroopsTrainedThisTurn(int amount)
     troopsTrainedThisTurn += amount;
 }
 
-void Provinces::changeParticipant(Participants *part)
+void Provinces::changeParticipant(int num)
 {
-  participant = part;
+  participantIndex = num;
 }
 
 int Provinces::getCoordinate (char identifier)
@@ -257,4 +257,14 @@ void Provinces::addResources(int index, int amount)
 int Provinces::getR(int index)
 {
 	return resourcesPresent[index];
+}
+
+CommanderProfile *Provinces::returnCommander(int index)
+{
+	return commandersPresent[index];
+}
+
+bool Provinces::isCapital()
+{
+	return isACapital;
 }

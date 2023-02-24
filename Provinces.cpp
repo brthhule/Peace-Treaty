@@ -146,7 +146,7 @@ void Provinces::setCoordinates(int xCoordinate, int yCoordinate)
 	xCoord = xCoordinate;
 	yCoord = yCoordinate;
 }
-void Provinces::provinceIsACapital()
+void Provinces::initializeCapital()
 {
 	for (int x = 0; x < 5; x++)
 	{
@@ -257,4 +257,14 @@ void Provinces::addResources(int index, int amount)
 int Provinces::getR(int index)
 {
 	return resourcesPresent[index];
+}
+
+CommanderProfile *Provinces::returnCommander(int index)
+{
+	return commandersPresent[index];
+}
+
+bool Provinces::isCapital()
+{
+	return isACapital;
 }

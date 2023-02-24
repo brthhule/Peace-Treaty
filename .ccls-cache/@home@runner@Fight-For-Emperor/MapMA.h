@@ -24,6 +24,7 @@ public:
 	MapMA(Participants *newParticipant);
 
 	void viewPlayerMap();
+
 	void selectUnitOriginal(Provinces *selectedProvince);
 	void selectPlayerProvince();
 	void playerUnitAction();
@@ -32,10 +33,14 @@ public:
 
 	void scoutLogFunction();
 	void provinceReportLog(char whatReportChar);
+
+
   Participants *returnParticipant();
 
 private:
 	Participants *participant;
+	int pIndex;
+Provinces *prov;
 };
 
 #endif

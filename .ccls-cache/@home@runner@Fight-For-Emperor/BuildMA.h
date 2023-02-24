@@ -8,21 +8,26 @@
 #include "textFunctions.h"
 #include "coordinateFunctions.h"
 #include "Lists.h"
+#include "Provinces.h"
+#include "Participants.h"
+
 
 class BuildMA
 {
 public:
 	//Constructors
 	BuildMA();
-	BuildMA(int xCoordinate, int yCoordinate);
+	BuildMA(Provinces *newProvince, Participants *newParticipant);
 
 	//Accessors/Functions?
-	void findProvinceCoordinates();
+	Provinces* findProvince();
 	void playerBuildFunction();
 	void upgradeBuildings();
+
+	void printInformation (int buildingNumber, int requiredResources[5]);
 private:
-	int provinceXCoordinate;
-	int provinceYCoordinate;
+	Provinces *province;
+	Participants* participant;
 	double requiredResourcesBuildings[6][5] = { {1, 0.5, 0.25, 0.125, 0.0625}, {2, 1, 0.5, 0.25, 0.125}, {3, 2, 1, 0.5, 0.25}, {4, 3, 2, 1, 0.5}, {5, 4, 3, 2, 1}, {1, 1, 1, 1, 0.2} }; /*double requiredResourcesFarm [5] = {1, 0.5, 0.25, 0.125, 0.0625};
 	double requiredResourcesLumberMill [5] = {2, 1, 0.5, 0.25, 0.125};
 	double requiredResourcesQuarry [5] = {3, 2, 1, 0.5, 0.25};
