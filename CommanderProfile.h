@@ -9,7 +9,7 @@ class CommanderProfile: public AllUnits
 public:
 	//Constructors
 	CommanderProfile();
-	CommanderProfile(int commanderLevel, string name);
+	CommanderProfile(int commanderLevel, std::string name);
 	//Destructor
 	~CommanderProfile();
 
@@ -20,7 +20,7 @@ public:
 	int getCommanderStat(int index);
 	void printCommanderStats();
 	void changeCommanderStat(int index, int amount);
-	void setLocation (vector <int> pCoords);
+	void setLocation (std::vector <int> pCoords);
 
 	//Scout report stuff 
 	void updateCommanderScoutReport(int index, int value);
@@ -30,12 +30,13 @@ public:
 	//Other commander stuff
 	int getCommanderLevel();
 	void addCommanderLevel();
-	vector <int> getUpgradeCosts();
-	string getCommanderName();
-	vector <int> getTrainCosts();
+	std::vector <int> getUpgradeCosts();
+	void printCosts(std::vector <int> costs);
+	std::string getCommanderName();
+	std::vector <int> getTrainCosts();
 
 	//Moving
-	char hasCommanderMoved();
+	bool hasMovedQuestion();
 	void resetCommanderMoved();
 
 	int returnCoordinate(char which);
@@ -89,13 +90,13 @@ private:
 [21] = accuracy of scout report*/
 	int maxTroops;//check
 	int totalMaxResources;
-	char hasMoved;
+	bool hasMoved;
 
-	string MANDescriptions[5] = { "Resources in", "Troops present in", "Troops injured in", "Other stats of" };//check
-	string namesOfMAN[20];//check
-	vector <int> coords;
+	std::string MANDescriptions[5] = { "Resources in", "Troops present in", "Troops injured in", "Other stats of" };//check
+	std::string namesOfMAN[20];//check
+	std::vector <int> coords;
 
-	vector <int> costToUpgrade = {5, 4, 3, 2, 1};
+	std::vector <int> costToUpgrade = {5, 4, 3, 2, 1};
 	int commanderIndex;
 
 };

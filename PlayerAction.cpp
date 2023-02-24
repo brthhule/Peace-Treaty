@@ -40,7 +40,7 @@ int PlayerAction::initialDecision()
 	{
 	case 'B':
 	{
-			BuildMA newBuildMA(-1, -1);
+			BuildMA newBuildMA();
 			newBuildMA.findProvinceCoordinates();
 			break;
 	}

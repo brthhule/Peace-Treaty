@@ -4,8 +4,6 @@
 #include <string>
 #include <iostream>
 
-using namespace std;
-
 class AllUnits
 {
 public:
@@ -30,8 +28,8 @@ public:
 	int getResource(int resourceIndex);
 	void printResources();
 
-	void changeUnitName(string name);
-  string getUnitName();
+	void changeUnitName(std::string name);
+  std::string getUnitName();
 
 protected:
 	int resourcesPresent[5];
@@ -48,7 +46,7 @@ protected:
 	int yCoord = 0;
 	char canSelectThisUnit;
 	int participantIndex;
-	string unitName;
+	std::string unitName;
 };
 
 #endif

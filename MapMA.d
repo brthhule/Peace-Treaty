@@ -1,3 +1,4 @@
-MapMA.o MapMA.d : MapMA.cpp MapMA.h otherFunctions.h textFunctions.h \
-  coordinateFunctions.h AttackMA.h Participants.h Provinces.h AllUnits.h \
-  CommanderProfile.h BuildMA.h Lists.h ScoutMA.h TrainMA.h
+MapMA.o MapMA.d : MapMA.cpp MapMA.h otherFunctions.h textFunctions.h Provinces.h \
+  AllUnits.h coordinateFunctions.h CommanderProfile.h main.cpp \
+  Participants.h Lists.h BuildMA.h ArmyDeploymentMA.h AttackMA.h \
+  ScoutMA.h TrainMA.h PlayerAction.h

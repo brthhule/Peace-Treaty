@@ -1,3 +1,4 @@
 otherFunctions.o otherFunctions.d : otherFunctions.cpp otherFunctions.h textFunctions.h \
-  coordinateFunctions.h AttackMA.h Participants.h Provinces.h AllUnits.h \
-  CommanderProfile.h
+  Provinces.h AllUnits.h coordinateFunctions.h CommanderProfile.h \
+  main.cpp Participants.h Lists.h BuildMA.h ArmyDeploymentMA.h \
+  AttackMA.h ScoutMA.h MapMA.h TrainMA.h PlayerAction.h

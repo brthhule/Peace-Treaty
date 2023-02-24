@@ -13,8 +13,6 @@
 #include "coordinateFunctions.h"
 #include "CommanderProfile.h"
 
-using namespace std;
-
 class ArmyDeploymentMA
 {
 public:

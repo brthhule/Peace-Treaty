@@ -1,10 +1,11 @@
 #include "ScoutMA.h"
 
+#define print(x) std::cout << x;
+#define println(x) std::cout << x << endl;
 
-
-extern vector <vector <Provinces>> provincesMap;
-extern vector <Participants> participantsList;
-extern vector <vector <CommanderProfile>> allCommanders;
+extern std::vector <std::vector <Provinces>> provincesMap;
+extern std::vector <Participants> participantsList;
+extern std::vector <std::vector <CommanderProfile>> allCommanders;
 extern int currentParticipantIndex;
 extern int continentSize;
 extern int turn;
@@ -12,33 +13,37 @@ extern int turn;
 ScoutMA::ScoutMA(Participants *newParticipant, Provinces *newProvince)
 {
   participant = newParticipant;
-   targetProvince = newProvince; 
+  yourProvince = newProvince; 
 }
 
 void ScoutMA::selectTargetToScout() /*So much to fix here... truly so much.... make sure to simplify things later on*/
 {
     Participants* enemyParticipant = &participantsList[targetParticipantIndex];
 
-    string unitType = " ";
-    vector <int> acceptableValues;
-    string unitName = " ";
-    std::cout << "Coordinates selected to scout: ";
+    std::string unitType = " ";
+    std::vector <int> acceptableValues;
+    std::string unitName = " ";
+    println("Coordinates selected to scout: ");
 
-    cout << "The following units are at these coordinates: " << endl;
-    cout << "1) Province " << targetProvince->getUnitName() << " (Level " << targetProvince->findProvinceLevel() << ") " << endl;
+    println("The following units are at these coordinates: ");
+	
+    std::cout << "1) Province " << targetProvince->getUnitName() << " (Level " << targetProvince->findProvinceLevel() << ") " << endl;
     acceptableValues.push_back(1);
 
-    for (int b = 0; b < targetProvince->commandersPresentIndex.size(); b++)
+    for (int b = 0; b < targetProvince->commanders.size(); b++)
     {
-        CommanderProfile& newCommander = allCommanders[targetParticipantIndex][enemyProvince->returnCommanderIndex(b)];
-        cout << b + 2 << ") Commander " << newCommander.getUnitName() << " (Level " << newCommander.getCommanderLevel() << ") " << endl;
+        CommanderProfile* newCommander = participantsList[targetParticipantIndex].getCommander(enemyProvince->returnCommanderIndex(b));
+			
+        std::cout << b + 2 << ") Commander " << newCommander.getUnitName() << " (Level " << newCommander.getCommanderLevel() << ") " << endl;
         acceptableValues.push_back(b + 2);
     }
     int numberSelected = getInt("Enter the number of the unit you would like to select (the number to the left of the first ')' symbol): ",
         acceptableValues, 1);
     if (numberSelected == 1)
     {
-        targetInformation[0] = 0;//Identify target as a province
+			//Identify target as a province
+        targetInformation[0] = 0;
+			Provinces *target
         targetInformation[1] = participantsList[targetParticipantIndex].
             findProvinceIndexWithCoordinates(targetXCoordinate, targetYCoordinate);
         unitType = "Province ";
@@ -58,7 +63,7 @@ void ScoutMA::selectTargetToScout() /*So much to fix here... truly so much.... m
     std::cout << "You can only scout this unit if one of your provinces or armies is next to it... " << endl;
 
     //Find if there are any player units that can scout the target
-    for (int a = -1; a <= 1; a++) /*Identify the surrounding units that can scout, add them to vectors (their coordinates)*/
+    for (int a = -1; a <= 1; a++) /*Identify the surrounding units that can scout, add them to std::vectors (their coordinates)*/
     {
         for (int b = -1; b <= 1; b++)
         {
@@ -98,12 +103,12 @@ void ScoutMA::selectTargetToScout() /*So much to fix here... truly so much.... m
 void ScoutMA::playerScoutStepTwo()//Finish this later
 {
     int accuracy = 0;
-    vector <int> unitsCanScoutWith;
+    std::vector <int> unitsCanScoutWith;
 
     std::cout << "You have " << provincesCanSelectX.size() + commandersCanSelect.size() << " provinces and armies next to the target. Below is a list of units that can scout the target.";
     std::cout << " Please note that the higher the level of the scouting unit, the more accurate the results of the scout report are (The level of the target unit is " << enemyLevel << "). " << endl << endl;
 
-    vector <int> unitLevels = showUnitsCanScout();
+    std::vector <int> unitLevels = showUnitsCanScout();
     int cutOffThingy = unitLevels[0];
     unitLevels.erase(unitLevels.begin());
 
@@ -163,17 +168,17 @@ void ScoutMA::playerScoutStepTwo()//Finish this later
 
     }
 }
-vector<int>  ScoutMA::showUnitsCanScout()
+std::vector<int>  ScoutMA::showUnitsCanScout()
 {
     Participants* attackingParticipant = &participantsList[currentParticipantIndex];
 
-    vector <int> unitLevels = { 0 };
+    std::vector <int> unitLevels = { 0 };
     std::cout << "\033[;34m";
-    vector <CommanderProfile*> commandersCanSelect;
+    std::vector <CommanderProfile*> commandersCanSelect;
     char commanderThingy = ' ';
     int provinceIndex = 0;
     int commanderIndex = 0;
-    //For all the provinces in the vector
+    //For all the provinces in the std::vector
 
     std::cout << "Provinces that can scout: " << endl;
     for (int a = 0; a < provincesCanSelectX.size(); a++)

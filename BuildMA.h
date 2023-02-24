@@ -11,7 +11,6 @@
 #include "Provinces.h"
 #include "Participants.h"
 
-
 class BuildMA
 {
 public:

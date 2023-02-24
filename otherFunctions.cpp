@@ -1,22 +1,14 @@
 #include "otherFunctions.h"
 
-using namespace std;
-extern vector<vector<Provinces>> provincesMap;
-extern vector<Provinces> provincesCanSelect;
-extern int provinceBuildingsProductionNumbers[6];
-extern int continentSize;
-extern int troopsCP[5];
-extern int currentParticipantIndex;
-
 void showMap() {
-  cout << "Map: " << endl;
+  std::cout << "Map: " << endl;
   int thingy = continentSize;
   for (int x = 0; x < continentSize; x++) {
     // Y axis stuff
     if (thingy < 10) {
-      cout << " " << thingy << "| ";
+      std::cout << " " << thingy << "| ";
     } else {
-      cout << thingy << "| ";
+      std::cout << thingy << "| ";
     }
     thingy--;
     // End y axis stuff
@@ -33,7 +25,7 @@ void showMap() {
           letter = 'p';
         }
       } else if (provincesMap[x][y].getParticipantIndex() != -1) {
-        cout << "\033[;31m";
+        std::cout << "\033[;31m";
         identifierThingy = 'V';
         if (provincesMap[x][y].isProvinceACapitalQuestion() == 'Y') {
           letter = 'E';
@@ -44,36 +36,36 @@ void showMap() {
         letter = '0';
       }
       if (provincesMap[x][y].commandersPresentIndex.size() == 0) {
-        cout << letter << "   ";
+        std::cout << letter << "   ";
       } else {
         if (provincesMap[x][y].commandersPresentIndex.size() <= 9) {
-          cout << letter << identifierThingy
+          std::cout << letter << identifierThingy
                << provincesMap[x][y].commandersPresentIndex.size() << " ";
         } else {
-          cout << letter << identifierThingy << "* ";
+          std::cout << letter << identifierThingy << "* ";
         }
       }
-      cout << "\033[;0m";
+      std::cout << "\033[;0m";
     }
-    cout << endl;
+    std::cout << endl;
   }
 
   // X axis stuff
-  cout << "    ";
+  std::cout << "    ";
   for (int a = 0; a < continentSize - 1; a++) {
-    cout << "----";
+    std::cout << "----";
   }
-  cout << "-";
-  cout << endl;
-  cout << "    ";
+  std::cout << "-";
+  std::cout << endl;
+  std::cout << "    ";
   for (int a = 0; a < continentSize; a++) {
     if (a < 8) {
-      cout << a + 1 << "   ";
+      std::cout << a + 1 << "   ";
     } else
-      cout << a + 1 << "  ";
+      std::cout << a + 1 << "  ";
   }
-  cout << endl;
-  cout << endl;
+  std::cout << endl;
+  std::cout << endl;
 }
 
 void updateprovinceResources() {
@@ -87,22 +79,22 @@ void updateprovinceResources() {
   }
 }
 
-int getInt(string textToDisplay, vector<int> acceptableValues,
+int getInt(std::string textToDisplay, std::vector<int> acceptableValues,
            int caseInstance) {
-  string userInput;
+  std::string userInput;
   if (caseInstance == 1) {
     std::cout << textToDisplay;
   }
-  cout << "\033[31m";
-  std::getline(cin, userInput);
-  cout << "\033[0m";
+  std::cout << "\033[31m";
+  std::getline(std::cin, userInput);
+  std::cout << "\033[0m";
   return checkInt(acceptableValues, userInput);
 }
-int checkInt(vector<int> &acceptableValuesTwo, string input) {
-  vector<string> acceptableValuesOne;
-  string foo = " ";
+int checkInt(std::vector<int> &acceptableValuesTwo, std::string input) {
+  std::vector<std::string> acceptableValuesOne;
+  std::string foo = " ";
   for (int a = 0; a < acceptableValuesTwo.size(); a++) {
-    foo = to_string(acceptableValuesTwo[a]);
+    foo = to_std::string(acceptableValuesTwo[a]);
     acceptableValuesOne.push_back(foo);
   }
 
@@ -119,33 +111,33 @@ int checkInt(vector<int> &acceptableValuesTwo, string input) {
     std::cout << endl;
     std::cout << "Invalid character entered. Please try again." << endl;
     std::cout << "Please enter a valid number: ";
-    cout << "\033[31m";
-    std::getline(cin, input);
-    cout << "\033[0m";
+    std::cout << "\033[31m";
+    std::getline(std::cin, input);
+    std::cout << "\033[0m";
 
   } while (repeat == 'Y');
   return -1;
 }
-char getChar(string textToDisplay, string acceptableValues, int caseInstance) {
-  string userInput;
+char getChar(std::string textToDisplay, std::string acceptableValues, int caseInstance) {
+  std::string userInput;
   if (caseInstance == 1) {
     std::cout << textToDisplay;
   }
-  cout << "\033[31m";
-  std::getline(cin, userInput);
-  cout << "\033[0m";
+  std::cout << "\033[31m";
+  std::getline(std::cin, userInput);
+  std::cout << "\033[0m";
   return checkChar(acceptableValues, userInput);
 }
-char checkChar(string stringAV, string input) {
-  vector<char> acceptableValuesOne; /*Uppercase*/
+char checkChar(std::string std::stringAV, std::string input) {
+  std::vector<char> acceptableValuesOne; /*Uppercase*/
   char inputTwo = ' ';
 
-  for (int x = 0; x < stringAV.length(); x++) {
-    acceptableValuesOne.push_back(stringAV.at(x));
+  for (int x = 0; x < std::stringAV.length(); x++) {
+    acceptableValuesOne.push_back(std::stringAV.at(x));
   }
 
   char goodToGo = 'G';
-  string character;
+  std::string character;
   do {
     goodToGo = 'G';
     if (input.length() == 1) {
@@ -162,18 +154,18 @@ char checkChar(string stringAV, string input) {
     std::cout << endl;
     std::cout << "Invalid character entered. Please try again. " << endl;
     std::cout << "Please enter a valid character: ";
-    cout << "\033[31m";
-    std::getline(cin, input);
-    cout << "\033[0m";
+    std::cout << "\033[31m";
+    std::getline(std::cin, input);
+    std::cout << "\033[0m";
 
   } while (goodToGo == 'B');
   return '1'; /*added this bc the debugger said that not all control paths
                  return a value*/
 }
 
-string createRandomName() {
-  // cout << "Create random name" << endl;
-  string name = "";
+std::string createRandomName() {
+  // std::cout << "Create random name" << endl;
+  std::string name = "";
   int randomNumber = 0;
   char characterThingy = ' ';
   for (int x = 0; x < 4; x++) {
@@ -288,8 +280,8 @@ char findVowel(int randomNumber) {
 void createMap() {
   /*Basically create the map-- make each province an object of Provinces*/
   for (int x = 0; x < continentSize; x++) {
-    vector<Provinces> vectorThingy;
-    provincesMap.push_back(vectorThingy);
+    std::vector<Provinces> std::vectorThingy;
+    provincesMap.push_back(std::vectorThingy);
     for (int y = 0; y < continentSize; y++) {
       Provinces newProvince(x, y, -1);
       provincesMap[x].push_back(newProvince);
@@ -298,9 +290,9 @@ void createMap() {
 }
 
 void clearScreen() {
-  cout << "\033[32m";
+  std::cout << "\033[32m";
   std::cout << "Clearing screen. " << endl;
-  cout << "\033[0m";
+  std::cout << "\033[0m";
   chrono::seconds dura(1);
   this_thread::sleep_for(dura);
   // system("cls"); /*Windows only*/
@@ -308,7 +300,7 @@ void clearScreen() {
 }
 
 void pauseGame() {
-  string gameCode;
+  std::string gameCode;
   gameCode += continentSize;
 
   for (int x = 0; x < continentSize; x++) {

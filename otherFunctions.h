@@ -1,5 +1,5 @@
-#ifndef OTHERFUNCTIONS
-#define OTHERFUNCTIONS
+#ifndef OTHERFUNCTIONS_H
+#define OTHERFUNCTIONS_H
 
 #include <iostream>
 #include <string.h>
@@ -14,23 +14,26 @@
 #include <stdlib.h>
 
 #include "textFunctions.h"
-#include "AttackMA.h"
+#include "Provinces.h"
+#include "main.cpp"
 
-using namespace std;
+extern std::vector<std::vector<Provinces>> provincesMap;
+extern int provinceBuildingsProductionNumbers[6];
+extern int continentSize;
+extern int troopsCP[5];
+extern int currentParticipantIndex;
 
-int calculatePlayerValues(int decision);
-
-char getChar(string textToDisplay, string acceptableValues, int caseInstance);
-char checkChar(string inputAV, string input);
-int getInt(string textToDisplay, vector <int> acceptableValues, int caseInstance);
-int checkInt(vector<int>& acceptableValuesTwo, string input);
+char getChar(std::string textToDisplay, std::string acceptableValues, int caseInstance);
+char checkChar(std::string inputAV, std::string input);
+int getInt(std::string textToDisplay, std::vector <int> acceptableValues, int caseInstance);
+int checkInt(std::vector<int>& acceptableValuesTwo, std::string input);
 void pauseGame();
 
 void showMap();
 void updateprovinceResources();
 void createMap();
 
-string createRandomName();
+std::string createRandomName();
 char findConsonant(int randomNumber);
 char findVowel(int randomNumber);
 

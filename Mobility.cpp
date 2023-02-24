@@ -1,6 +1,6 @@
 #include "Mobility.h"
-#define print(x) cout << x;
-#define println(x) cout << x << endl;
+#define print(x) std::cout << x;
+#define println(x) std::cout << x << endl;
 
 Mobility::Mobility(CommanderProfile *sCommander, Participants *newP)
 {
@@ -10,8 +10,8 @@ Mobility::Mobility(CommanderProfile *sCommander, Participants *newP)
 	participant = newP;
 }
 
-vector<Provinces *> Mobility::moveUnitTwo() {
-  vector<Provinces *> vectorThingy;
+std::vector<Provinces *> Mobility::moveUnitTwo() {
+  std::vector<Provinces *> std::vectorThingy;
   for (int x = -1; x <= 1;
        x++) /*Identify all the provinces that the player can move a unit to*/
   {
@@ -23,25 +23,25 @@ vector<Provinces *> Mobility::moveUnitTwo() {
         // Make sure province isn't the starting province
         if (x != 0 || y != 0) {
           // Add province to list of provinces can move to
-          vectorThingy.push_back(
+          std::vectorThingy.push_back(
               &provincesMap[x + sCommanderX][y + sCommanderY]);
         }
       }
     }
   }
-	return vectorThingy;
+	return std::vectorThingy;
 }
 
 void Mobility::moveUnitOne() {
-  vector<Provinces *> provincesCanSelect;
-  if (selectedCommander->hasCommanderMoved() == 'N') {
+  std::vector<Provinces *> provincesCanSelect;
+  if (selectedCommander->hasMovedQuestion() == 'N') {
     print ("The coordinates of the chosen unit unit are: (");
     print(translateCoordinate(sCommanderX, 'y', 'O') + ", " + translateCoordinate(sCommanderY, 'x', '0'));
 		print(")\n\nYou can only move this unit to one of the provinces adjacent to the province it is in\n")
     provincesCanSelect = moveUnitTwo();
 
     // The participant slects coordiantes
-    vector <int> moveTwo = getCoords(2);
+    std::vector <int> moveTwo = getCoords(2);
 
     int provinceIndexSelected = 0;
     char provinceIsInList =
@@ -60,7 +60,7 @@ void Mobility::moveUnitOne() {
     int moveToX = translateCoordinate(moveTwo[0], 'x', 'O');
     int moveToY = translateCoordinate(moveTwo[1], 'y', 'O');
 
-    string confirmMove;
+    std::string confirmMove;
     char attackScenario = 'P'; /*P is for peace, A is for attack*/
     // If province is in the list
     if (provinceIsInList == 'Y') {
@@ -92,7 +92,7 @@ void Mobility::moveUnitOne() {
         }
       }
     } else {
-      cout << "Invalid province selected... please try again. " << endl;
+      std::cout << "Invalid province selected... please try again. " << endl;
       // Recursion until suitable coordinates are chosen
       moveUnitOne();
     }

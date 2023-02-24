@@ -1,6 +1,6 @@
 #include "AttackMA.h"
 
-AttackMA::AttackMA(vector<int> unitAttackingArg, vector <int> unitAttackedArg, Participants * attackingParticipantArg, CommanderProfile* commanderArg) {
+AttackMA::AttackMA(std::vector<int> unitAttackingArg, std::vector <int> unitAttackedArg, Participants * attackingParticipantArg, CommanderProfile* commanderArg) {
 	unitAttacking = unitAttackingArg;
 	unitAttacked = unitAttackedArg;
 	attackingParticipant = attackingParticipantArg;
@@ -24,8 +24,8 @@ void AttackMA::playerAttack() /*fix this*/
 
     for (int x = -1; x < 2; x++) {
       for (int y = -1; y < 2; y++) {
-        forLoopX = unitBeingAttackedX + x;
-        forLoopY = unitBeingAttackedY + y;
+        forLoopX = unitAttacked[0] + x;
+        forLoopY = unitAttacked[1] + y;
         if (forLoopX >= 0 && forLoopX < continentSize) {
           if (forLoopY >= 0 && forLoopY < continentSize) {
             if (provincesMap[forLoopX][forLoopY].commandersPresentIndex.size() >
@@ -101,7 +101,7 @@ void AttackMA::playerAttack() /*fix this*/
 }
 void AttackMA::playerCommitAttack() {
   Participants *newParticipant = &participantsList[currentParticipantIndex];
-  vector<char> targetEnemyCommanders;
+  std::vector<char> targetEnemyCommanders;
 
   int oldResources[5] = {0};
   for (int x = 0; x < 5; x++) {
@@ -187,7 +187,7 @@ void AttackMA::playerCommitAttackWin(int oldResources[5]) {
 
     char viewAllArmyStats = ' ';
     char repeatViewAllArmyStats = 'N';
-    string viewAllArmyStatsString;
+    std::string viewAllArmyStatsString;
 
     provincesMap[unitAttackingX][unitAttackingY].addCommanderProvince(
         commanderIndex);

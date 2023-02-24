@@ -6,9 +6,6 @@
 #include "Provinces.h"
 #include "CommanderProfile.h"
 
-using namespace std;
-
-
 class Participants
 {
 public:
@@ -21,58 +18,61 @@ public:
 	//Capital stuff
 	Provinces* getCapital();
 	void setCapital(Provinces *newProvince);
-	string getNewName(Participants *newP);
-string getNewNameTwo (Participants *participant, string &newName);
+	std::string getNewName ();
 	//Commander stuff
 	int commandersNum();
 	int findCommanderIndex(CommanderProfile *commander);
 	void addCommander();
 	CommanderProfile* getCommander(int index);
+	int getMaxCommanders ();
+	std::vector <int> getTrainCosts();
 			
 	//Province stuff
 	int provincesNum();
 	Provinces *findProvince(int x, int y);
 	void addProvince(Provinces *newProvince);
+	Provinces *getProvince (int index);
+	void printListOfProvinces();
+
 
 	//Create participant
-	void setKingdomName(string newName);
-	string getKingdomName();
+	void setKingdomName(std::string newName);
+	std::string getKingdomName();
 	void initialCapRSS();
 	void createCapital();
-	void setKingdomName ();
-  bool isAlive();
-	bool isPlayer();
-	void createAsPlayer (bool choice);
-	void viewStats();
-	vector<int> calculatePlayerValues (int decision);
-	Provinces *getProvince (int index);
+	int findAllUnits();//Create funciton
 	void setParticipantIndex(int num);
 	int getParticipantIndex();
 
-	int getMaxCommanders ();
-		
-	vector <int> getTrainCosts();
+	//AI
+	void createAsPlayer (bool choice);
+	bool isAlive();
+	bool isPlayer();
 
-	int findAllUnits();//Create funciton
-	vector <int> troopsLost = { 0,0,0,0,0 };
-	vector <int> totalUnits = { 0,0,0,0,0 }; /*0) Militia, 1) Guards, 2) Cavalry, 3) 
-Knights, 4) Paladins*/
+	//Stats
+	std::vector<int> calculatePlayerValues (int decision);
+	void viewAllStatsFunction();
+	void viewStats();
 
 private:
-	string kingdomName = " ";
+	std::string kingdomName = " ";
 	bool playerStatus;//true = player, false = AI
 
-	vector <Provinces*> provincesList;
-	vector <CommanderProfile*> commandersList;
+	std::vector <Provinces*> provincesList;
+	std::vector <CommanderProfile*> commandersList;
 	int capitalIndex;
 
 	//Figure out sizes later
 	int AIMainAction [5];
 	int AIBuildMA [2];
 	int AITroopMA [3];
-vector <int> trainCosts = {5, 4, 3, 2, 1};
+std::vector <int> trainCosts = {5, 4, 3, 2, 1};
 	int maxCommanders;
 	int participantIndex;
+
+	std::vector <int> troopsLost = { 0,0,0,0,0 };
+	std::vector <int> totalUnits = { 0,0,0,0,0 }; /*0) Militia, 1) Guards, 2) Cavalry, 3) 
+Knights, 4) Paladins*/
 };
 
 #endif

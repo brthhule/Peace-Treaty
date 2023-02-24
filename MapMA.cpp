@@ -58,14 +58,14 @@ void MapMA::selectUnitOriginal(Provinces *selectedProvince) {
     {
       if (prov->commanders[0][1] == pIndex
       {
-        playerUnitAction();
+        playerUnitAction(prov);
       } else {
         selectEnemyAction();
       }
     }
   } else // If enemy province
   {
-    selectEnemyProvince();
+    selectEnemyProvince(prov);
   }
 }
 void MapMA::selectPlayerProvince() {
@@ -97,18 +97,18 @@ void MapMA::selectPlayerProvince() {
     break;
   }
 }
-void MapMA::selectEnemyProvince() {
 
-  if (participantsList[provincesMap[xCoordinate][yCoordinate]
-                           .getBelongsToParticipant()]
-          .findProvinceIndexWithCoordinates(xCoordinate, yCoordinate) == 0) {
-    std::cout << "This is an enemy capital province ";
+
+void MapMA::selectEnemyProvince(Provinces *newP) {
+  Provinces enemyProvince = newP;
+	if (enemyProvince->isCapital()) {
+    println("This is an enemy capital province ");
   } else {
-    std::cout << "This is one of the enemy's provicnes" << endl;
+    println("This is one of the enemy's provinces");
   }
-  std::cout << endl << endl;
 
-  std::cout << "Welcome to the Enemy Provinces Action Selection menu " << endl;
+  println("\n\nWelcome to the Enemy Provinces Action Selection menu ");
+	
   Lists newLists(10);
   char selectUnitEnemyProvinceChar = newLists.listOfActions();
 
@@ -116,11 +116,13 @@ void MapMA::selectEnemyProvince() {
   case 'A': {
     AttackMA newAttackMA(0, 0, xCoordinate, yCoordinate, -1, -1);
     newAttackMA.playerAttack();
+		selectEnemyProvince(enemyProvince());
     break;
   }
   case 'S': {
     ScoutMA newScout(xCoordinate, yCoordinate);
     newScout.selectTargetToScout();
+		selectEnemyProvince(enemyProvince());
     break;
   }
   case 'V': {
@@ -130,8 +132,10 @@ void MapMA::selectEnemyProvince() {
                   scoutLogFunction if 'Y'*/
       {
         scoutLogFunction();
+				
       }
     }
+		selectEnemyProvince(enemyProvince());
     break;
   }
   case 'M':
@@ -140,46 +144,45 @@ void MapMA::selectEnemyProvince() {
   }
 }
 
-void MapMA::playerUnitAction() {
-  std::cout << "This is one of your armies " << endl;
-  Participants *newParticipant = &participantsList[currentParticipantIndex];
-
-  char repeatPlayerUnitAction = 'Y';
-  do {
-    char playerUnitActionChar = listOfActions(2);
-    switch (playerUnitActionChar) {
-    case 'P': {
-      // find index of commander unit
-      int commanderIndex = 0;
-      for (int x = 0; x < newParticipant->howManyCommanders(); x++) {
-        if (newParticipant->listOfProvincesX[x] == xCoordinate &&
-            newParticipant->listOfProvincesY[x] == yCoordinate) {
-          commanderIndex = x;
-          x = newParticipant->howManyCommanders();
-        }
-      }
-      if (allCommanders[currentParticipantIndex][commanderIndex]
-              .hasCommanderMoved() == 'N') {
-        allCommanders[currentParticipantIndex][commanderIndex]
-            .moveUnit(); /*fix this*/
-      } else
-        std::cout << "This unit has already moved this turn... returning to "
-                     "the View Map action menu "
-                  << endl
-                  << endl;
-      repeatPlayerUnitAction = 'N';
-      break;
-    }
-    case 'H':
-      listOfHelp(2);
-      break;
-    case 'M':
-      std::cout << "Returning to menu... " << endl;
-      repeatPlayerUnitAction = 'N';
-      break;
-    }
-  } while (repeatPlayerUnitAction == 'Y');
+void MapMA::playerUnitAction(Provinces *newP) {
+	Province *newProvince = newP;
+  println("This is one of your armies ");
+	char playerUnitActionChar = listOfActions(2);
+	switch (playerUnitActionChar) {
+	case 'P': {
+		// find index of commander unit, fix this
+		int commanderIndex = 0;
+		for (int x = 0; x < participant->commandersNum(); x++) {
+			if (participant->getProvince(x) == newProvince) {
+				commanderIndex = x;
+				x = participant->commandersNum();
+			}
+		}
+		if (participant->getCommander(commanderIndex)->hasMoved() == false) {
+			newParticipant->getCommander(commanderIndex)->moveUnit(); /*fix this*/
+		} else
+			println("This unit has already moved this turn... returning to the View Map action menu \n");
+		playerUnitActionChar = 'M';
+		break;
+	}
+	case 'H':
+		listOfHelp(2);
+		break;
+	case 'M':
+		std::cout << "Returning to menu... " << endl;
+		repeatPlayerUnitAction = 'N';
+		break;
+	}
+	
+	if (playerUnitActionChar != 'M')
+	{
+		playerUnitAction(newProvince);
+	}
 }
+
+
+
+
 void MapMA::selectEnemyAction() /*finish this*/
 {
   std::cout << "This is an enmy army. " << endl;

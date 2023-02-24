@@ -5,9 +5,9 @@
 #include "coordinateFunctions.h"
 #include "CommanderProfile.h"
 
-extern string provinceResourcesNames[5];
-extern string buildingNames[6];
-extern string troopNames[5];
+extern std::string provinceResourcesNames[5];
+extern std::string buildingNames[6];
+extern std::string troopNames[5];
 extern int provinceBuildingsProductionNumbers[6];
 extern int initialResources[5];
 extern int troopsCP[5];
@@ -40,7 +40,7 @@ public:
 	void printBuildingStats();
 	bool isCapital();
 
-	string getProvinceName();
+	std::string getProvinceName();
   void setDeleteProvince ()
   {
     deleteProvince = true;
@@ -60,7 +60,7 @@ public:
   void addTroopsTrainedThisTurn(int amount);
 
   int getCoordinate(char identifier);
-  string printCoordinates();
+  void printCoordinates();
   bool deleteStatus();
 
   

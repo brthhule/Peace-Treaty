@@ -50,8 +50,8 @@ int pNum = 0;
 
 /*Miscellaneous*/
 int currentParticipantIndex = 0;
-vector <vector <Provinces*>> provincesMap;
-vector <Participants*> participantsList;
+vector <vector <Provinces>> provincesMap;
+vector <Participants> participantsList;
 int turn = 1;
 
 /*other important stuff*/

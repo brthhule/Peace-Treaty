@@ -1,13 +1,13 @@
 #include "coordinateFunctions.h"
-#define print(x) cout << x;
-#define println(x) cout << x << endl;
+#define print(x) std::cout << x;
+#define println(x) std::cout << x << endl;
 
 using namespace std;
-extern vector<vector<Provinces *>> provincesMap;
+extern std::vector<std::vector<Provinces>> provincesMap;
 extern int provinceBuildingsProductionNumbers[6];
 extern int continentSize;
 extern int troopsCP[5];
-extern vector<Participants> participantsList;
+extern std::vector<Participants> participantsList;
 
 int translateCoordinate(int coordinate, char indicator, char whichWay) {
   /*replacement = xCoordinate;
@@ -42,14 +42,14 @@ int translateCoordinate(int coordinate, char indicator, char whichWay) {
   return translation;
 }
 
-vector<int> getCoords(int identifier) {
+std::vector<int> getCoords(int identifier) {
 	int yCoordinate = -1;
-  vector<int> actualCoordinatesAVTwo = {-1};
+  std::vector<int> actualCoordinatesAVTwo = {-1};
   for (int x = 1; x <= continentSize; x++) {
     actualCoordinatesAVTwo.push_back(x);
   }
   showMap();
-  string phrase;
+  std::string phrase;
   switch (identifier) {
   case 1:
     printListOfProvinces();

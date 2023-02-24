@@ -9,9 +9,9 @@ using namespace std;
 extern int troopsCP[5];
 extern int provinceBuildingsProductionNumbers[6];
 
-extern string provinceResourcesNames[5];
-extern string buildingNames[6];
-extern string troopNames[5];
+extern std::string provinceResourcesNames[5];
+extern std::string buildingNames[6];
+extern std::string troopNames[5];
 extern int currentParticipantIndex;//Fix this at some point-- make sure right index is sent to constructor
 
 //Constructor
@@ -71,11 +71,11 @@ void AllUnits::printResources()
 	cout << "\033[;0m";
 }
 
-string AllUnits::getUnitName()
+std::string AllUnits::getUnitName()
 {
 	return unitName;
 }
-void AllUnits::changeUnitName(string name)
+void AllUnits::changeUnitName(std::string name)
 {
 	unitName = name;
 }

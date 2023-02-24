@@ -15,8 +15,6 @@
 #include "Participants.h"
 #include "Provinces.h"
 
-using namespace std;
-
 class MapMA
 {
 public:
@@ -27,9 +25,9 @@ public:
 
 	void selectUnitOriginal(Provinces *selectedProvince);
 	void selectPlayerProvince();
-	void playerUnitAction();
+	void playerUnitAction(Provinces *newP);
 	void selectEnemyAction();
-	void selectEnemyProvince();
+	void selectEnemyProvince(Provinces *newP);
 
 	void scoutLogFunction();
 	void provinceReportLog(char whatReportChar);

@@ -1,12 +1,10 @@
-#include <iostream>
-#include <vector>
 #include "Participants.h"
 
 
 using namespace std;
 extern int currentParticipantIndex;
 extern int initialResources [5];
-extern vector <vector <Provinces*>> provincesMap;
+extern std::vector <std::vector <Provinces>> provincesMap;
 
 //Constructor
 Participants::Participants ()
@@ -14,7 +12,7 @@ Participants::Participants ()
 	createCapital();
 	addCommander();
 	initialCapRSS();
-  setKingdomName();
+  setKingdomName("-1");
 }
 void Participants::createCapital()
 {
@@ -22,7 +20,7 @@ void Participants::createCapital()
 
 	int xCoord = getRandomCoordinate();
 	int yCoord = getRandomCoordinate();
-	Provinces *newProvince = provincesMap[xCoord][yCoord];
+	Provinces *newProvince = &provincesMap[xCoord][yCoord];
 	if (newProvince->getBelongsToParticipant() == -1)
 	{
 		newProvince->changeBelongsToParticipant(p);
@@ -104,13 +102,16 @@ void Participants::addCommander()
     commandersList.push_back(newCommander);
 }
 
-void Participants::setKingdomName(string newName)
+void Participants::setKingdomName(std::string newName)
 {
-	if (kingdomName == " ")
-    kingdomName = newName;
+	if (newName == "-1")
+	{
+		newName = generateNewName(); //fix this-- add functionality
+	}
+  kingdomName = newName;
 }
 
-string Participants::getKingdomName()
+std::string Participants::getKingdomName()
 {
     return kingdomName;
 }
@@ -131,7 +132,7 @@ void Participants::createAsPlayer(bool choice)
 
 void Participants::viewStats()
 {
-    cout << "Kingdom name: " << kingdomName << "\n\n";
+    std::cout << "Kingdom name: " << kingdomName << "\n\n";
     int totalPlayerUnits[5];
     findTotalPlayerUnits(totalPlayerUnits);
     
@@ -154,7 +155,7 @@ void Participants::viewStats()
         break;}
 }
 
-vector<int> Participants::calculatePlayerValues(int decision)
+std::vector<int> Participants::calculatePlayerValues(int decision)
 {
     switch (decision)
     {
@@ -174,26 +175,16 @@ Provinces *Participants::getProvince(int index)
 	return provincesList[index];
 }
 
-string Participants::getNewName(Participants *newP)
+std::string Participants::getNewName()
 {
-	Participants *participant = newP;
-  string newName = " ";  
-  char repeatGetName = 'N';
-	newName = getNewNameTwo(participant, newName);
-    //Check to make sure that the name isn't used by any other units the participant has
-
-    return newName;
-}
-string Participants::getNewNameTwo(Participants *participant, string &newName)
-{
-	newName = createRandomName();
+	std::string newName = createRandomName();
 	//cout << "Check provinces" << endl;
 	for (int x = 0; x < participant->provincesNum(); x++) //If any provinces of the participant have the name
 	{
 		Provinces* newProvince = participant->getProvince(x);
 		if (newName == newProvince -> getProvinceName())
 		{
-			getNewNameTwo(participant, newName);
+			getNewName();
 		}
 	}
 	//cout << "Check commanders" << endl;
@@ -202,10 +193,10 @@ string Participants::getNewNameTwo(Participants *participant, string &newName)
 		CommanderProfile* newCommander = &allCommanders[currentParticipantIndex][x];
 		if (newName == newCommander->getUnitName())
 		{
-			getNewNameTwo(participant, newName);
+			getNewName();
 		}
 	}
-
+	return newName;
 
 }
 
@@ -214,7 +205,7 @@ CommanderProfile *Participants::getCommander(int index)
 	return commandersList[index];
 }
 
-vector <int> Participants::getTrainCosts ()
+std::vector <int> Participants::getTrainCosts ()
 {
 	return trainCosts;
 }
@@ -232,4 +223,41 @@ void Participants::setParticipantIndex(int num)
 int Participants::getParticipantIndex()
 {
 	return participantIndex;
+}
+
+void Participants::viewAllStatsFunction()
+{
+    std::string literallyAnyRandomCharacter;
+    std::cout << "\033[;34m";//NW
+    for (int x = 0; x < 5; x++)
+    {
+        std::cout << troopNames[x] << " lost: " << participantsList[currentParticipantIndex].playerTroopsLost[x] << endl;
+    }
+    std::cout << "Total troops lost: " << calculatePlayerValues(2) << endl << endl;
+    std::cout << "\033[;0m";//NW
+
+    std::cout << "Enter any character to go back to the Main menu: ";
+    std::cout << "\033[31m";
+    getline(cin, literallyAnyRandomCharacter);
+    std::cout << "\033[0m";
+}
+
+void Participants::printListOfProvinces()
+{
+    std::cout << "Here is a list of your provinces: " << endl;
+    int x;
+    int y;
+    for (int a = 0; a < continentSize; a++)
+    {
+        for (int b = 0; b < continentSize; b++)
+        {
+            if (provincesMap[a][b].getBelongsToParticipant() == currentParticipantIndex)
+            {
+                x = translateCoordinate(b, 'x', 'O');
+                y = translateCoordinate(a, 'y', 'O');
+                std::cout << "(" << x << ", " << y << ") " << endl;
+            }
+        }
+    }
+    std::cout << endl;
 }

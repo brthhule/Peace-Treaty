@@ -94,15 +94,14 @@ void ArmyDeploymentMA::upgradeCommandersTwo() {
 
   CommanderProfile *newCommander =
       participant->getCommander(indexOfCommander);
-
-  printCosts(newCommander->getUpgradeCosts, "upgrade");
+	newCommander -> printCosts(newCommander->getUpgradeCosts);
 
   std::cout << endl;
   char failCommanderUpgrade = 'S';
 	char proceedWithUpgradeQuestion = getChar("Proceed with upgrade? ", "YN", 1);
   if (proceedWithUpgradeQuestion == 'Y') {
 
-    vector<int> commanderCosts = newCommander->getCommanderUpgradeCosts();
+    vector<int> commanderCosts = newCommander->getUpgradeCosts();
     for (int x = 0; x < 5; x++) {
       capitalProvince->addResources(x, commanderCosts[x] * -1);
       if (capitalProvince->getR(x) < 0) {
@@ -143,7 +142,7 @@ CommanderProfile *ArmyDeploymentMA::selectCommander(char &successfulSelection) {
         getInt("Please enter the number of the commander you wish to select: ",
                listOfOptions, 1) -
         1;
-    cout << "Confirm selection of commander "
+    std::cout << "Confirm selection of commander "
          << participant->getCommander(index)->getUnitName() << "? (Y/N): ";
     char confirmSelection = getChar("0", "YN", 2);
     if (confirmSelection == 'Y') {
@@ -164,9 +163,9 @@ void ArmyDeploymentMA::viewArmyOverview() {
 	CommanderProfile *newCommander = selectCommander(decision);
   switch (decision) {
   case 'Y': {
-    cout << "Commander " << newCommander->getCommanderName() << " selected... "
+    std::cout << "Commander " << newCommander->getCommanderName() << " selected... "
          << endl;
-    cout << "The coordinates of this Commander: ("
+    std::cout << "The coordinates of this Commander: ("
          << translateCoordinate(newCommander->returnCoordinate('X'), 'x', 'O')
          << ", "
          << translateCoordinate(newCommander->returnCoordinate('Y'), 'y', 'O')
@@ -229,7 +228,7 @@ void ArmyDeploymentMA::proceedWithTraining (vector <int> trainCosts)
 		std::cout << "Current commanders: "
 							<< commandersNum + 1 << endl;
 
-		CommanderProfile newCommander(1, getNewName(),
+		CommanderProfile newCommander(1, participant->getNewName(),
 																	participant->commandersNum());
 		newCommander.changeCoordinates(
 				capitalProvince-> returnCorodinate('X'),

@@ -15,8 +15,6 @@
 
 #include "textFunctions.h"
 
-using namespace std;
-
 int translateCoordinate(int coordinate, char indicator, char whichWay);
 
 vector <int> getCoords(int identifier);

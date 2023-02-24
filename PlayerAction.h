@@ -12,8 +12,6 @@
 #include "ArmyDeploymentMA.h"
 #include "MapMA.h"
 
-using namespace std;
-
 class PlayerAction
 {
 public:
@@ -23,6 +21,6 @@ public:
 	int initialDecision();
 private:
 	Participants *participant;
-}
+};
 
 #endif

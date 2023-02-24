@@ -1,3 +1,4 @@
-Mobility.o Mobility.d : Mobility.cpp Mobility.h Participants.h Provinces.h AllUnits.h \
-  coordinateFunctions.h textFunctions.h otherFunctions.h AttackMA.h \
-  CommanderProfile.h
+Mobility.o Mobility.d : Mobility.cpp Mobility.h otherFunctions.h textFunctions.h \
+  Provinces.h AllUnits.h coordinateFunctions.h CommanderProfile.h \
+  main.cpp Participants.h Lists.h BuildMA.h ArmyDeploymentMA.h \
+  AttackMA.h ScoutMA.h MapMA.h TrainMA.h PlayerAction.h

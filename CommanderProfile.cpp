@@ -1,7 +1,7 @@
 #include "CommanderProfile.h"
 
-extern string provinceResourcesNames[5];
-extern string troopNames[5];
+extern std::string provinceResourcesNames[5];
+extern std::string troopNames[5];
 extern int turn;
 extern int continentSize;
 extern int currentParticipantIndex;
@@ -15,13 +15,13 @@ CommanderProfile::CommanderProfile() {
   for (int x = 0; x < 22; x++) {
     commanderScoutReport[x] = 0;
   }
-  hasMoved = 'N';
+  hasMoved = false;
   maxTroops = 0;
   totalMaxResources = 0;
   commanderIndex = 0;
   changeUnitName("Unnamed");
 }
-CommanderProfile::CommanderProfile(int level, string name) {
+CommanderProfile::CommanderProfile(int level, std::string name) {
   for (int x = 0; x < sizeof(commanderScoutReport) / sizeof(int); x++) {
     commanderScoutReport[x] = 0;
   }
@@ -60,7 +60,7 @@ CommanderProfile::~CommanderProfile() {}
 /*Accessor Functions*/
 void CommanderProfile::printCommanderStats() {
   // print out stats
-  cout << "\033[;34m";
+  std::cout << "\033[;34m";
   int c = 0;
   for (int a = 0; a < 4; a++) {
     std::cout << MANDescriptions[a] << " this army: " << endl;
@@ -70,8 +70,8 @@ void CommanderProfile::printCommanderStats() {
       c++;
     }
   }
-  cout << endl;
-  cout << "\033[;0m";
+  std::cout << endl;
+  std::cout << "\033[;0m";
 }
 int CommanderProfile::getCommanderStat(int index) {
   return *commanderArmyStats[index];
@@ -80,7 +80,7 @@ int CommanderProfile::printCommanderScoutReport(int index) {
   return commanderScoutReport[index];
 }
 int CommanderProfile::getCommanderLevel() { return commanderLevel; }
-char CommanderProfile::hasCommanderMoved() { return hasMoved; }
+bool CommanderProfile::hasMovedQuestion() { return hasMoved; }
 
 /*Mutator Functions*/
 void CommanderProfile::changeCommanderStat(int index, int amount) {
@@ -91,7 +91,7 @@ void CommanderProfile::updateCommanderScoutReport(int index, int value) {
   commanderScoutReport[index] = value;
 }
 void CommanderProfile::addCommanderLevel() { commanderLevel++; }
-void CommanderProfile::resetCommanderMoved() { hasMoved = 'N'; }
+void CommanderProfile::resetCommanderMoved() { hasMoved = false; }
 
 void CommanderProfile::completeCommanderScoutReport(int accuracy) {
   /*Higher accuracy = more accurate scout log-- default is 50% accuracy (if
@@ -117,18 +117,18 @@ void CommanderProfile::completeCommanderScoutReport(int accuracy) {
   updateCommanderScoutReport(21, accuracy);
 }
 
-void CommanderProfile::setLocation(vector <int> pCoords)
+void CommanderProfile::setLocation(std::vector <int> pCoords)
 { coords = pCoords; }
 
-vector<int> CommanderProfile::getUpgradeCosts() {
-  vector<int> updatedCosts = {0, 0, 0, 0, 0};
+std::vector<int> CommanderProfile::getUpgradeCosts() {
+  std::vector<int> updatedCosts = {0, 0, 0, 0, 0};
   for (int x = 0; x < 5; x++) {
     updatedCosts[x] = costToUpgrade * commanderLevel;
   }
   return updatedCosts;
 }
 
-string CommanderProfile::getCommanderName()
+std::string CommanderProfile::getCommanderName()
 {
 	return unitName;
 }
@@ -146,3 +146,11 @@ int CommanderProfile::returnCoordinate(char which)
 	}
 }
 
+void CommanderProfile::printCosts(std::vector <int> costs)
+{
+	for (int x = 0; x < 5; x++)
+	{
+		cout << provinceResourceNames[x] << " cost: " << costs[x] << endl;
+	}
+	cout << endl;
+}
