@@ -8,9 +8,6 @@
 #include "Provinces.h"
 #include "coordinateFunctions.h"
 
-
-using namespace std;
-
 class ScoutMA
 {
 public:
@@ -20,19 +17,19 @@ public:
     //Functions
     void selectTargetToScout();
     void playerScoutStepTwo();
-    vector <int> showUnitsCanScout();
+    std::vector <int> showUnitsCanScout();
     void scoutLogCalculationsProvince(int accuracy);
 
 private:
-    vector<int> commandersCanSelect;
-    vector<Provinces*> provincesCanSelect();
-    vector<int> unitLevels;
+    std::vector<int> commandersCanSelect;
+    std::vector<Provinces*> provincesCanSelect();
+    std::vector<int> unitLevels;
 
     int targetInformation[2];//[0] is for whether it is a province (1) or commander (2); [1] is the index of the unit in its Participants object
     int targetParticipantIndex;
     int enemyLevel;
   Participants *participant;
-  Provinces *targetProvince;
+  Provinces *yourProvince;
 };
 
 

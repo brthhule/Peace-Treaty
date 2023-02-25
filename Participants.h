@@ -5,6 +5,25 @@
 #include <vector>
 #include "Provinces.h"
 #include "CommanderProfile.h"
+#include "OtherFunctions.h"
+
+#include <string.h>
+#include <string>
+#include <cstdlib>
+#include <time.h>
+#include <stdlib.h>  
+#include <ctime>
+#include <chrono>
+#include <thread>
+#include <stdlib.h>
+
+extern int provinceBuildingsProductionNumbers[6];
+extern int continentSize;
+extern int troopsCP[5];
+extern int currentParticipantIndex;
+extern int initialResources [5];
+extern std::vector <std::vector <Provinces>> provincesMap;
+
 
 class Participants
 {
@@ -12,13 +31,12 @@ public:
 	//constructors
 	Participants();
 
-	#include "otherFunctions.h"
-	#include "coordinateFunctions.h"
 
 	//Capital stuff
 	Provinces* getCapital();
 	void setCapital(Provinces *newProvince);
 	std::string getNewName ();
+
 	//Commander stuff
 	int commandersNum();
 	int findCommanderIndex(CommanderProfile *commander);
@@ -26,6 +44,8 @@ public:
 	CommanderProfile* getCommander(int index);
 	int getMaxCommanders ();
 	std::vector <int> getTrainCosts();
+	bool hasCommander(std::string name);
+	CommanderProfile* getCommanderName(std::string name);
 			
 	//Province stuff
 	int provincesNum();
@@ -53,6 +73,11 @@ public:
 	std::vector<int> calculatePlayerValues (int decision);
 	void viewAllStatsFunction();
 	void viewStats();
+
+	//Coordinate stuff
+	int translateCoordinate(int coordinate, char indicator, char whichWay);
+	Provinces* getCoords(int identifier);
+	int getRandomCoordinate();
 
 private:
 	std::string kingdomName = " ";

@@ -3,9 +3,9 @@
 #define println(x) std::cout << x << std::endl;
 #define part() getParticipantIndex()
 
-extern vector<vector<Provinces>> provincesMap;
-extern vector<Participants> participantsList;
-extern string troopNames[5];
+extern std::vector<std::vector<Provinces>> provincesMap;
+extern std::vector<Participants> participantsList;
+extern std::string troopNames[5];
 extern int troopsCP[5];
 
 MapMA::MapMA(Participants *newParticipant) { participant = newParticipant;
@@ -21,7 +21,7 @@ void MapMA::viewPlayerMap() {
 
   switch (whatToDo) {
   case 'P': {
-    vector<int> coords = getCoords(1);
+    std::vector<int> coords = getCoords(1);
     Provinces *province = &provincesMap[coords[0]][coords[1]];
 		
     if (province->deleteStatus() != true) {
@@ -38,7 +38,7 @@ void MapMA::viewPlayerMap() {
   }
   default:
     println("Returning to the previous menu.");
-    std::cout << endl;
+    std::cout << std::endl;
     break;
   }
 }
@@ -75,32 +75,32 @@ void MapMA::selectPlayerProvince() {
     print ("This is one of your provinces ");
     ;
   }
-  std::cout << endl << endl;
+  std::cout << std::endl << std::endl;
 
   Lists newList(9);
   char selectPlayerCapitalAction = newList.listOfActions();
 
   switch (selectPlayerCapitalAction) {
   case 'B': {
-    BuildMA newBuildMA(prov));
+    BuildMA newBuildMA(prov, participant);
     newBuildMA.playerBuildFunction();
     break;
   }
   case 'T': {
-    TrainMA newTrainMA(xCoordinate, yCoordinate);
+    TrainMA newTrainMA(prov);
     newTrainMA.findProvinceCoordinates();
     break;
   }
   case 'M':
-    std::cout << "Returning to the map..." << endl;
-    std::cout << endl;
+    std::cout << "Returning to the map..." << std::endl;
+    std::cout << std::endl;
     break;
   }
 }
 
 
 void MapMA::selectEnemyProvince(Provinces *newP) {
-  Provinces enemyProvince = newP;
+  Provinces *enemyProvince = newP;
 	if (enemyProvince->isCapital()) {
     println("This is an enemy capital province ");
   } else {
@@ -127,7 +127,8 @@ void MapMA::selectEnemyProvince(Provinces *newP) {
   }
   case 'V': {
     if (provincesMap[xCoordinate][yCoordinate].scoutLogTurnLevel[0] != -1) {
-      if (getChar("View scout log for this province? (Y/N) ", "YN", 1) ==
+			OtherFunctions otherFunction;
+      if (otherFunction.getChar("View scout log for this province? (Y/N) ", "YN", 1) ==
           'Y') /*Ask user if they want to view scout log, get char, go to
                   scoutLogFunction if 'Y'*/
       {
@@ -139,7 +140,7 @@ void MapMA::selectEnemyProvince(Provinces *newP) {
     break;
   }
   case 'M':
-    std::cout << "Returning to the menu... " << endl;
+    std::cout << "Returning to the menu... " << std::endl;
     break;
   }
 }
@@ -169,7 +170,7 @@ void MapMA::playerUnitAction(Provinces *newP) {
 		listOfHelp(2);
 		break;
 	case 'M':
-		std::cout << "Returning to menu... " << endl;
+		std::cout << "Returning to menu... " << std::endl;
 		repeatPlayerUnitAction = 'N';
 		break;
 	}
@@ -185,7 +186,7 @@ void MapMA::playerUnitAction(Provinces *newP) {
 
 void MapMA::selectEnemyAction() /*finish this*/
 {
-  std::cout << "This is an enmy army. " << endl;
+  std::cout << "This is an enmy army. " << std::endl;
   char repeatSelectEnemyAction = 'Y';
   do {
     listOfActions(1);
@@ -200,8 +201,8 @@ void MapMA::scoutLogFunction() {
             << provincesMap[xCoordinate][yCoordinate].scoutLogTurnLevel[0]
             << "; Level of report: "
             << provincesMap[xCoordinate][yCoordinate].scoutLogTurnLevel[1]
-            << endl
-            << endl;
+            << std::endl
+            << std::endl;
   do {
     whatReportChar = listOfActions(11);
     provinceReportLog(whatReportChar);
@@ -212,17 +213,17 @@ void MapMA::provinceReportLog(char whatReportChar) {
   int totalGarrisonedCP = 0;
   switch (whatReportChar) {
   case 'G': {
-    std::cout << "Garrisoned troops: " << endl;
+    std::cout << "Garrisoned troops: " << std::endl;
     for (int x = 0; x < 5; x++) {
       std::cout << "-" << troopNames[x] << ": "
                 << provincesMap[xCoordinate][yCoordinate].getTroopsPresent(x)
-                << endl;
+                << std::endl;
       totalGarrisonedCP +=
           (provincesMap[xCoordinate][yCoordinate].getTroopsPresent(x) *
            troopsCP[x]);
     }
-    std::cout << "Total Garrison Combat Power: " << totalGarrisonedCP << endl
-              << endl;
+    std::cout << "Total Garrison Combat Power: " << totalGarrisonedCP << std::endl
+              << std::endl;
     break;
   }
   case 'R':

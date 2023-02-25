@@ -1,7 +1,5 @@
 #include "PlayerAction.h"
 
-
-using namespace std;
 extern int turn;
 
 PlayerAction::PlayerAction ()
@@ -19,8 +17,8 @@ int PlayerAction::initialDecision()
 
 	clearScreen();
 
-	std::cout << "Turn: " << turn << endl << endl;
-	std::cout << "Welcome to the Main menu " << endl;
+	std::cout << "Turn: " << turn << std::endl << std::endl;
+	std::cout << "Welcome to the Main menu " << std::endl;
 	showMap();
 	char courseOfAction = ' ';
 	if (participant->isPlayer()) //If the participant is the player
@@ -33,7 +31,7 @@ int PlayerAction::initialDecision()
 		courseOfAction = randomAction();
 	}
 
-	std::cout << endl;
+	std::cout << std::endl;
 	clearScreen();
 
 	switch (courseOfAction)
@@ -82,7 +80,7 @@ int PlayerAction::initialDecision()
 		{
 			pauseGame();
 		}
-		std::cout << "Returning to the Main menu... " << endl;
+		std::cout << "Returning to the Main menu... " << std::endl;
 		return -2;
 	}
 	}

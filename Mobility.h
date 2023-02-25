@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 
-#include "otherFunctions.h"
+#include "OtherFunctions.h"
 #include "Participants.h"
 #include "Provinces.h"
 #include "CommanderProfile.h"

@@ -4,21 +4,20 @@
 #include <iostream>
 #include <vector>
 
+#include "OtherFunctions.h"
 #include "Participants.h"
 #include "Provinces.h"
 #include "CommanderProfile.h"
 
 extern int continentSize;
-extern vector<vector <Provinces>> provincesMap;
-
-using namespace std;
+extern std::vector<std::vector <Provinces>> provincesMap;
 
 class Mobility
 {
 public:
 	Mobility(CommanderProfile *sCommander, Participants *newP);
 	void moveUnitOne();
-	vector <Provinces*> moveUnitTwo ();
+	std::vector <Provinces*> moveUnitTwo ();
 private:
 	CommanderProfile *selectedCommander;
 	Participants* participant;

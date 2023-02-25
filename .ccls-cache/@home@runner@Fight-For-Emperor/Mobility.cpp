@@ -1,4 +1,6 @@
 #include "Mobility.h"
+#define print(x) std::cout << x;
+#define println(x) std::cout << x << std::endl;
 
 Mobility::Mobility(CommanderProfile *sCommander, Participants *newP)
 {
@@ -8,8 +10,8 @@ Mobility::Mobility(CommanderProfile *sCommander, Participants *newP)
 	participant = newP;
 }
 
-vector<Provinces *> Mobility::moveUnitTwo() {
-  vector<Provinces *> vectorThingy;
+std::vector<Provinces *> Mobility::moveUnitTwo() {
+  std::vector<Provinces *> std::vectorThingy;
   for (int x = -1; x <= 1;
        x++) /*Identify all the provinces that the player can move a unit to*/
   {
@@ -21,30 +23,25 @@ vector<Provinces *> Mobility::moveUnitTwo() {
         // Make sure province isn't the starting province
         if (x != 0 || y != 0) {
           // Add province to list of provinces can move to
-          vectorThingy.push_back(
+          std::vectorThingy.push_back(
               &provincesMap[x + sCommanderX][y + sCommanderY]);
         }
       }
     }
   }
-	return vectorThingy;
+	return std::vectorThingy;
 }
 
 void Mobility::moveUnitOne() {
-  vector<Provinces *> provincesCanSelect;
-  if (selectedCommander->hasCommanderMoved() == 'N') {
-    std::cout << "The coordinates of the chosen unit unit are: ";
-    std::cout << "(" << translateCoordinate(sCommanderX, 'y', 'O') << ", "
-              << translateCoordinate(sCommanderY, 'x', 'O') << ") " << endl;
-    std::cout << endl;
-    std::cout << "You can only move this unit to one of the provinces adjacent "
-                 "to the province it is in. "
-              << endl;
-
+  std::vector<Provinces *> provincesCanSelect;
+  if (selectedCommander->hasMovedQuestion() == 'N') {
+    print ("The coordinates of the chosen unit unit are: (");
+    print(translateCoordinate(sCommanderX, 'y', 'O') + ", " + translateCoordinate(sCommanderY, 'x', '0'));
+		print(")\n\nYou can only move this unit to one of the provinces adjacent to the province it is in\n")
     provincesCanSelect = moveUnitTwo();
 
     // The participant slects coordiantes
-    vector <int> moveTwo = getCoords(2);
+    std::vector <int> moveTwo = getCoords(2);
 
     int provinceIndexSelected = 0;
     char provinceIsInList =
@@ -63,17 +60,16 @@ void Mobility::moveUnitOne() {
     int moveToX = translateCoordinate(moveTwo[0], 'x', 'O');
     int moveToY = translateCoordinate(moveTwo[1], 'y', 'O');
 
-    string confirmMove;
+    std::string confirmMove;
     char attackScenario = 'P'; /*P is for peace, A is for attack*/
     // If province is in the list
     if (provinceIsInList == 'Y') {
       Provinces *provinceSelected = provincesCanSelect[provinceIndexSelected];
+			
       if (provinceSelected->getParticipantIndex() !=
           participant->getParticipantIndex()) {
         attackScenario = 'A';
-        std::cout << "Moving here will cause your unit to attack any enemy "
-                     "units stationed at this province."
-                  << endl;
+        println ("Moving here will cause your unit to attack any enemy units stationed at this province.");
       }
       std::cout << "Confirm moving your unit to (" << moveToX << ", " << moveToY
                 << ")? (Y/N) ";
@@ -96,14 +92,14 @@ void Mobility::moveUnitOne() {
         }
       }
     } else {
-      cout << "Invalid province selected... please try again. " << endl;
+      std::cout << "Invalid province selected... please try again. " << std::endl;
       // Recursion until suitable coordinates are chosen
-      moveUnit();
+      moveUnitOne();
     }
   } else {
     std::cout
         << "This unit has already moved this turn. Please pick another unit. "
-        << endl;
+        << std::endl;
   }
-  std::cout << "Returning to previous menu... " << endl << endl;
+  std::cout << "Returning to previous menu... " << std::endl << std::endl;
 } /* unfinished*/

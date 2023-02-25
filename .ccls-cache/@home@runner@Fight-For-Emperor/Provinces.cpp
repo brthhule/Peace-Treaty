@@ -173,20 +173,20 @@ void Provinces::printBuildingStats()
 	{
 		buildingsProduction[x] = buildingLevels[x] * provinceBuildingsProductionNumbers[x];
 	}
-    cout << "\033[;34m";
+    std::cout << "\033[;34m";
 
-	std::cout << "Building stats of this province: " << endl;
+	std::cout << "Building stats of this province: " << std::endl;
 	for (int x = 0; x < 5; x++)
 	{
-		std::cout << "- " << buildingNames[x] << " (" << buildingNames[x].substr(0, 1) << ") " << endl;
-		std::cout << "    Level: " << buildingLevels[x] << endl;
-		std::cout << "    " << provinceResourcesNames[x] << " production rate : " << buildingsProduction[x] << endl;
+		std::cout << "- " << buildingNames[x] << " (" << buildingNames[x].substr(0, 1) << ") " << std::endl;
+		std::cout << "    Level: " << buildingLevels[x] << std::endl;
+		std::cout << "    " << provinceResourcesNames[x] << " production rate : " << buildingsProduction[x] << std::endl;
 	}
-	std::cout << "Barracks (B) " << endl;
-	std::cout << "    Level: " << buildingLevels[5] << endl;
-	std::cout << "    Max training capacity: " << buildingsProduction[5] << endl;
-	std::cout << endl;
-	cout << "\033[;0m";
+	std::cout << "Barracks (B) " << std::endl;
+	std::cout << "    Level: " << buildingLevels[5] << std::endl;
+	std::cout << "    Max training capacity: " << buildingsProduction[5] << std::endl;
+	std::cout << std::endl;
+	std::cout << "\033[;0m";
 
 
 }
@@ -205,16 +205,16 @@ void Provinces::updateBuildingsProduction()
 //Commander Stuff
 void Provinces::addCommanderProvince(int commanderIndex)
 {
-	commandersPresentIndex.push_back(commanderIndex);
+	commanders.push_back(commanderIndex);
 }
 void Provinces::removeCommanderProvince(int commanderIndex)
 {
-	commandersPresentIndex.erase(commandersPresentIndex.begin() + commanderIndex);
+	commanders.erase(commanders.begin() + commanderIndex);
 }
 
 int Provinces::returnCommanderIndex(int index)
 {
-	return commandersPresentIndex[index];
+	return commanders[index];
 }
 
 void Provinces::addTroopsTrainedThisTurn(int amount)
@@ -240,9 +240,9 @@ int Provinces::getCoordinate (char identifier)
   }
 }
 
-string Provinces::printCoordinates()
+void Provinces::printCoordinates()
 {
-  cout << "(" << translateCoordinate(xCoord, 'x', 'O') << ", " << translateCoordinate(yCoord, 'y', 'O') << ") "
+  std::cout << "(" << translateCoordinate(xCoord, 'x', 'O') << ", " << translateCoordinate(yCoord, 'y', 'O') << ") "
 }
 
 bool Provinces::deleteStatus()
@@ -261,10 +261,20 @@ int Provinces::getR(int index)
 
 CommanderProfile *Provinces::returnCommander(int index)
 {
-	return commandersPresent[index];
+	return commanders[index];
 }
 
 bool Provinces::isCapital()
 {
 	return isACapital;
+}
+
+int Provinces::getPIndex()
+{
+	return participantIndex;
+}
+
+int Provinces::howManyCommanders()
+{
+	return commanders.size();
 }

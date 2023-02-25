@@ -1,14 +1,5 @@
 #include "TrainMA.h"
 
-
-using namespace std;
-
-extern vector <vector <Provinces>> provincesMap;
-extern vector <Participants> participantsList;
-extern string troopNames[5];
-extern string provinceResourcesNames[5];
-extern int currentParticipantIndex;
-
 TrainMA::TrainMA(Provinces *newP)
 {
    province = newP;
@@ -21,10 +12,10 @@ void TrainMA::TrainMAFunction()
     int troopCost[5] = { 5, 4, 3, 2, 1 };
 
     int barracksLevel = newProvinceList->getBuildingLevel(5);
-    cout << "Start printing province barracks information: \033[34m" << endl;
-    cout << "Province of kingdom " << participantsList[provincesMap[provinceXCoordinate][provinceYCoordinate].getBelongsToParticipant()].getKingdomName() << " selected" << endl;
-    cout << "Coordinates: (" << translateCoordinate(provinceYCoordinate, 'x', 'O') << ", " << translateCoordinate(provinceXCoordinate, 'y', 'O') << ") " << endl << endl;
-    cout << "The barracks level of this province: " << barracksLevel << endl;
+    std::cout << "Start printing province barracks information: \033[34m" << std::endl;
+    std::cout << "Province of kingdom " << participantsList[provincesMap[provinceXCoordinate][provinceYCoordinate].getBelongsToParticipant()].getKingdomName() << " selected" << std::endl;
+    std::cout << "Coordinates: (" << translateCoordinate(provinceYCoordinate, 'x', 'O') << ", " << translateCoordinate(provinceXCoordinate, 'y', 'O') << ") " << std::endl << std::endl;
+    std::cout << "The barracks level of this province: " << barracksLevel << std::endl;
     int troopTier = barracksLevel / 5;
     troopTier += 1;
 
@@ -32,13 +23,13 @@ void TrainMA::TrainMAFunction()
     {
         troopTier = 5;
     }
-    std::cout << "The max tier troop you can train: " << troopTier << ", " << troopNames[troopTier - 1] << endl;
-    std::cout << "The max amount of troops you can train at this barracks during this turn (training capacity): \033[0m" << endl;
-    std::cout << endl;
+    std::cout << "The max tier troop you can train: " << troopTier << ", " << troopNames[troopTier - 1] << std::endl;
+    std::cout << "The max amount of troops you can train at this barracks during this turn (training capacity): \033[0m" << std::endl;
+    std::cout << std::endl;
     int trainTroop;
-    string trainTroopsString;
-    vector <string> trainTroopsAVOne;
-    vector <int> trainTroopsAVTwo;
+    std::string trainTroops std::string;
+    std::vector <std::string> trainTroopsAVOne;
+    std::vector <int> trainTroopsAVTwo;
     char repeat = 'N';
     for (int x = 1; x <= troopTier; x++)
     {
@@ -51,8 +42,8 @@ void TrainMA::TrainMAFunction()
     if (trainTroop <= troopTier)
     {
         int amountOfTroops = 0;
-        string amountOfTroopsString = " ";
-        vector <int> amountOfTroopsAV = {};
+        std::string amountOfTroopsstd::string = " ";
+        std::vector <int> amountOfTroopsAV = {};
         for (int x = 0; x <= maxAmountOfTroopsBarracksCanTrain - newProvinceList->getTroopsTrainedThisTurn(); x++) /*fix this*/
         {
             amountOfTroopsAV.push_back(x);
@@ -71,21 +62,21 @@ void TrainMA::TrainMAFunction()
                     requiredResources[0] = troopCost[0] * troopTier;
                     requiredResources[0] *= amountOfTroops;
                 }
-                std::cout << "The required amount of resources are as follows: " << endl; //here
+                std::cout << "The required amount of resources are as follows: " << std::endl; //here
                 for (int x = 0; x < 5; x++)
                 {
-                    std::cout << provinceResourcesNames[x] << ": " << requiredResources[x] << endl;
+                    std::cout << provinceResourcesNames[x] << ": " << requiredResources[x] << std::endl;
                 }
-                std::cout << endl;
+                std::cout << std::endl;
                 char repeatProceedWithTraining = 'Y';
-                string proceedWithTrainingString;
-                vector <char> proceedWithTrainingThree = { 'P', 'S', 'M' };
+                std::string proceedWithTrainingstdString;
+                std::vector <char> proceedWithTrainingThree = { 'P', 'S', 'M' };
         
                 do
                 {
                     Lists newList (6);
                     char proceedWithTraining = newList.listOfActions();
-                    std::cout << endl;
+                    std::cout << std::endl;
         
                     switch (proceedWithTraining)
                     {
@@ -103,7 +94,7 @@ void TrainMA::TrainMAFunction()
         
                         if (trainingFail == 'F')
                         {
-                            std::cout << "Training failed" << endl;
+                            std::cout << "Training failed" << std::endl;
                             for (int a = 0; a < 5; a++)
                             {
                                 newProvinceList->addResources(a, requiredResources[a]);
@@ -111,7 +102,7 @@ void TrainMA::TrainMAFunction()
                         }
                         else
                         {
-                            std::cout << "Training successful" << endl;
+                            std::cout << "Training successful" << std::endl;
                             newProvinceList->addSpecificTroop(troopTier - 1, amountOfTroops);
                         }
                         break;
@@ -125,7 +116,7 @@ void TrainMA::TrainMAFunction()
                     {
                         repeatProceedWithTraining = 'N';
                         provincesMap[provinceXCoordinate][provinceYCoordinate].addTroopsTrainedThisTurn(amountOfTroops);
-                        cout << "Returning to menu... " << endl;
+                        std::cout << "Returning to menu... " << std::endl;
                     }
                     }
                 } while (repeatProceedWithTraining == 'Y');
@@ -133,22 +124,22 @@ void TrainMA::TrainMAFunction()
             else
             {
                 repeatOuterDoLoop = 'Y';
-                cout << "Amount of troops selected exceeds the training capacity of the barracks... please try again" << endl;
+                std::cout << "Amount of troops selected exceeds the training capacity of the barracks... please try again" << std::endl;
             }
         } while (repeatOuterDoLoop == 'Y');
     }
 
 }
 
-vector <Provinces*> TrainMA::getTrainProvince()
+std::vector <Provinces*> TrainMA::getTrainProvince()
 {
-  cout << "Welcome to the Player Train menu" << endl << endl;
+  std::cout << "Welcome to the Player Train menu" << std::endl << std::endl;
   getTrainBuildCoordinates(provinceXCoordinate, provinceYCoordinate);
 
   if (provinceXCoordinate == -1 || provinceYCoordinate == -1)
   {
       repeatThisOne = 'N';
-      cout << "Returning to Main menu... " << endl;
+      std::cout << "Returning to Main menu... " << std::endl;
   }
   else
   {
@@ -158,8 +149,8 @@ vector <Provinces*> TrainMA::getTrainProvince()
       }
       else
       {
-          std::cout << "Invalid province elected. Please try again. " << endl;
+          std::cout << "Invalid province elected. Please try again. " << std::endl;
       }
-      std::cout << endl;
+      std::cout << std::endl;
   }
 }

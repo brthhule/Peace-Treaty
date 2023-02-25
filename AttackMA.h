@@ -9,7 +9,6 @@
 #include "Participants.h"
 #include "CommanderProfile.h"
 #include "Provinces.h"
-#include "main.cpp"
 
 extern std::vector <Participants> participantsList;
 extern std::vector<std::vector<Provinces>> provincesMap;

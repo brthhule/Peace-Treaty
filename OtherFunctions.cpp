@@ -1,7 +1,12 @@
-#include "otherFunctions.h"
+#include "OtherFunctions.h"
 
-void showMap() {
-  std::cout << "Map: " << endl;
+OtherFunctions::OtherFunctions()
+{
+	
+}
+
+void OtherFunctions::showMap() {
+  std::cout << "Map: " << std::endl;
   int thingy = continentSize;
   for (int x = 0; x < continentSize; x++) {
     // Y axis stuff
@@ -47,7 +52,7 @@ void showMap() {
       }
       std::cout << "\033[;0m";
     }
-    std::cout << endl;
+    std::cout << std::endl;
   }
 
   // X axis stuff
@@ -56,7 +61,7 @@ void showMap() {
     std::cout << "----";
   }
   std::cout << "-";
-  std::cout << endl;
+  std::cout << std::endl;
   std::cout << "    ";
   for (int a = 0; a < continentSize; a++) {
     if (a < 8) {
@@ -64,11 +69,10 @@ void showMap() {
     } else
       std::cout << a + 1 << "  ";
   }
-  std::cout << endl;
-  std::cout << endl;
+  std::cout << "\n\n";
 }
 
-void updateprovinceResources() {
+void OtherFunctions::updateprovinceResources() {
   for (int x = 0; x < continentSize; x++) {
     for (int y = 0; y < continentSize; y++) {
       for (int z = 0; z < 5; z++) {
@@ -79,7 +83,7 @@ void updateprovinceResources() {
   }
 }
 
-int getInt(std::string textToDisplay, std::vector<int> acceptableValues,
+int OtherFunctions::getInt(std::string textToDisplay, std::vector<int> acceptableValues,
            int caseInstance) {
   std::string userInput;
   if (caseInstance == 1) {
@@ -90,7 +94,7 @@ int getInt(std::string textToDisplay, std::vector<int> acceptableValues,
   std::cout << "\033[0m";
   return checkInt(acceptableValues, userInput);
 }
-int checkInt(std::vector<int> &acceptableValuesTwo, std::string input) {
+int OtherFunctions::checkInt(std::vector<int> &acceptableValuesTwo, std::string input) {
   std::vector<std::string> acceptableValuesOne;
   std::string foo = " ";
   for (int a = 0; a < acceptableValuesTwo.size(); a++) {
@@ -108,8 +112,8 @@ int checkInt(std::vector<int> &acceptableValuesTwo, std::string input) {
       }
     }
     repeat = 'Y';
-    std::cout << endl;
-    std::cout << "Invalid character entered. Please try again." << endl;
+    std::cout << std::endl;
+    std::cout << "Invalid character entered. Please try again." << std::endl;
     std::cout << "Please enter a valid number: ";
     std::cout << "\033[31m";
     std::getline(std::cin, input);
@@ -118,7 +122,7 @@ int checkInt(std::vector<int> &acceptableValuesTwo, std::string input) {
   } while (repeat == 'Y');
   return -1;
 }
-char getChar(std::string textToDisplay, std::string acceptableValues, int caseInstance) {
+char OtherFunctions::getChar(std::string textToDisplay, std::string acceptableValues, int caseInstance) {
   std::string userInput;
   if (caseInstance == 1) {
     std::cout << textToDisplay;
@@ -128,12 +132,12 @@ char getChar(std::string textToDisplay, std::string acceptableValues, int caseIn
   std::cout << "\033[0m";
   return checkChar(acceptableValues, userInput);
 }
-char checkChar(std::string std::stringAV, std::string input) {
+char OtherFunctions::checkChar(std::string AV, std::string input) {
   std::vector<char> acceptableValuesOne; /*Uppercase*/
   char inputTwo = ' ';
 
-  for (int x = 0; x < std::stringAV.length(); x++) {
-    acceptableValuesOne.push_back(std::stringAV.at(x));
+  for (int x = 0; x < AV.length(); x++) {
+    acceptableValuesOne.push_back(AV.at(x));
   }
 
   char goodToGo = 'G';
@@ -151,8 +155,8 @@ char checkChar(std::string std::stringAV, std::string input) {
     }
     goodToGo = 'B';
 
-    std::cout << endl;
-    std::cout << "Invalid character entered. Please try again. " << endl;
+    std::cout << std::endl;
+    std::cout << "Invalid character entered. Please try again. " << std::endl;
     std::cout << "Please enter a valid character: ";
     std::cout << "\033[31m";
     std::getline(std::cin, input);
@@ -163,8 +167,8 @@ char checkChar(std::string std::stringAV, std::string input) {
                  return a value*/
 }
 
-std::string createRandomName() {
-  // std::cout << "Create random name" << endl;
+std::string OtherFunctions::createRandomName() {
+  // std::cout << "Create random name" << std::endl;
   std::string name = "";
   int randomNumber = 0;
   char characterThingy = ' ';
@@ -185,7 +189,7 @@ std::string createRandomName() {
   }
   return name;
 }
-char findConsonant(int randomNumber) {
+char OtherFunctions::findConsonant(int randomNumber) {
   char characterThingy = ' ';
   switch (randomNumber) {
   case 1:
@@ -255,7 +259,7 @@ char findConsonant(int randomNumber) {
 
   return characterThingy;
 }
-char findVowel(int randomNumber) {
+char OtherFunctions::findVowel(int randomNumber) {
   char characterThingy = ' ';
   switch (randomNumber) {
   case 1:
@@ -277,11 +281,11 @@ char findVowel(int randomNumber) {
   return characterThingy;
 }
 
-void createMap() {
+void OtherFunctions::createMap() {
   /*Basically create the map-- make each province an object of Provinces*/
   for (int x = 0; x < continentSize; x++) {
-    std::vector<Provinces> std::vectorThingy;
-    provincesMap.push_back(std::vectorThingy);
+    std::vector<Provinces> vectorThingy;
+    provincesMap.push_back(vectorThingy);
     for (int y = 0; y < continentSize; y++) {
       Provinces newProvince(x, y, -1);
       provincesMap[x].push_back(newProvince);
@@ -289,17 +293,17 @@ void createMap() {
   }
 }
 
-void clearScreen() {
+void OtherFunctions::clearScreen() {
   std::cout << "\033[32m";
-  std::cout << "Clearing screen. " << endl;
+  std::cout << "Clearing screen. " << std::endl;
   std::cout << "\033[0m";
-  chrono::seconds dura(1);
-  this_thread::sleep_for(dura);
+  std::chrono::seconds dura(1);
+  std::this_thread::sleep_for(dura);
   // system("cls"); /*Windows only*/
   system("clear"); /*Non-Windows*/
 }
 
-void pauseGame() {
+void OtherFunctions::pauseGame() {
   std::string gameCode;
   gameCode += continentSize;
 
@@ -310,6 +314,6 @@ void pauseGame() {
   }
   std::cout << "Game ended... \nHere is your game code (Copy this code and "
                "paste it when using the 'Resume Game' functionality): "
-            << gameCode << endl
-            << endl;
+            << gameCode << std::endl
+            << std::endl;
 }

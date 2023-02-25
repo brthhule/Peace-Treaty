@@ -2,12 +2,11 @@
 #define PROVINCES_H
 
 #include "AllUnits.h"
-#include "coordinateFunctions.h"
 #include "CommanderProfile.h"
 
-extern string provinceResourcesNames[5];
-extern string buildingNames[6];
-extern string troopNames[5];
+extern std::string provinceResourcesNames[5];
+extern std::string buildingNames[6];
+extern std::string troopNames[5];
 extern int provinceBuildingsProductionNumbers[6];
 extern int initialResources[5];
 extern int troopsCP[5];
@@ -29,10 +28,14 @@ public:
 	int findMaxInfirmaryCapacity();
 	int getBuildingLevel(int index);
 
+	//Commanders
 	int returnCommanderIndex(int index);
 	int getTroopsTrainedThisTurn();
 	int findProvinceLevel();
-	CommanderProfile * returnCommander (int index);
+	CommanderProfile * returnCommander (int index);	
+	void addCommander (CommanderProfile *newCommander){commanders.push_back(newCommander)};
+
+	int howManyCommanders();
 
 	void addResources(int index, int amount);
 	int getR (int index);
@@ -40,7 +43,7 @@ public:
 	void printBuildingStats();
 	bool isCapital();
 
-	string getProvinceName();
+	std::string getProvinceName();
   void setDeleteProvince ()
   {
     deleteProvince = true;
@@ -60,20 +63,10 @@ public:
   void addTroopsTrainedThisTurn(int amount);
 
   int getCoordinate(char identifier);
-  string printCoordinates();
+  void printCoordinates();
   bool deleteStatus();
 
-  
-
-
-
-	//public variables
-	vector <vector<int>> commanders; /*[x][0] = index, [x][1] = which participant they belong to*/
-	int scoutLogTurnLevel[2];//[0] is the turn of the scout report, [1] is the scout log level
-
-
-	//from AllUnits
-	//Accessor Functions
+	int getPIndex();
 
 private:
 	int* provinceStats[27];/*
@@ -133,6 +126,9 @@ private:
   bool deleteProvince;
 
 	int participantIndex;
+	std::vector<CommanderProfile*> commanders;
+	//std::vector <std::vector<int>> commanders; /*[x][0] = index, [x][1] = which participant they belong to*/
+	int scoutLogTurnLevel[2];//[0] is the turn of the scout report, [1] is the scout log level
 
 };
 

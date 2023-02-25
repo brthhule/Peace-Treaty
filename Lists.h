@@ -2,6 +2,9 @@
 #define LISTS_H
 
 #include <iostream>
+#include <string>
+
+#include "OtherFunctions.h"
 
 class Lists
 {

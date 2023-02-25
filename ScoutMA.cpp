@@ -1,7 +1,7 @@
 #include "ScoutMA.h"
 
 #define print(x) std::cout << x;
-#define println(x) std::cout << x << endl;
+#define println(x) std::cout << x << std::endl;
 
 extern std::vector <std::vector <Provinces>> provincesMap;
 extern std::vector <Participants> participantsList;
@@ -27,14 +27,14 @@ void ScoutMA::selectTargetToScout() /*So much to fix here... truly so much.... m
 
     println("The following units are at these coordinates: ");
 	
-    std::cout << "1) Province " << targetProvince->getUnitName() << " (Level " << targetProvince->findProvinceLevel() << ") " << endl;
+    std::cout << "1) Province " << targetProvince->getUnitName() << " (Level " << targetProvince->findProvinceLevel() << ") " << std::endl;
     acceptableValues.push_back(1);
 
     for (int b = 0; b < targetProvince->commanders.size(); b++)
     {
         CommanderProfile* newCommander = participantsList[targetParticipantIndex].getCommander(enemyProvince->returnCommanderIndex(b));
 			
-        std::cout << b + 2 << ") Commander " << newCommander.getUnitName() << " (Level " << newCommander.getCommanderLevel() << ") " << endl;
+        std::cout << b + 2 << ") Commander " << newCommander.getUnitName() << " (Level " << newCommander.getCommanderLevel() << ") " << std::endl;
         acceptableValues.push_back(b + 2);
     }
     int numberSelected = getInt("Enter the number of the unit you would like to select (the number to the left of the first ')' symbol): ",
@@ -59,8 +59,8 @@ void ScoutMA::selectTargetToScout() /*So much to fix here... truly so much.... m
         unitName = newCommander->getUnitName();
         enemyLevel = newCommander->getCommanderLevel();
     }
-    std::cout << unitType << " " << unitName << " selected " << endl;
-    std::cout << "You can only scout this unit if one of your provinces or armies is next to it... " << endl;
+    std::cout << unitType << " " << unitName << " selected " << std::endl;
+    std::cout << "You can only scout this unit if one of your provinces or armies is next to it... " << std::endl;
 
     //Find if there are any player units that can scout the target
     for (int a = -1; a <= 1; a++) /*Identify the surrounding units that can scout, add them to std::vectors (their coordinates)*/
@@ -95,9 +95,9 @@ void ScoutMA::selectTargetToScout() /*So much to fix here... truly so much.... m
     }
     else
     {
-        std::cout << "No player provinces or armies are around the target... " << endl;
+        std::cout << "No player provinces or armies are around the target... " << std::endl;
     }
-    std::cout << "Returning to previous menu" << endl << endl;
+    std::cout << "Returning to previous menu" << std::endl << std::endl;
 } /*fix this-- needs to be reviewed*/
 
 void ScoutMA::playerScoutStepTwo()//Finish this later
@@ -106,7 +106,7 @@ void ScoutMA::playerScoutStepTwo()//Finish this later
     std::vector <int> unitsCanScoutWith;
 
     std::cout << "You have " << provincesCanSelectX.size() + commandersCanSelect.size() << " provinces and armies next to the target. Below is a list of units that can scout the target.";
-    std::cout << " Please note that the higher the level of the scouting unit, the more accurate the results of the scout report are (The level of the target unit is " << enemyLevel << "). " << endl << endl;
+    std::cout << " Please note that the higher the level of the scouting unit, the more accurate the results of the scout report are (The level of the target unit is " << enemyLevel << "). " << std::endl << std::endl;
 
     std::vector <int> unitLevels = showUnitsCanScout();
     int cutOffThingy = unitLevels[0];
@@ -116,7 +116,7 @@ void ScoutMA::playerScoutStepTwo()//Finish this later
     {
         unitsCanScoutWith.push_back(x);
     }
-    std::cout << endl;
+    std::cout << std::endl;
 
     int scoutWithThis = getInt("Please enter the number of the unit you would like to select: ", unitsCanScoutWith, 1);
     scoutWithThis--;
@@ -180,7 +180,7 @@ std::vector<int>  ScoutMA::showUnitsCanScout()
     int commanderIndex = 0;
     //For all the provinces in the std::vector
 
-    std::cout << "Provinces that can scout: " << endl;
+    std::cout << "Provinces that can scout: " << std::endl;
     for (int a = 0; a < provincesCanSelectX.size(); a++)
     {
         unitLevels.push_back(provincesMap[provincesCanSelectX[a]][provincesCanSelectY[a]].findProvinceLevel());
@@ -191,14 +191,14 @@ std::vector<int>  ScoutMA::showUnitsCanScout()
     int cutOffProvinceCommanderThingy = (int)unitLevels.size() - 1;
     unitLevels[0] = cutOffProvinceCommanderThingy;
 
-    std::cout << "Commanders that can scout: " << endl;
+    std::cout << "Commanders that can scout: " << std::endl;
     for (int a = 0; a < commandersCanSelect.size(); a++)
     {
         unitLevels.push_back(commandersCanSelect[a]->getCommanderLevel());
         std::cout << a + a << ": (" << translateCoordinate(commandersCanSelect[a]->getCoordinate('X'), 'x', 'O') << ", " << translateCoordinate(commandersCanSelect[a]->getCoordinate('Y'), 'y', 'O') << "); ";
         std::cout << "Unit level: " << unitLevels.back();
     }
-    std::cout << endl;
+    std::cout << std::endl;
     std::cout << "\033[;0m";
     return unitLevels;
 }

@@ -10,6 +10,12 @@
 #include "coordinateFunctions.h"
 #include "Lists.h"
 
+extern std::vector <std::vector <Provinces>> provincesMap;
+extern std::vector <Participants> participantsList;
+extern std::string troopNames[5];
+extern std::string provinceResourcesNames[5];
+extern int currentParticipantIndex;
+
 class TrainMA
 {
 public:
@@ -17,7 +23,7 @@ public:
 	TrainMA(Provinces *newP);
 	//other functions
 	void TrainMAFunction();
-	vector <Provinces*> getTrainProvince();
+	std::vector <Provinces*> getTrainProvince();
 private:
 	Provinces *province;
 };

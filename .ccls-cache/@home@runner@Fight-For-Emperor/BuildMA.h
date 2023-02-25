@@ -4,13 +4,15 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "otherFunctions.h"
+#include "OtherFunctions.h"
 #include "textFunctions.h"
 #include "coordinateFunctions.h"
 #include "Lists.h"
 #include "Provinces.h"
 #include "Participants.h"
 
+extern std::vector<Participants> participantsList;
+extern int continentSize;
 
 class BuildMA
 {

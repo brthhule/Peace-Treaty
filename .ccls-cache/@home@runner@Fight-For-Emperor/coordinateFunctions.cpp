@@ -1,14 +1,3 @@
-#include "coordinateFunctions.h"
-#define print(x) cout << x;
-#define println(x) cout << x << endl;
-
-using namespace std;
-extern vector<vector<Provinces *>> provincesMap;
-extern int provinceBuildingsProductionNumbers[6];
-extern int continentSize;
-extern int troopsCP[5];
-extern vector<Participants> participantsList;
-
 int translateCoordinate(int coordinate, char indicator, char whichWay) {
   /*replacement = xCoordinate;
   xCoordinate = translateCoordinate(yCoordinate, 'y', 'I');
@@ -42,21 +31,22 @@ int translateCoordinate(int coordinate, char indicator, char whichWay) {
   return translation;
 }
 
-vector<int> getCoords(int identifier) {
+std::vector<int> getCoords(int identifier) {
+	OtherFunctions OF;
 	int yCoordinate = -1;
-  vector<int> actualCoordinatesAVTwo = {-1};
+  std::vector<int> actualCoordinatesAVTwo = {-1};
   for (int x = 1; x <= continentSize; x++) {
     actualCoordinatesAVTwo.push_back(x);
   }
-  showMap();
-  string phrase;
+  OF.showMap();
+  std::string phrase;
   switch (identifier) {
   case 1:
-    printListOfProvinces();
+    OF.printListOfProvinces();
     phrase = "of the province you want to select";
     break;
   case 2:
-    printListOfProvinces();
+    OF.printListOfProvinces();
     phrase = "of the province you want to move to";
     break;
   case 3:
@@ -67,7 +57,7 @@ vector<int> getCoords(int identifier) {
   if (xCoordinate != -1 && xCoordinate < continentSize && xCoordinate >= 0) {
     yCoordinate =
         getInt("Enter the y coordinate " + phrase + " (Enter '-1' to go back to previous menu) : ", actualCoordinatesAVTwo, 2);
-    std::cout << endl;
+    std::cout << std::endl;
     if (yCoordinate != -1 && yCoordinate < continentSize && yCoordinate >= 0) {
       int replacement = xCoordinate;
       xCoordinate = translateCoordinate(yCoordinate, 'y', 'I');

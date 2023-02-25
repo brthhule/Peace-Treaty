@@ -4,6 +4,19 @@
 #include <string>
 #include <iostream>
 
+/*int resourcesPresent[5];
+	int troopsPresent[5];
+	int troopsInjured[5];
+	int totalCP;*/
+
+extern int troopsCP[5];
+extern int provinceBuildingsProductionNumbers[6];
+
+extern std::string provinceResourcesNames[5];
+extern std::string buildingNames[6];
+extern std::string troopNames[5];
+extern int currentParticipantIndex;//Fix this at some point-- make sure right index is sent to constructor
+
 class AllUnits
 {
 public:

@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#include "otherFunctions.h"
+#include "OtherFunctions.h"
 #include "textFunctions.h"
 #include "BuildMA.h"
 #include "ScoutMA.h"

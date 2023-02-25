@@ -9,10 +9,9 @@
 #include "textFunctions.h"
 #include "coordinateFunctions.h"
 #include "Lists.h"
-#include "main.cpp"
 
 extern std::vector <std::vector <Provinces>> provincesMap;
-extern vector <Participants> participantsList;
+extern std::vector <Participants> participantsList;
 extern std::string troopNames[5];
 extern std::string provinceResourcesNames[5];
 extern int currentParticipantIndex;
@@ -24,7 +23,7 @@ public:
 	TrainMA(Provinces *newP);
 	//other functions
 	void TrainMAFunction();
-	vector <Provinces*> getTrainProvince();
+	std::vector <Provinces*> getTrainProvince();
 private:
 	Provinces *province;
 };

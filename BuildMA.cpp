@@ -1,11 +1,6 @@
 #include "BuildMA.h"
 #define print(x)std::cout << x;
-#define println(x)std::cout << x << endl;
-
-extern std::vector<Participants> participantsList;
-extern int continentSize;
-
-using namespace std;
+#define println(x)std::cout << x << std::endl;
 
 extern std::vector<std::vector<Provinces>> provincesMap;
 extern std::string buildingNames[6];
@@ -19,7 +14,7 @@ BuildMA::BuildMA(Provinces *newProvince, Participants *newParticipant) {
 }
 
 Provinces *BuildMA::findProvince() {
-  std::cout << "Welcome to the Player Build menu" << endl << endl;
+  std::cout << "Welcome to the Player Build menu" << std::endl << std::endl;
   std::vector<int> coords = getCoords(1);
 
   province = &provincesMap[coords[0]][coords[1]];
@@ -34,7 +29,7 @@ Provinces *BuildMA::findProvince() {
       std::getline(cin, anyInput);
       clearScreen();
       }
-      std::cout << endl;
+      std::cout << std::endl;
   }
 }
 
@@ -60,9 +55,9 @@ void BuildMA::playerBuildFunction() {
   if (upgradeBuilding == 'U') {
     upgradeBuildings();
     playerBuildFunction();
-    std::cout << endl;
+    std::cout << std::endl;
   } else {
-    std::cout << "Returning to previous menu... " << endl;
+    std::cout << "Returning to previous menu... " << std::endl;
     clearScreen();
   }
 }
@@ -113,7 +108,7 @@ void BuildMA::upgradeBuildings() {
   if (upgradeAgain == 'Y') {
     upgradeBuildings();
   }
-  std::cout << "Returning to Build Infrastructure action menu. " << endl;
+  std::cout << "Returning to Build Infrastructure action menu. " << std::endl;
 }
 
 void BuildMA::printInformation(int buildingNumber, int requiredResources[5]) {
@@ -124,9 +119,9 @@ void BuildMA::printInformation(int buildingNumber, int requiredResources[5]) {
     requiredResources[x] = (int)requiredResourcesBuildings[buildingNumber][x] *
                            province->getBuildingLevel(x);
     std::cout << provinceResourcesNames[x] << ": " << requiredResources[x]
-              << endl;
+              << std::endl;
   }
   println("\nThe following are how many resources are in this province: ");
   province->printResources();
- std::cout << "----------End printing informatio----------" << endl;
+ std::cout << "----------End printing informatio----------" << std::endl;
 }

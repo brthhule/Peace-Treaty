@@ -1,6 +1,6 @@
 #include "Mobility.h"
 #define print(x) std::cout << x;
-#define println(x) std::cout << x << endl;
+#define println(x) std::cout << x << std::endl;
 
 Mobility::Mobility(CommanderProfile *sCommander, Participants *newP)
 {
@@ -92,14 +92,14 @@ void Mobility::moveUnitOne() {
         }
       }
     } else {
-      std::cout << "Invalid province selected... please try again. " << endl;
+      std::cout << "Invalid province selected... please try again. " << std::endl;
       // Recursion until suitable coordinates are chosen
       moveUnitOne();
     }
   } else {
     std::cout
         << "This unit has already moved this turn. Please pick another unit. "
-        << endl;
+        << std::endl;
   }
-  std::cout << "Returning to previous menu... " << endl << endl;
+  std::cout << "Returning to previous menu... " << std::endl << std::endl;
 } /* unfinished*/

@@ -5,7 +5,7 @@ AttackMA::AttackMA(std::vector<int> unitAttackingArg, std::vector <int> unitAtta
 	unitAttacked = unitAttackedArg;
 	attackingParticipant = attackingParticipantArg;
 	commander = commanderArg;
-	attackedParticipant = participantsList[provincesMap[unitAttacked[0]][unitAttacked[1]].getParticipantIndex()];
+	attackedParticipant = &participantsList[provincesMap[unitAttacked[0]][unitAttacked[1]].getParticipantIndex()];
 }
 
 void AttackMA::playerAttack() /*fix this*/
@@ -28,12 +28,12 @@ void AttackMA::playerAttack() /*fix this*/
         forLoopY = unitAttacked[1] + y;
         if (forLoopX >= 0 && forLoopX < continentSize) {
           if (forLoopY >= 0 && forLoopY < continentSize) {
-            if (provincesMap[forLoopX][forLoopY].commandersPresentIndex.size() >
+            if (provincesMap[forLoopX][forLoopY].commanders.size() >
                 0) {
               amountOfHeros++;
               canAttack = 'Y';
-              herosCanAttack[0][z] = unitAttackingX + x;
-              herosCanAttack[1][z] = unitAttackingY + y;
+              herosCanAttack[0][z] = unitAttacking[0] + x;
+              herosCanAttack[1][z] = unitAttacking[y] + y;
               z++;
             }
           }
@@ -44,13 +44,11 @@ void AttackMA::playerAttack() /*fix this*/
     if (amountOfHeros == 0) {
       std::cout
           << "There are no armies available to attack the enemy. Please move "
-             "an army unit to one of the provinces around the target. ";
-      std::cout << endl;
-      std::cout << endl;
+             "an army unit to one of the provinces around the target. \n\n";
     }
     if (amountOfHeros < 0) {
-      std::cout << "The following armies can attack the target: " << endl;
-      std::cout << "Amount of heros: " << amountOfHeros << endl;
+      std::cout << "The following armies can attack the target: \n";
+      std::cout << "Amount of heros: " << amountOfHeros << std::endl;
       for (int x = 0; x < amountOfHeros; x++) {
         std::cout << "1: (" << herosCanAttack[0][x] << ", "
                   << herosCanAttack[1][x] << ") ";
@@ -58,10 +56,10 @@ void AttackMA::playerAttack() /*fix this*/
       char repeatVerifyCanAttack = 'Y';
 
       do {
-        getCoordinates(3, attackUnitWithX, attackUnitWithY);
-        std::cout << endl;
+        attackingParticipant->getCoordinates(3, attackUnitWithX, attackUnitWithY);
+        std::cout << std::endl;
         if (attackUnitWithX == -1 || attackUnitWithY == -1) {
-          std::cout << "Returning to previous menu... " << endl << endl;
+          std::cout << "Returning to previous menu... " << std::endl << std::endl;
           repeatVerifyCanAttack = 'N';
         } else {
           char verifyCanAttack = ' ';
@@ -76,7 +74,7 @@ void AttackMA::playerAttack() /*fix this*/
 
           if (verifyCanAttack == 'Y') {
             for (int playerCommanderIndex = 0;
-                 playerCommanderIndex < newParticipant->howManyCommanders();
+                 playerCommanderIndex < newParticipant->commandersNum();
                  playerCommanderIndex++) {
               if (attackUnitWithX == allCommanders[currentParticipantIndex]
                                                   [playerCommanderIndex]
@@ -89,7 +87,7 @@ void AttackMA::playerAttack() /*fix this*/
               }
             }
           } else {
-            std::cout << "Invalid unit selected. Please try again" << endl;
+            std::cout << "Invalid unit selected. Please try again" << std::endl;
             break;
           }
         }
@@ -173,15 +171,15 @@ void AttackMA::playerCommitAttackWin(int oldResources[5]) {
           x, injuredTroops[x - 10]); /*fix this?*/
     }
 
-    std::cout << "  Results: " << endl << endl;
-    std::cout << "Resources gained: " << endl;
+    std::cout << "  Results: " << std::endl << std::endl;
+    std::cout << "Resources gained: " << std::endl;
     for (int x = 0; x < 5; x++) /*print out resources*/
     {
       std::cout << provinceResourcesNames[x] << " gained: "
                 << allCommanders[currentParticipantIndex][commanderIndex]
                            .getResource(x) -
                        oldResources[x]
-                << endl;
+                << std::endl;
     }
     casualtyReport(deadTroops, injuredTroops);
 
@@ -195,7 +193,7 @@ void AttackMA::playerCommitAttackWin(int oldResources[5]) {
     do {
       repeatViewAllArmyStats = 'N';
       viewAllArmyStats = getChar("View all army stats? (Y/N) ", "YN", 1);
-      std::cout << endl;
+      std::cout << std::endl;
 
       switch (viewAllArmyStats) {
       case 'Y': {
@@ -205,10 +203,10 @@ void AttackMA::playerCommitAttackWin(int oldResources[5]) {
       }
       case 'N':
         break;
-        std::cout << endl;
+        std::cout << std::endl;
       default:
         repeatViewAllArmyStats = 'Y';
-        std::cout << "Invalid character entered. Please try again." << endl;
+        std::cout << "Invalid character entered. Please try again." << std::endl;
         break;
       }
     } while (repeatViewAllArmyStats == 'Y');

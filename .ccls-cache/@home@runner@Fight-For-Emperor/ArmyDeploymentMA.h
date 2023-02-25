@@ -5,15 +5,14 @@
 #include <string>
 #include <vector>
 
-#include "otherFunctions.h"
+#include "OtherFunctions.h"
 #include "textFunctions.h"
 #include "Participants.h"
 #include "Provinces.h"
 #include "Lists.h"
 #include "coordinateFunctions.h"
 #include "CommanderProfile.h"
-
-using namespace std;
+#include "Mobility.h"
 
 class ArmyDeploymentMA
 {
@@ -23,27 +22,26 @@ public:
 	ArmyDeploymentMA(Participants *newP);
 
 	//Accessors
-	void printCosts(vector<int>costs, string type);
+	void printCosts(std::vector<int>costs, std::string type);
 
 	//Other Function stuff
 	void armyDeploymentMF();
 	void trainCommanders();
-	void proceedWithTraining(vector <int> trainCosts);
+	void proceedWithTraining(std::vector <int> trainCosts);
 	void upgradeCommandersOne();
 	void upgradeCommandersTwo();
 	void viewArmyOverview();
 	void deployCommanderMF();
 
-	CommanderProfile *selectCommander(char &successfulSelection);
+	CommanderProfile *selectCommander();
 
 
-	void deployCommanderDisplayInformation(int commandersInCapital);
+	void displayCommanders();
 private:
-	int capitalX;
-	int capitalY;
 	Participants *participant;
 	Provinces *capitalProvince;
 	int commandersNum;
+	OtherFunctions otherFunction;
 };
 
 #endif

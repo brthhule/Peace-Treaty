@@ -1,18 +1,4 @@
 #include "AllUnits.h"
-using namespace std;
-
-/*int resourcesPresent[5];
-	int troopsPresent[5];
-	int troopsInjured[5];
-	int totalCP;*/
-
-extern int troopsCP[5];
-extern int provinceBuildingsProductionNumbers[6];
-
-extern string provinceResourcesNames[5];
-extern string buildingNames[6];
-extern string troopNames[5];
-extern int currentParticipantIndex;//Fix this at some point-- make sure right index is sent to constructor
 
 //Constructor
 AllUnits::AllUnits(int index)
@@ -61,21 +47,21 @@ int AllUnits::getParticipantIndex()
 
 void AllUnits::printResources()
 {
-	std::cout << "Resources present in this province: " << endl;
+	std::cout << "Resources present in this province: " <<  std::endl;
     std::cout << "\033[;34m";
 	for (int x = 0; x < 5; x++)
 	{
-		std::cout << "- " << provinceResourcesNames[x] << ": " << resourcesPresent[x] << endl;
+		std::cout << "- " << provinceResourcesNames[x] << ": " << resourcesPresent[x] <<  std::endl;
 	}
-	std::cout << endl;
-	cout << "\033[;0m";
+	std::cout <<  std::endl;
+	std::cout << "\033[;0m";
 }
 
-string AllUnits::getUnitName()
+std::string AllUnits::getUnitName()
 {
 	return unitName;
 }
-void AllUnits::changeUnitName(string name)
+void AllUnits::changeUnitName(std::string name)
 {
 	unitName = name;
 }
