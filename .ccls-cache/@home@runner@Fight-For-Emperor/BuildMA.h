@@ -6,10 +6,10 @@
 #include <string>
 #include "OtherFunctions.h"
 #include "textFunctions.h"
-#include "coordinateFunctions.h"
 #include "Lists.h"
 #include "Provinces.h"
 #include "Participants.h"
+#include "AllUnits.h"
 
 extern std::vector<Participants> participantsList;
 extern int continentSize;

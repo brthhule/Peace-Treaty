@@ -8,14 +8,13 @@
 	int troopsPresent[5];
 	int troopsInjured[5];
 	int totalCP;*/
-
 extern int troopsCP[5];
 extern int provinceBuildingsProductionNumbers[6];
 
 extern std::string provinceResourcesNames[5];
 extern std::string buildingNames[6];
 extern std::string troopNames[5];
-extern int currentParticipantIndex;//Fix this at some point-- make sure right index is sent to constructor
+extern int currentParticipantIndex;
 
 class AllUnits
 {
@@ -37,7 +36,7 @@ public:
 	void addSpecificTroop(int index, int amount);
 
   //resources
-	void addRSS(int index, int amount);
+	void addResources(int index, int amount);
 	int getResource(int resourceIndex);
 	void printResources();
 

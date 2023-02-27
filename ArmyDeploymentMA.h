@@ -10,7 +10,6 @@
 #include "Participants.h"
 #include "Provinces.h"
 #include "Lists.h"
-#include "coordinateFunctions.h"
 #include "CommanderProfile.h"
 #include "Mobility.h"
 

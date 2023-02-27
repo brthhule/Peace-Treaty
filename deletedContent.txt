@@ -867,3 +867,75 @@ void findTotalPlayerUnits(int totalPlayerUnits[5])
         }
     }
 }
+
+int OtherFunctions::getInt(std::string textToDisplay, std::vector<int> acceptableValues, int caseInstance) {
+  std::string userInput;
+  if (caseInstance == 1) {
+    std::cout << textToDisplay;
+  }
+  std::cout << "\033[31m";
+  std::getline(std::cin, userInput);
+  std::cout << "\033[0m";
+  return checkInt(acceptableValues, userInput);
+}
+int OtherFunctions::checkInt(std::vector<int> &acceptableValuesTwo, std::string input) {
+  std::vector<std::string> acceptableValuesOne;
+  std::string foo = " ";
+  for (int a = 0; a < acceptableValuesTwo.size(); a++) {
+    foo = std::to_string(acceptableValuesTwo[a]);
+    acceptableValuesOne.push_back(foo);
+  }
+
+  char repeat = 'Y';
+  do {
+    repeat = 'N';
+    for (int x = 0; x < acceptableValuesOne.size(); x++) {
+      if (input == acceptableValuesOne[x]) {
+        repeat = 'N';
+        return acceptableValuesTwo[x];
+      }
+    }
+    repeat = 'Y';
+		println("\nInvalid character entered. Please try again.");
+		print("Please enter a valid number: \033[31m");
+    std::getline(std::cin, input);
+    std::cout << "\033[0m";
+
+  } while (repeat == 'Y');
+  return -1;
+}
+
+
+attackingProvince = attackingParticipant->getCoords(3);
+    std::cout << std::endl;
+    if (attackingProvince->getCoordinate('X') == -1) {
+      std::cout << "Returning to previous menu... " << std::endl << std::endl;
+      repeatVerifyCanAttack = 'N';
+    } else {
+      bool canAttack = false;
+
+      for (int b = 0; b < amountOfHeros; b++) {
+        if (attackingProvince ==
+            &provincesMap[herosCanAttack[0][b]]
+                         [herosCanAttack[1][b]]) /*fix this*/
+        {
+          canAttack = true;
+        }
+      }
+
+      if (canAttack) {
+        for (int playerCommanderIndex = 0;
+             playerCommanderIndex < newParticipant->commandersNum();
+             playerCommanderIndex++) {
+          Provinces *newProvince =
+              &provincesMap[attackingCommander->returnCoordinate('X')]
+                           [attackingCommander->returnCoordinate('Y')];
+          if (newProvince == attackingProvince) {
+            playerCommitAttack(); // fix this
+          }
+        }
+      } else {
+        std::cout << "Invalid unit selected. Please try again" << std::endl;
+        break;
+      }
+    }

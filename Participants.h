@@ -75,7 +75,7 @@ public:
 	void viewStats();
 
 	//Coordinate stuff
-	int translateCoordinate(int coordinate, char indicator, char whichWay);
+	
 	Provinces* getCoords(int identifier);
 	int getRandomCoordinate();
 

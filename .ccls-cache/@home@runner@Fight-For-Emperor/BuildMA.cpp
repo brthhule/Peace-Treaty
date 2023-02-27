@@ -1,15 +1,10 @@
 #include "BuildMA.h"
-#define print(x) cout << x;
-#define println(x) cout << x << endl;
+#define print(x)std::cout << x;
+#define println(x)std::cout << x << std::endl;
 
-extern vector<Participants> participantsList;
-extern int continentSize;
-
-using namespace std;
-
-extern vector<vector<Provinces>> provincesMap;
-extern string buildingNames[6];
-extern string provinceResourcesNames[5];
+extern std::vector<std::vector<Provinces>> provincesMap;
+extern std::string buildingNames[6];
+extern std::string provinceResourcesNames[5];
 extern int currentParticipantIndex;
 
 BuildMA::BuildMA() { province = findProvince(); }
@@ -19,22 +14,22 @@ BuildMA::BuildMA(Provinces *newProvince, Participants *newParticipant) {
 }
 
 Provinces *BuildMA::findProvince() {
-  std::cout << "Welcome to the Player Build menu" << endl << endl;
-  vector<int> coords = getCoords(1);
+  std::cout << "Welcome to the Player Build menu" << std::endl << std::endl;
+  std::vector<int> coords = getCoords(1);
 
   province = &provincesMap[coords[0]][coords[1]];
 
   if (coords[0] != -1) {
-      if (province->getParticipantIndex() == participant->getParticipantIndex() {
+      if (province->getParticipantIndex() == participant->getParticipantIndex()) {
       playerBuildFunction();
       } else {
-      string anyInput = " ";
+      std::string anyInput = " ";
       print("Invalid province elected. Please try again. \nEnter anything to "
             "proceed back to the Player Build menu (Screen will clear) ");
       std::getline(cin, anyInput);
       clearScreen();
       }
-      std::cout << endl;
+      std::cout << std::endl;
   }
 }
 
@@ -43,7 +38,7 @@ void BuildMA::playerBuildFunction() {
   println(
       "---------- Start printing province information ----------\n\033[34m");
   println("Province of kingdom " + participant->getKingdomName());
-  cout << "Coordinates: ("
+ std::cout << "Coordinates: ("
        << translateCoordinate(province->getCoordinate('X'), 'x', 'O') << ", "
        << translateCoordinate(province->getCoordinate('Y'), 'y', 'O')
        << ") \n\n\033[0m";
@@ -60,9 +55,9 @@ void BuildMA::playerBuildFunction() {
   if (upgradeBuilding == 'U') {
     upgradeBuildings();
     playerBuildFunction();
-    std::cout << endl;
+    std::cout << std::endl;
   } else {
-    std::cout << "Returning to previous menu... " << endl;
+    std::cout << "Returning to previous menu... " << std::endl;
     clearScreen();
   }
 }
@@ -70,7 +65,7 @@ void BuildMA::playerBuildFunction() {
 void BuildMA::upgradeBuildings() {
   int requiredResources[5] = {0};
   int buildingNumber = 0;
-  string buildingLetterList = "FLQMCBH";
+  std::string buildingLetterList = "FLQMCBH";
 
   char buildingLetter = getChar("Enter the first letter of the building you want to upgrade (enter 'H' for help): ", "FLQMCBH", 1);
 	
@@ -113,20 +108,20 @@ void BuildMA::upgradeBuildings() {
   if (upgradeAgain == 'Y') {
     upgradeBuildings();
   }
-  std::cout << "Returning to Build Infrastructure action menu. " << endl;
+  std::cout << "Returning to Build Infrastructure action menu. " << std::endl;
 }
 
 void BuildMA::printInformation(int buildingNumber, int requiredResources[5]) {
-  cout << "---------- Start printing information----------\n\n\033[34m";
+ std::cout << "---------- Start printing information----------\n\n\033[34m";
   println(buildingNames[buildingNumber] + " selected \n");
   println("The following is the cost of the upgrade: ");
   for (int x = 0; x < 5; x++) {
     requiredResources[x] = (int)requiredResourcesBuildings[buildingNumber][x] *
                            province->getBuildingLevel(x);
     std::cout << provinceResourcesNames[x] << ": " << requiredResources[x]
-              << endl;
+              << std::endl;
   }
   println("\nThe following are how many resources are in this province: ");
   province->printResources();
-  cout << "----------End printing informatio----------" << endl;
+ std::cout << "----------End printing informatio----------" << std::endl;
 }

@@ -3,6 +3,8 @@
 
 #include "AllUnits.h"
 #include "CommanderProfile.h"
+#include "OtherFunctions.h"
+
 
 extern std::string provinceResourcesNames[5];
 extern std::string buildingNames[6];
@@ -12,64 +14,61 @@ extern int initialResources[5];
 extern int troopsCP[5];
 extern int turn;
 
-class Provinces : public AllUnits
-{
+class Provinces : public AllUnits {
 public:
-	/*Constructors*/
-	Provinces();
-	Provinces(int xCoordinate, int yCoordinate, int pIndex);
+  /*Constructors*/
+  Provinces();
+  Provinces(int xCoordinate, int yCoordinate, int pIndex);
 
-	/*Destructor*/
+  /*Destructor*/
 
-	/*Accessor Functions*/
-	int getProvinceStats(int index);
-	int findProvinceScoutLog(int index);
-	int findMaxGarrison();
-	int findMaxInfirmaryCapacity();
-	int getBuildingLevel(int index);
+  /*Accessor Functions*/
+  int getProvinceStats(int index) { return *provinceStats[index]; };
+  int findProvinceScoutLog(int index);
+  int findMaxGarrison();
+  int findMaxInfirmaryCapacity() { return (buildingLevels[6] * 10); };
+  int getBuildingLevel(int index);
 
-	//Commanders
-	int returnCommanderIndex(int index);
-	int getTroopsTrainedThisTurn();
-	int findProvinceLevel();
-	CommanderProfile * returnCommander (int index);	
-	void addCommander (CommanderProfile *newCommander){commanders.push_back(newCommander)};
+  // Commanders
+  int returnCommanderIndex(int index){return commanders[index]->getParticipantIndex();};
+  int getTroopsTrainedThisTurn() { return troopsTrainedThisTurn; };
+  int findProvinceLevel();
+  CommanderProfile *returnCommander(int index);
+  void addCommander(CommanderProfile *newCommander){
+      commanders.push_back(newCommander);};
 
-	int howManyCommanders();
+  int commandersNum(){return commanders.size();};
+  void printBuildingStats();
+  bool isCapital(){return isACapital;};
 
-	void addResources(int index, int amount);
-	int getR (int index);
-
-	void printBuildingStats();
-	bool isCapital();
-
-	std::string getProvinceName();
-  void setDeleteProvince ()
-  {
-    deleteProvince = true;
-  }
-	/*Mutator Functions*/
-	void updateProvinceScoutLog(int index, int value);
-	void updateBuildingsProduction();
-	void updateProvinceResources();
-	void setCoordinates(int xCoordinate, int yCoordinate);
-	void initializeCapital();//provinceIsACapital
-	void addCommanderProvince(int commanderIndex);
-	void removeCommanderProvince(int commanderIndex);
-	void changeParticipant (int num);
-	void resetTroopsTrainedThisTurn();
-	void increaseBuildingLevel(int index, int amount);
-	void completeProvinceScoutReport(int accuracy);
+  std::string getProvinceName();
+  void setDeleteProvince() { deleteProvince = true; }
+  /*Mutator Functions*/
+  void updateProvinceScoutLog(int index, int value);
+  void updateBuildingsProduction();
+  void updateProvinceResources();
+  void setCoordinates(int xCoordinate, int yCoordinate);
+  void initializeCapital(); // provinceIsACapital
+  void addCommanderProvince(int commanderIndex);
+  void removeCommanderProvince(int commanderIndex);
+  void changeParticipant(int num);
+  void resetTroopsTrainedThisTurn();
+  void increaseBuildingLevel(int index, int amount);
+  void completeProvinceScoutReport(int accuracy);
   void addTroopsTrainedThisTurn(int amount);
 
   int getCoordinate(char identifier);
   void printCoordinates();
   bool deleteStatus();
+	std::vector <int> returnCoordinatesVector (){return {provinceX, provinceY};};
 
-	int getPIndex();
+  int getPIndex(){return participantIndex;};
+
+	int translateX (bool isInput);
+	int translateY (bool isInput);
 
 private:
-	int* provinceStats[27];/*
+  int *provinceStats[27]; /*
 [0] food present
 [1] wood present
 [2] ore present
@@ -97,26 +96,26 @@ private:
 [24] infirmary level
 [25] total CP
 [26] food consumption*/
-	int provinceLevel;
-	int maxGarrison;
-	int maxInfirmaryCapacity;
-	int buildingLevels[7];
-	int buildingsProduction[6];
-	int maxResources[5];
-	int totalMaxResources;
-	int troopsTrainedThisTurn;
+  int provinceLevel;
+  int maxGarrison;
+  int maxInfirmaryCapacity;
+  int buildingLevels[7];
+  int buildingsProduction[6];
+  int maxResources[5];
+  int totalMaxResources;
+  int troopsTrainedThisTurn;
 
-	int troopsPresent[5];
-	int troopsInjured[5];
-	int totalCP;
-	int totalTroops;
-	int foodConsumption;
+  int troopsPresent[5];
+  int troopsInjured[5];
+  int totalCP;
+  int totalTroops;
+  int foodConsumption;
 
-	int initialStats[5] = { 5, 4, 3, 2, 1 };
+  int initialStats[5] = {5, 4, 3, 2, 1};
 
-	bool isACapital;
+  bool isACapital;
 
-	int provinceScoutReport[28] = {};/*
+  int provinceScoutReport[28] = {}; /*
 [27] = turn number of scout report
 [28] = accuracy of scout report*/
   bool isNeutral;
@@ -125,11 +124,12 @@ private:
   int provinceY;
   bool deleteProvince;
 
-	int participantIndex;
-	std::vector<CommanderProfile*> commanders;
-	//std::vector <std::vector<int>> commanders; /*[x][0] = index, [x][1] = which participant they belong to*/
-	int scoutLogTurnLevel[2];//[0] is the turn of the scout report, [1] is the scout log level
-
+  int participantIndex;
+  std::vector<CommanderProfile *> commanders;
+  // std::vector <std::vector<int>> commanders; /*[x][0] = index, [x][1] = which
+  // participant they belong to*/
+  int scoutLogTurnLevel[2]; //[0] is the turn of the scout report, [1] is the
+                            //scout log level
 };
 
 #endif

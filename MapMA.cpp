@@ -53,10 +53,10 @@ void MapMA::selectUnitOriginal(Provinces *selectedProvince) {
     selectPlayerProvince();
   } else if (prov->part() == -1) // If empty province
   {
-    if (prov->commanders.size() >
+    if (prov->commandersNum() >
         0) // If there are more than 0 commnaders
     {
-      if (prov->commanders[0][1] == pIndex
+      if (prov->returnCommander(0)->getParticipantIndex() == pIndex
       {
         playerUnitAction(prov);
       } else {

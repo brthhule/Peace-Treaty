@@ -5,13 +5,12 @@
 Mobility::Mobility(CommanderProfile *sCommander, Participants *newP)
 {
 	selectedCommander = sCommander;
-	sCommanderX = selectedCommander->returnCoordinate('X');
-	sCommanderY = selectedCommander->returnCoordinate('Y');
+	selectedCommanderProvince = &provincesMap[selectedCommander->returnCoordinate('X')][selectedCommander->returnCoordinate('Y')];
 	participant = newP;
 }
 
 std::vector<Provinces *> Mobility::moveUnitTwo() {
-  std::vector<Provinces *> std::vectorThingy;
+  std::vector<Provinces *> vectorThingy;
   for (int x = -1; x <= 1;
        x++) /*Identify all the provinces that the player can move a unit to*/
   {
@@ -23,50 +22,48 @@ std::vector<Provinces *> Mobility::moveUnitTwo() {
         // Make sure province isn't the starting province
         if (x != 0 || y != 0) {
           // Add province to list of provinces can move to
-          std::vectorThingy.push_back(
-              &provincesMap[x + sCommanderX][y + sCommanderY]);
+          vectorThingy.push_back(
+              &provincesMap[x + selectedCommanderProvince->getCoordinate('X')][y + selectedCommanderProvince->getCoordinate('Y')]);
         }
       }
     }
   }
-	return std::vectorThingy;
+	return vectorThingy;
 }
 
 void Mobility::moveUnitOne() {
+	OtherFunctions OF;
   std::vector<Provinces *> provincesCanSelect;
-  if (selectedCommander->hasMovedQuestion() == 'N') {
+  if (selectedCommander->hasMovedQuestion() == false) {
     print ("The coordinates of the chosen unit unit are: (");
-    print(translateCoordinate(sCommanderX, 'y', 'O') + ", " + translateCoordinate(sCommanderY, 'x', '0'));
+    print(selectedCommanderProvince->translateX(false) + ", " + selectedCommanderProvince->translateY(false));
 		print(")\n\nYou can only move this unit to one of the provinces adjacent to the province it is in\n")
     provincesCanSelect = moveUnitTwo();
 
     // The participant slects coordiantes
-    std::vector <int> moveTwo = getCoords(2);
+    Provinces* moveTwo = participant->getCoords(2);
 
     int provinceIndexSelected = 0;
-    char provinceIsInList =
-        'N'; // Initialize as province is not in list (have to repeat process)
-    // Find the province (out of the list) elected using the coordinates chosen
+    char provinceIsInList = 'N';
     for (int x = 0; x < provincesCanSelect.size(); x++) {
-      if (moveTwo[0] == provincesCanSelect[x]->getCoordinate('X') &&
-          moveTwo[1] == provincesCanSelect[x]->getCoordinate('Y')) {
+      if (moveTwo == provincesCanSelect[x]) {
         provinceIndexSelected = x;
         provinceIsInList =
-            'Y'; // Province is in list, don't have to repeat process
+            'Y';
       }
     }
 
     // For display
-    int moveToX = translateCoordinate(moveTwo[0], 'x', 'O');
-    int moveToY = translateCoordinate(moveTwo[1], 'y', 'O');
+    int moveToX = moveTwo->translateX(false);
+    int moveToY = moveTwo->translateY(false);
 
     std::string confirmMove;
     char attackScenario = 'P'; /*P is for peace, A is for attack*/
     // If province is in the list
     if (provinceIsInList == 'Y') {
-      Provinces *provinceSelected = provincesCanSelect[provinceIndexSelected];
+      Provinces *attackProvince = provincesCanSelect[provinceIndexSelected];
 			
-      if (provinceSelected->getParticipantIndex() !=
+      if (attackProvince->getParticipantIndex() !=
           participant->getParticipantIndex()) {
         attackScenario = 'A';
         println ("Moving here will cause your unit to attack any enemy units stationed at this province.");
@@ -75,17 +72,15 @@ void Mobility::moveUnitOne() {
                 << ")? (Y/N) ";
 
       // If participants confirms movement
-      if (getChar("Replacement", "YN", 2) == 'Y') {
+      if (OF.getInput("Replacement", {"Y", "N"}, false).at(0) == 'Y') {
         // If it's peaceful (moving to one of their own provinces)
         if (attackScenario == 'P') {
-          selectedCommander->setLocation(moveTwo);
-
-          provinceSelected->addCommanderProvince(indexInList);
+          selectedCommander->setLocation(moveTwo->returnCoordinatesVector());
+          attackProvince->addCommander(selectedCommander));
         }
         // If scenario is attack
         else {
-          AttackMA newAttackMA(unitXCoordinate, unitYCoordinate, moveToXTwo,
-                               moveToYTwo, indexInList, belongsToParticipant);
+          AttackMA newAttackMA(selectedCommanderProvince, attackProvince, participant, selectedCommander);
           newAttackMA
               .playerAttack(); // fix this-- don't need to pass unitXCoordinate,
                                // can just use indexInList

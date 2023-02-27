@@ -260,39 +260,6 @@ void Participants::printListOfProvinces()
     std::cout << std::endl;
 }
 
-int Participants::translateCoordinate(int coordinate, char indicator, char whichWay) {
-  /*replacement = xCoordinate;
-  xCoordinate = translateCoordinate(yCoordinate, 'y', 'I');
-  yCoordinate = translateCoordinate (replacement, 'x', 'I');*/
-  int translation = 0;
-  switch (whichWay) {
-  case 'I':
-    switch (indicator) {
-    case 'x':
-      translation = coordinate - 1;
-      break;
-
-    case 'y':
-      translation = coordinate - continentSize;
-      translation = abs(translation);
-      break;
-    }
-    break;
-  case 'O':
-    switch (indicator) {
-    case 'x':
-      translation = coordinate + 1;
-      break;
-    case 'y':
-      translation = continentSize - coordinate;
-      translation = abs(translation);
-      break;
-    }
-    break;
-  }
-  return translation;
-}
-
 Provinces* Participants::getCoords(int identifier) {
 	OtherFunctions OF;
 	int yCoordinate = -1;

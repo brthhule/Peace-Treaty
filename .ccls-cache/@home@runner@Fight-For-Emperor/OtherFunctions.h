@@ -27,23 +27,26 @@ class OtherFunctions
 public:
 	OtherFunctions();
 
-	char getChar(std::string textToDisplay, std::string acceptableValues, int caseInstance);
-	char checkChar(std::string inputAV, std::string input);
-	int getInt(std::string textToDisplay, std::vector <int> acceptableValues, int caseInstance);
-	int checkInt(std::vector<int>& acceptableValuesTwo, std::string input);
-	void pauseGame();
-	
+	//Check input-- maybe use template for this?
+	std::string getInput(std::string text, std::vector<std::string> AV, bool redo);
+
+	//Map stuff
+	int translateCoordinate(int coordinate, char indicator, char whichWay);
+	int translateCoordinateInput(int coordinate, char indicator);
+	int translateCoordinateOutput(int coordinate, char indicator);
 	void showMap();
 	void updateprovinceResources();
 	void createMap();
-	
+
+	//Name Functionality
 	std::string createRandomName();
-	char findConsonant(int randomNumber);
-	char findVowel(int randomNumber);
-	
+
+	//Other stuff
 	int findAmountOfEnemyProvinces();
-	
 	void clearScreen ();
+	void pauseGame();
+
+private:
 };
 
 

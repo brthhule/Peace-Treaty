@@ -8,6 +8,7 @@
 #include "Participants.h"
 #include "Provinces.h"
 #include "CommanderProfile.h"
+#include "AttackMA.h"
 
 extern int continentSize;
 extern std::vector<std::vector <Provinces>> provincesMap;
@@ -21,8 +22,7 @@ public:
 private:
 	CommanderProfile *selectedCommander;
 	Participants* participant;
-	int sCommanderX;
-	int sCommanderY;
+	Provinces* selectedCommanderProvince;
 };
 
 #endif

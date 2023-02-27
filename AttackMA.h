@@ -5,7 +5,6 @@
 #include <string>
 #include <vector>
 
-#include "coordinateFunctions.h"
 #include "Participants.h"
 #include "CommanderProfile.h"
 #include "Provinces.h"
@@ -21,8 +20,9 @@ class AttackMA
 {
 public:
 	//constructor
-	AttackMA();
-	AttackMA(std::vector<int> unitAttackingArg, std::vector <int> unitAttackedArg, Participants * attackingParticipantArg, CommanderProfile* commanderArg);
+	AttackMA(Provinces *defendingProvinceArg, Participants* attackingParticipantArg);
+	AttackMA(Provinces* attackerProvinceArg, Provinces* defenderProvinceArg, Participants * attackingParticipantArg, CommanderProfile* commanderArg);
+	void findCommander (std::vector<CommanderProfile*> commandersCanAttack);
 
 	//Function stuff
 	void playerAttack();
@@ -30,14 +30,15 @@ public:
 	void playerCommitAttackWin(int oldResources[5]);
 	void battleCalculations(int lostCombatPower, int deadTroops[5], int a);
 	void battleCalculationsTwo(int& lostCombatPower, int deadTroops[5], int troopIndex);
-private:
-	std::vector <int> unitAttacking;
-	std::vector <int> unitAttacked;
-	Participants * attackingParticipant;//player
-	Participants * attackedParticipant;//enemy
 
-	CommanderProfile * commander;
-	std::vector <int> commandersBeingAttackedIndices;
+
+private:
+	Provinces *attackingProvince;
+	Provinces *defendingProvince;
+	Participants * attackingParticipant;//player
+	Participants * defendingParticipant;//enemy
+	CommanderProfile * attackingCommander;
+	std::vector <CommanderProfile*> defendingCommanders;
 };
 
 #endif

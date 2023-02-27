@@ -1,102 +1,64 @@
 #include "AttackMA.h"
 
-AttackMA::AttackMA(std::vector<int> unitAttackingArg, std::vector <int> unitAttackedArg, Participants * attackingParticipantArg, CommanderProfile* commanderArg) {
-	unitAttacking = unitAttackingArg;
-	unitAttacked = unitAttackedArg;
+AttackMA::AttackMA(Provinces *defendingProvinceArg, Participants* attackingParticipantArg) {
+  // Given a province to attack, see if you can attack with anything nearby
 	attackingParticipant = attackingParticipantArg;
-	commander = commanderArg;
-	attackedParticipant = &participantsList[provincesMap[unitAttacked[0]][unitAttacked[1]].getParticipantIndex()];
-}
+  defendingProvince = defendingProvinceArg;
+  int DPX = defendingProvince->getCoordinate('X');
+  int DPY = defendingProvince->getCoordinate('Y');
+  std::vector<CommanderProfile *> commandersCanAttack;
 
-void AttackMA::playerAttack() /*fix this*/
-{
-  Participants *newParticipant = &participantsList[currentParticipantIndex];
-  if (commanderIndex == -1) {
-    char canAttack = 'N';
-    int amountOfHeros = 0;
-    int herosCanAttack[2][4] = {0};
-    int z = 0;
-    int attackUnitWithX = 0;
-    int attackUnitWithY = 0;
-
-    int forLoopX;
-    int forLoopY;
-
-    for (int x = -1; x < 2; x++) {
-      for (int y = -1; y < 2; y++) {
-        forLoopX = unitAttacked[0] + x;
-        forLoopY = unitAttacked[1] + y;
-        if (forLoopX >= 0 && forLoopX < continentSize) {
-          if (forLoopY >= 0 && forLoopY < continentSize) {
-            if (provincesMap[forLoopX][forLoopY].commanders.size() >
-                0) {
-              amountOfHeros++;
-              canAttack = 'Y';
-              herosCanAttack[0][z] = unitAttacking[0] + x;
-              herosCanAttack[1][z] = unitAttacking[y] + y;
-              z++;
-            }
-          }
+  for (int x = -1; x < 2; x++) {
+    for (int y = -1; y < 2; y++) {
+      int candidateX = DPX + x;
+      int candidateY = DPY + y;
+      // check that coordinates are inbound
+      if (DPX >= 0 && DPY >= 0 && DPY < continentSize && DPX < continentSize) {
+        Provinces *newProvince = &provincesMap[DPX][DPY];
+        for (int x = 0; x < newProvince->commandersNum(); x++) {
+          commandersCanAttack.push_back(newProvince->returnCommander(x));
         }
       }
     }
-
-    if (amountOfHeros == 0) {
-      std::cout
-          << "There are no armies available to attack the enemy. Please move "
-             "an army unit to one of the provinces around the target. \n\n";
-    }
-    if (amountOfHeros < 0) {
-      std::cout << "The following armies can attack the target: \n";
-      std::cout << "Amount of heros: " << amountOfHeros << std::endl;
-      for (int x = 0; x < amountOfHeros; x++) {
-        std::cout << "1: (" << herosCanAttack[0][x] << ", "
-                  << herosCanAttack[1][x] << ") ";
-      }
-      char repeatVerifyCanAttack = 'Y';
-
-      do {
-        attackingParticipant->getCoordinates(3, attackUnitWithX, attackUnitWithY);
-        std::cout << std::endl;
-        if (attackUnitWithX == -1 || attackUnitWithY == -1) {
-          std::cout << "Returning to previous menu... " << std::endl << std::endl;
-          repeatVerifyCanAttack = 'N';
-        } else {
-          char verifyCanAttack = ' ';
-
-          for (int b = 0; b < amountOfHeros; b++) {
-            if (attackUnitWithX == herosCanAttack[0][b] &&
-                attackUnitWithY == herosCanAttack[1][b]) /*fix this*/
-            {
-              verifyCanAttack = 'Y';
-            }
-          }
-
-          if (verifyCanAttack == 'Y') {
-            for (int playerCommanderIndex = 0;
-                 playerCommanderIndex < newParticipant->commandersNum();
-                 playerCommanderIndex++) {
-              if (attackUnitWithX == allCommanders[currentParticipantIndex]
-                                                  [playerCommanderIndex]
-                                                      .getCoordinate('X') &&
-                  attackUnitWithY == allCommanders[currentParticipantIndex]
-                                                  [playerCommanderIndex]
-                                                      .getCoordinate('Y')) {
-                return playerCommitAttack(); /*May have to fix this at some
-                                                point*/
-              }
-            }
-          } else {
-            std::cout << "Invalid unit selected. Please try again" << std::endl;
-            break;
-          }
-        }
-      } while (repeatVerifyCanAttack == 'Y');
-    }
-  } else {
-    playerCommitAttack();
   }
+
+  if (commandersCanAttack.size() == 0) {
+    std::cout
+        << "There are no armies available to attack the enemy. Please move "
+           "an army unit to one of the provinces around the target. \n\n";
+  } else
+    findCommander(commandersCanAttack);
 }
+
+void AttackMA::findCommander(std::vector <CommanderProfile *> commandersCanAttack) {
+	std::string commanderName;
+  std::cout << "The following commanders can attack the target: \n";
+  std::cout << "Amount of commanders: " << commandersCanAttack.size() << std::endl;
+  for (int x = 0; x < commandersCanAttack.size(); x++) {
+    std::cout << "Commander " << commandersCanAttack[x]->getUnitName() << ", Level: " << commandersCanAttack[x]->getLevel();
+  }
+	std::cout << "Enter the name of the commander you would like to select: ";
+	getline(std::cin, commanderName);
+	if (attackingParticipant->hasCommander(commanderName) == false)
+	{
+		findCommander(commandersCanAttack);
+	}
+	attackingCommander = attackingParticipant -> getCommanderName(commanderName);
+	defendingParticipant = &participantsList[defendingProvince->getParticipantIndex()];
+	playerCommitAttack();
+}
+
+AttackMA::AttackMA(Provinces *attackerProvinceArg,
+                   Provinces *defenderProvinceArg,
+                   Participants *attackingParticipantArg,
+                   CommanderProfile *commanderArg) {
+  attackingProvince = attackerProvinceArg;
+  defendingProvince = defenderProvinceArg;
+  attackingParticipant = attackingParticipantArg;
+  attackingCommander = commanderArg;
+  playerCommitAttack();
+}
+
 void AttackMA::playerCommitAttack() {
   Participants *newParticipant = &participantsList[currentParticipantIndex];
   std::vector<char> targetEnemyCommanders;
@@ -206,7 +168,8 @@ void AttackMA::playerCommitAttackWin(int oldResources[5]) {
         std::cout << std::endl;
       default:
         repeatViewAllArmyStats = 'Y';
-        std::cout << "Invalid character entered. Please try again." << std::endl;
+        std::cout << "Invalid character entered. Please try again."
+                  << std::endl;
         break;
       }
     } while (repeatViewAllArmyStats == 'Y');

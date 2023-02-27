@@ -70,19 +70,13 @@ Provinces::Provinces(int sendXCoordinate, int sendYCoordinate, int pIndex)
 
 
 //Province stats
-int Provinces::getProvinceStats(int index)
-{
-	return *provinceStats[index];
-}
+
 int Provinces::findMaxGarrison()
 {
 	int maxGarrisonThingy = buildingLevels[5] * 10;
 	return maxGarrisonThingy;
 }
-int Provinces::findMaxInfirmaryCapacity()
-{
-	return (buildingLevels[6] * 10);
-}
+
 int Provinces::findProvinceLevel()
 {
 	provinceLevel = 0;
@@ -92,10 +86,6 @@ int Provinces::findProvinceLevel()
 	}
 	provinceLevel /= 6;
 	return provinceLevel;
-}
-int Provinces::getTroopsTrainedThisTurn()
-{
-	return troopsTrainedThisTurn;
 }
 
 //Scout stuff
@@ -242,7 +232,8 @@ int Provinces::getCoordinate (char identifier)
 
 void Provinces::printCoordinates()
 {
-  std::cout << "(" << translateCoordinate(xCoord, 'x', 'O') << ", " << translateCoordinate(yCoord, 'y', 'O') << ") "
+	OtherFunctions OF;
+  std::cout << "(" << OF.translateCoordinate(xCoord, 'x', 'O') << ", " << OF.translateCoordinate(yCoord, 'y', 'O') << ") "
 }
 
 bool Provinces::deleteStatus()
@@ -250,31 +241,24 @@ bool Provinces::deleteStatus()
   return deleteProvince;
 }
 
-void Provinces::addResources(int index, int amount)
+int Provinces::translateX(bool isInput)
 {
-	resourcesPresent[index] += amount;
-}
-int Provinces::getR(int index)
-{
-	return resourcesPresent[index];
-}
-
-CommanderProfile *Provinces::returnCommander(int index)
-{
-	return commanders[index];
+	if (isInput)
+	{
+		return xCoord - 1;
+	} else
+	{
+		return xCoord + 1;
+	}
 }
 
-bool Provinces::isCapital()
+int Provinces::translateY(bool isInput)
 {
-	return isACapital;
-}
-
-int Provinces::getPIndex()
-{
-	return participantIndex;
-}
-
-int Provinces::howManyCommanders()
-{
-	return commanders.size();
+	if (isInput)
+	{
+		return abs(yCoord - continentSize);
+	} else
+	{
+		return abs(continentSize - yCoord);
+	}
 }
