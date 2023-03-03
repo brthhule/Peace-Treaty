@@ -77,6 +77,8 @@ public:
 	//Coordinate stuff
 	
 	Provinces* getCoords(int identifier);
+	Provinces* getYourCoords(int identifier);
+
 	int getRandomCoordinate();
 
 private:

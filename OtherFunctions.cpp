@@ -103,7 +103,7 @@ std::string OtherFunctions::getInput(std::string text, std::vector<std::string> 
 		if (input == AV[x])
 			return input;
 	}
-	getInput(text, AV, isChar, true);
+	getInput(text, AV, true);
 }
 
 std::string OtherFunctions::createRandomName() {
@@ -198,4 +198,10 @@ int OtherFunctions::translateCoordinateOutput(int coordinate, char indicator) {
     return abs(continentSize - coordinate);
     break;
   }
+}
+
+void OtherFunctions::printCoordinates(int xCoordinate, int yCoordinate)
+{
+	OtherFunctions OF;
+  std::cout << "(" << OF.translateCoordinate(xCoordinate, 'x', 'O') << ", " << OF.translateCoordinate(yCoordinate, 'y', 'O') << ") ";
 }

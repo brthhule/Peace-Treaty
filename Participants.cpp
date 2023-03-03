@@ -259,7 +259,16 @@ void Participants::printListOfProvinces()
     }
     std::cout << std::endl;
 }
-
+Provinces *Participants::getYourCoords(int identifier)
+{
+	Provinces* newProvince = getCoords(identifier);
+	if (newProvince->getParticipantIndex = participantIndex)
+	{
+		return newProvince;
+	}
+	std::cout<< "This province does not belong to you. Please try again \n";
+	getYourCoords(identifier);
+}
 Provinces* Participants::getCoords(int identifier) {
 	OtherFunctions OF;
 	int yCoordinate = -1;

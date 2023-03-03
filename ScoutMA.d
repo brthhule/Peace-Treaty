@@ -1,3 +1,2 @@
 ScoutMA.o ScoutMA.d : ScoutMA.cpp ScoutMA.h Participants.h Provinces.h AllUnits.h \
-  coordinateFunctions.h textFunctions.h CommanderProfile.h \
-  OtherFunctions.h
+  CommanderProfile.h OtherFunctions.h textFunctions.h

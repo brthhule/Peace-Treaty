@@ -1,5 +1,6 @@
 #include "TrainMA.h"
 
+TrainMA::TrainMA();
 TrainMA::TrainMA(Provinces *newP) { province = newP; }
 
 void TrainMA::TrainMAFunction() {

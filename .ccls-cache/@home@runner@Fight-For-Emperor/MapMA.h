@@ -10,7 +10,6 @@
 #include "AttackMA.h"
 #include "TrainMA.h"
 #include "Lists.h"
-#include "coordinateFunctions.h"
 
 #include "Participants.h"
 #include "Provinces.h"
@@ -38,7 +37,8 @@ public:
 private:
 	Participants *participant;
 	int pIndex;
-Provinces *prov;
+	Provinces *prov;
+	OtherFunctions OF;
 };
 
 #endif

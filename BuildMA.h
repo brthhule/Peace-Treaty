@@ -36,6 +36,7 @@ private:
 	double requiredResourcesMine [5] = {4, 3, 2, 1, 0.5};
 	double requiredResourcesChurch [5] = {5, 4, 3, 2, 1};
 	double requiredResourcesBarracks [5] = {1, 1, 1, 1, 0.2};*/
+	OtherFunctions OF;
 };
 
 #endif

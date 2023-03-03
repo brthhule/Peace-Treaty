@@ -26,7 +26,7 @@ public:
   int printCommanderScoutReport(int idex);
 
   // Other commander stuff
-  int getLevel(){return commanderLevel};  // getCommanderLevel
+  int getLevel(){return commanderLevel;};  // getCommanderLevel
   void addLevel(){commanderLevel++;}; // addCommanderLevel
   std::vector<int> getUpgradeCosts();
   void printCosts(std::vector<int> costs);

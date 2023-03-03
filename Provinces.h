@@ -3,7 +3,6 @@
 
 #include "AllUnits.h"
 #include "CommanderProfile.h"
-#include "OtherFunctions.h"
 
 
 extern std::string provinceResourcesNames[5];
@@ -58,7 +57,6 @@ public:
   void addTroopsTrainedThisTurn(int amount);
 
   int getCoordinate(char identifier);
-  void printCoordinates();
   bool deleteStatus();
 	std::vector <int> returnCoordinatesVector (){return {provinceX, provinceY};};
 

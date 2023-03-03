@@ -21,6 +21,7 @@ public:
 	int initialDecision();
 private:
 	Participants *participant;
+	OtherFunctions OF;
 };
 
 #endif

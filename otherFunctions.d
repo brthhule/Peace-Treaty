@@ -1,2 +1,2 @@
-otherFunctions.o otherFunctions.d : otherFunctions.cpp otherFunctions.h textFunctions.h \
-  Provinces.h AllUnits.h coordinateFunctions.h CommanderProfile.h
+OtherFunctions.o OtherFunctions.d : OtherFunctions.cpp OtherFunctions.h textFunctions.h \
+  Provinces.h AllUnits.h CommanderProfile.h

@@ -939,3 +939,40 @@ attackingProvince = attackingParticipant->getCoords(3);
         break;
       }
     }
+
+
+
+  for (int b = 0; b < targetProvince->commanders.size(); b++) {
+    CommanderProfile *newCommander =
+        participantsList[targetParticipantIndex].getCommander(
+            enemyProvince->returnCommanderIndex(b));
+
+    std::cout << b + 2 << ") Commander " << newCommander.getUnitName()
+              << " (Level " << newCommander.getCommanderLevel() << ") "
+              << std::endl;
+    acceptableValues.push_back(b + 2);
+  }
+  int numberSelected =
+      getInt("Enter the number of the unit you would like to select (the "
+             "number to the left of the first ')' symbol): ",
+             acceptableValues, 1);
+  if (numberSelected == 1) {
+    // Identify target as a province
+    targetInformation[0] = 0;
+    Provinces *target targetInformation[1] =
+        participantsList[targetParticipantIndex]
+            .findProvinceIndexWithCoordinates(targetXCoordinate,
+                                              targetYCoordinate);
+    unitType = "Province ";
+    unitName = enemyProvince->getUnitName();
+    enemyLevel = enemyProvince->findProvinceLevel();
+  } else {
+    targetInformation[0] = 1; // Identify target as a commander
+    targetInformation[1] =
+        numberSelected - 2; // Have to check if this is right later
+    unitType = "Commander";
+    CommanderProfile *newCommander =
+        &allCommanders[targetParticipantIndex][targetInformation[1]];
+    unitName = newCommander->getUnitName();
+    enemyLevel = newCommander->getCommanderLevel();
+  }

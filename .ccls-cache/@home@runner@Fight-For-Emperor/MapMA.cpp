@@ -13,7 +13,7 @@ pIndex = participant->getParticipantIndex();}
 
 void MapMA::viewPlayerMap() {
   char whatToDo = ' ';
-  showMap();
+  OF.showMap();
 
   print("Welcome to the View Map action menu");
   Lists newList(8);
@@ -56,7 +56,7 @@ void MapMA::selectUnitOriginal(Provinces *selectedProvince) {
     if (prov->commandersNum() >
         0) // If there are more than 0 commnaders
     {
-      if (prov->returnCommander(0)->getParticipantIndex() == pIndex
+      if (prov->returnCommander(0)->getParticipantIndex() == pIndex)
       {
         playerUnitAction(prov);
       } else {

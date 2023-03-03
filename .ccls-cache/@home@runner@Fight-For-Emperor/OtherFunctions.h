@@ -45,6 +45,8 @@ public:
 	int findAmountOfEnemyProvinces();
 	void clearScreen ();
 	void pauseGame();
+  void printCoordinates(int xCoordinate, int yCoordinate);
+
 
 private:
 };

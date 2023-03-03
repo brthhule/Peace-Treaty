@@ -7,7 +7,7 @@
 
 #include "Provinces.h"
 #include "textFunctions.h"
-#include "coordinateFunctions.h"
+#include "Participants.h"
 #include "Lists.h"
 
 extern std::vector <std::vector <Provinces>> provincesMap;
@@ -20,10 +20,10 @@ class TrainMA
 {
 public:
 	//constructor
+	TrainMA();
 	TrainMA(Provinces *newP);
 	//other functions
 	void TrainMAFunction();
-	std::vector <Provinces*> getTrainProvince();
 private:
 	Provinces *province;
 };

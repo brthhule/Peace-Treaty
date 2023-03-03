@@ -230,11 +230,7 @@ int Provinces::getCoordinate (char identifier)
   }
 }
 
-void Provinces::printCoordinates()
-{
-	OtherFunctions OF;
-  std::cout << "(" << OF.translateCoordinate(xCoord, 'x', 'O') << ", " << OF.translateCoordinate(yCoord, 'y', 'O') << ") "
-}
+
 
 bool Provinces::deleteStatus()
 {
