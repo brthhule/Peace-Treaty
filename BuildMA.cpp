@@ -69,7 +69,7 @@ void BuildMA::upgradeBuildings() {
 	
   if (buildingLetter != 'H') {
     for (int x = 0; x < 6; x++) {
-      if (buildingLetter == buildingLetterList[x].at(0) {
+      if (buildingLetter == buildingLetterList[x].at(0)) {
         buildingNumber = x;
         x = 6;
       }
@@ -81,7 +81,7 @@ void BuildMA::upgradeBuildings() {
     if (upgradeProceed == 'Y') {
       bool upgradeSuccess = true;
       for (int x = 0; x < 5; x++) {
-        province->addResources(x, requiredResources[x] * -1);
+        province->subtractResource(x, requiredResources[x]);
         if (province->getResource(x) < 0) {
           upgradeSuccess = false;
         }
@@ -89,7 +89,7 @@ void BuildMA::upgradeBuildings() {
 
       if (upgradeSuccess == false) {
         for (int x = 0; x < 5; x++) {
-          province->addResources(x, requiredResources[x]);
+          province->addResource(x, requiredResources[x]);
         }
         println("Upgrade failed. Not enough resources. ");
       } else {

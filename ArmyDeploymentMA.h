@@ -12,6 +12,7 @@
 #include "Lists.h"
 #include "CommanderProfile.h"
 #include "Mobility.h"
+#include "AllUnits.h"
 
 class ArmyDeploymentMA
 {
@@ -40,7 +41,7 @@ private:
 	Participants *participant;
 	Provinces *capitalProvince;
 	int commandersNum;
-	OtherFunctions otherFunction;
+	OtherFunctions OF;
 };
 
 #endif

@@ -976,3 +976,47 @@ attackingProvince = attackingParticipant->getCoords(3);
     unitName = newCommander->getUnitName();
     enemyLevel = newCommander->getCommanderLevel();
   }
+
+	switch (troopIndex)
+	{
+  case 0:
+  case 1:
+  case 2:
+  case 3: {
+    int b = a + 5;
+    battleCalculationsTwo(lostCombatPower, deadTroops, b);
+    break;
+  }
+  case 4:
+    if (attackingCommander->getTroopsPresent(
+            9) > 0) {
+      if (lostCombatPower > 0) {
+        lostCombatPower -= troopsCP[a];
+        deadTroops[a]++;
+        allCommanders[currentParticipantIndex][commanderIndex].removeTroops(9,
+                                                                            1);
+        participantsList[currentParticipantIndex].playerTroopsLost[a] += 1;
+      }
+    }
+    a = -1;
+    break;
+  }
+
+
+std::vector<Provinces *> TrainMA::getTrainProvince() {
+  std::cout << "Welcome to the Player Train menu" << std::endl << std::endl;
+  getTrainBuildCoordinates(provinceXCoordinate, provinceYCoordinate);
+
+  if (provinceXCoordinate == -1 || provinceYCoordinate == -1) {
+    repeatThisOne = 'N';
+    std::cout << "Returning to Main menu... " << std::endl;
+  } else {
+    if (provincesMap[provinceXCoordinate][provinceYCoordinate]
+            .getBelongsToParticipant() == currentParticipantIndex) {
+      TrainMAFunction();
+    } else {
+      std::cout << "Invalid province elected. Please try again. " << std::endl;
+    }
+    std::cout << std::endl;
+  }
+}

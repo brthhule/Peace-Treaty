@@ -10,6 +10,7 @@
 #include "AttackMA.h"
 #include "TrainMA.h"
 #include "Lists.h"
+#include "Mobility.h"
 
 #include "Participants.h"
 #include "Provinces.h"

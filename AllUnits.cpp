@@ -18,26 +18,19 @@ AllUnits::AllUnits(int index)
 }
 
 //Accessor Functions
-int AllUnits::getResource(int resourceIndex)
-{
-	return resourcesPresent[resourceIndex];
-}
-int AllUnits::getCommanderArmyCP()
-{
-	return totalCP;
-}
+
 int AllUnits::getTroopsPresent(int troopTypeIndex)
 {
 	return troopsPresent[troopTypeIndex];
 }
-int AllUnits::getTotalCP()
+int AllUnits::getCP()
 {
-	int totalCP = 0;
+	CP = 0;
 	for (int x = 0; x < 5; x++)
 	{
-		totalCP += troopsPresent[x] * troopsCP[x];
+		CP += troopsPresent[x] * troopsCP[x];
 	}
-	return totalCP;
+	return CP;
 }
 
 int AllUnits::getParticipantIndex()
@@ -47,7 +40,7 @@ int AllUnits::getParticipantIndex()
 
 void AllUnits::printResources()
 {
-	std::cout << "Resources present in this province: " <<  std::endl;
+	std::cout << "Resources currently present in this " << isCommanderOrProvince << ": \n";
     std::cout << "\033[;34m";
 	for (int x = 0; x < 5; x++)
 	{
@@ -67,31 +60,40 @@ void AllUnits::changeUnitName(std::string name)
 }
 
 //Mutator Functions
-void AllUnits::addTroops(int troopsAdd[5])
+
+
+void AllUnits::changeResource(int index, int amount, int direction)
+{
+	if (direction == 1)
+	{
+		resourcesPresent[index] += amount;
+	}
+	else
+	{
+		resourcesPresent[index] -= amount;
+	}
+}
+void AllUnits::changeResources(std::vector<int> resources, int direction)
 {
 	for (int x = 0; x < 5; x++)
 	{
-		troopsPresent[x] += troopsAdd[x];
+		if (direction == 1)
+			resourcesPresent[x] += resources[x];
+		else
+			resourcesPresent[x] -= resources[x];
 	}
 }
-void AllUnits::addSpecificTroop(int index, int amount)
+
+
+std::vector<int> AllUnits::addVectors(std::vector<int> primeVector, std::vector<int> secondaryVector)
 {
-	troopsPresent[index] += amount;
+	for (int x = 0; x < primeVector.size(); x++)
+		primeVector[x] += secondaryVector[x];
+	return primeVector;
 }
-void AllUnits::removeTroops(int troopIndex, int troopAmount)
+std::vector<int> AllUnits::subtractVectors(std::vector<int> primeVector, std::vector<int> secondaryVector)
 {
-	troopsPresent[troopIndex] -= troopAmount;
+	for (int x = 0; x < primeVector.size(); x++)
+		primeVector[x] -= secondaryVector[x];
+	return primeVector;
 }
-
-void AllUnits::addRSS(int index, int amount)
-{
-  resourcesPresent[index] += amount;
-}
-
-void AllUnits::addInjuredTroops(int troopIndex, int troopAmount)
-{
-	troopsInjured[troopIndex] += troopAmount;
-}
-
-
-

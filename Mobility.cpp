@@ -76,7 +76,7 @@ void Mobility::moveUnitOne() {
         // If it's peaceful (moving to one of their own provinces)
         if (attackScenario == 'P') {
           selectedCommander->setLocation(moveTwo->returnCoordinatesVector());
-          attackProvince->addCommander(selectedCommander));
+          attackProvince->addCommander(selectedCommander);
         }
         // If scenario is attack
         else {

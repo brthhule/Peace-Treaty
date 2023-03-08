@@ -30,6 +30,18 @@ AttackMA::AttackMA(Provinces *defendingProvinceArg, Participants* attackingParti
     findCommander(commandersCanAttack);
 }
 
+AttackMA::AttackMA(Provinces *attackerProvinceArg,
+                   Provinces *defenderProvinceArg,
+                   Participants *attackingParticipantArg,
+                   CommanderProfile *commanderArg) {
+  attackingProvince = attackerProvinceArg;
+  defendingProvince = defenderProvinceArg;
+  attackingParticipant = attackingParticipantArg;
+  attackingCommander = commanderArg;
+	preAttack();
+	
+}
+
 void AttackMA::findCommander(std::vector <CommanderProfile *> commandersCanAttack) {
 	std::string commanderName;
   std::cout << "The following commanders can attack the target: \n";
@@ -44,113 +56,50 @@ void AttackMA::findCommander(std::vector <CommanderProfile *> commandersCanAttac
 		findCommander(commandersCanAttack);
 	}
 	attackingCommander = attackingParticipant -> getCommanderName(commanderName);
+	preAttack();
+}
+
+void AttackMA::preAttack()
+{
 	defendingParticipant = &participantsList[defendingProvince->getParticipantIndex()];
+	playerCommitAttack();
+	defendingCommanders = defendingProvince -> returnAllCommmanders();
+	oldResources = attackingCommander -> getAllResources();
 	playerCommitAttack();
 }
 
-AttackMA::AttackMA(Provinces *attackerProvinceArg,
-                   Provinces *defenderProvinceArg,
-                   Participants *attackingParticipantArg,
-                   CommanderProfile *commanderArg) {
-  attackingProvince = attackerProvinceArg;
-  defendingProvince = defenderProvinceArg;
-  attackingParticipant = attackingParticipantArg;
-  attackingCommander = commanderArg;
-  playerCommitAttack();
-}
-
 void AttackMA::playerCommitAttack() {
-  Participants *newParticipant = &participantsList[currentParticipantIndex];
-  std::vector<char> targetEnemyCommanders;
+	CommanderProfile* defendingCommander = defendingCommanders[0];
+	int attackerCP = attackingCommander -> getCP();
+	int defendingCP = defendingCommander ->getCP();
+	int attackerLostCP = 0;
+	int defenderLostCP = 0;
 
-  int oldResources[5] = {0};
-  for (int x = 0; x < 5; x++) {
-    oldResources[x] =
-        allCommanders[currentParticipantIndex][commanderIndex].getResource(x);
-  }
+	determineLostCP(attackerCP, defendingCP, attackerLostCP, defenderLostCP);
 
-  Provinces *newProvince =
-      &provincesMap[unitBeingAttackedX][unitBeingAttackedY];
-  enemyParticipantIndex = newProvince->getBelongsToParticipant();
+  std::vector<int> deadTroops = {0, 0, 0, 0, 0};
+  std::vector<int> injuredTroops = {0, 0, 0, 0, 0};
 
-  for (int a = 0; a < newProvince->commandersPresentIndex.size(); a++) {
-    commandersBeingAttackedIndices.push_back(
-        newProvince->returnCommanderIndex(a));
-  }
-  // Fix this-- add functionality to go through each commander and province
-  // garrison
-
-  Participants *enemyParticipant = &participantsList[enemyParticipantIndex];
-  if (allCommanders[enemyParticipantIndex][commandersBeingAttackedIndices[0]]
-          .getCommanderArmyCP() <
-      allCommanders[currentParticipantIndex][commanderIndex]
-          .getCommanderArmyCP()) /*if the enemy defender has less CP than
-                                    attacking player army*/
-  {
-    ;
-    std::cout << "You won! ";
-    playerCommitAttackWin(oldResources);
-  } else if (allCommanders[enemyParticipantIndex]
-                          [commandersBeingAttackedIndices[0]]
-                              .getCommanderArmyCP() >
-             allCommanders[currentParticipantIndex][commanderIndex]
-                 .getCommanderArmyCP()) /*if defending enemy has more CP than
-                                           attacking player*/
-  {                                     /*fix this-- add on to this*/
-  }
-}
-void AttackMA::playerCommitAttackWin(int oldResources[5]) {
-  Participants *newParticipant;
-  newParticipant = &participantsList[currentParticipantIndex];
-
-  for (int x = 0; x < 5; x++) {
-    // Add resources from the first element in the enemy's list of commnaders to
-    // the player's commander
-    allCommanders[currentParticipantIndex][commanderIndex].addResources(
-        x,
-        allCommanders[enemyParticipantIndex][commandersBeingAttackedIndices[0]]
-            .getResource(x));
-  }
-  int difference =
-      allCommanders[currentParticipantIndex][commanderIndex]
-          .getCommanderArmyCP() /
-      allCommanders[enemyParticipantIndex][commandersBeingAttackedIndices[0]]
-          .getCommanderArmyCP();
-  int lostCombatPower =
-      allCommanders[enemyParticipantIndex][0].getCommanderArmyCP() *
-      (1 / difference);
-  int deadTroops[5] = {0};
-  int injuredTroops[5] = {0};
-
-  for (int a = 0; lostCombatPower > 0; a++) {
-    battleCalculations(lostCombatPower, deadTroops, a);
+    calculateDeadTroops(attackingCommander, attackerLostCP, deadTroops, 0);
+		
     for (int x = 0; x < 5; x++) {
       injuredTroops[x] = deadTroops[x] / (2 * enemyDifficulty);
       deadTroops[x] -= injuredTroops[x];
     }
-    for (int x = 10; x < 15; x++) {
-      allCommanders[currentParticipantIndex][commanderIndex].addInjuredTroops(
-          x, injuredTroops[x - 10]); /*fix this?*/
-    }
-
-    std::cout << "  Results: " << std::endl << std::endl;
-    std::cout << "Resources gained: " << std::endl;
-    for (int x = 0; x < 5; x++) /*print out resources*/
-    {
-      std::cout << provinceResourcesNames[x] << " gained: "
-                << allCommanders[currentParticipantIndex][commanderIndex]
-                           .getResource(x) -
-                       oldResources[x]
-                << std::endl;
-    }
+    attackingCommander->addInjuredTroops(injuredTroops);
+		attackingCommander->removeTroops(deadTroops);
+		
+    std::cout << "  Results: \n\n";
+    printResourcesGained();
+		attackingCommander->printResources();
     casualtyReport(deadTroops, injuredTroops);
 
     char viewAllArmyStats = ' ';
     char repeatViewAllArmyStats = 'N';
     std::string viewAllArmyStatsString;
 
-    provincesMap[unitAttackingX][unitAttackingY].addCommanderProvince(
-        commanderIndex);
+    defendingProvince->addCommander(
+        attackingCommander);
 
     do {
       repeatViewAllArmyStats = 'N';
@@ -177,35 +126,51 @@ void AttackMA::playerCommitAttackWin(int oldResources[5]) {
     /*fix this-- add attack functionality, differences in CP and stuff*/
   }
 }
-void AttackMA::battleCalculations(int lostCombatPower, int deadTroops[5],
-                                  int a) {
-  Participants *attackingParticipant =
-      &participantsList[currentParticipantIndex];
 
-  switch (a) {
-  case 0:
-  case 1:
-  case 2:
-  case 3: {
-    int b = a + 5;
-    battleCalculationsTwo(lostCombatPower, deadTroops, b);
-    break;
-  }
-  case 4:
-    if (allCommanders[currentParticipantIndex][commanderIndex].getTroopsPresent(
-            9) > 0) {
-      if (lostCombatPower > 0) {
-        lostCombatPower -= troopsCP[a];
-        deadTroops[a]++;
-        allCommanders[currentParticipantIndex][commanderIndex].removeTroops(9,
-                                                                            1);
-        participantsList[currentParticipantIndex].playerTroopsLost[a] += 1;
-      }
-    }
-    a = -1;
-    break;
-  }
+/*Basically go through each unit type and subtract 16CP worth of troops and keep going (done so that lost troops are distributed evenly among the various ranks, but there is still use to training lower rank troops as meat shields (if all lower troops are used up, then losses start piling up on higher rank troops; it's key to keep a healthy proportion of troops in your army))*/
+void AttackMA::calculateDeadTroops(CommanderProfile* commander, int lostCombatPower, std::vector<int> &deadTroops, int troopIndex) {
+	
+	int troopPresent = commander -> getTroopsPresent(troopIndex);
+	int troopCP = troopsCP[troopIndex];
+
+	//If lostCP > 16
+	if (lostCombatPower - 16 > 0)
+	{
+		if (troopPresent >= 16 / troopCP)
+		{
+			deadTroops[troopIndex] += 16 / troopCP;
+			lostCombatPower -= 16;
+		}
+		else if (troopPresent > 0)
+		{
+			deadTroops[troopIndex] += troopPresent;
+			lostCombatPower -= troopPresent * troopCP;
+		}
+	}
+	//If lostCP < 16
+	else
+	{
+		//This is how many troops are needed to get down to 0
+		int troopsNeeded = 16 / (troopPresent * troopCP);
+		if (troopPresent >= troopsNeeded)
+		{
+			lostCombatPower -= troopsNeeded * troopCP;
+			deadTroops[troopIndex] += troopsNeeded;
+		}
+		else
+		{
+			deadTroops[troopIndex] += troopPresent;
+			lostCombatPower -= troopPresent * troopCP;
+		}
+	}
+	troopIndex += 1;
+	if (lostCombatPower > 0)
+	{
+		calculateDeadTroops(commander, lostCombatPower, deadTroops, troopIndex);		
+	}
 }
+
+
 void AttackMA::battleCalculationsTwo(int &lostCombatPower, int deadTroops[5],
                                      int troopIndex) /*fix this*/
 {
@@ -214,7 +179,7 @@ void AttackMA::battleCalculationsTwo(int &lostCombatPower, int deadTroops[5],
   int z = abs(4 - troopIndex);
 
   for (int b = 0; b < troopsCP[z]; b++) {
-    if (allCommanders[currentParticipantIndex][commanderIndex].getTroopsPresent(
+    if (attackingCommander.getTroopsPresent(
             5) > 0) {
       b = troopsCP[z];
     } else {
@@ -229,4 +194,43 @@ void AttackMA::battleCalculationsTwo(int &lostCombatPower, int deadTroops[5],
         b = troopsCP[z];
     }
   }
+}
+
+void AttackMA::printResourcesGained()
+{
+	std::vector<int> currentResources = attackingCommander->getAllResources();
+	std::cout << "Resources gained: \n \033[;34m";
+
+	for (int x = 0; x < 5; x++)
+	{
+		std::cout << "- " << provinceResourcesNames[x] << ": " << currentResources[x] - oldResources[x] <<  "\n\n\033[;0m";
+	}
+}
+
+void AttackMA::determineLostCP(int attackerCP, int defendingCP, int& attackerLostCP, int& defenderLostCP)
+{
+	int higherCP, lowerCP = 0;
+
+	if (attackerCP > defendingCP)
+	{
+		higherCP = attackerCP;
+		lowerCP = defendingCP;
+	}
+	else
+	{
+		higherCP = defendingCP;
+		lowerCP = attackerCP;
+	}
+
+  int difference = attackerCP / defendingCP;
+  attackerLostCP =
+     (defendingCP *
+      (1 / difference)) / 2;
+	defenderLostCP = (attackerCP * (1/difference)) / 2;
+
+	//Add functionality so that there have to be some amount of CP lost; if no CP is lost, then will just repeat forever
+	if (attackerLostCP == 0)
+		attackerLostCP = 1;
+	if (defendingCP == 0)
+		defendingCP = 1;
 }

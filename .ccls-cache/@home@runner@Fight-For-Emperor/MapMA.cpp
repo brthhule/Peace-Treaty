@@ -21,8 +21,7 @@ void MapMA::viewPlayerMap() {
 
   switch (whatToDo) {
   case 'P': {
-    std::vector<int> coords = getCoords(1);
-    Provinces *province = &provincesMap[coords[0]][coords[1]];
+    Provinces *province = participant->getYourCoords(1);
 		
     if (province->deleteStatus() != true) {
       selectUnitOriginal(province);
@@ -88,7 +87,7 @@ void MapMA::selectPlayerProvince() {
   }
   case 'T': {
     TrainMA newTrainMA(prov);
-    newTrainMA.findProvinceCoordinates();
+    newTrainMA.TrainMAFunction();
     break;
   }
   case 'M':
@@ -114,21 +113,20 @@ void MapMA::selectEnemyProvince(Provinces *newP) {
 
   switch (selectUnitEnemyProvinceChar) {
   case 'A': {
-    AttackMA newAttackMA(0, 0, xCoordinate, yCoordinate, -1, -1);
+    AttackMA newAttackMA(enemyProvince, participant);
     newAttackMA.playerAttack();
-		selectEnemyProvince(enemyProvince());
+		//selectEnemyProvince(enemyProvince());
     break;
   }
   case 'S': {
-    ScoutMA newScout(xCoordinate, yCoordinate);
+    ScoutMA newScout(participant, enemyProvince);
     newScout.selectTargetToScout();
-		selectEnemyProvince(enemyProvince());
+		//selectEnemyProvince(enemyProvince());
     break;
   }
   case 'V': {
-    if (provincesMap[xCoordinate][yCoordinate].scoutLogTurnLevel[0] != -1) {
-			OtherFunctions otherFunction;
-      if (otherFunction.getChar("View scout log for this province? (Y/N) ", "YN", 1) ==
+    if (enemyProvince->scoutLogTurnLevel[0] != -1) {
+      if (OF.getInput("View scout log for this province? (Y/N) ", {"Y", "N"}, 1).at(0) ==
           'Y') /*Ask user if they want to view scout log, get char, go to
                   scoutLogFunction if 'Y'*/
       {
@@ -146,7 +144,7 @@ void MapMA::selectEnemyProvince(Provinces *newP) {
 }
 
 void MapMA::playerUnitAction(Provinces *newP) {
-	Province *newProvince = newP;
+	Provinces *newProvince = newP;
   println("This is one of your armies ");
 	char playerUnitActionChar = listOfActions(2);
 	switch (playerUnitActionChar) {
@@ -159,8 +157,9 @@ void MapMA::playerUnitAction(Provinces *newP) {
 				x = participant->commandersNum();
 			}
 		}
-		if (participant->getCommander(commanderIndex)->hasMoved() == false) {
-			newParticipant->getCommander(commanderIndex)->moveUnit(); /*fix this*/
+		if (participant->getCommander(commanderIndex)->hasMovedQuestion() == false) {
+			Mobility newMobility ()
+			participant->getCommander(commanderIndex)->moveUnit(); /*fix this*/
 		} else
 			println("This unit has already moved this turn... returning to the View Map action menu \n");
 		playerUnitActionChar = 'M';

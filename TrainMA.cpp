@@ -10,12 +10,11 @@ void TrainMA::TrainMAFunction() {
   std::cout << "Start printing province barracks information: \033[34m\n";
   std::cout
       << "Province of kingdom "
-      << participantsList[province->()].
-             .getKingdomName()
+      << participantsList[province->getParticipantIndex()].getKingdomName()
       << " selected" << std::endl;
   std::cout << "Coordinates: ("
-            << translateCoordinate(provinceYCoordinate, 'x', 'O') << ", "
-            << translateCoordinate(provinceXCoordinate, 'y', 'O') << ") "
+            << province->translateX(false)
+            << province->translateY(false)<< ") "
             << std::endl
             << std::endl;
   std::cout << "The barracks level of this province: " << barracksLevel
@@ -35,38 +34,38 @@ void TrainMA::TrainMAFunction() {
   int trainTroop;
   std::string trainTroops;
   std::vector<std::string> trainTroopsAVOne;
-  std::vector<int> trainTroopsAVTwo;
+  std::vector<std::string> trainTroopsAVTwo;
   char repeat = 'N';
   for (int x = 1; x <= troopTier; x++) {
-    trainTroopsAVTwo.push_back(x);
+    trainTroopsAVTwo.push_back(std::to_string(x));
   }
   int maxAmountOfTroopsBarracksCanTrain =
-      newProvinceList->getBuildingLevel(5) * 2;
+      province->getBuildingLevel(5) * 2;
 
-  trainTroop = getInt("What tier troop do you want to train? (1/2/3/4/5) ",
-                      trainTroopsAVTwo, 1);
+  trainTroop = stoi(OF.getInput("What tier troop do you want to train? (1/2/3/4/5) ",
+                      trainTroopsAVTwo, 1));
   char repeatOuterDoLoop = 'N';
   if (trainTroop <= troopTier) {
     int amountOfTroops = 0;
     std::string amountOfTrops = " ";
-    std::vector<int> amountOfTroopsAV = {};
+    std::vector<std::string> amountOfTroopsAV = {};
     for (int x = 0; x <= maxAmountOfTroopsBarracksCanTrain -
-                             newProvinceList->getTroopsTrainedThisTurn();
+                             province->getTroopsTrainedThisTurn();
          x++) /*fix this*/
     {
-      amountOfTroopsAV.push_back(x);
+      amountOfTroopsAV.push_back(std::to_string(x));
     }
     do {
       repeatOuterDoLoop = 'N';
       std::cout
           << "How many tier " << troopTier
           << " troops do you want to train (troops trained in this barracks: "
-          << newProvinceList->getTroopsTrainedThisTurn() << "/"
+          << province->getTroopsTrainedThisTurn() << "/"
           << maxAmountOfTroopsBarracksCanTrain << ")? ";
-      amountOfTroops = getInt("Replacement", amountOfTroopsAV, 2);
+      amountOfTroops = stoi(OF.getInput("Replacement", amountOfTroopsAV, 2));
 
       if (amountOfTroops <= maxAmountOfTroopsBarracksCanTrain -
-                                newProvinceList->getTroopsTrainedThisTurn()) {
+                                province->getTroopsTrainedThisTurn()) {
         int requiredResources[5] = {0};
         for (int x = 0; x < 5; x++) {
           requiredResources[0] = troopCost[0] * troopTier;
@@ -92,8 +91,8 @@ void TrainMA::TrainMAFunction() {
           case 'P': {
             char trainingFail = 'S';
             for (int a = 0; a < 5; a++) {
-              newProvinceList->addRSS(a, requiredResources[a] * -1);
-              if (newProvinceList->getResource(a) < 0) {
+              province->subtractResource(a, requiredResources[a]);
+              if (province->getResource(a) < 0) {
                 trainingFail = 'F';
               }
             }
@@ -101,22 +100,21 @@ void TrainMA::TrainMAFunction() {
             if (trainingFail == 'F') {
               std::cout << "Training failed" << std::endl;
               for (int a = 0; a < 5; a++) {
-                newProvinceList->addResources(a, requiredResources[a]);
+                province->addResource(a, requiredResources[a]);
               }
             } else {
               std::cout << "Training successful" << std::endl;
-              newProvinceList->addSpecificTroop(troopTier - 1, amountOfTroops);
+              province->addSpecificTroop(troopTier - 1, amountOfTroops);
             }
             break;
           }
           case 'S': {
-            newProvinceList->printResources();
+            province->printResources();
             break;
           }
           case 'M': {
             repeatProceedWithTraining = 'N';
-            provincesMap[provinceXCoordinate][provinceYCoordinate]
-                .addTroopsTrainedThisTurn(amountOfTroops);
+            province->addTroopsTrainedThisTurn(amountOfTroops);
             std::cout << "Returning to menu... " << std::endl;
           }
           }
@@ -131,20 +129,3 @@ void TrainMA::TrainMAFunction() {
   }
 }
 
-std::vector<Provinces *> TrainMA::getTrainProvince() {
-  std::cout << "Welcome to the Player Train menu" << std::endl << std::endl;
-  getTrainBuildCoordinates(provinceXCoordinate, provinceYCoordinate);
-
-  if (provinceXCoordinate == -1 || provinceYCoordinate == -1) {
-    repeatThisOne = 'N';
-    std::cout << "Returning to Main menu... " << std::endl;
-  } else {
-    if (provincesMap[provinceXCoordinate][provinceYCoordinate]
-            .getBelongsToParticipant() == currentParticipantIndex) {
-      TrainMAFunction();
-    } else {
-      std::cout << "Invalid province elected. Please try again. " << std::endl;
-    }
-    std::cout << std::endl;
-  }
-}

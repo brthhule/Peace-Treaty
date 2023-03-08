@@ -193,19 +193,20 @@ void Provinces::updateBuildingsProduction()
 }
 
 //Commander Stuff
-void Provinces::addCommanderProvince(int commanderIndex)
+void Provinces::removeCommander(CommanderProfile *newCommander)
 {
-	commanders.push_back(commanderIndex);
-}
-void Provinces::removeCommanderProvince(int commanderIndex)
-{
-	commanders.erase(commanders.begin() + commanderIndex);
+	int index = 0;
+	for (int x = 0; x < commandersNum(); x++)
+	{
+		if (newCommander->getUnitName() == commanders[x]->getUnitName())
+		{
+			index = x;
+		}
+	}
+	commanders.erase(commanders.begin() + index);
 }
 
-int Provinces::returnCommanderIndex(int index)
-{
-	return commanders[index];
-}
+
 
 void Provinces::addTroopsTrainedThisTurn(int amount)
 {
@@ -257,4 +258,27 @@ int Provinces::translateY(bool isInput)
 	{
 		return abs(continentSize - yCoord);
 	}
+}
+
+int Provinces::getTotalCP()
+{
+	int totalCP = 0;
+	totalCP += getCP();
+	for (int x = 0; x < commandersNum(); x++)
+	{
+		totalCP += commanders[x]->getCP();
+	}
+}
+
+std::vector<int> Provinces::getTotalResources()
+{
+	std::vector<int> totalResources = resourcesPresent;
+	for (int x = 0; x < commandersNum(); x++)
+	{
+		for (int y = 0; y < 5; y++)
+		{
+			totalResources[y] += commanders[x].getResource(y);
+		}
+	}
+	return totalResources;
 }

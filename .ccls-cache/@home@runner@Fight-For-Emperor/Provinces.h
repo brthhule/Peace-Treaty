@@ -12,6 +12,7 @@ extern int provinceBuildingsProductionNumbers[6];
 extern int initialResources[5];
 extern int troopsCP[5];
 extern int turn;
+extern int continentSize;
 
 class Provinces : public AllUnits {
 public:
@@ -35,10 +36,16 @@ public:
   CommanderProfile *returnCommander(int index);
   void addCommander(CommanderProfile *newCommander){
       commanders.push_back(newCommander);};
+	void removeCommander(CommanderProfile *newCommander);
+	std::vector <CommanderProfile*> returnAllCommmanders(){
+		return commanders;
+	};
 
   int commandersNum(){return commanders.size();};
   void printBuildingStats();
   bool isCapital(){return isACapital;};
+	int getTotalCP ();
+	std::vector<int> getTotalResources();
 
   std::string getProvinceName();
   void setDeleteProvince() { deleteProvince = true; }
@@ -48,8 +55,6 @@ public:
   void updateProvinceResources();
   void setCoordinates(int xCoordinate, int yCoordinate);
   void initializeCapital(); // provinceIsACapital
-  void addCommanderProvince(int commanderIndex);
-  void removeCommanderProvince(int commanderIndex);
   void changeParticipant(int num);
   void resetTroopsTrainedThisTurn();
   void increaseBuildingLevel(int index, int amount);
@@ -102,11 +107,6 @@ private:
   int maxResources[5];
   int totalMaxResources;
   int troopsTrainedThisTurn;
-
-  int troopsPresent[5];
-  int troopsInjured[5];
-  int totalCP;
-  int totalTroops;
   int foodConsumption;
 
   int initialStats[5] = {5, 4, 3, 2, 1};

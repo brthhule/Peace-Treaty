@@ -81,11 +81,16 @@ void ArmyDeploymentMA::upgradeCommandersTwo() {
     delete tempCommander;
   }
 
+	std::vector<std::string> selectableCommanders;
+	for (int h = 0; h < indexOfCommanders.size(); h++)
+	{
+		selectableCommanders.push_back("" + std::to_string(indexOfCommanders[h]));
+	}
+	
   std::cout << std::endl;
-  OtherFunctions OF;
   int indexOfCommander =
-      OF.getInt("Enter the number of the army commander you want to upgrade: ",
-                indexOfCommanders, 1) -
+      stoi(OF.getInput("Enter the number of the army commander you want to upgrade: ",
+                selectableCommanders, 1)) -
       1;
 
   CommanderProfile *newCommander = participant->getCommander(indexOfCommander);
@@ -94,13 +99,13 @@ void ArmyDeploymentMA::upgradeCommandersTwo() {
   std::cout << std::endl;
   char failCommanderUpgrade = 'S';
   char proceedWithUpgradeQuestion =
-      otherFunction.getChar("Proceed with upgrade? ", "YN", 1);
+      OF.getInput("Proceed with upgrade? ", {"Y", "N"}, 1).at(0);
   if (proceedWithUpgradeQuestion == 'Y') {
 
     std::vector<int> commanderCosts = newCommander->getUpgradeCosts();
     for (int x = 0; x < 5; x++) {
-      capitalProvince->addResources(x, commanderCosts[x] * -1);
-      if (capitalProvince->getR(x) < 0) {
+      capitalProvince->subtractResource(x, commanderCosts[x] * -1);
+      if (capitalProvince->getResource(x) < 0) {
         failCommanderUpgrade = 'F';
       }
     }
@@ -110,7 +115,7 @@ void ArmyDeploymentMA::upgradeCommandersTwo() {
                 << "is now level " << newCommander->getLevel() << std::endl;
     } else {
       for (int x = 0; x < 5; x++) {
-        capitalProvince->addResources(x, commanderCosts[x]);
+        capitalProvince->addResource(x, commanderCosts[x]);
       }
       std::cout << "Upgrade failed. " << std::endl;
     }
@@ -128,12 +133,12 @@ CommanderProfile *ArmyDeploymentMA::selectCommander() {
 	{
 		selectCommander();
 	}
-  else {
+  else 
 		newCommander = participant->getCommanderName(commanderName);
 		
     std::cout << "Confirm selection of commander "
               << newCommander->getName() << "? (Y/N): ";
-    char confirmSelection = otherFunction.getChar("0", "YN", 2);
+    char confirmSelection = OF.getInput("0", {"Y", "N"}, 2).at(0);
     if (confirmSelection == 'Y') {
       return newCommander;
     }
@@ -179,14 +184,14 @@ void ArmyDeploymentMA::trainCommanders() {
 
   std::vector<int> trainCosts = participant->getTrainCosts();
 
-  if (otherFunction.getChar("Replacement", "YN", 2) == 'Y') {
+  if (OF.getInput("Replacement", {"Y", "N"}, 2).at(0) == 'Y') {
     if (commandersNum <
         maxAmountOfCommanders) /*if amount of commanders is less than max (not
                                   at max capacity)*/
     {
       printCosts(trainCosts, "training");
 
-      if (otherFunction.getChar("Proceed with training? (Y/N) ", "YN", 1) ==
+      if (OF.getInput("Proceed with training? (Y/N) ", {"Y", "N"}, 1).at(0) ==
           'Y') {
         proceedWithTraining(trainCosts);
       }
@@ -225,48 +230,28 @@ void ArmyDeploymentMA::proceedWithTraining(std::vector<int> trainCosts) {
 
 void ArmyDeploymentMA::deployCommanderMF() {
   displayCommanders();
-
   bool returnToMenu = false;
-  std::vector<CommanderProfile *> listOfCommandersIndex;
-  std::vector<int> amountOfCommanders = {-1};
-  OtherFunctions OF;
+  CommanderProfile *newCommander = selectCommander();
+  newCommander->printCommanderStats();
 
-  int commanderLetterIdentifier =
-      OF.getInt("Enter the number identifier of the commander you want to "
-                "deploy (enter '1' to go back to previous menu): ",
-                amountOfCommanders, 1);
-  std::cout << std::endl;
+	std::cout << "Deploy commander "
+						<< newCommander->getUnitName()
+						<< "? (Y/N) ";
+	char confirmDeploy =
+			OF.getInput("Replacement", {"Y", "N"}, 2).at(0);
 
-  if (commanderLetterIdentifier != 1) {
-    int indexToSelect = commanderLetterIdentifier - 1;
-    CommanderProfile *newCommander3 = participant->getCommander(indexToSelect);
-
-    newCommander3->printCommanderStats();
-
-    std::string confirmDeployCommanderString;
-    int commanderIndex =
-        provincesMap[capitalX][capitalY].returnCommanderIndex(indexToSelect);
-    std::cout << "Deploy commander "
-              << participant->getCommander(commanderIndex)->getUnitName()
-              << "? (Y/N) ";
-    char confirmDeployCommanderChar =
-        otherFunction.getChar("Replacement", "YN", 2);
-
-    int participantIndex = 0; /*Fix this when developing AI*/
-    int xThingyTwo = newCommander3->returnCoordinate('X');
-    int yThingyTwo = newCommander3->returnCoordinate('Y');
-    if (confirmDeployCommanderChar == 'Y') {
-      if (newCommander3->hasMovedQuestion() == false) {
-        Mobility newMobility(newCommander3, participant);
-        newMobility.moveUnitOne();
-        returnToMenu = 'Y';
-      } else {
-        std::cout << "This unit has already moved... please pick another unit "
-                  << std::endl;
-      }
+	if (confirmDeploy == 'Y') {
+		if (newCommander->hasMovedQuestion() == false) {
+			Mobility newMobility(newCommander3, participant);
+			newMobility.moveUnitOne();
+			returnToMenu = true;
+		} else {
+			std::cout << "This unit has already moved... please pick another unit "
+								<< std::endl;
+		}
     }
-  } else {
-    returnToMenu = 'Y';
+	else {
+    returnToMenu = true;
   }
   if (returnToMenu == false) {
     deployCommanderMF();

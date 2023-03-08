@@ -3,7 +3,7 @@
 Lists::Lists(int num) { identifier = num; }
 char Lists::listOfActions() // print out what actions a player can do
 {
-  std::string stringToSend = " ";
+  std::vector<std::string> vectorToSend = {};
   /*cout << "- ()" << std::endl;*/
   /*HANDLE console_color;
   console_color = GetStdHandle(STD_OUTPUT_HANDLE); //WO
@@ -14,19 +14,20 @@ char Lists::listOfActions() // print out what actions a player can do
   {
     std::cout << "- Attack this province (A) " << std::endl;
     std::cout << "- Scout this province (S) " << std::endl;
+		vectorToSend = {"A", "S"};
     break;
   }
   case 2: /*playerUnitAction*/
   {
     std::cout << "- Move this unit (P)" << std::endl;
-    stringToSend = "P";
+    vectorToSend = {"P"};
     break;
   }
   case 3: /*introduction*/
   {
     std::cout << "- Start a new conquest (S)" << std::endl;
     std::cout << "- Resume a previous conquest (R)" << std::endl;
-    stringToSend = "SR";
+    vectorToSend = {"S","R"};
     break;
   }
   case 4: /*playerAction*/
@@ -38,7 +39,7 @@ char Lists::listOfActions() // print out what actions a player can do
     std::cout << "- Deployment (D) " << std::endl;
     std::cout << "- Next Turn (N)" << std::endl;
     std::cout << "- Pause (P) " << std::endl;
-    stringToSend = "BTSUDNP";
+    vectorToSend = {"B", "T", "S", "U", "D", "N", "P"};
     break;
   }
   case 5: /*armyDeployment*/
@@ -47,33 +48,33 @@ char Lists::listOfActions() // print out what actions a player can do
     std::cout << "- Upgrade a commander (U) " << std::endl;
     std::cout << "- View army overview (V) " << std::endl;
     std::cout << "- Deploy a commander (D) " << std::endl;
-    stringToSend = "TUVDHM";
+    vectorToSend = {"T", "U", "V", "D"};
     break;
   }
   case 6: /*TrainMAFunction*/
   {
     std::cout << "- Proceed with training (P) " << std::endl;
     std::cout << "- See the amount of resources in this province (S) " << std::endl;
-    stringToSend = "PSM";
+    vectorToSend = {"P", "S"};
     break;
   }
   case 7: /*playerBuildFunction*/
   {
     std::cout << "- Upgrade a building (U) " << std::endl;
-    stringToSend = "UM";
+    vectorToSend = { "U"};
     break;
   }
   case 8: /*viewPlayerMap*/
   {
     std::cout << "- Pick a province (P) " << std::endl;
-    stringToSend = "PM";
+    vectorToSend = {"P"};
     break;
   }
   case 9: /*selectPlayerProvince*/
   {
     std::cout << "- Build infrastructure (B) " << std::endl;
     std::cout << "- Train Troops (T) " << std::endl;
-    stringToSend = "BTM";
+    vectorToSend = {"B", "T"};
     break;
   }
   case 10: /*selectEnemyProvince*/
@@ -81,7 +82,7 @@ char Lists::listOfActions() // print out what actions a player can do
     std::cout << "- Attack this province (A) " << std::endl;
     std::cout << "- Scout this province (S) " << std::endl;
     std::cout << "- View the scout log (V) " << std::endl;
-    stringToSend = "ASVM";
+    vectorToSend = {"A", "S", "V"};
     break;
   }
   case 11: /*scoutLogFunction*/
@@ -91,7 +92,7 @@ char Lists::listOfActions() // print out what actions a player can do
       std::cout << "- View the " << SLFReports << " report for this province ("
                 << toupper(SLFReports[x].at(0)) << ") " << std::endl;
     }
-    stringToSend = "GRBM";
+    vectorToSend = {"G", "R", "B"};
     break;
   }
   }
@@ -101,11 +102,12 @@ char Lists::listOfActions() // print out what actions a player can do
   std::cout << "- Return to the previous menu (M) " << std::endl;
   // SetConsoleTextAttribute(console_color, 15); //WO
   if (identifier != 3 && identifier != 4) {
-    stringToSend += "MH";
+    vectorToSend.push_back("M");
+		vectorToSend.push_back("H");
   }
-  return getChar("Enter the letter of the action you want to complete (enter "
+  return OF.getInput("Enter the letter of the action you want to complete (enter "
                  "'H' to see help to know what to do): ",
-                 stringToSend, 1);
+                 vectorToSend , 1).at(0);
 }
 
 void Lists::listOfHelp() {

@@ -23,12 +23,14 @@ public:
 	AttackMA(Provinces *defendingProvinceArg, Participants* attackingParticipantArg);
 	AttackMA(Provinces* attackerProvinceArg, Provinces* defenderProvinceArg, Participants * attackingParticipantArg, CommanderProfile* commanderArg);
 	void findCommander (std::vector<CommanderProfile*> commandersCanAttack);
+	void printResourcesGained();
+	void determineLostCP(int attackerCP, int defendingCP, int& attackerLostCP, int& defenderLostCP);
 
 	//Function stuff
+	void preAttack();
 	void playerAttack();
 	void playerCommitAttack();
-	void playerCommitAttackWin(int oldResources[5]);
-	void battleCalculations(int lostCombatPower, int deadTroops[5], int a);
+	void calculateDeadTroops(CommanderProfile* commander, int lostCombatPower, std::vector<int> &deadTroops, int troopIndex);
 	void battleCalculationsTwo(int& lostCombatPower, int deadTroops[5], int troopIndex);
 
 
@@ -39,6 +41,8 @@ private:
 	Participants * defendingParticipant;//enemy
 	CommanderProfile * attackingCommander;
 	std::vector <CommanderProfile*> defendingCommanders;
+	bool defenseCanRetreat;
+	std::vector<int> oldResources;
 };
 
 #endif

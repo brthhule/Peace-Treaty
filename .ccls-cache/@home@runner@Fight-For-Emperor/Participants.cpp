@@ -19,9 +19,9 @@ void Participants::createCapital()
 	int xCoord = getRandomCoordinate();
 	int yCoord = getRandomCoordinate();
 	Provinces *newProvince = &provincesMap[xCoord][yCoord];
-	if (newProvince->getBelongsToParticipant() == -1)
+	if (newProvince->getParticipantIndex() == -1)
 	{
-		newProvince->changeBelongsToParticipant(p);
+		newProvince->changeParticipant(participantIndex);
 		addProvince(newProvince);
 		setCapital(newProvince);
 	}
@@ -72,7 +72,7 @@ void Participants::initialCapRSS()
   Provinces *newProvince = provincesList[capitalIndex]; 
   for (int resourceIndex = 0; resourceIndex < 5; resourceIndex++)
   {
-    newProvince->addResources(resourceIndex, initialResources[resourceIndex]);
+    newProvince->addResource(resourceIndex, initialResources[resourceIndex]);
   }
 }
 //Mutators

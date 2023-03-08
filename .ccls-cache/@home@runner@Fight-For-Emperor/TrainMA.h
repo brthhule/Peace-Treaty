@@ -9,6 +9,7 @@
 #include "textFunctions.h"
 #include "Participants.h"
 #include "Lists.h"
+#include "OtherFunctions.h"
 
 extern std::vector <std::vector <Provinces>> provincesMap;
 extern std::vector <Participants> participantsList;
@@ -26,6 +27,7 @@ public:
 	void TrainMAFunction();
 private:
 	Provinces *province;
+	OtherFunctions OF;
 };
 
 #endif

@@ -35,7 +35,7 @@ CommanderProfile::CommanderProfile(int level, std::string name) {
     commanderArmyStats[x + 10] = &troopsInjured[x];
   }
   commanderArmyStats[15] = &totalTroops;
-  commanderArmyStats[16] = &totalCP;
+  commanderArmyStats[16] = &CP;
   commanderArmyStats[17] = &commanderLevel;
   commanderArmyStats[18] = &maxTroops;
   commanderArmyStats[19] = &foodConsumption;

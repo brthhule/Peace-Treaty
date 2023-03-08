@@ -114,14 +114,14 @@ void resumeGame() /*download data from previous game fix this*/
 void startGame(std::string kingdomName)
 {
 	OtherFunctions OF;
-	continentSize = OF.getInt("What continent size will you descend upon? (5, 10, 15) ", { 5, 10, 15 }, 1);
+	continentSize = stoi(OF.getInput("What continent size will you descend upon? (5, 10, 15) ", { "5", "10", "15" }, 1));
 	std::cout << std::endl;
 
-	pNum = OF.getInt("How many kingdoms will you fight? (1, 2, 3) ", { 1, 2, 3 }, 1) + 1;
+	pNum = stoi(OF.getInput("How many kingdoms will you fight? (1, 2, 3) ", { "1", "2", "3" }, 1)) + 1;
 
 	totalMaxCommanders = continentSize;
 	
-	enemyDifficulty = OF.getInt("What gameplay difficulty do you want (1-3): ", { 1,2,3 }, 1); 
+	enemyDifficulty = stoi(OF.getInput("What gameplay difficulty do you want (1-3): ", { "1","2","3" }, 1)); 
 	std::cout << "Gameplay difficulty " << enemyDifficulty << " selected. \n\n";
 
 	generateNewContinent(kingdomName);
@@ -130,7 +130,7 @@ void generateNewContinent(std::string kingdomName)
 {
 	OtherFunctions OF;
 	OF.createMap();
-	int players = OF.getInt("How many human players are there (including yourself, up to 10)", {1,2,3,4,5,6,7,8,9,10}, 1);
+	int players = stoi(OF.getInput("How many human players are there (including yourself, up to 10)", {"1","2","3","4","5","6","7","8","9","10"}, 1));
 	for (int x = 0; x <= pNum; x++)
 	{
 		Participants newParticipant;
@@ -140,20 +140,20 @@ void generateNewContinent(std::string kingdomName)
 		else
 			newParticipant.createAsPlayer (false);
 		
-		participantsList.push_back(&newParticipant);
+		participantsList.push_back(newParticipant);
 	}
 }
 void gamePlay()
 {
 	std::string literallyAnything = " ";
 	OtherFunctions OF;
-	OF.getInt ("Enter '0' to proceed (screen will clear): \033[31m", {0}, 1);
+	stoi(OF.getInput ("Enter '0' to proceed (screen will clear): \033[31m", {"0"}, 1));
 	std::cout << "\033[0m";
-	while (participantsList[0]->isAlive())
+	while (participantsList[0].isAlive())
 	{
 		for (int x = 0; x < pNum; x++)
 		{
-			PlayerAction newPlayerAction (participantsList[x]);
+			PlayerAction newPlayerAction (&participantsList[x]);
 			int nextPlayer = newPlayerAction.initialDecision();
 			if (nextPlayer == -2)
 			{
@@ -176,11 +176,11 @@ void endScreen()
 {
 	for (int x = 0; x <= pNum; x++)
 	{
-		if (participantsList[x]->isAlive())
-			std::cout << "Congratulatios to kingdom " << participantsList[x]->getKingdomName() << " for winning. You have successfully conquered your enemies and now reign as the Emperor! \n";
+		if (participantsList[x].isAlive())
+			std::cout << "Congratulatios to kingdom " << participantsList[x].getKingdomName() << " for winning. You have successfully conquered your enemies and now reign as the Emperor! \n";
 	}
 	OtherFunctions otherFunction;
-	char playAgain = otherFunction.getChar("Play again? (Y/N) ", "YN", 1);
+	char playAgain = otherFunction.getInput("Play again? (Y/N) ", {"Y", "N"}, 1).at(0);
 	if (playAgain == 'Y')
 	{
 			main();

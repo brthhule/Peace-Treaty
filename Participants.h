@@ -16,6 +16,7 @@
 #include <chrono>
 #include <thread>
 #include <stdlib.h>
+#include "AllUnits.h"
 
 extern int provinceBuildingsProductionNumbers[6];
 extern int continentSize;
