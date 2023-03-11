@@ -25,6 +25,7 @@
 #include "textFunctions.h"
 #include "Lists.h"
 
+
 //Main Actions
 #include "BuildMA.h"
 #include "ArmyDeploymentMA.h"
@@ -40,6 +41,11 @@ void startGame(std::string kingdomName);
 void generateNewContinent(std::string kingdomName);
 void gamePlay();
 void endScreen();
+void updateProvinceResources();
+void createMap();
+void pauseGame();
+
+
 
 
 void AITurn();
@@ -129,7 +135,7 @@ void startGame(std::string kingdomName)
 void generateNewContinent(std::string kingdomName)
 {
 	OtherFunctions OF;
-	OF.createMap();
+	createMap();
 	int players = stoi(OF.getInput("How many human players are there (including yourself, up to 10)", {"1","2","3","4","5","6","7","8","9","10"}, 1));
 	for (int x = 0; x <= pNum; x++)
 	{
@@ -185,4 +191,39 @@ void endScreen()
 	{
 			main();
 	}
+}
+
+void updateprovinceResources() {
+  for (int x = 0; x < continentSize; x++) {
+    for (int y = 0; y < continentSize; y++) {
+      provincesMap[x][y].updateBuildingsProduction();
+      provincesMap[x][y].updateProvinceResources();
+    }
+  }
+}
+
+void createMap() {
+  /*Basically create the map-- make each province an object of Provinces*/
+  for (int x = 0; x < continentSize; x++) {
+    std::vector<Provinces> vectorThingy;
+    provincesMap.push_back(vectorThingy);
+    for (int y = 0; y < continentSize; y++) {
+      Provinces newProvince(x, y, -1);
+      provincesMap[x].push_back(newProvince);
+    }
+  }
+}
+
+void pauseGame() {
+  std::string gameCode;
+  gameCode += continentSize;
+
+  for (int x = 0; x < continentSize; x++) {
+    for (int y = 0; y < continentSize; y++) {
+      gameCode += provincesMap[x][y].getParticipantIndex();
+    }
+  }
+  std::cout << "Game ended... \nHere is your game code (Copy this code and "
+               "paste it when using the 'Resume Game' functionality): "
+            << gameCode << "\n\n";
 }

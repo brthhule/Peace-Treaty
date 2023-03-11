@@ -1,7 +1,6 @@
 #include "ScoutMA.h"
-
 #define print(x) std::cout << x;
-#define println(x) std::cout << x << std::endl;
+#define println(x) std::cout << x << endl;
 
 extern std::vector<std::vector<Provinces>> provincesMap;
 extern std::vector<Participants> participantsList;
@@ -13,6 +12,8 @@ extern int turn;
 ScoutMA::ScoutMA(Participants *newParticipant, Provinces *newProvince) {
   participant = newParticipant;
   yourProvince = newProvince;
+	provincesCanScout = {};
+	commandersCanScout = {};
 }
 
 void ScoutMA::selectTargetToScout() /*So much to fix here... truly so much....
@@ -25,44 +26,18 @@ void ScoutMA::selectTargetToScout() /*So much to fix here... truly so much....
 		selectTargetToScout();
 	}
 	
-  std::cout << "Province " << targetProvince->getUnitName() << " selected " << std::endl;
-  std::cout << "You can only scout this unit if one of your provinces or commanders is next to it... "
-            << std::endl;
+  std::cout << "Province " << targetProvince->getUnitName() << " selected \n";
+  std::cout << "You can only scout this unit if one of your provinces or commanders is next to it... \n";
 
-  for (int a = -1; a <= 1;
-       a++)
-  {
-    for (int b = -1; b <= 1; b++) {
-      if (/*X coordinates*/ targetProvince->getCoordinate('X') + a >= 0 &&
-          targetXCoordinate + a < continentSize &&
-          /*Y coordinates*/ targetYCoordinate + b >= 0 &&
-          targetYCoordinate + b < continentSize) {
-        if (provincesMap[targetXCoordinate + a][targetYCoordinate + b]
-                .getBelongsToParticipant() == currentParticipantIndex) {
-          provincesCanSelectX.push_back(targetXCoordinate + a);
-          provincesCanSelectY.push_back(targetYCoordinate + b);
-        }
-
-        for (int x = 0; x < attackingParticipant->howManyCommanders(); x++) {
-          if (allCommanders[currentParticipantIndex][x].getCoordinate('X') ==
-                  targetXCoordinate + a &&
-              allCommanders[currentParticipantIndex][x].getCoordinate('Y') ==
-                  targetXCoordinate + b) {
-            commandersCanSelect.push_back(x);
-          }
-        }
-      }
-    }
-  }
-
+	//Check nearby provinces
+	getCanScout();
   // If there are commanders or provinces that can scout the target
-  if (provincesCanSelectX.size() > 0 || commandersCanSelect.size() > 0) {
+  if (provincesCanScout.size() > 0 || commandersCanScout.size() > 0) {
     playerScoutStepTwo();
   } else {
-    std::cout << "No player provinces or armies are around the target... "
-              << std::endl;
+    std::cout << "No player provinces or armies are around the target... \n";
   }
-  std::cout << "Returning to previous menu" << std::endl << std::endl;
+  std::cout << "Returning to previous menu\n\n";
 } /*fix this-- needs to be reviewed*/
 
 void ScoutMA::playerScoutStepTwo() // Finish this later
@@ -71,16 +46,15 @@ void ScoutMA::playerScoutStepTwo() // Finish this later
   std::vector<int> unitsCanScoutWith;
 
   std::cout << "You have "
-            << provincesCanSelectX.size() + commandersCanSelect.size()
-            << " provinces and armies next to the target. Below is a list of "
+            << provincesCanScout.size()
+            << " provinces and " << commandersCanScout.size() << "armies next to the target. Below is a list of "
                "units that can scout the target.";
   std::cout << " Please note that the higher the level of the scouting unit, "
                "the more accurate the results of the scout report are (The "
                "level of the target unit is "
-            << enemyLevel << "). " << std::endl
-            << std::endl;
+            << enemyLevel << "). \n\n";
 
-  std::vector<int> unitLevels = showUnitsCanScout();
+  int unitlevel = selectUnitToScout();
   int cutOffThingy = unitLevels[0];
   unitLevels.erase(unitLevels.begin());
 
@@ -99,9 +73,9 @@ void ScoutMA::playerScoutStepTwo() // Finish this later
   int unitAccuracyLevel = 0;
 
   std::cout << "Proceed scout action with unit at ("
-            << translateCoordinate(xCoordinateThingy, 'x', 'O') << ", "
-            << translateCoordinate(yCoordinateThingy, 'y', 'O') << ")? (Y/N) ";
-  char proceedWithScoutChar = getChar(" ", "YN", 2);
+            << OF.translateCoordinate(xCoordinateThingy, 'x', 'O') << ", "
+            << OF.translateCoordinate(yCoordinateThingy, 'y', 'O') << ")? (Y/N) ";
+  char proceedWithScoutChar = OF.getInput(" ", {"Y", "N"}, 2).at(0);
 
   if (proceedWithScoutChar == 'Y') {
     int accuracy = 50;
@@ -135,44 +109,76 @@ void ScoutMA::playerScoutStepTwo() // Finish this later
     }
   }
 }
-std::vector<int> ScoutMA::showUnitsCanScout() {
-  Participants *attackingParticipant =
-      &participantsList[currentParticipantIndex];
 
-  std::vector<int> unitLevels = {0};
-  std::cout << "\033[;34m";
-  std::vector<CommanderProfile *> commandersCanSelect;
-  char commanderThingy = ' ';
-  int provinceIndex = 0;
-  int commanderIndex = 0;
+void ScoutMA::getCanScout()
+{
+	int targetX = targetProvince->getCoordinate('X');
+	int targetY = targetProvince->getCoordinate('Y');
+	
+	for (int a = -1; a <= 1;
+       a++)
+  {
+    for (int b = -1; b <= 1; b++) {
+			
+      if (/*X coordinates*/ targetX + a >= 0 &&
+          targetX + a < continentSize &&
+          /*Y coordinates*/ targetY + b >= 0 &&
+          targetY + b < continentSize) {
+				
+        if (provincesMap[targetX + a][targetY + b].getParticipantIndex() == currentParticipantIndex) {
+					provincesCanScout.push_back(&provincesMap[targetX + a][targetY+ b]);
+        }
+
+        for (int x = 0; x < participant->commandersNum(); x++) {
+					CommanderProfile* newCommander = participant->getCommander(x);
+					std::vector<int> newVector = {targetX + a, targetY + b};
+          if (newCommander->returnCoordinates() == newVector)
+			{
+            commandersCanScout.push_back(newCommander);
+          }
+        }
+      }
+    }
+  }
+}
+
+int ScoutMA::selectUnitToScout() {
+	int unitLevel = 0;
+	std::cout << "\033[;34m";
+ 
   // For all the provinces in the std::vector
 
   std::cout << "Provinces that can scout: " << std::endl;
-  for (int a = 0; a < provincesCanSelectX.size(); a++) {
-    unitLevels.push_back(
-        provincesMap[provincesCanSelectX[a]][provincesCanSelectY[a]]
-            .findProvinceLevel());
-    std::cout << a + 1 << ": ("
-              << translateCoordinate(provincesCanSelectX[a], 'x', 'O') << ", "
-              << translateCoordinate(provincesCanSelectY[a], 'y', 'O') << "); ";
-    std::cout << "Unit level: " << unitLevels.back();
+  for (Provinces* province: provincesCanScout) {
+    std::cout<< province->getUnitName() << "; " << province->printOutputCoordinates() << "; Level: " << province->returnLevel() << std::endl;
   }
-  int cutOffProvinceCommanderThingy = (int)unitLevels.size() - 1;
-  unitLevels[0] = cutOffProvinceCommanderThingy;
 
   std::cout << "Commanders that can scout: " << std::endl;
-  for (int a = 0; a < commandersCanSelect.size(); a++) {
-    unitLevels.push_back(commandersCanSelect[a]->getCommanderLevel());
-    std::cout << a + a << ": ("
-              << translateCoordinate(commandersCanSelect[a]->getCoordinate('X'),
-                                     'x', 'O')
-              << ", "
-              << translateCoordinate(commandersCanSelect[a]->getCoordinate('Y'),
-                                     'y', 'O')
-              << "); ";
-    std::cout << "Unit level: " << unitLevels.back();
+  for (CommanderProfile* commander: commandersCanScout) {
+     std::cout<< commander->getUnitName() << "; " << commander->printOutputCoordinates() << "; Level: " << commander->returnLevel() << std::endl;
   }
-  std::cout << std::endl;
-  std::cout << "\033[;0m";
-  return unitLevels;
+  std::cout << "\n\033[;0m";
+
+	std::string unitName = " ";
+	print("Enter the name of the province/commander you wish to select to scout: ");
+	getline(std::cin, unitName);
+
+	if (checkHasUnit(unitName) == false)
+	{
+		std::cout << "Invalid name entered; please try again \n";
+		selectUnitToScout();
+	}
+	println(unitName + " selected...");
+  return unitLevel;
+}
+
+bool ScoutMA::checkHasUnit (std::string unitName)
+{
+	for (Provinces* province: provincesCanScout)
+		if (unitName == province->getUnitName())
+			return true;
+	for (CommanderProfile* commander: commandersCanScout)
+		if (unitName == commander -> getUnitName())
+			return true;
+	return false;
 }

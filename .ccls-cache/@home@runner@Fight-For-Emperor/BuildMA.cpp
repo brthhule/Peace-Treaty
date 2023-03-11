@@ -61,7 +61,7 @@ void BuildMA::playerBuildFunction() {
 }
 
 void BuildMA::upgradeBuildings() {
-  int requiredResources[5] = {0};
+  std::vector<int> requiredResources = {0, 0, 0, 0, 0};
   int buildingNumber = 0;
 	std::vector<std::string> buildingLetterList = {"F", "L", "Q", "M", "C", "B", "H"};
 
@@ -80,17 +80,15 @@ void BuildMA::upgradeBuildings() {
 
     if (upgradeProceed == 'Y') {
       bool upgradeSuccess = true;
-      for (int x = 0; x < 5; x++) {
-        province->subtractResource(x, requiredResources[x]);
-        if (province->getResource(x) < 0) {
-          upgradeSuccess = false;
-        }
-      }
+			
+			province->subtractResources(requiredResources);
+			for (int g: province->getAllResources())
+				if (g < 0)
+					upgradeSuccess = false;
+
 
       if (upgradeSuccess == false) {
-        for (int x = 0; x < 5; x++) {
-          province->addResource(x, requiredResources[x]);
-        }
+        province->addResources(requiredResources);
         println("Upgrade failed. Not enough resources. ");
       } else {
         println("Upgrade successful.\n");
@@ -109,7 +107,7 @@ void BuildMA::upgradeBuildings() {
   std::cout << "Returning to Build Infrastructure action menu. " << std::endl;
 }
 
-void BuildMA::printInformation(int buildingNumber, int requiredResources[5]) {
+void BuildMA::printInformation(int buildingNumber, std::vector<int> requiredResources) {
  std::cout << "---------- Start printing information----------\n\n\033[34m";
   println(buildingNames[buildingNumber] + " selected \n");
   println("The following is the cost of the upgrade: ");

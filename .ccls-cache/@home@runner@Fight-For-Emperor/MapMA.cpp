@@ -13,7 +13,7 @@ pIndex = participant->getParticipantIndex();}
 
 void MapMA::viewPlayerMap() {
   char whatToDo = ' ';
-  OF.showMap();
+  participant->showMap();
 
   print("Welcome to the View Map action menu");
   Lists newList(8);

@@ -77,22 +77,22 @@ void AttackMA::playerCommitAttack() {
 
 	determineLostCP(attackerCP, defendingCP, attackerLostCP, defenderLostCP);
 
-  std::vector<int> deadTroops = {0, 0, 0, 0, 0};
+  std::vector<int> troopsLost = {0, 0, 0, 0, 0};
   std::vector<int> injuredTroops = {0, 0, 0, 0, 0};
 
-    calculateDeadTroops(attackingCommander, attackerLostCP, deadTroops, 0);
+    calculateTroopsLost(attackingCommander, attackerLostCP, troopsLost, 0);
 		
     for (int x = 0; x < 5; x++) {
-      injuredTroops[x] = deadTroops[x] / (2 * enemyDifficulty);
-      deadTroops[x] -= injuredTroops[x];
+      injuredTroops[x] = troopsLost[x] / (2 * enemyDifficulty);
+      troopsLost[x] -= injuredTroops[x];
     }
     attackingCommander->addInjuredTroops(injuredTroops);
-		attackingCommander->removeTroops(deadTroops);
+		attackingCommander->removeTroops(troopsLost);
 		
     std::cout << "  Results: \n\n";
     printResourcesGained();
 		attackingCommander->printResources();
-    casualtyReport(deadTroops, injuredTroops);
+    casualtyReport(troopsLost, injuredTroops);
 
     char viewAllArmyStats = ' ';
     char repeatViewAllArmyStats = 'N';
@@ -128,7 +128,7 @@ void AttackMA::playerCommitAttack() {
 }
 
 /*Basically go through each unit type and subtract 16CP worth of troops and keep going (done so that lost troops are distributed evenly among the various ranks, but there is still use to training lower rank troops as meat shields (if all lower troops are used up, then losses start piling up on higher rank troops; it's key to keep a healthy proportion of troops in your army))*/
-void AttackMA::calculateDeadTroops(CommanderProfile* commander, int lostCombatPower, std::vector<int> &deadTroops, int troopIndex) {
+void AttackMA::calculateTroopsLost(CommanderProfile* commander, int lostCombatPower, std::vector<int> &troopsLost, int troopIndex) {
 	
 	int troopPresent = commander -> getTroopsPresent(troopIndex);
 	int troopCP = troopsCP[troopIndex];
@@ -138,12 +138,12 @@ void AttackMA::calculateDeadTroops(CommanderProfile* commander, int lostCombatPo
 	{
 		if (troopPresent >= 16 / troopCP)
 		{
-			deadTroops[troopIndex] += 16 / troopCP;
+			troopsLost[troopIndex] += 16 / troopCP;
 			lostCombatPower -= 16;
 		}
 		else if (troopPresent > 0)
 		{
-			deadTroops[troopIndex] += troopPresent;
+			troopsLost[troopIndex] += troopPresent;
 			lostCombatPower -= troopPresent * troopCP;
 		}
 	}
@@ -155,23 +155,23 @@ void AttackMA::calculateDeadTroops(CommanderProfile* commander, int lostCombatPo
 		if (troopPresent >= troopsNeeded)
 		{
 			lostCombatPower -= troopsNeeded * troopCP;
-			deadTroops[troopIndex] += troopsNeeded;
+			troopsLost[troopIndex] += troopsNeeded;
 		}
 		else
 		{
-			deadTroops[troopIndex] += troopPresent;
+			troopsLost[troopIndex] += troopPresent;
 			lostCombatPower -= troopPresent * troopCP;
 		}
 	}
 	troopIndex += 1;
 	if (lostCombatPower > 0)
 	{
-		calculateDeadTroops(commander, lostCombatPower, deadTroops, troopIndex);		
+		calculateTroopsLost(commander, lostCombatPower, troopsLost, troopIndex);		
 	}
 }
 
 
-void AttackMA::battleCalculationsTwo(int &lostCombatPower, int deadTroops[5],
+void AttackMA::battleCalculationsTwo(int &lostCombatPower, int troopsLost[5],
                                      int troopIndex) /*fix this*/
 {
   Participants *playerParticipant = &participantsList[currentParticipantIndex];
@@ -185,7 +185,7 @@ void AttackMA::battleCalculationsTwo(int &lostCombatPower, int deadTroops[5],
     } else {
       if (lostCombatPower > 0) {
         lostCombatPower -= troopsCP[troopIndex];
-        deadTroops[troopIndex]++;
+        troopsLost[troopIndex]++;
         allCommanders[currentParticipantIndex][commanderIndex].removeTroops(
             troopIndex, 1);
         participantsList[currentParticipantIndex]

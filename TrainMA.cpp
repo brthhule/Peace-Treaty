@@ -1,6 +1,9 @@
 #include "TrainMA.h"
 
-TrainMA::TrainMA();
+TrainMA::TrainMA()
+{
+	
+}
 TrainMA::TrainMA(Provinces *newP) { province = newP; }
 
 void TrainMA::TrainMAFunction() {
@@ -66,7 +69,7 @@ void TrainMA::TrainMAFunction() {
 
       if (amountOfTroops <= maxAmountOfTroopsBarracksCanTrain -
                                 province->getTroopsTrainedThisTurn()) {
-        int requiredResources[5] = {0};
+        std::vector<int> requiredResources = {0, 0, 0, 0, 0};
         for (int x = 0; x < 5; x++) {
           requiredResources[0] = troopCost[0] * troopTier;
           requiredResources[0] *= amountOfTroops;
@@ -89,18 +92,12 @@ void TrainMA::TrainMAFunction() {
 
           switch (proceedWithTraining) {
           case 'P': {
-            char trainingFail = 'S';
-            for (int a = 0; a < 5; a++) {
-              province->subtractResource(a, requiredResources[a]);
-              if (province->getResource(a) < 0) {
-                trainingFail = 'F';
-              }
-            }
+            bool trainingIsSuccess = province -> subtractCheckResources(requiredResources);
 
-            if (trainingFail == 'F') {
+            if (trainingIsSuccess == false) {
               std::cout << "Training failed" << std::endl;
               for (int a = 0; a < 5; a++) {
-                province->addResource(a, requiredResources[a]);
+                province->addResources(requiredResources);
               }
             } else {
               std::cout << "Training successful" << std::endl;

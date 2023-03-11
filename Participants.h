@@ -37,6 +37,7 @@ public:
 	Provinces* getCapital();
 	void setCapital(Provinces *newProvince);
 	std::string getNewName ();
+	void showMap();
 
 	//Commander stuff
 	int commandersNum();
@@ -74,6 +75,16 @@ public:
 	std::vector<int> calculatePlayerValues (int decision);
 	void viewAllStatsFunction();
 	void viewStats();
+	int calculateTotalUnits ();
+	std::vector<int> calculateEachUnit();
+	int calculateTotalResources();
+	std::vector<int> calculateEachResource();
+	int calculateTotalTroopsLost();
+	std::vector<int> calculateEachTroopLost();
+
+	int calculateTotals (int option);
+	std::vector<int> calculateEach(int option);
+
 
 	//Coordinate stuff
 	
@@ -99,8 +110,8 @@ std::vector <int> trainCosts = {5, 4, 3, 2, 1};
 	int participantIndex;
 
 	std::vector <int> troopsLost = { 0,0,0,0,0 };
-	std::vector <int> totalUnits = { 0,0,0,0,0 }; /*0) Militia, 1) Guards, 2) Cavalry, 3) 
-Knights, 4) Paladins*/
+	std::vector<std::vector<Provinces>> scoutMap;
+	OtherFunctions OF;
 };
 
 #endif

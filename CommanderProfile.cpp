@@ -121,18 +121,7 @@ std::vector<int> CommanderProfile::getUpgradeCosts() {
   return updatedCosts;
 }
 
-int CommanderProfile::returnCoordinate(char which)
-{
-	switch (which)
-	{
-		case 'X':
-			return xCoord;
-			break;
-		case 'Y':
-			return yCoord;
-			break;
-	}
-}
+
 
 void CommanderProfile::printCosts(std::vector <int> costs)
 {

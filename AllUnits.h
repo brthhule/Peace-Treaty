@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include "OtherFunctions.h"
 
 /*int resourcesPresent[5];
 	int troopsPresent[5];
@@ -15,7 +16,7 @@ extern int provinceBuildingsProductionNumbers[6];
 extern std::string provinceResourcesNames[5];
 extern std::string buildingNames[6];
 extern std::string troopNames[5];
-extern int currentParticipantIndex;
+extern int continentSize;
 
 class AllUnits
 {
@@ -30,22 +31,30 @@ public:
 
 	//Troops Functions
 	int getTroopsPresent(int troopTypeIndex);
-	void addSpecificTroop(int index, int amount){troopsPresent[index] += amount;}
-	void addTroops(int troopsAdd[5]){for (int x = 0; x < 5; x++)
-		troopsPresent[x] += troopsAdd[x];}
-	void removeSpecificTroop(int troopIndex, int troopAmount){troopsPresent[troopIndex] -= troopAmount;}
-	void removeTroops(std::vector<int>troops){
-		troopsPresent = subtractVectors(troopsPresent, troops);
-	}
-	void addSpecificInjuredTroop(int troopIndex, int troopAmount){troopsInjured[troopIndex] += troopAmount;}
-	void addInjuredTroops(std::vector<int> troops){troopsInjured = addVectors(troopsInjured, troops);}
+	std::vector <int> getAllTroopsPresent();
+	void addSpecificTroop(int index, int amount);
+	void addTroops(int troopsAdd[5]);
+	void removeSpecificTroop(int troopIndex, int troopAmount);
+	void removeTroops(std::vector<int>troops);
+	void addSpecificInjuredTroop(int troopIndex, int amount);
+	void addInjuredTroops(std::vector<int> troops);
+	int returnLevel();
+	int returnCoordinate(char which);
+	void addSpecificTroopLost(int index, int amount);
+	void addTroopsLost(std::vector<int> troopsLostVector);
+	std::vector<int> getTroopsLost();
+	std::vector<int> returnCoordinates();
 
 
+	void printOutputCoordinates();
+	int translateX (bool isInput);
+	int translateY (bool isInput);
   //resources
 	void changeResource(int index, int amount, int direction);
-	void addResource(int index, int amount){resourcesPresent[index] += amount;}
-	void subtractResource (int index, int amount)
-{resourcesPresent[index] -= amount;}
+	void addSpecificResource(int index, int amount);
+	void addResources(std::vector<int> resourcesVector);
+	void subtractSpecificResource (int index, int amount);
+	void subtractResources(std::vector<int> resourcesVector);
 	void changeResources(std::vector<int> resources, int direction);
 	int getResource(int resourceIndex){return resourcesPresent[resourceIndex];}
 	std::vector <int> getAllResources () {return resourcesPresent;}
@@ -53,12 +62,11 @@ public:
 
 	void changeUnitName(std::string name);
   std::string getUnitName();
-	std::vector<int> addVectors(std::vector<int> primeVector, std::vector<int> secondaryVector);
-	std::vector<int> subtractVectors(std::vector<int> primeVector, std::vector<int> secondaryVector);
 protected:
 	std::vector<int> resourcesPresent;
 	std::vector<int> troopsPresent;
 	std::vector<int> troopsInjured;
+	std::vector<int> troopsLost;
 	int CP;
 	int totalTroops;
 	int foodConsumption;
@@ -72,6 +80,8 @@ protected:
 	int participantIndex;
 	std::string unitName;
 	std::string isCommanderOrProvince;
+	int unitLevel;
+	OtherFunctions OF;
 };
 
 #endif

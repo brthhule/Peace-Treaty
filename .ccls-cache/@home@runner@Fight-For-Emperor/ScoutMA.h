@@ -16,20 +16,23 @@ public:
   // Functions
   void selectTargetToScout();
   void playerScoutStepTwo();
-  std::vector<int> showUnitsCanScout();
+  int selectUnitToScout();
   void scoutLogCalculationsProvince(int accuracy);
+	void getCanScout();
+	bool checkHasUnit (std::string unitName);
 
 private:
-  std::vector<int> commandersCanSelect;
-  std::vector<Provinces *> provincesCanSelect();
+  std::vector<CommanderProfile*> commandersCanScout;
+  std::vector<Provinces *> provincesCanScout;
   std::vector<int> unitLevels;
 
   int targetInformation[2]; //[0] is for whether it is a province (1) or
                             //commander (2); [1] is the index of the unit in its
                             //Participants object
-  int targetParticipantIndex;
   int enemyLevel;
   Participants *participant;
+	Participants* targetParticipant;
+
   Provinces *yourProvince;
 	Provinces* targetProvince;
 	OtherFunctions OF;

@@ -2,32 +2,8 @@
 //constructors
 Provinces::Provinces()
 {
-	for (int x = 0; sizeof(provinceScoutReport); x++)
-	{
-		provinceScoutReport[x] = 0;
-	}
-	for (int x = 0; x < 5; x++)
-	{
-		provinceStats[x] = &resourcesPresent[x];
-		provinceStats[x + 6] = &troopsPresent[x];
-		provinceStats[x + 18] = &buildingLevels[x];
-	}
-	provinceStats[5] = &totalMaxResources;
-	provinceStats[23] = &buildingLevels[6];
-	provinceStats[24] = &buildingLevels[7];
-	provinceStats[25] = &totalCP;
-	provinceStats[11] = &maxGarrison;
-	provinceStats[17] = &maxInfirmaryCapacity;
-	provinceStats[26] = &foodConsumption;
-	maxGarrison = findMaxGarrison();
-	maxInfirmaryCapacity = findMaxInfirmaryCapacity();
-
-	provinceLevel = 1;
-	isNeutral = true;
-	scoutLogTurnLevel[0] = -1;
-	scoutLogTurnLevel[1] = -1;
-    troopsTrainedThisTurn = 0;
-  deleteProvince = false;
+	participantIndex = -1;
+	basicStats();
 }
 Provinces::Provinces(int sendXCoordinate, int sendYCoordinate, int pIndex)
 {
@@ -36,13 +12,22 @@ Provinces::Provinces(int sendXCoordinate, int sendYCoordinate, int pIndex)
 	{
 		buildingLevels[x] = 1;
 	}
-	for (int x = 0; x < sizeof(provinceScoutReport) / sizeof(int); x++)
+	provinceLevel = 1;
+	provinceX = sendXCoordinate;
+	provinceY = sendYCoordinate;
+	participantIndex = pIndex;
+	basicStats();
+}
+
+void Provinces::basicStats()
+{
+	for (int x = 0; x < provinceScoutReport.size(); x++)
 	{
 		provinceScoutReport[x] = 0;
 	}
 	for (int x = 0; x < 5; x++)
 	{
-		provinceStats[x] = &resourcesPresent[x]; //Set pointer to parent array
+		provinceStats[x] = &resourcesPresent[x];
 		provinceStats[x] = &initialResources[x];
 		provinceStats[x + 6] = &troopsPresent[x];
 		provinceStats[x + 18] = &buildingLevels[x];
@@ -50,18 +35,14 @@ Provinces::Provinces(int sendXCoordinate, int sendYCoordinate, int pIndex)
 	provinceStats[5] = &totalMaxResources;
 	provinceStats[23] = &buildingLevels[6];
 	provinceStats[24] = &buildingLevels[7];
-	provinceStats[25] = &totalCP;
+	provinceStats[25] = &CP;
 	provinceStats[11] = &maxGarrison;
 	provinceStats[17] = &maxInfirmaryCapacity;
 	provinceStats[26] = &foodConsumption;
 	maxGarrison = findMaxGarrison();
 	maxInfirmaryCapacity = findMaxInfirmaryCapacity();
+
 	provinceLevel = 1;
-  
-	provinceX = sendXCoordinate;
-	provinceY = sendYCoordinate;
-  
-	participantIndex = pIndex;
 	scoutLogTurnLevel[0] = -1;
 	scoutLogTurnLevel[1] = -1;
     troopsTrainedThisTurn = 0;
@@ -87,39 +68,6 @@ int Provinces::findProvinceLevel()
 	provinceLevel /= 6;
 	return provinceLevel;
 }
-
-//Scout stuff
-void Provinces::updateProvinceScoutLog(int index, int value)
-{
-	provinceScoutReport[index] = value;
-}
-void Provinces::completeProvinceScoutReport(int accuracy)
-{
-	double newAccuracy = (double)accuracy / 100;
-	newAccuracy = 1 - newAccuracy;
-	double accuracyAdjustedValueOne;
-	int accuracyAdjustedValueTwo;
-
-	int fooOne;
-	int fooTwo;
-	int findRange;
-	for (int x = 0; x < 20; x++) //fix this
-	{
-		findRange = *provinceStats[x];
-		accuracyAdjustedValueOne = findRange * newAccuracy;
-		fooOne = findRange - (int)accuracyAdjustedValueOne;
-		fooTwo = findRange + (int)accuracyAdjustedValueOne;
-		accuracyAdjustedValueTwo = rand() % fooOne + fooTwo;
-		updateProvinceScoutLog(x, accuracyAdjustedValueTwo);
-	}
-	updateProvinceScoutLog(20, turn);
-	updateProvinceScoutLog(21, accuracy);
-}
-int Provinces::findProvinceScoutLog(int index)
-{
-	return provinceScoutReport[index];
-}
-
 
 //Province stuff
 void Provinces::updateProvinceResources()
@@ -195,15 +143,12 @@ void Provinces::updateBuildingsProduction()
 //Commander Stuff
 void Provinces::removeCommander(CommanderProfile *newCommander)
 {
-	int index = 0;
-	for (int x = 0; x < commandersNum(); x++)
-	{
-		if (newCommander->getUnitName() == commanders[x]->getUnitName())
-		{
-			index = x;
-		}
-	}
-	commanders.erase(commanders.begin() + index);
+	commanders.erase(newCommander->getUnitName());
+}
+
+void Provinces::addCommander(CommanderProfile* newCommander)
+{
+  commanders[newCommander->getUnitName()] = newCommander;
 }
 
 
@@ -238,28 +183,6 @@ bool Provinces::deleteStatus()
   return deleteProvince;
 }
 
-int Provinces::translateX(bool isInput)
-{
-	if (isInput)
-	{
-		return xCoord - 1;
-	} else
-	{
-		return xCoord + 1;
-	}
-}
-
-int Provinces::translateY(bool isInput)
-{
-	if (isInput)
-	{
-		return abs(yCoord - continentSize);
-	} else
-	{
-		return abs(continentSize - yCoord);
-	}
-}
-
 int Provinces::getTotalCP()
 {
 	int totalCP = 0;
@@ -281,4 +204,79 @@ std::vector<int> Provinces::getTotalResources()
 		}
 	}
 	return totalResources;
+}
+
+std::vector <CommanderProfile*> Provinces::returnAllCommmanders(){
+		std::vector<CommanderProfile*> commandersList;
+		std::unordered_map<std::string, CommanderProfile*>::iterator it;
+		for (it = commanders.begin(); it != commanders.end(); it++)
+			commandersList.push_back(it->second);
+		return commandersList;
+}
+
+CommanderProfile* Provinces::returnCommander(std::string name)
+{
+	return commanders[name];
+}
+
+bool Provinces::subtractCheckResources(std::vector<int> resourcesVector)
+{
+	//returns false if resources dip into negatives
+	subtractResources(resourcesVector);
+	for (int x: resourcesPresent)
+		if (x < 0)
+			return false;
+	return true;
+}
+
+
+void Provinces::completeProvinceScoutReport(int accuracy)
+{
+	double newAccuracy = (double)accuracy / 100;
+	newAccuracy = 1 - newAccuracy;
+	double accuracyAdjustedValueOne;
+	int accuracyAdjustedValueTwo;
+
+	int fooOne;
+	int fooTwo;
+	int findRange;
+	for (int x = 0; x < 20; x++) //fix this
+	{
+		findRange = *provinceStats[x];
+		accuracyAdjustedValueOne = findRange * newAccuracy;
+		fooOne = findRange - (int)accuracyAdjustedValueOne;
+		fooTwo = findRange + (int)accuracyAdjustedValueOne;
+		accuracyAdjustedValueTwo = rand() % fooOne + fooTwo;
+		updateProvinceScoutLog(x, accuracyAdjustedValueTwo);
+	}
+	updateProvinceScoutLog(20, turn);
+	updateProvinceScoutLog(21, accuracy);
+	/*/*
+[0] food present
+[1] wood present
+[2] ore present
+[3] gold present
+[4] mana present
+[5] max resources province can hold
+[6] garrisoned militia
+[7] garrisoned guards
+[8] garrisoned cavalry
+[9] garrisoned knights
+[10] garrisoned paladins
+[11] max garrison
+[12] injured malitia
+[13] injured guards
+[14] injured cavalry
+[15] injured knights
+[16] injured paladins
+[17] max infirmary capacity
+[18] farm level
+[19] lumber mill level
+[20] quarry level
+[21] mine level
+[22] church level
+[23] barracks level
+[24] infirmary level
+[25] total CP
+[26] food consumption*/
 }

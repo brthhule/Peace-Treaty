@@ -14,10 +14,7 @@
 #include <stdlib.h>
 
 #include "textFunctions.h"
-#include "Provinces.h"
 
-extern std::vector<std::vector<Provinces>> provincesMap;
-extern int provinceBuildingsProductionNumbers[6];
 extern int continentSize;
 extern int troopsCP[5];
 extern int currentParticipantIndex;
@@ -34,18 +31,16 @@ public:
 	int translateCoordinate(int coordinate, char indicator, char whichWay);
 	int translateCoordinateInput(int coordinate, char indicator);
 	int translateCoordinateOutput(int coordinate, char indicator);
-	void showMap();
-	void updateprovinceResources();
-	void createMap();
 
 	//Name Functionality
 	std::string createRandomName();
 
 	//Other stuff
-	int findAmountOfEnemyProvinces();
 	void clearScreen ();
-	void pauseGame();
   void printCoordinates(int xCoordinate, int yCoordinate);
+
+	std::vector<int> addVectors(std::vector<int> primeVector, 	std::vector<int> secondaryVector);
+	std::vector<int> subtractVectors(std::vector<int> primeVector, std::vector<int> secondaryVector);
 
 
 private:

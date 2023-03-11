@@ -1,6 +1,9 @@
 #include "TrainMA.h"
 
-TrainMA::TrainMA();
+TrainMA::TrainMA()
+{
+	
+}
 TrainMA::TrainMA(Provinces *newP) { province = newP; }
 
 void TrainMA::TrainMAFunction() {
@@ -66,7 +69,7 @@ void TrainMA::TrainMAFunction() {
 
       if (amountOfTroops <= maxAmountOfTroopsBarracksCanTrain -
                                 province->getTroopsTrainedThisTurn()) {
-        int requiredResources[5] = {0};
+        std::vector<int> requiredResources = {0, 0, 0, 0, 0};
         for (int x = 0; x < 5; x++) {
           requiredResources[0] = troopCost[0] * troopTier;
           requiredResources[0] *= amountOfTroops;
@@ -89,18 +92,12 @@ void TrainMA::TrainMAFunction() {
 
           switch (proceedWithTraining) {
           case 'P': {
-            char trainingFail = 'S';
-            for (int a = 0; a < 5; a++) {
-              province->subtractResource(a, requiredResources[a]);
-              if (province->getResource(a) < 0) {
-                trainingFail = 'F';
-              }
-            }
+            bool trainingIsSuccess = province -> subtractCheckResources(requiredResources);
 
-            if (trainingFail == 'F') {
+            if (trainingIsSuccess == false) {
               std::cout << "Training failed" << std::endl;
               for (int a = 0; a < 5; a++) {
-                province->addResource(a, requiredResources[a]);
+                province->addResources(requiredResources);
               }
             } else {
               std::cout << "Training successful" << std::endl;
@@ -129,20 +126,3 @@ void TrainMA::TrainMAFunction() {
   }
 }
 
-std::vector<Provinces *> TrainMA::getTrainProvince() {
-  std::cout << "Welcome to the Player Train menu" << std::endl << std::endl;
-  getTrainBuildCoordinates(provinceXCoordinate, provinceYCoordinate);
-
-  if (provinceXCoordinate == -1 || provinceYCoordinate == -1) {
-    repeatThisOne = 'N';
-    std::cout << "Returning to Main menu... " << std::endl;
-  } else {
-    if (provincesMap[provinceXCoordinate][provinceYCoordinate]
-            .getBelongsToParticipant() == currentParticipantIndex) {
-      TrainMAFunction();
-    } else {
-      std::cout << "Invalid province elected. Please try again. " << std::endl;
-    }
-    std::cout << std::endl;
-  }
-}

@@ -40,7 +40,7 @@ public:
   // Moving
   bool hasMovedQuestion(){return hasMoved;};
   void resetCommanderMoved(){hasMoved = false;};
-  int returnCoordinate(char which);
+  
 
 private:
   int *commanderArmyStats[20]; /*

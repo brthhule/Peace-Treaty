@@ -21,6 +21,7 @@ Key words to look out for (ctrl f)
 - "delete this" delete these lines of code if code works without it
 - Have to finish working on ScoutMA
 - Fix AttackMA
+- Add functionality for training province garrisons
 
 /*How to use colors: */
 /*On Linux, you can change the current foreground and background color by writing special character sequences into the output. Write the ESC escape character (octal "\033", hex \x1b), followed by an opening square bracket [. The color definition will follow next, termniated by a lowercase m.
@@ -132,11 +133,21 @@ February 19: 2 hours, 30 min			150
 February 20: 30 min								30
 February 23: 2 hours, 5 min				125
 February 24: 4 hours, 40 min			280
+February 26: 2 hours							120
+February 28: 50 min								50
 
-February Total: 11 hours, 45 min	705
+February Total: 11 hours, 45 min	875
 
 
-Log:							Total: 88 hours, 30 min - 5310 min
+March 2: 20 min										20
+March 7: 3 hours, 15 min					195
+March 10: 3 hours, 50 min					230
+
+March Total: 7 hours, 25 min			445 
+
+
+
+Log:							Total: 98 hours, 45 min - 5925 min
 
 
 June 10th - June 15th: 7 hours-
@@ -472,7 +483,7 @@ February 23: 2 hours, 5 min
 	9:00 - 10:30 pm (1 hour, 30 min): Ran program to see what's wrong; error: unknown type name 'Provinces' in coordinateFunctions.h-- coordinateFunctions includes Provinces and Provinces includes coordinateFunctions; I need to change the getCoords function to return a vector of x and y coordinates instead of returning a province. Problems with TrainMA and MapMA constructors-- candidate constructor not viable... no arguments were provided. Fixed the coordinateFunctions issue. Going to rewrite MapMA now. (10:21) Ran into issues with BuildMA constructor because it required passing two cooridinates instead of a provinces object. Changed it to a proinces object instead of coordinates, ended up rewriting BuildMA. I think that because MapMA has the other main actions in it, I have to do the other ones first in order to fix MapMA.
 	10:30pm - 11:05 pm (35 min): Ran into error with CommanderProfile. moveUnit and moveUnitOne use Provinces, but CommanderProfile can't have Provinces because they both inherit from AllUnits. Created Mobility class to take care of this-- take the moveUnit methods out of CommanderProfile and put them into a more isolated file that doesn't go under AllUnits. Changed moveUnits to moveUnitsOne and moveUnitsOne to moveUnitsTwo for better understanding. (10:47) Done with mobility class. I'm pretty sure there might be some logic errors, but there are no outstanding issues right now that will prevent the program from running other than the AttackMA function-- I have to go in and fix this (has coordinates passed to it one at a time; I want to pass vectors of coordinates to be organized). Changed the AttackMA constructor to take on vectors and Participants and CommanderProfile objects. AttackMA is a hot mess right now, like, hot hot. Going to come back to this later. Problem with AttackMA: doesn't like that it has Provinces, CommanderProfile, and Participants all imported into one file. IDK what to do here-- have to check this out later
 
-February 24: 20 + 50 + 40 + 20 + 2 hours, 30 min
+February 24: 4 hours, 40 min
  4:30 - 4:50pm (20 min): Working on solving AttackMA to not need Provinces. I think the issue is that CommanderProfile and Provinces both take from AllUnits, so they can't take methods or instances of each other; inheritance is working against me. I'm going to make a struct to take care of the AllUnits stuff and have CommanderProfile and Provinces take from that. Nevermind (the problem is that Participants uses Provinces)-- I don't think that'll work. I'm thinking about putting provincesMap inside of Participants so I can access the map, which is really the thing I really need, without having to call it in AttackMA. Fixed issue-- CommanderProfile used otherFunctions which used AttackMA for some reason-- deleted include "AttacKMA" in otherFunctins, not showing those errors anymore.
 
 	4:50 - 5:40 pm (50 min): Working on BuildMA constructor error. Error with BuildMA was that an instance used the old constructor-- changed it to the default constructor and it works now. Now going to fix ScoutMA. Moved viewAllStatsFunction from textFunctions to Participants. Following erros along-- I got an error in testFunctions so I moved the problem to CommanderProfile, now doing TrainMA
@@ -493,13 +504,19 @@ February 28: 50 min
 March 2: 20 min
 	11:20 - 11:40 pm (20 min): Deleted OtherFunctions from Provinces. Working on cleaning up ScoutMA-- error: use of undeclared identifer 'targetProvince.' ScoutMA is a huge mess-- come back to this later.
 
-March 7:
+March 7: 3 hours, 15 min
 	6:30 - 8:00 pm (1 hour, 30 min): Went through, fixed instances of getInt/getChar, changed to getInput. Started working on AttackMA. Fixed some things in AllUnits (add/remove troops), basic functionality, simplified calculation process.
 	8:05 - 9:50 pm (1 hour, 45 min): Continued to work on AttackMA. Added determineLostCP to straigten out lost power cp-- should be proportional to army sizes (bigger armies will do more damage to smaller armies, same size armies will do less damage to each other). Changed battleCalculations to calculateDeadTroops. Worked a little bit on ArmyDeploymentMA-- applied selectCommander to the deployCommander menu thingy. Going to BuildMA now. Updated Lists.cpp to use vectors for getInput instead of strings for getChar. Updated TrainMA to use getInput. Led back to MapMA-- very messy. Have to sort out stuff with how it interacts with other classes/main actions. I'll come back to this at some later point.
+
+March 10: 3 hours, 50 min
+	8:10 - 10:00 pm (1 hour, 50 min): Going to implement an unordered_map instead of a vector in Provinces to keep track of Commanders because 1) Want to get practice with unordered_map 2) Unordered_map is faster, although it uses more memory 3) order of items don't matter 4) I really just need to access the commanders by their names (keys). If the player changes the name of a commander, I can just add a new key-value pair with the commanderProfile pointer and erase the old one. Added basicStats to Provinces to reduce Constructor redundancy. Working on ScoutMA-- something wrong with coordinates. Adding getProvincesCanScout method to reduce chaos and nesting. Added returnCoordinates to CommanderProfile to make coordinates getting a little bit easier. Added printOutputCoordinates to Provinces.h to make printing coordinates easier. Added returnLevel to AllUnits. Moved printOutputCoordinates, translateX, and translateY to AllUnits so CommanderProfile can use them too. Moved returnCoordinate and returnCoordinates from CommanderProfile to AllUnits (9:30). Deleted returnCoordinatesVector from Provinces (redundant). Participants still uses vectors to keep track of Provinces and Commanderprofiles instead of an unordered_map like how Provinces keeps track of Commanders-- this shouldn't matter for now, but I should probably make them uniform in the future. Moved addVectors and subtractVectors from AllUnits to OtherFunctions to Participants can use them too. 
+	10:00 - 10:30 pm (30 min): Finished making calculateEachUnit and calculateEachResource methods (and their respective calculateTotal methods)-- can probably merge them at some point, but I'll worry about that another time. Working on created scoutMap in Participants-- this way, the action of generating a scout report is burdened by the Participant (given a province/commander and accuracy level), not the unit itself. Moved updateProvinceResources from OtherFunctions to Main bc Participants used OtherFunctions and Provinces, and OtherFunctions uses Provinces, so I have to offload Provinces stuff from OtherFunctions to other classes/files. Moved createMap and pauseGame to main. Moving showMap to Participants. (10:25)-- finished taking Provinces out of OtherFunctions. Gonna take a break.
+	10:30 pm - 12:00 am (1 hour, 30 min): Consolidating the calculateTotal methods into calculateTotal and calculateEach methods into calculateEach. Got error trying to make scoutMap equal to &provincesMap-- something about something being overloaded. Moved the * to after the inside vector instead of the Provinces, ran program to see if it works, console started telling me to work on ArmyDeploymentMA, so I guess I'm doing that now. In the future, I should probably find away to consolidate all the add/subtract methods in AllUnits so it's less clunky. Moving on to BuildMA. Going to TrainMA. Created subtractCheckResources method in Provinces to make upgrade/training checking easier. Console telling me to work on MapMA now-- wrapping into the Participants scoutMap idea now. Creating new class: ScoutMap. Creating another class: ScoutProvinces. Realized I don't need ScoutProvinces-- I was going to create a new class so It'd be separate from ProvincesMap, then I realized the Provinces and CommanderProfile classes are already independent. Moved completeProvinceScoutReport from Provinces to ScoutMap. Moved completeProvinceScoutReport back to Provinces. Realized I don't actually need ScoutMap-- I can just work inside of Participants, deleted it. I messed up the province ScoutLog functionality-- have to go to a previous git commit to see what I did in the past (make sure to committ current version tho)
 
 Changes: 
 - Replaced findProvinceCoordinates with getTrainProvince ()
 - Replaced getTrainBuildCoordinates and getCoordinates with getCoords;
+- Changed deadTroops to troopsLost
 
 Last PC update: August 5 @ 11:37 am
 Last Repl update: November 13 @ 10:11 pm

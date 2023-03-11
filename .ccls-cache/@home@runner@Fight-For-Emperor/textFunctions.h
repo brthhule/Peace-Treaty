@@ -15,7 +15,7 @@ extern int continentSize;
 
 void synopsis();
 void viewAllStatsFunction();
-void casualtyReport(int deadTroops[5], int injuredTroops[5]);
+void casualtyReport(int troopsLost[5], int injuredTroops[5]);
 
 #endif
 

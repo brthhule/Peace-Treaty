@@ -3,6 +3,7 @@
 
 #include "AllUnits.h"
 #include "CommanderProfile.h"
+#include "unordered_map"
 
 
 extern std::string provinceResourcesNames[5];
@@ -19,88 +20,68 @@ public:
   /*Constructors*/
   Provinces();
   Provinces(int xCoordinate, int yCoordinate, int pIndex);
+	void basicStats();
 
-  /*Destructor*/
-
-  /*Accessor Functions*/
-  int getProvinceStats(int index) { return *provinceStats[index]; };
-  int findProvinceScoutLog(int index);
-  int findMaxGarrison();
-  int findMaxInfirmaryCapacity() { return (buildingLevels[6] * 10); };
-  int getBuildingLevel(int index);
-
-  // Commanders
-  int returnCommanderIndex(int index){return commanders[index]->getParticipantIndex();};
-  int getTroopsTrainedThisTurn() { return troopsTrainedThisTurn; };
-  int findProvinceLevel();
-  CommanderProfile *returnCommander(int index);
-  void addCommander(CommanderProfile *newCommander){
-      commanders.push_back(newCommander);};
-	void removeCommander(CommanderProfile *newCommander);
-	std::vector <CommanderProfile*> returnAllCommmanders(){
-		return commanders;
-	};
-
-  int commandersNum(){return commanders.size();};
-  void printBuildingStats();
-  bool isCapital(){return isACapital;};
-	int getTotalCP ();
-	std::vector<int> getTotalResources();
-
-  std::string getProvinceName();
-  void setDeleteProvince() { deleteProvince = true; }
-  /*Mutator Functions*/
-  void updateProvinceScoutLog(int index, int value);
-  void updateBuildingsProduction();
-  void updateProvinceResources();
-  void setCoordinates(int xCoordinate, int yCoordinate);
+	/*Initialization*/
+	bool isCapital(){return isACapital;};
+	void setCoordinates(int xCoordinate, int yCoordinate);
   void initializeCapital(); // provinceIsACapital
   void changeParticipant(int num);
-  void resetTroopsTrainedThisTurn();
-  void increaseBuildingLevel(int index, int amount);
-  void completeProvinceScoutReport(int accuracy);
-  void addTroopsTrainedThisTurn(int amount);
 
-  int getCoordinate(char identifier);
+	/*Province Identity*/
+	int getCoordinate(char identifier);
   bool deleteStatus();
-	std::vector <int> returnCoordinatesVector (){return {provinceX, provinceY};};
+	std::string getProvinceName();
+  void setDeleteProvince() { deleteProvince = true; }
 
-  int getPIndex(){return participantIndex;};
+  /*Garrisons*/
+  int findMaxGarrison();
 
-	int translateX (bool isInput);
-	int translateY (bool isInput);
+	//Buildings
+  int findMaxInfirmaryCapacity() { return (buildingLevels[6] * 10); };
+  int getBuildingLevel(int index);
+  void increaseBuildingLevel(int index, int amount);
+
+
+  // Commanders
+  CommanderProfile* returnCommander (std::string name);
+  int findProvinceLevel();
+  void addCommander(CommanderProfile *newCommander);
+	void removeCommander(CommanderProfile *newCommander);
+	std::vector <CommanderProfile*> returnAllCommmanders();
+	int commandersNum(){return commanders.size();};
+
+	/*Training*/
+  int getTroopsTrainedThisTurn() { return troopsTrainedThisTurn; };
+  void addTroopsTrainedThisTurn(int amount);
+  void resetTroopsTrainedThisTurn();
+
+
+
+	/*Resources*/
+	bool subtractCheckResources(std::vector<int> resourcesVector);
+std::vector<int> getTotalResources();
+
+	/*Stats*/
+  void printBuildingStats();
+	int getTotalCP ();
+	void updateBuildingsProduction();
+  void updateProvinceResources();
+
+	/*Scout Stuff*/
+	void completeProvinceScoutReport(int accuracy);
+
 
 private:
-  int *provinceStats[27]; /*
-[0] food present
-[1] wood present
-[2] ore present
-[3] gold present
-[4] mana present
-[5] max resources province can hold
-[6] garrisoned militia
-[7] garrisoned guards
-[8] garrisoned cavalry
-[9] garrisoned knights
-[10] garrisoned paladins
-[11] max garrison
-[12] injured malitia
-[13] injured guards
-[14] injured cavalry
-[15] injured knights
-[16] injured paladins
-[17] max infirmary capacity
-[18] farm level
-[19] lumber mill level
-[20] quarry level
-[21] mine level
-[22] church level
-[23] barracks level
-[24] infirmary level
-[25] total CP
-[26] food consumption*/
+	int initialStats[5] = {5, 4, 3, 2, 1};
+
+	/*Identity*/
   int provinceLevel;
+
+	/*Garrison*/
   int maxGarrison;
+	std::vector<int> troopsGarrisoned;
+
   int maxInfirmaryCapacity;
   int buildingLevels[7];
   int buildingsProduction[6];
@@ -109,7 +90,7 @@ private:
   int troopsTrainedThisTurn;
   int foodConsumption;
 
-  int initialStats[5] = {5, 4, 3, 2, 1};
+
 
   bool isACapital;
 
@@ -117,17 +98,13 @@ private:
 [27] = turn number of scout report
 [28] = accuracy of scout report*/
   bool isNeutral;
-
-  int provinceX;
-  int provinceY;
   bool deleteProvince;
 
-  int participantIndex;
-  std::vector<CommanderProfile *> commanders;
-  // std::vector <std::vector<int>> commanders; /*[x][0] = index, [x][1] = which
-  // participant they belong to*/
-  int scoutLogTurnLevel[2]; //[0] is the turn of the scout report, [1] is the
-                            //scout log level
+	std::unordered_map<std::string, CommanderProfile*> commanders;
+
+	int scoutReportTurn;
+	int scoutReportLogLevel;
+	int logAccuracy;
 };
 
 #endif

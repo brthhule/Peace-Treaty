@@ -8,6 +8,7 @@
 #include "Participants.h"
 #include "CommanderProfile.h"
 #include "Provinces.h"
+#include "AllUnits.h"
 
 extern std::vector <Participants> participantsList;
 extern std::vector<std::vector<Provinces>> provincesMap;
@@ -30,8 +31,8 @@ public:
 	void preAttack();
 	void playerAttack();
 	void playerCommitAttack();
-	void calculateDeadTroops(CommanderProfile* commander, int lostCombatPower, std::vector<int> &deadTroops, int troopIndex);
-	void battleCalculationsTwo(int& lostCombatPower, int deadTroops[5], int troopIndex);
+	void calculateTroopsLost(CommanderProfile* commander, int lostCombatPower, std::vector<int> &troopsLost, int troopIndex);
+	void battleCalculationsTwo(int& lostCombatPower, int troopsLost[5], int troopIndex);
 
 
 private:
