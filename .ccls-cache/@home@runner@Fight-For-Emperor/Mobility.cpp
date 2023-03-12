@@ -35,9 +35,9 @@ void Mobility::moveUnitOne() {
 	OtherFunctions OF;
   std::vector<Provinces *> provincesCanSelect;
   if (selectedCommander->hasMovedQuestion() == false) {
+		std::array<int, 2> newCoordinates = selectedCommander->returnCoordinates();
     print ("The coordinates of the chosen unit unit are: (");
-    print(selectedCommanderProvince->translateX(false) + ", " + selectedCommanderProvince->translateY(false));
-		print(")\n\nYou can only move this unit to one of the provinces adjacent to the province it is in\n")
+    OF.printCoordinates(newCoordinates) << "\n\nYou can only move this unit to one of the provinces adjacent to the province it is in\n")
     provincesCanSelect = moveUnitTwo();
 
     // The participant slects coordiantes
@@ -75,7 +75,9 @@ void Mobility::moveUnitOne() {
       if (OF.getInput("Replacement", {"Y", "N"}, false).at(0) == 'Y') {
         // If it's peaceful (moving to one of their own provinces)
         if (attackScenario == 'P') {
-          selectedCommander->setLocation(moveTwo->returnCoordinatesVector());
+					int coordinates[2];
+					moveTwo->returnCoordinates(coordinates);
+          selectedCommander->setLocation(coordinates);
           attackProvince->addCommander(selectedCommander);
         }
         // If scenario is attack

@@ -15,6 +15,8 @@ extern int troopsCP[5];
 extern int turn;
 extern int continentSize;
 
+const int LOG_SIZE = 20;
+
 class Provinces : public AllUnits {
 public:
   /*Constructors*/
@@ -38,7 +40,7 @@ public:
   int findMaxGarrison();
 
 	//Buildings
-  int findMaxInfirmaryCapacity() { return (buildingLevels[6] * 10); };
+  int findMaxInfirmaryCapacity() { return (otherBuildingLevels[1] * 10); };
   int getBuildingLevel(int index);
   void increaseBuildingLevel(int index, int amount);
 
@@ -59,7 +61,7 @@ public:
 
 
 	/*Resources*/
-	bool subtractCheckResources(std::vector<int> resourcesVector);
+	bool subtractCheckResources(std::array<int, 5> resourcesArray);
 std::vector<int> getTotalResources();
 
 	/*Stats*/
@@ -70,21 +72,23 @@ std::vector<int> getTotalResources();
 
 	/*Scout Stuff*/
 	void completeProvinceScoutReport(int accuracy);
+	int getScoutReportTurn(){return scoutReportTurn;}
+	int getScoutLogTurnLevel(){return scoutReportLogLevel;}
+	void compileProvinceStats (int (&provinceStatsArray)[35]);
 
-
+	
 private:
 	int initialStats[5] = {5, 4, 3, 2, 1};
 
 	/*Identity*/
-  int provinceLevel;
 
 	/*Garrison*/
   int maxGarrison;
-	std::vector<int> troopsGarrisoned;
-
   int maxInfirmaryCapacity;
-  int buildingLevels[7];
-  int buildingsProduction[6];
+  int resourceBuildingsLevels[5];
+  int resourceBuildingsProduction[5];
+	int otherBuildingLevels[2];
+	
   int maxResources[5];
   int totalMaxResources;
   int troopsTrainedThisTurn;
@@ -94,10 +98,7 @@ private:
 
   bool isACapital;
 
-  int provinceScoutReport[28] = {}; /*
-[27] = turn number of scout report
-[28] = accuracy of scout report*/
-  bool isNeutral;
+  int *provinceScoutReport[28];
   bool deleteProvince;
 
 	std::unordered_map<std::string, CommanderProfile*> commanders;

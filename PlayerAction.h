@@ -19,6 +19,7 @@ public:
 	PlayerAction(Participants *newP);
 	char randomAction();
 	int initialDecision();
+	void pauseGame();
 private:
 	Participants *participant;
 	OtherFunctions OF;

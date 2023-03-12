@@ -102,21 +102,38 @@ int OtherFunctions::translateCoordinateOutput(int coordinate, char indicator) {
   }
 }
 
-void OtherFunctions::printCoordinates(int xCoordinate, int yCoordinate)
+void OtherFunctions::printCoordinates(std::array<int, 2> coordinates)
 {
-	OtherFunctions OF;
-  std::cout << "(" << OF.translateCoordinate(xCoordinate, 'x', 'O') << ", " << OF.translateCoordinate(yCoordinate, 'y', 'O') << ") ";
+  std::cout << "(" << translateCoordinate(coordinates[0], 'x', 'O') << ", " << translateCoordinate(coordinates[1], 'y', 'O') << ") ";
 }
 
-std::vector<int> OtherFunctions::addVectors(std::vector<int> primeVector, std::vector<int> secondaryVector)
+std::vector<int> modifyVector(std::vector<int> primeVector, std::vector<int> secondaryVector, bool isAdd)
 {
-	for (int x = 0; x < primeVector.size(); x++)
-		primeVector[x] += secondaryVector[x];
+	if (isAdd)
+		for (int &x: primeVector)
+			x += secondaryVector[x];
+	else
+		for (int &x: primeVector)
+			x -= secondaryVector[x];
 	return primeVector;
 }
-std::vector<int> OtherFunctions::subtractVectors(std::vector<int> primeVector, std::vector<int> secondaryVector)
+
+std::array<int, 5> OtherFunctions::modifyArray(std::array<int, 5> primeArray, std::array<int, 5> secondaryArray, bool isAdd)
 {
-	for (int x = 0; x < primeVector.size(); x++)
-		primeVector[x] -= secondaryVector[x];
-	return primeVector;
+	if (isAdd)
+		for (int &x: primeArray)
+			x += secondaryArray[x];
+	else
+		for (int &x: primeArray)
+			x -= secondaryArray[x];
+	return primeArray;
+}
+
+void OtherFunctions::printResources(std::array<int, 5> resourcesArray)
+{
+	for (int x = 0; x < 5; x++)
+	{
+		std::cout << "- " << provinceResourcesNames[x] << ": " << resourcesArray[x] <<  std::endl;
+	}
+	std::cout <<  std::endl;
 }

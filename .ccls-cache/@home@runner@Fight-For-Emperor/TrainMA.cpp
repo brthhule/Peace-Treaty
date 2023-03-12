@@ -69,20 +69,16 @@ void TrainMA::TrainMAFunction() {
 
       if (amountOfTroops <= maxAmountOfTroopsBarracksCanTrain -
                                 province->getTroopsTrainedThisTurn()) {
-        std::vector<int> requiredResources = {0, 0, 0, 0, 0};
+        std::array<int, 5> requiredResources = {0, 0, 0, 0, 0};
         for (int x = 0; x < 5; x++) {
           requiredResources[0] = troopCost[0] * troopTier;
           requiredResources[0] *= amountOfTroops;
         }
-        std::cout << "The required amount of resources are as follows: "
-                  << std::endl; // here
-        for (int x = 0; x < 5; x++) {
-          std::cout << provinceResourcesNames[x] << ": " << requiredResources[x]
-                    << std::endl;
-        }
+        std::cout << "The required amount of resources are as follows: \n";
+        OF.printResources(requiredResources);
+
         std::cout << std::endl;
         char repeatProceedWithTraining = 'Y';
-        std::string proceedWithTrainingstdString;
         std::vector<char> proceedWithTrainingThree = {'P', 'S', 'M'};
 
         do {
@@ -96,9 +92,7 @@ void TrainMA::TrainMAFunction() {
 
             if (trainingIsSuccess == false) {
               std::cout << "Training failed" << std::endl;
-              for (int a = 0; a < 5; a++) {
-                province->addResources(requiredResources);
-              }
+							province->modifyResources(requiredResources, true);
             } else {
               std::cout << "Training successful" << std::endl;
               province->addSpecificTroop(troopTier - 1, amountOfTroops);

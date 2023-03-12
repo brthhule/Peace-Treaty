@@ -11,7 +11,7 @@ CommanderProfile::CommanderProfile() {
   for (int x = 0; x < 20; x++) {
     commanderArmyStats[x] = 0;
   }
-  commanderLevel = 1;
+  unitLevel = 1;
   for (int x = 0; x < 22; x++) {
     commanderScoutReport[x] = 0;
   }
@@ -27,30 +27,35 @@ CommanderProfile::CommanderProfile(int level, std::string name) {
     commanderScoutReport[x] = 0;
   }
 
-  commanderLevel = level;
+  unitLevel = level;
 
   for (int x = 0; x < 5; x++) {
-    commanderArmyStats[x] = &resourcesPresent[x];
-    commanderArmyStats[x + 5] = &troopsPresent[x];
-    commanderArmyStats[x + 10] = &troopsInjured[x];
+    commanderArrays[0][x] = &resourcesPresent[x];
+    commanderArrays[1][x] = &troopsPresent[x];
+    commanderArrays[2][x] = &troopsInjured[x];
+		commanderArrays[3][x] = &troopsLost[x];
   }
-  commanderArmyStats[15] = &totalTroops;
-  commanderArmyStats[16] = &CP;
-  commanderArmyStats[17] = &commanderLevel;
-  commanderArmyStats[18] = &maxTroops;
-  commanderArmyStats[19] = &foodConsumption;
+  otherCommanderStats[0] = &totalTroops;
+  otherCommanderStats[1] = &CP;
+  otherCommanderStats[2] = &unitLevel;
+  otherCommanderStats[3] = &maxTroops;
+  otherCommanderStats[4] = &foodConsumption;
+	otherCommanderStats[6] = &totalMaxResources;
 
   for (int x = 0; x < 5; x++) {
-    namesOfMAN[x] = provinceResourcesNames[x];
-    namesOfMAN[x + 5] = troopNames[x];
-    namesOfMAN[x + 10] = troopNames[x];
+    namesOfMANOne[0][x] = provinceResourcesNames[x];
+    namesOfMANOne[1][x] = troopNames[x];
+    namesOfMANOne[2][x] = troopNames[x];
+		namesOfMANOne[3][x] = troopNames[x];
   }
-  namesOfMAN[15] = "Total Troops";
-  namesOfMAN[16] = "Total Army CP";
-  namesOfMAN[17] = "Commander Level";
-  namesOfMAN[18] = "Max Troops this army can have";
-  namesOfMAN[19] = "Army Food consumption";
-  maxTroops = commanderLevel * 10;
+  namesOfManTwo[0] = "Total Troops";
+  namesOfManTwo[1] = "Total Army CP";
+  namesOfManTwo[2] = "Commander Level";
+  namesOfManTwo[3] = "Max Troops this army can have";
+  namesOfManTwo[4] = "Army Food consumption";
+	namesOfManTwo[5] = "Max Resources this army can have";
+	
+  maxTroops = unitLevel * 10;
   totalMaxResources = 0;
   changeUnitName(name);
 }
@@ -63,15 +68,16 @@ void CommanderProfile::printCommanderStats() {
   std::cout << "\033[;34m";
   int c = 0;
   for (int a = 0; a < 4; a++) {
-    std::cout << MANDescriptions[a] << " this army: " << std::endl;
+    std::cout << MANDescriptions[a] << " this army: \n";
     for (int b = 0; b < 5; b++) {
-      std::cout << "- " << namesOfMAN[c] << ": " << *commanderArmyStats[c]
+      std::cout << "- " << namesOfMANOne[a][b] << ": " << *commanderArrays[a][b]
                 << std::endl;
       c++;
     }
   }
-  std::cout << std::endl;
-  std::cout << "\033[;0m";
+
+	std::cout << MANDescriptions[5] << ": \n";
+  std::cout << "\n\033[;0m";
 }
 int CommanderProfile::getCommanderStat(int index) {
   return *commanderArmyStats[index];
@@ -113,21 +119,27 @@ void CommanderProfile::completeCommanderScoutReport(int accuracy) {
   updateCommanderScoutReport(21, accuracy);
 }
 
-std::vector<int> CommanderProfile::getUpgradeCosts() {
-  std::vector<int> updatedCosts = {0, 0, 0, 0, 0};
-  for (int x = 0; x < 5; x++) {
-    updatedCosts[x] = costToUpgrade[x] * commanderLevel;
-  }
-  return updatedCosts;
+std::array<int, 5> CommanderProfile::getUpgradeCosts(){
+  std::array<int, 5> costsArray;
+	for (int &x: costsArray) x = 0;
+  for (int x = 0; x < 5; x++) 
+    costsArray[x] = costToUpgrade[x] * unitLevel;
+	return costsArray;
 }
 
-
-
-void CommanderProfile::printCosts(std::vector <int> costs)
+void CommanderProfile::printCosts(std::array <int, 5> costs)
 {
 	for (int x = 0; x < 5; x++)
-	{
-		std::cout << provinceResourcesNames[x] << " cost: " << costs[x] << std::endl;
-	}
+		std::cout << RESOURCE_NAMES[x] << " cost: " << costs[x] << std::endl;
 	std::cout << std::endl;
+}
+
+void CommanderProfile::setLocation(std::array<int, 2> pCoords){
+	xCoord = pCoords[0];
+	yCoord = pCoords[1];
+}
+
+void CommanderProfile::calculateCommanderScoutLog()
+{
+
 }

@@ -29,8 +29,8 @@ public:
 	void selectEnemyAction();
 	void selectEnemyProvince(Provinces *newP);
 
-	void scoutLogFunction();
-	void provinceReportLog(char whatReportChar);
+	void scoutLogFunction(Provinces* enemyProvince);
+	void provinceReportLog(char whatReportChar, Provinces* enemyProvince);
 
 
   Participants *returnParticipant();

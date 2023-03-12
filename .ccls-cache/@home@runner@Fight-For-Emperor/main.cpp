@@ -38,37 +38,31 @@
 char introduction();
 void resumeGame();
 void startGame(std::string kingdomName);
-void generateNewContinent(std::string kingdomName);
+void generateNewContinent(std::string kingdomName, int pNum);
 void gamePlay();
 void endScreen();
 void updateProvinceResources();
 void createMap();
-void pauseGame();
-
-
-
 
 void AITurn();
-int pNum = 0;
-
+const int UNIT_AMOUNT = 5;
 /*Miscellaneous*/
-int currentParticipantIndex = 0;
 std::vector <std::vector <Provinces>> provincesMap;
 std::vector <Participants> participantsList;
+OtherFunctions OF;
 int turn = 1;
 
 /*other important stuff*/
 int continentSize = 0;
 int enemyDifficulty = 0;
 
-std::string troopNames[5] = { "Militia", "Guards", "Cavalry", "Knights", "Paladins" };
-std::string buildingNames[6] = { "Farm", "Lumber Mill", "Quarry", "Mine", "Church" };
-std::string provinceResourcesNames[5] = { "Food", "Wood", "Ore", "Gold", "Mana" };
+const std::string TROOP_NAMES[UNIT_AMOUNT] = { "Militia", "Guards", "Cavalry", "Knights", "Paladins" };
+const std::string RESOURCE_BUILDING_NAMES[UNIT_AMOUNT] = { "Farm", "Lumber Mill", "Quarry", "Mine", "Church" };
+const std::string RESOURCE_NAMES[UNIT_AMOUNT] = { "Food", "Wood", "Ore", "Gold", "Mana" };
 
-const int troopCost[5] = { 5, 4, 3, 2, 1 };
-int totalPlayerResources[5] = { 0,0,0,0,0 };
-int initialResources[5] = { 5, 4, 3, 2, 1 };
-int troopsCP[5] = { 1,2,4,8,16 };
+const int TROOPS_COST[UNIT_AMOUNT] = { 5, 4, 3, 2, 1 };
+const int INITIAL_VALUES[UNIT_AMOUNT] = { 5, 4, 3, 2, 1 };
+const int TROOPS_CP[UNIT_AMOUNT] = { 1,2,4,8,16 };
 int provinceBuildingsProductionNumbers[6] = { 5,4,3,2,1,2 };
 
 std::string kingdomName = " ";
@@ -119,22 +113,20 @@ void resumeGame() /*download data from previous game fix this*/
 }
 void startGame(std::string kingdomName)
 {
-	OtherFunctions OF;
 	continentSize = stoi(OF.getInput("What continent size will you descend upon? (5, 10, 15) ", { "5", "10", "15" }, 1));
 	std::cout << std::endl;
 
-	pNum = stoi(OF.getInput("How many kingdoms will you fight? (1, 2, 3) ", { "1", "2", "3" }, 1)) + 1;
+	int pNum = stoi(OF.getInput("How many kingdoms will you fight? (1, 2, 3) ", { "1", "2", "3" }, 1)) + 1;
 
 	totalMaxCommanders = continentSize;
 	
 	enemyDifficulty = stoi(OF.getInput("What gameplay difficulty do you want (1-3): ", { "1","2","3" }, 1)); 
 	std::cout << "Gameplay difficulty " << enemyDifficulty << " selected. \n\n";
 
-	generateNewContinent(kingdomName);
+	generateNewContinent(kingdomName, pNum);
 }
-void generateNewContinent(std::string kingdomName)
+void generateNewContinent(std::string kingdomName, int pNum)
 {
-	OtherFunctions OF;
 	createMap();
 	int players = stoi(OF.getInput("How many human players are there (including yourself, up to 10)", {"1","2","3","4","5","6","7","8","9","10"}, 1));
 	for (int x = 0; x <= pNum; x++)
@@ -152,12 +144,11 @@ void generateNewContinent(std::string kingdomName)
 void gamePlay()
 {
 	std::string literallyAnything = " ";
-	OtherFunctions OF;
 	stoi(OF.getInput ("Enter '0' to proceed (screen will clear): \033[31m", {"0"}, 1));
 	std::cout << "\033[0m";
 	while (participantsList[0].isAlive())
 	{
-		for (int x = 0; x < pNum; x++)
+		for (int x = 0; x < participantsList.size(); x++)
 		{
 			PlayerAction newPlayerAction (&participantsList[x]);
 			int nextPlayer = newPlayerAction.initialDecision();
@@ -180,13 +171,12 @@ void gamePlay()
 
 void endScreen()
 {
-	for (int x = 0; x <= pNum; x++)
+	for (int x = 0; x <= participantsList.size(); x++)
 	{
 		if (participantsList[x].isAlive())
 			std::cout << "Congratulatios to kingdom " << participantsList[x].getKingdomName() << " for winning. You have successfully conquered your enemies and now reign as the Emperor! \n";
 	}
-	OtherFunctions otherFunction;
-	char playAgain = otherFunction.getInput("Play again? (Y/N) ", {"Y", "N"}, 1).at(0);
+	char playAgain = OF.getInput("Play again? (Y/N) ", {"Y", "N"}, 1).at(0);
 	if (playAgain == 'Y')
 	{
 			main();
@@ -214,16 +204,3 @@ void createMap() {
   }
 }
 
-void pauseGame() {
-  std::string gameCode;
-  gameCode += continentSize;
-
-  for (int x = 0; x < continentSize; x++) {
-    for (int y = 0; y < continentSize; y++) {
-      gameCode += provincesMap[x][y].getParticipantIndex();
-    }
-  }
-  std::cout << "Game ended... \nHere is your game code (Copy this code and "
-               "paste it when using the 'Resume Game' functionality): "
-            << gameCode << "\n\n";
-}

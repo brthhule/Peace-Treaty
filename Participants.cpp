@@ -63,13 +63,11 @@ int Participants::findCommanderIndex(CommanderProfile *commander) {
   }
 }
 void Participants::initialCapRSS() {
-
-  // Add resources to enemy participants/players based on difficulty
+	//Add functionality so, depending on the difficulty, AI participants get more or less resources to start off with
   Provinces *newProvince = provincesList[capitalIndex];
-  for (int resourceIndex = 0; resourceIndex < 5; resourceIndex++) {
-    newProvince->addResource(resourceIndex, initialResources[resourceIndex]);
-  }
+	newProvince -> modifyResources(initialResources, true);
 }
+
 // Mutators
 void Participants::setCapital(Provinces *newProvince) {
   for (int x = 0; x < provincesList.size(); x++) {
@@ -86,15 +84,14 @@ void Participants::addProvince(Provinces *newProvince) {
 
 void Participants::addCommander() {
   CommanderProfile newCommander(1, getNewName());
-  std::vector<int> coords = getCapital()->returnCoordinates();
-  newCommander.setLocation(coords);
+  std::array<int, 2> newCoordinates = getCapital()->returnCoordinates();
+  newCommander.setLocation(newCoordinates);
   commandersList.push_back(&newCommander);
 }
 
 void Participants::setKingdomName(std::string newName) {
-  if (newName == "-1") {
-    newName = generateNewName(); // fix this-- add functionality
-  }
+  if (newName == "-1") 
+    newName = getNewName();
   kingdomName = newName;
 }
 
@@ -121,11 +118,10 @@ void Participants::viewStats() {
 
   std::cout << std::endl;
 
-  for (int x = 0; x < 5; x++) {
-    std::cout << "Total " << troopNames[x] << " alive: " << totalPlayerUnits[x]
-              << std::endl;
-  }
-
+  for (int x = 0; x < 5; x++) 
+    std::cout << "Total " << troopNames[x] << " alive: " << totalUnits[x] << std::endl;
+  
+	totalUnits = calculateTotals(1)
   std::cout << "Your total army combat power: " << calculatePlayerValues(1)
             << std::endl;
   std::cout << "Your numnber of provinces: " << provincesNum() << "\n\n";
@@ -298,7 +294,7 @@ int Participants::calculateTotals (int option)
 std::vector<int> Participants::calculateEach(int option)
 {
 	std::vector<int> thingy = {0, 0, 0, 0, 0};
-	std::vector<int> commanderVector;
+	int commanderArray[5];
 	std::vector <int> provinceVector;
 	
 	for (CommanderProfile* newCommander: commandersList)
@@ -306,7 +302,7 @@ std::vector<int> Participants::calculateEach(int option)
 		switch (option)
 		{
 			case 1://Calculate each Unit
-				commanderVector = newCommander->getAllTroopsPresent();
+				commanderArray = newCommander->getAllTroopsPresent();
 				break;
 			case 2://Calculate each resource
 				commanderVector = newCommander->getAllResources();

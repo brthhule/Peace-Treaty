@@ -12,40 +12,24 @@ Provinces::Provinces(int sendXCoordinate, int sendYCoordinate, int pIndex)
 	{
 		buildingLevels[x] = 1;
 	}
-	provinceLevel = 1;
-	provinceX = sendXCoordinate;
-	provinceY = sendYCoordinate;
+	xCoord = sendXCoordinate;
+	yCoord = sendYCoordinate;
 	participantIndex = pIndex;
 	basicStats();
 }
 
 void Provinces::basicStats()
 {
-	for (int x = 0; x < provinceScoutReport.size(); x++)
-	{
-		provinceScoutReport[x] = 0;
-	}
-	for (int x = 0; x < 5; x++)
-	{
-		provinceStats[x] = &resourcesPresent[x];
-		provinceStats[x] = &initialResources[x];
-		provinceStats[x + 6] = &troopsPresent[x];
-		provinceStats[x + 18] = &buildingLevels[x];
-	}
-	provinceStats[5] = &totalMaxResources;
-	provinceStats[23] = &buildingLevels[6];
-	provinceStats[24] = &buildingLevels[7];
-	provinceStats[25] = &CP;
-	provinceStats[11] = &maxGarrison;
-	provinceStats[17] = &maxInfirmaryCapacity;
-	provinceStats[26] = &foodConsumption;
+	OF.modifyArray(resourcesPresent, initialResources, true);
+	
+	scoutReportTurn = -1;
+	scoutReportLogLevel = -1;
+	
+	unitLevel = 1;
 	maxGarrison = findMaxGarrison();
 	maxInfirmaryCapacity = findMaxInfirmaryCapacity();
-
-	provinceLevel = 1;
-	scoutLogTurnLevel[0] = -1;
-	scoutLogTurnLevel[1] = -1;
-    troopsTrainedThisTurn = 0;
+	
+  troopsTrainedThisTurn = 0;
   deleteProvince = false;
 }
 
@@ -60,12 +44,12 @@ int Provinces::findMaxGarrison()
 
 int Provinces::findProvinceLevel()
 {
-	provinceLevel = 0;
-	for (int x = 0; x < sizeof(buildingLevels) / sizeof(int); x++)
-	{
-		provinceLevel += buildingLevels[x];
-	}
-	provinceLevel /= 6;
+	unitLevel = 0;
+	for (int x = 0; x < 5; x++)
+		unitLevel += resourceBuildingsLevels[x];
+	unitLevel += otherBuildingLevels[0] + otherBuildingLevels[1]
+	
+	unitLevel /= 6;
 	return provinceLevel;
 }
 
@@ -219,15 +203,17 @@ CommanderProfile* Provinces::returnCommander(std::string name)
 	return commanders[name];
 }
 
-bool Provinces::subtractCheckResources(std::vector<int> resourcesVector)
+bool Provinces::subtractCheckResources(std::array<int, 5> resourcesArray)
 {
 	//returns false if resources dip into negatives
-	subtractResources(resourcesVector);
+	modifyResources(resourcesArray, false);
 	for (int x: resourcesPresent)
 		if (x < 0)
 			return false;
 	return true;
 }
+
+
 
 
 void Provinces::completeProvinceScoutReport(int accuracy)
@@ -279,4 +265,67 @@ void Provinces::completeProvinceScoutReport(int accuracy)
 [24] infirmary level
 [25] total CP
 [26] food consumption*/
+}
+
+void compileProvinceStats (int (&provinceStatsArray)[35], bool &isACapitalArg, int (&otherStats)[17], std::string &unitNameArg, std::unordered_map<std::string, CommanderProfile*> &commandersArg;)
+{
+	unitNameArg = unitName;
+	isACapitalArg = isACapital;
+	
+	for (int x = 0; x < 5; x++)
+	{
+		provinceStatsArray[x] = resourcesPresent[x];
+		provinceStatsArray[x + 5] = troopsPresent[x];
+		provinceStatsArray[x + 10] = troopsInjured[x];
+		provinceStatsArray[x + 15] = troopsLost[x];
+		provinceStatsArray[x + 20] = resourceBuildingsLevels[x];
+		provinceStatsArray[x + 25] = resourceBuildingsProduction[x];
+		provinceStatsArray[x + 30] = maxResources[x];
+	}
+
+	otherStats[1] =  CP;
+	otherStats[2] =  totalTroops;
+	otherStats[3] =  foodConsumption;
+
+	otherStats[4] =  xCoord = 0;
+	otherStats[5] =  yCoord = 0;
+	otherStats[6] =  participantIndex;
+	otherStats[7] =  unitLevel;
+	otherStats[8] =  maxGarrison;
+  otherStats[9] =  maxInfirmaryCapacity;
+
+	otherStats[10] =  otherBuildingLevels[0];
+	otherStats[11] =  otherBuildingLevels[1];
+
+  otherStats[12] =  totalMaxResources;
+  otherStats[13] =  troopsTrainedThisTurn;
+  otherStats[14] =  foodConsumption;
+
+	otherStats[15] =  scoutReportTurn;
+	otherStats[16] =  scoutReportLogLevel;
+	otherStats[17] =  logAccuracy;
+
+	commandersArg = commanders;
+
+
+	int resourcesPresent[5] = {0, 0, 0, 0, 0};
+	int troopsPresent[5] = {0, 0, 0, 0, 0};
+	int troopsInjured[5] = {0, 0, 0, 0, 0};
+	int troopsLost[5] = {0, 0, 0, 0, 0};
+	int CP;
+	int totalTroops;
+	int foodConsumption;
+
+	const int initialStats[5] = { 5, 4, 3, 2, 1 };
+
+  //Coordinates;
+	int *coords [2];
+	int xCoord = 0;
+	int yCoord = 0;
+	char canSelectThisUnit;
+	int participantIndex;
+	std::string unitName;
+	std::string isCommanderOrProvince;
+	int unitLevel;
+	OtherFunctions OF;
 }

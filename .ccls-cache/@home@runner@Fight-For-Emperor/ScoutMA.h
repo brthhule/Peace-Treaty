@@ -16,7 +16,7 @@ public:
   // Functions
   void selectTargetToScout();
   void playerScoutStepTwo();
-  int selectUnitToScout();
+  int selectUnitToScout(int &unitName, bool &isProvince, std::array<int, 2> coordinates);
   void scoutLogCalculationsProvince(int accuracy);
 	void getCanScout();
 	bool checkHasUnit (std::string unitName);

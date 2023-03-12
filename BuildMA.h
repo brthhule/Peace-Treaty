@@ -26,7 +26,7 @@ public:
 	void playerBuildFunction();
 	void upgradeBuildings();
 
-	void printInformation (int buildingNumber, std::vector<int> requiredResources[5]);
+	void printInformation (int buildingNumber, std::array<int, 5> requiredResources);
 private:
 	Provinces *province;
 	Participants* participant;

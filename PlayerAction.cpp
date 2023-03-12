@@ -12,7 +12,7 @@ int PlayerAction::initialDecision() {
 
   std::cout << "Turn: " << turn << std::endl << std::endl;
   std::cout << "Welcome to the Main menu " << std::endl;
-  OF.showMap();
+  participant->showMap();
   char courseOfAction = ' ';
   if (participant->isPlayer()) // If the participant is the player
   {
@@ -64,7 +64,7 @@ int PlayerAction::initialDecision() {
         "Pausing the game will end this session of gameplay. Proceed? (Y/N): ",
 		{"Y", "N"}, 1).at(0);
     if (pauseGameQuestionChar == 'Y') {
-      OF.pauseGame();
+      pauseGame();
     }
     std::cout << "Returning to the Main menu... " << std::endl;
     return -2;
@@ -77,4 +77,19 @@ char PlayerAction::randomAction() {
   int randomNumber = rand() % 6; // Random number 0 to 5 (inclusive)
 	std::vector<char> newVector = {'B', 'T', 'V', 'M', 'A', 'G'};
   return newVector[randomNumber];
+}
+
+
+void PlayerAction::pauseGame() {
+  std::string gameCode;
+  gameCode += continentSize;
+
+  for (int x = 0; x < continentSize; x++) {
+    for (int y = 0; y < continentSize; y++) {
+      gameCode += provincesMap[x][y].getParticipantIndex();
+    }
+  }
+  std::cout << "Game ended... \nHere is your game code (Copy this code and "
+               "paste it when using the 'Resume Game' functionality): "
+            << gameCode << "\n\n";
 }

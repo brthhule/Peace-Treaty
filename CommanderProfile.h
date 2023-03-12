@@ -4,6 +4,9 @@
 #include "AllUnits.h"
 #include <vector>
 
+extern const int UNIT_SIZE;
+extern const std::string RESOURCE_NAMES[];
+
 class CommanderProfile : public AllUnits {
 public:
   // Constructors
@@ -18,7 +21,7 @@ public:
   int getCommanderStat(int index);
   void printCommanderStats();
   void changeCommanderStat(int index, int amount);
-  void setLocation(std::vector<int> pCoords){coords = pCoords;};
+  void setLocation(std::array<int, 2> pCoords);
 
   // Scout report stuff
   void updateCommanderScoutReport(int index, int value);
@@ -26,10 +29,9 @@ public:
   int printCommanderScoutReport(int idex);
 
   // Other commander stuff
-  int getLevel(){return commanderLevel;};  // getCommanderLevel
-  void addLevel(){commanderLevel++;}; // addCommanderLevel
-  std::vector<int> getUpgradeCosts();
-  void printCosts(std::vector<int> costs);
+  void addLevel(){unitLevel++;} // addCommanderLevel
+  std::array<int, 5> getUpgradeCosts();
+  void printCosts(std::array<int, 5> costs);
   std::string getName(){return unitName;} // getCommanderName
   std::vector<int> getTrainCosts();
 
@@ -38,34 +40,16 @@ public:
   bool getDelete() { return deleteCommander; }
 
   // Moving
-  bool hasMovedQuestion(){return hasMoved;};
-  void resetCommanderMoved(){hasMoved = false;};
-  
+  bool hasMovedQuestion(){return hasMoved;}
+  void resetCommanderMoved(){hasMoved = false;}
+
+	//Scout stuff: 
+	void calculateCommanderScoutLog();
+
 
 private:
-  int *commanderArmyStats[20]; /*
-[0] = food the army possesses    Resources
-[1]  = wood
-[2] = ore
-[3] = gold
-[4] = mana
-[5] = militia present            Troops Present
-[6] = guards present
-[7] = cavalry present
-[8] = knights present
-[9]  = paladins present
-[10] = militia injured            Troops Injured
-[11] = guards injured
-[12] = cavalry injured
-[13] = knights injured
-[14] = paladins injured
-[15] = total troops               Miscellaneous stats
-[16] = totalCP
-[17] = leaderLevel
-[18] = maxTroops
-[19] = food consumption
-*/
-  int commanderLevel;
+	int *commanderArrays [4][5];
+	int *otherCommanderStats[6];
   int commanderScoutReport[22]; /*
 [0] = food the army possesses    Resources
 [1]  = wood
@@ -93,13 +77,11 @@ private:
   int totalMaxResources;
   bool hasMoved;
 
-  std::string MANDescriptions[5] = {"Resources in", "Troops present in",
-                                    "Troops injured in",
-                                    "Other stats of"}; // check
-  std::string namesOfMAN[20];                          // check
-  std::vector<int> coords;
-
-  std::vector<int> costToUpgrade = {5, 4, 3, 2, 1};
+  std::string MANDescriptions[5] = {"Resources in", "Troops present in", "Troops injured in", "Troops lost in", "Other stats of"}; // check
+  std::string namesOfMANOne[4][5];  
+	std::string namesOfManTwo[6];
+	// check
+  int costToUpgrade [5] = {5, 4, 3, 2, 1};
   int commanderIndex;
   bool deleteCommander;
 };

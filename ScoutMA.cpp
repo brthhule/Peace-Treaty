@@ -1,6 +1,6 @@
 #include "ScoutMA.h"
 #define print(x) std::cout << x;
-#define println(x) std::cout << x << endl;
+#define println(x) std::cout << x << std::endl;
 
 extern std::vector<std::vector<Provinces>> provincesMap;
 extern std::vector<Participants> participantsList;
@@ -54,27 +54,16 @@ void ScoutMA::playerScoutStepTwo() // Finish this later
                "level of the target unit is "
             << enemyLevel << "). \n\n";
 
-  int unitlevel = selectUnitToScout();
-  int cutOffThingy = unitLevels[0];
-  unitLevels.erase(unitLevels.begin());
-
-  for (int x = 1; x <= unitLevels.size(); x++) {
-    unitsCanScoutWith.push_back(x);
-  }
-  std::cout << std::endl;
-
-  int scoutWithThis =
-      stoi(OF.getInput("Please enter the number of the unit you would like to select: ",
-             unitsCanScoutWith, 1));
-  scoutWithThis--;
+	std::string returnUnitName = " ";
+	bool isProvince = false;
+  int unitlevel = selectUnitToScout(returnUnitName, isProvince, coordinates);
 
   int xCoordinateThingy = 0;
   int yCoordinateThingy = 0;
   int unitAccuracyLevel = 0;
 
   std::cout << "Proceed scout action with unit at ("
-            << OF.translateCoordinate(xCoordinateThingy, 'x', 'O') << ", "
-            << OF.translateCoordinate(yCoordinateThingy, 'y', 'O') << ")? (Y/N) ";
+            << OF.printCoordinates(coordinates) << "? (Y/N) ";
   char proceedWithScoutChar = OF.getInput(" ", {"Y", "N"}, 2).at(0);
 
   if (proceedWithScoutChar == 'Y') {
@@ -142,7 +131,7 @@ void ScoutMA::getCanScout()
   }
 }
 
-int ScoutMA::selectUnitToScout() {
+int ScoutMA::selectUnitToScout(int &unitName, bool &isProvince, std::array<int, 2> &coordinates) {
 	int unitLevel = 0;
 	std::cout << "\033[;34m";
  
@@ -159,16 +148,28 @@ int ScoutMA::selectUnitToScout() {
   }
   std::cout << "\n\033[;0m";
 
-	std::string unitName = " ";
+	std::string newUnitName = " ";
 	print("Enter the name of the province/commander you wish to select to scout: ");
-	getline(std::cin, unitName);
+	std::getline(std::cin, newUnitName);
 
-	if (checkHasUnit(unitName) == false)
+	if (checkHasUnit(newUnitName) == false)
 	{
 		std::cout << "Invalid name entered; please try again \n";
-		selectUnitToScout();
+		selectUnitToScout(newUnitName, isProvince, coordinates);
 	}
 	println(unitName + " selected...");
+	isProvince = false;
+	for(Provinces* province: provincesCanScout)
+		if (newUnitName == province -> getUnitName())
+		{
+			isProvince = true;
+			province->returnCoordinates(coordinates);
+		}
+	for (CommanderProfile* commander: commandersCanScout())
+		if (unitName == commander->getUnitName())
+			commander->returnCoordinates(coordinates);
+	
+	returnUnitName = unitName;
   return unitLevel;
 }
 

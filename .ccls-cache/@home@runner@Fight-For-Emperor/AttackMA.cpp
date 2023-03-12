@@ -15,8 +15,8 @@ AttackMA::AttackMA(Provinces *defendingProvinceArg, Participants* attackingParti
       // check that coordinates are inbound
       if (DPX >= 0 && DPY >= 0 && DPY < continentSize && DPX < continentSize) {
         Provinces *newProvince = &provincesMap[DPX][DPY];
-        for (int x = 0; x < newProvince->commandersNum(); x++) {
-          commandersCanAttack.push_back(newProvince->returnCommander(x));
+        for (int x = 0; x < newProvince->returnAllCommanders.size(); x++) {
+          commandersCanAttack.push_back(newProvince->returnAllCommanders.at(x));
         }
       }
     }

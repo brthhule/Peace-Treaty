@@ -69,15 +69,15 @@ void ArmyDeploymentMA::upgradeCommandersOne() /*fix this-- finish making it*/
 }
 void ArmyDeploymentMA::upgradeCommandersTwo() {
   std::vector<int> indexOfCommanders;
-  for (int x = 1; x <= commandersNum; x++) {
+  for (int x = 1; x <= commandersNum; x++) 
     indexOfCommanders.push_back(x);
-  }
+  
 
   std::cout << "Here is list of your commanders: " << std::endl;
   for (int x = 0; x < participant->commandersNum(); x++) {
     CommanderProfile *tempCommander = participant->getCommander(x);
     std::cout << x + 1 << ") Commander " << tempCommander->getName()
-              << "; Level: " << tempCommander->getLevel() << std::endl;
+              << "; Level: " << tempCommander->returnLevel() << std::endl;
     delete tempCommander;
   }
 
@@ -97,24 +97,19 @@ void ArmyDeploymentMA::upgradeCommandersTwo() {
   newCommander->printCosts(newCommander->getUpgradeCosts());
 
   std::cout << std::endl;
-  char failCommanderUpgrade = 'S';
   char proceedWithUpgradeQuestion =
       OF.getInput("Proceed with upgrade? ", {"Y", "N"}, 1).at(0);
   if (proceedWithUpgradeQuestion == 'Y') {
 
-    std::vector<int> commanderCosts = newCommander->getUpgradeCosts();
+    std::array<int, 5> = newCommander->getUpgradeCosts();
+		bool commanderUpgradeIsSuccess = capitalProvince->subtractCheckResources(commanderCosts);
 
-    capitalProvince->subtractResources(commanderCosts);
-    for (int x : capitalProvince->getAllResources())
-      if (x < 0)
-        failCommanderUpgrade = 'F';
-
-    if (failCommanderUpgrade == 'S') {
+    if (commanderUpgradeIsSuccess == true) {
       newCommander->addLevel();
       std::cout << "Upgrade successful; Commander " << newCommander->getName()
-                << "is now level " << newCommander->getLevel() << std::endl;
+                << "is now level " << newCommander->returnLevel() << std::endl;
     } else {
-      capitalProvince->addResources(commanderCosts);
+      capitalProvince->modifyResources(commanderCosts, true);
       std::cout << "Upgrade failed. " << std::endl;
     }
   }
@@ -194,12 +189,7 @@ void ArmyDeploymentMA::trainCommanders() {
 }
 
 void ArmyDeploymentMA::proceedWithTraining(std::vector<int> trainCosts) {
-  bool trainingSuccess = true;
-
-  capitalProvince->subtractResources(trainCosts);
-  for (int x : capitalProvince->getAllResources())
-    if (x < 0)
-      trainingSuccess = false;
+  bool trainingSuccess = capitalProvince->subtractCheckResources(trainCosts);
 
   if (trainingSuccess == true) {
     println("Commander training successful ");
