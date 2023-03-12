@@ -519,6 +519,8 @@ March 11:
 	6:15 - 7:25 pm: Working on scout stuff reimplementing provinceStats. Set up basic structure for Provinces and CommanderProfile scout reports-- have all the items I need to keep track of. Have yet to actually implement anything (7:10)-- I'm going to run the program first and fix everything else then come back when it starts running. Regular arrays suck-- it's too complicated trying to work around them. I'm going to use std::array instead, which, like primitive arrays, may perform better than vectors, but I can return them from methods and stuff.
 	7:30 - 8:20 pm: Kept jumping around, fixing stuff. Worked on MapMA, next up is ScoutMA.
 
+March 12:
+	3:55 - 5:35 pm (1 hour, 40 min): Just going through general erros-- mostly having to do with the change from primitive arrays to std::array. Working on Participants, simplified printListOfProvinces. Changed getYourCoords to getYourProvince to make it more intuitive to understand. Replaced vector for CommanderProfile with unordered_map, fixing stuff as needed. Changed getCommanderName to getCommanderByName to make it more intuitive. Deleted findCommanderIndex-- is never used. Worked on some Provinces Scout stuff.
 
 
 

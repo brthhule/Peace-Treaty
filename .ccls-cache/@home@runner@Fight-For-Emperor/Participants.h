@@ -16,6 +16,9 @@
 #include <chrono>
 #include <thread>
 #include <stdlib.h>
+#include <map>
+#include <unordered_map>
+
 #include "AllUnits.h"
 
 extern int provinceBuildingsProductionNumbers[6];
@@ -41,13 +44,12 @@ public:
 
 	//Commander stuff
 	int commandersNum();
-	int findCommanderIndex(CommanderProfile *commander);
 	void addCommander();
 	CommanderProfile* getCommander(int index);
 	int getMaxCommanders ();
 	std::vector <int> getTrainCosts();
 	bool hasCommander(std::string name);
-	CommanderProfile* getCommanderName(std::string name);
+	CommanderProfile* getCommanderByName(std::string name);
 			
 	//Province stuff
 	int provincesNum();
@@ -83,22 +85,28 @@ public:
 	std::vector<int> calculateEachTroopLost();
 
 	int calculateTotals (int option);
-	std::vector<int> calculateEach(int option);
+	std::array<int, 5> calculateEach(int option);
 
 
 	//Coordinate stuff
 	
 	Provinces* getCoords(int identifier);
-	Provinces* getYourCoords(int identifier);
-
+	Provinces* getYourProvince(int identifier);
 	int getRandomCoordinate();
+
+	//Scout stuff
+	void scoutProvince(Provinces *targetProvince, int accuracy);
+
+	void printParticipantStats(int option);
+  
+
 
 private:
 	std::string kingdomName = " ";
 	bool playerStatus;//true = player, false = AI
 
 	std::vector <Provinces*> provincesList;
-	std::vector <CommanderProfile*> commandersList;
+	std::unordered_map <std::string, CommanderProfile*> commandersList;
 	int capitalIndex;
 
 	//Figure out sizes later

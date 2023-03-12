@@ -86,7 +86,7 @@ void AllUnits::modifySpecificResource(int index, int amount, bool isAdd)
 		resourcesPresent[index] -= amount;
 }
 
-void AllUnits::modifyResources(int resourcesArray[5], bool isAdd)
+void AllUnits::modifyResources(std::array<int, 5> resourcesArray, bool isAdd)
 {
 	OF.modifyArray(resourcesPresent, resourcesArray, isAdd);
 }
@@ -141,4 +141,9 @@ void AllUnits::addTroopsLost(std::array<int, 5> troopsArray)
 std::array<int, 5> AllUnits::getTroopsLost()
 {
 	return troopsLost;
+}
+
+void AllUnits::printCoordinates()
+{
+	OF.printCoordinates({xCoord, yCoord});
 }

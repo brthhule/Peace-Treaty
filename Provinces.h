@@ -1,19 +1,21 @@
 #ifndef PROVINCES_H
 #define PROVINCES_H
 
+#include <iostream>
+#include <unordered_map>
+
 #include "AllUnits.h"
 #include "CommanderProfile.h"
-#include "unordered_map"
 
-
-extern std::string provinceResourcesNames[5];
-extern std::string buildingNames[6];
-extern std::string troopNames[5];
-extern int provinceBuildingsProductionNumbers[6];
-extern int initialResources[5];
-extern int troopsCP[5];
-extern int turn;
+extern const std::array<int, 5> TROOPS_CP;
+extern const std::array<int, 5> RESOURCE_PRODUCTION;
+extern const std::array<std::string, 5> RESOURCE_NAMES;
+extern const std::array<std::string, 5> RESOURCE_BUILDING_NAMES;
+extern const std::array<std::string, 5> TROOP_NAMES;
 extern int continentSize;
+extern const int BARRACKS_PRODUCTION;
+extern const std::array<int, 5> INITIAL_VALUES = { 5, 4, 3, 2, 1 };
+extern int turn;
 
 const int LOG_SIZE = 20;
 
@@ -78,16 +80,13 @@ std::vector<int> getTotalResources();
 
 	
 private:
-	int initialStats[5] = {5, 4, 3, 2, 1};
-
-	/*Identity*/
-
 	/*Garrison*/
   int maxGarrison;
   int maxInfirmaryCapacity;
-  int resourceBuildingsLevels[5];
-  int resourceBuildingsProduction[5];
-	int otherBuildingLevels[2];
+	std::array<int, 5> resourceBuildingsLevels;
+	std::array<int, 5> resourceBuildingsProduction;
+	std::array<int, 4> otherBuildingsLevels;//Barracks, infirmary, Library, wall
+	int barracksCapacity;
 	
   int maxResources[5];
   int totalMaxResources;

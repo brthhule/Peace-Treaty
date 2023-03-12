@@ -16,14 +16,13 @@ ScoutMA::ScoutMA(Participants *newParticipant, Provinces *newProvince) {
 	commandersCanScout = {};
 }
 
-void ScoutMA::selectTargetToScout() /*So much to fix here... truly so much....
-                                       make sure to simplify things later on*/
+void ScoutMA::selectTarget()
 {
-  targetProvince = participant->getCoords(1);
+  Provinces *targetProvince = participant->getCoords(1);
   if (targetProvince->getParticipantIndex() == participant->getParticipantIndex())
 	{
 		std::cout << "This province belongs to you; please select a different province";
-		selectTargetToScout();
+		selectTarget();
 	}
 	
   std::cout << "Province " << targetProvince->getUnitName() << " selected \n";
@@ -56,6 +55,8 @@ void ScoutMA::playerScoutStepTwo() // Finish this later
 
 	std::string returnUnitName = " ";
 	bool isProvince = false;
+	std::array<int, 2> coordinates;
+	
   int unitlevel = selectUnitToScout(returnUnitName, isProvince, coordinates);
 
   int xCoordinateThingy = 0;
@@ -68,34 +69,24 @@ void ScoutMA::playerScoutStepTwo() // Finish this later
 
   if (proceedWithScoutChar == 'Y') {
     int accuracy = 50;
-    if (unitLevels[scoutWithThis] > enemyLevel) {
-      for (int x = unitLevels[scoutWithThis]; x >= enemyLevel; x--) {
+		
+    if (unitlevel > enemyLevel) 
+      for (int x = unitLevels[scoutWithThis]; x >= enemyLevel; x--) 
         accuracy += 5;
-      }
-    }
-    if (unitLevels[scoutWithThis] < enemyLevel) {
-      for (int x = unitLevels[scoutWithThis]; x <= enemyLevel; x++) {
+      
+    if (unitlevel < enemyLevel) 
+      for (int x = unitLevels[scoutWithThis]; x <= enemyLevel; x++) 
         accuracy -= 5;
-      }
-    }
-
-    if (accuracy > 100) {
+		}
+		
+    if (accuracy > 100) 
       accuracy = 100;
-    }
-    if (accuracy < 0) {
+    if (accuracy < 0) 
       accuracy = 0;
-    }
 
-    if (scoutWithThis < cutOffThingy) {
-      Participants *newParticipant = &participantsList[currentParticipantIndex];
-      provincesMap[newParticipant->listOfProvincesX[scoutWithThis]]
-                  [newParticipant->listOfProvincesY[scoutWithThis]]
-                      .completeProvinceScoutReport(accuracy);
-    } else {
-      Participants *newParticipant = &participantsList[currentParticipantIndex];
-      allCommanders[currentParticipantIndex][scoutWithThis]
-          .completeCommanderScoutReport(accuracy);
-    }
+
+    participant->scoutProvince(&provincesMap[coordinates[0]][coordinates[1]], acuracy);
+	
   }
 }
 
@@ -120,8 +111,8 @@ void ScoutMA::getCanScout()
 
         for (int x = 0; x < participant->commandersNum(); x++) {
 					CommanderProfile* newCommander = participant->getCommander(x);
-					std::vector<int> newVector = {targetX + a, targetY + b};
-          if (newCommander->returnCoordinates() == newVector)
+					std::array<int, 2> newArray = {targetX + a, targetY + b};
+          if (newCommander->returnCoordinates() == newArray)
 			{
             commandersCanScout.push_back(newCommander);
           }

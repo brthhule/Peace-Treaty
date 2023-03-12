@@ -53,19 +53,11 @@ Provinces *Participants::findProvince(int x, int y) {
 int Participants::provincesNum() { return provincesList.size(); }
 int Participants::commandersNum() { commandersList.size(); }
 
-int Participants::findCommanderIndex(CommanderProfile *commander) {
-  for (int x = 0; x < commandersNum();
-       x++) /*find index of chosen commander unit*/
-  {
-    if (&commander == &commandersList[x]) {
-      return x;
-    }
-  }
-}
+
 void Participants::initialCapRSS() {
 	//Add functionality so, depending on the difficulty, AI participants get more or less resources to start off with
   Provinces *newProvince = provincesList[capitalIndex];
-	newProvince -> modifyResources(initialResources, true);
+	newProvince -> modifyResources(INITIAL_VALUES, true);
 }
 
 // Mutators
@@ -84,9 +76,8 @@ void Participants::addProvince(Provinces *newProvince) {
 
 void Participants::addCommander() {
   CommanderProfile newCommander(1, getNewName());
-  int newCoords [2];
-  getCapital()->returnCoordinates(newCoords);
-  newCommander.setLocation(newCoords);
+  std::array<int, 2> newCoordinates = getCapital()->returnCoordinates();
+  newCommander.setLocation(newCoordinates);
   commandersList.push_back(&newCommander);
 }
 
@@ -117,29 +108,27 @@ void Participants::viewStats() {
     std::cout << "Total " << provinceResourcesNames[x] << ": " << totalResources[x] << std::endl;
   }
 
-  std::cout << std::endl;
-
   for (int x = 0; x < 5; x++) 
     std::cout << "Total " << troopNames[x] << " alive: " << totalUnits[x] << std::endl;
   
 	totalUnits = calculateTotals(1)
-  std::cout << "Your total army combat power: " << calculatePlayerValues(1)
-            << std::endl;
-  std::cout << "Your numnber of provinces: " << provincesNum() << "\n\n";
+  std::cout << "Your total army combat power: " << calculatePlayerValues(1).at(0);
+  std::cout << "\nYour numnber of provinces: " << provincesNum() << "\n\n";
 
-  switch (OF.getInput("View all stats? (Y/N) ", {"Y", "N"}, 1).at(0)) {
-  case 'Y':
+  if (OF.getInput("View all stats? (Y/N) ", {"Y", "N"}, 1).at(0) == 'Y') 
     viewAllStatsFunction();
-  case 'N':
-    std::cout << "Returning to menu" << std::endl;
-    break;
-  }
+		
+  std::cout << "Returning to menu" << std::endl;
 }
 
 std::vector<int> Participants::calculatePlayerValues(int decision) {
+	std::array<int, 5> newArray = calculateEach(decision);
   switch (decision) {
-  case 1: {
-    return totalUnits;
+  case 1: { // Return total CP
+		int totalCPThingy = 0;
+		for (int x = 0; x < 5; x++)
+			totalCPThingy += newArray[x] * TROOPS_CP[x];
+    return {totalUnits};
   }
   case 2: {
     return troopsLost;
@@ -194,37 +183,27 @@ void Participants::viewAllStatsFunction() {
 }
 
 void Participants::printListOfProvinces() {
-  std::cout << "Here is a list of your provinces: " << std::endl;
-  int x;
-  int y;
-  for (int a = 0; a < continentSize; a++) {
-    for (int b = 0; b < continentSize; b++) {
-      if (provincesMap[a][b].getBelongsToParticipant() ==
-          currentParticipantIndex) {
-        x = OF.translateCoordinate(b, 'x', 'O');
-        y = OF.translateCoordinate(a, 'y', 'O');
-        std::cout << "(" << x << ", " << y << ") " << std::endl;
-      }
-    }
-  }
-  std::cout << std::endl;
+  std::cout << "Here is a list of your provinces: \n";
+	for (Provinces *tempProvince: provincesList)
+		std::cout << "- " << tempProvince -> getUnitName() << ", " << tempProvince->printCoordinates() << std::endl;
 }
-Provinces *Participants::getYourCoords(int identifier) {
+
+Provinces *Participants::getYourProvince(int identifier) {
   Provinces *newProvince = getCoords(identifier);
-  if (newProvince->getParticipantIndex() == participantIndex) {
+  if (newProvince->getParticipantIndex() == participantIndex) 
     return newProvince;
-  }
+	
   std::cout << "This province does not belong to you. Please try again \n";
-  getYourCoords(identifier);
+  getYourProvince(identifier);
 }
 Provinces *Participants::getCoords(int identifier) {
   OtherFunctions OF;
   int yCoordinate = -1;
-  std::vector<int> actualCoordinatesAVTwo = {-1};
-  for (int x = 1; x <= continentSize; x++) {
-    actualCoordinatesAVTwo.push_back(x);
-  }
-  OF.showMap();
+  std::vector<std::string> actualCoordinatesAVTwo = {"-1"};
+  for (int x = 1; x <= continentSize; x++) 
+    actualCoordinatesAVTwo.push_back(std::to_string(x));
+  
+  showMap();
   std::string phrase;
   switch (identifier) {
   case 1:
@@ -238,19 +217,18 @@ Provinces *Participants::getCoords(int identifier) {
   case 3:
     phrase = "of the army you want to use to attack the target with";
   }
-  int xCoordinate = getInt("Enter the x coordinate " + phrase +
+  int xCoordinate = stoi(OF.getInput("Enter the x coordinate " + phrase +
                                "(Enter '-1' to go back to previous menu) : ",
-                           actualCoordinatesAVTwo, 2);
+                           actualCoordinatesAVTwo, 2));
   // Critical: check to make sure the coordinate checkings are correct
   if (xCoordinate != -1 && xCoordinate < continentSize && xCoordinate >= 0) {
-    yCoordinate = getInt("Enter the y coordinate " + phrase +
-                             " (Enter '-1' to go back to previous menu) : ",
-                         actualCoordinatesAVTwo, 2);
+    yCoordinate = stoi(OF.getInput("Enter the y coordinate " + phrase + " (Enter '-1' to go back to previous menu) : ",
+                         actualCoordinatesAVTwo, 2));
     std::cout << std::endl;
     if (yCoordinate != -1 && yCoordinate < continentSize && yCoordinate >= 0) {
       int replacement = xCoordinate;
-      xCoordinate = translateCoordinate(yCoordinate, 'y', 'I');
-      yCoordinate = translateCoordinate(replacement, 'x', 'I');
+      xCoordinate = OF.translateCoordinate(yCoordinate, 'y', 'I');
+      yCoordinate = OF.translateCoordinate(replacement, 'x', 'I');
       Provinces *newProvince = &provincesMap[xCoordinate][yCoordinate];
       return newProvince;
     }
@@ -267,20 +245,11 @@ Provinces *Participants::getCoords(int identifier) {
 int Participants::getRandomCoordinate() { return rand() % continentSize; }
 
 bool Participants::hasCommander(std::string name) {
-  for (int x = 0; x < commandersList.size(); x++) {
-    if (name == commandersList[x]->getName()) {
-      return true;
-    }
-  }
-  return false;
+  return commandersList.contains(name);
 }
 
-CommanderProfile *Participants::getCommanderName(std::string name) {
-  for (int x = 0; x < commandersList.size(); x++) {
-    if (name == commandersList[x]->getName()) {
-      return commandersList[x];
-    }
-  }
+CommanderProfile *Participants::getCommanderByName(std::string name) {
+  return commanderLists[name];
 }
 int Participants::calculateTotals (int option)
 {
@@ -292,28 +261,25 @@ int Participants::calculateTotals (int option)
 	return sum;
 }
 
-std::vector<int> Participants::calculateEach(int option)
+std::array<int, 5> Participants::calculateEach(int option)
 {
-	std::vector<int> thingy = {0, 0, 0, 0, 0};
-	int commanderArray[5];
-	std::vector <int> provinceVector;
+	std::array<int, 5> returnArray = {0, 0, 0, 0, 0};
 	
 	for (CommanderProfile* newCommander: commandersList)
 	{
 		switch (option)
 		{
 			case 1://Calculate each Unit
-				commanderArray = newCommander->getAllTroopsPresent();
+				returnArray = newCommander->getAllTroopsPresent();
 				break;
 			case 2://Calculate each resource
-				commanderVector = newCommander->getAllResources();
+				returnArray = newCommander->getAllResources();
 				break;
 			case 3://calculate each troop lost
-				commanderVector = newCommander->>getAllTroopsLost()
+				returnArray = newCommander->getAllTroopsLost()
 				break;
 			default:
 		}	
-		thingy = OF.addVectors(thingy, commanderVector);
 	}
 
 	for (Provinces* newProvince: provincesList)
@@ -321,18 +287,19 @@ std::vector<int> Participants::calculateEach(int option)
 		switch (option)
 		{
 			case 1://Calculate each Unit
-				provinceVector = newProvince->getAllTroopsPresent();
+				returnArray = OF.modifyArray(returnArray, newProvince->getAllTroopsPresent(), true);
 				break;
 			case 2://Calculate each resource
+				returnArray = OF.modifyArray(returnArray, newProvince->getAllResources(), true);
 				provinceVector = newProvince->getAllResources();
 				break;
 			case 3://calculate each troop lost
-				provinceVector = newProvince->>getAllTroopsLost()
+				returnArray = OF.modifyArray(returnArray, newProvince->getAllTroopsLost(), true);
 				break;
 			default:
 		}	
-		thingy = OF.addVectors(thingy, provinceVector);
 	}
+	return returnArray;
 }
 
 
@@ -401,4 +368,9 @@ void Participants::showMap() {
       std::cout << a + 1 << "  ";
   }
   std::cout << "\n\n";
+}
+
+void Participants::scoutProvince(Provinces *targetProvince, int accuracy) /*Add implementation later*/
+{
+	
 }

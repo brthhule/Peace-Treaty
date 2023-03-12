@@ -142,3 +142,8 @@ std::array<int, 5> AllUnits::getTroopsLost()
 {
 	return troopsLost;
 }
+
+void AllUnits::printCoordinates()
+{
+	OF.printCoordinates({xCoord, yCoord});
+}

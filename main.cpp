@@ -35,6 +35,8 @@
 #include "TrainMA.h"
 #include "PlayerAction.h"
 
+#define UNIT_AMOUNT 5
+
 char introduction();
 void resumeGame();
 void startGame(std::string kingdomName);
@@ -45,7 +47,6 @@ void updateProvinceResources();
 void createMap();
 
 void AITurn();
-const int UNIT_AMOUNT = 5;
 /*Miscellaneous*/
 std::vector <std::vector <Provinces>> provincesMap;
 std::vector <Participants> participantsList;
@@ -56,14 +57,15 @@ int turn = 1;
 int continentSize = 0;
 int enemyDifficulty = 0;
 
-const std::string TROOP_NAMES[UNIT_AMOUNT] = { "Militia", "Guards", "Cavalry", "Knights", "Paladins" };
-const std::string RESOURCE_BUILDING_NAMES[UNIT_AMOUNT] = { "Farm", "Lumber Mill", "Quarry", "Mine", "Church" };
-const std::string RESOURCE_NAMES[UNIT_AMOUNT] = { "Food", "Wood", "Ore", "Gold", "Mana" };
+const std::array<std::string, UNIT_AMOUNT> TROOP_NAMES = { "Militia", "Guards", "Cavalry", "Knights", "Paladins" };
+const std::array<std::string, UNIT_AMOUNT> RESOURCE_BUILDING_NAMES = { "Farm", "Lumber Mill", "Quarry", "Mine", "Church" };
+const std::array<std::string, UNIT_AMOUNT> RESOURCE_NAMES = { "Food", "Wood", "Ore", "Gold", "Mana" };
 
-const int TROOPS_COST[UNIT_AMOUNT] = { 5, 4, 3, 2, 1 };
-const int INITIAL_VALUES[UNIT_AMOUNT] = { 5, 4, 3, 2, 1 };
-const int TROOPS_CP[UNIT_AMOUNT] = { 1,2,4,8,16 };
-int provinceBuildingsProductionNumbers[6] = { 5,4,3,2,1,2 };
+const std::array<int, UNIT_AMOUNT> TROOPS_COST = { 5, 4, 3, 2, 1 };
+const std::array<int, UNIT_AMOUNT> INITIAL_VALUES = { 5, 4, 3, 2, 1 };
+const std::array<int, UNIT_AMOUNT> TROOPS_CP = { 1,2,4,8,16 };
+const std::array<int, UNIT_AMOUNT> RESOURCE_PRODUCTION = { 5,4,3,2,1};
+const int BARRACKS_PRODUCTION = 2;
 
 std::string kingdomName = " ";
 int totalMaxCommanders = 0;

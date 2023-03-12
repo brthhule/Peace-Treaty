@@ -28,12 +28,12 @@ int PlayerAction::initialDecision() {
 
   switch (courseOfAction) {
   case 'B': {
-		Provinces *newProvince = participant->getYourCoords(1);
+		Provinces *newProvince = participant->getYourProvince(1);
     BuildMA newBuildMA(newProvince, participant);
     break;
   }
   case 'T': {
-		Provinces *newProvince = participant->getYourCoords(1);
+		Provinces *newProvince = participant->getYourProvince(1);
     TrainMA newTrainMA(newProvince);
     newTrainMA.TrainMAFunction();
     break;

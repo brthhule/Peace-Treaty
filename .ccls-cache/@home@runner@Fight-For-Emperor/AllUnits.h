@@ -7,20 +7,19 @@
 #include <array>
 
 #include "OtherFunctions.h"
-
-extern const int UNIT_AMOUNT;
+#define UNIT_AMOUNT = 5
 
 /*int resourcesPresent[5];
 	int troopsPresent[5];
 	int troopsInjured[5];
 	int totalCP;*/
-extern int troopsCP[5];
-extern int provinceBuildingsProductionNumbers[6];
-
-extern const std::string RESOURCE_NAMES[];
-extern const std::string RESOURCE_BUILDING_NAMES[];
-extern const std::string TROOP_NAMES[];
+extern const std::array<int, 5> TROOPS_CP;
+extern const std::array<int, 5> RESOURCE_PRODUCTION;
+extern const std::array<std::string, 5> RESOURCE_NAMES;
+extern const std::array<std::string, 5> RESOURCE_BUILDING_NAMES;
+extern const std::array<std::string, 5> TROOP_NAMES;
 extern int continentSize;
+extern const int BARRACKS_PRODUCTION;
 
 class AllUnits
 {
@@ -61,6 +60,7 @@ public:
 	int getResource(int resourceIndex){return resourcesPresent[resourceIndex];}
 	void getAllResources (int &resourcesArray);//Add implementation
 	void printResources();
+	void printCoordinates();
 
 
 	void changeUnitName(std::string name);

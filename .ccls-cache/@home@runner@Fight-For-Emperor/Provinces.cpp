@@ -8,10 +8,11 @@ Provinces::Provinces()
 Provinces::Provinces(int sendXCoordinate, int sendYCoordinate, int pIndex)
 {
 	//Initialize building levels
-	for (int x = 0; x < sizeof(buildingLevels) / sizeof(int); x++)
-	{
-		buildingLevels[x] = 1;
-	}
+	for (int &x: resourceBuildingsLevels)
+		x = 1;
+	for (int &x: otherBuildingsLevels)
+		x = 1;
+	resourcesPresent = INITIAL_VALUES;
 	xCoord = sendXCoordinate;
 	yCoord = sendYCoordinate;
 	participantIndex = pIndex;
@@ -20,7 +21,7 @@ Provinces::Provinces(int sendXCoordinate, int sendYCoordinate, int pIndex)
 
 void Provinces::basicStats()
 {
-	OF.modifyArray(resourcesPresent, initialResources, true);
+	OF.modifyArray(resourcesPresent, INITIAL_VALUES, true);
 	
 	scoutReportTurn = -1;
 	scoutReportLogLevel = -1;
@@ -38,28 +39,26 @@ void Provinces::basicStats()
 
 int Provinces::findMaxGarrison()
 {
-	int maxGarrisonThingy = buildingLevels[5] * 10;
-	return maxGarrisonThingy;
+	return otherBuildingsLevels[3] * 10;
 }
 
 int Provinces::findProvinceLevel()
 {
 	unitLevel = 0;
-	for (int x = 0; x < 5; x++)
+	for (int x: resourceBuildingsLevels)
 		unitLevel += resourceBuildingsLevels[x];
-	unitLevel += otherBuildingLevels[0] + otherBuildingLevels[1]
+	for (int x: otherBuildingsLevels)
+		unitLevel += x;
 	
-	unitLevel /= 6;
-	return provinceLevel;
+	unitLevel /= resourceBuildingsLevels.size() + otherBuildingsLevels.size();
+	return unitLevel;
 }
 
 //Province stuff
 void Provinces::updateProvinceResources()
 {
-	for (int x = 0; x < sizeof(buildingsProduction) / sizeof(int) - 1; x++)
-	{
-		resourcesPresent[x] += buildingsProduction[x];
-	}
+	for (int x = 0; x < resourceBuildingsLevels.size(); x++)
+		resourcesPresent[x] += resourceBuildingsProduction[x];
 }
 
 //Other
@@ -70,14 +69,7 @@ void Provinces::setCoordinates(int xCoordinate, int yCoordinate)
 }
 void Provinces::initializeCapital()
 {
-	for (int x = 0; x < 5; x++)
-	{
-		resourcesPresent[x] = initialStats[x];
-		buildingLevels[x] = 1;
-	}
-	buildingLevels[5] = 1;
-	buildingLevels[6] = 1;
-
+	isACapital = true;
 }
 void Provinces::resetTroopsTrainedThisTurn()
 {
@@ -91,36 +83,36 @@ void Provinces::increaseBuildingLevel(int index, int amount)
 }
 void Provinces::printBuildingStats()
 {
-	for (int x = 0; x < 6; x++)
+	for (int x = 0; x < 5; x++)
 	{
-		buildingsProduction[x] = buildingLevels[x] * provinceBuildingsProductionNumbers[x];
+		resourceBuildingsProduction[x] = resourceBuildingsLevels[x] * INITIAL_VALUES[x];
 	}
     std::cout << "\033[;34m";
 
 	std::cout << "Building stats of this province: " << std::endl;
 	for (int x = 0; x < 5; x++)
 	{
-		std::cout << "- " << buildingNames[x] << " (" << buildingNames[x].substr(0, 1) << ") " << std::endl;
-		std::cout << "    Level: " << buildingLevels[x] << std::endl;
-		std::cout << "    " << provinceResourcesNames[x] << " production rate : " << buildingsProduction[x] << std::endl;
+		std::cout << "- " << RESOURCE_BUILDING_NAMES[x] << " (" << buildingNames[x].substr(0, 1) << ") " << std::endl;
+		std::cout << "    Level: " << resourceBuildingsLevels[x] << std::endl;
+		std::cout << "    " << RESOURCE_NAMES[x] << " production rate : " << resourceBuildingsProduction[x] << std::endl;
 	}
+	//Add implementation
 	std::cout << "Barracks (B) " << std::endl;
-	std::cout << "    Level: " << buildingLevels[5] << std::endl;
-	std::cout << "    Max training capacity: " << buildingsProduction[5] << std::endl;
-	std::cout << std::endl;
-	std::cout << "\033[;0m";
+	std::cout << "    Level: " << otherBuildingsLevels[0] << std::endl;
+	std::cout << "    Max training capacity: " << barracksCapacity << "\n\n\033[;0m";
 
 
 }
+//Fix this-- add distintion between resource buildings and other types
 int Provinces::getBuildingLevel(int index)
 {
-	return buildingLevels[index];
+	return resourceBuildingsLevels[index];
 }
 void Provinces::updateBuildingsProduction()
 {
-	for (int x = 0; x < sizeof(buildingsProduction) / sizeof(int); x++)
+	for (int x = 0; x < 5; x++)
 	{
-		buildingsProduction[x] = buildingLevels[x] * provinceBuildingsProductionNumbers[x];
+		resourceBuildingsProduction[x] = resourceBuildingsLevels[x] * RESOURCE_PRODUCTION[x];
 	}
 }
 
@@ -267,47 +259,39 @@ void Provinces::completeProvinceScoutReport(int accuracy)
 [26] food consumption*/
 }
 
-void compileProvinceStats (int (&provinceStatsArray)[35], bool &isACapitalArg, int (&otherStats)[17], std::string &unitNameArg, std::unordered_map<std::string, CommanderProfile*> &commandersArg;)
+void Provinces::compileProvinceStats (std::array<std::array<int, 5>, 7> &provinceStatsArray, bool &isACapitalArg, std::array<std::vector<int>, 7> &otherStats, std::string &unitNameArg, std::unordered_map<std::string, CommanderProfile*> &commandersArg)
 {
 	unitNameArg = unitName;
 	isACapitalArg = isACapital;
 	
-	for (int x = 0; x < 5; x++)
-	{
-		provinceStatsArray[x] = resourcesPresent[x];
-		provinceStatsArray[x + 5] = troopsPresent[x];
-		provinceStatsArray[x + 10] = troopsInjured[x];
-		provinceStatsArray[x + 15] = troopsLost[x];
-		provinceStatsArray[x + 20] = resourceBuildingsLevels[x];
-		provinceStatsArray[x + 25] = resourceBuildingsProduction[x];
-		provinceStatsArray[x + 30] = maxResources[x];
-	}
 
-	otherStats[1] =  CP;
-	otherStats[2] =  totalTroops;
-	otherStats[3] =  foodConsumption;
+	provinceStatsArray[0] = resourcesPresent;
+	provinceStatsArray[1] = troopsPresent;
+	provinceStatsArray[2] = troopsInjured;
+	provinceStatsArray[3] = troopsLost;
+	provinceStatsArray[4] = resourceBuildingsLevels;
+	provinceStatsArray[5] = resourceBuildingsProduction;
+	provinceStatsArray[6] = maxResources;
 
-	otherStats[4] =  xCoord = 0;
-	otherStats[5] =  yCoord = 0;
-	otherStats[6] =  participantIndex;
-	otherStats[7] =  unitLevel;
-	otherStats[8] =  maxGarrison;
-  otherStats[9] =  maxInfirmaryCapacity;
+	
+	otherStats[0] =  {CP, totalTroops, troopsTrainedThisTurn}; //Troop Stuff
 
-	otherStats[10] =  otherBuildingLevels[0];
-	otherStats[11] =  otherBuildingLevels[1];
-
-  otherStats[12] =  totalMaxResources;
-  otherStats[13] =  troopsTrainedThisTurn;
-  otherStats[14] =  foodConsumption;
-
-	otherStats[15] =  scoutReportTurn;
-	otherStats[16] =  scoutReportLogLevel;
-	otherStats[17] =  logAccuracy;
+	otherStats[1] =  {xCoord, yCoord};
+	otherStats[2] =  {participantIndex, unitLevel};
+	otherStats[3] =  {maxGarrison, maxInfirmaryCapacity};
+	
+	std::vector <int >newVector;
+	for (int x: otherBuildingsLevels)
+		newVector.push_back(x);
+	otherStats[4] =  newVector;
+	
+  otherStats[5] =  {totalMaxResources, foodConsumption};
+	otherStats[6] =  {scoutReportTurn, scoutReportLogLevel, logAccuracy};
 
 	commandersArg = commanders;
 
 
+	//Commander stuff
 	int resourcesPresent[5] = {0, 0, 0, 0, 0};
 	int troopsPresent[5] = {0, 0, 0, 0, 0};
 	int troopsInjured[5] = {0, 0, 0, 0, 0};

@@ -14,7 +14,7 @@
 #include "Mobility.h"
 #include "AllUnits.h"
 
-extern const int UNIT_SIZE;
+#define UNIT_SIZE 5
 
 class ArmyDeploymentMA
 {

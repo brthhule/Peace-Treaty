@@ -52,10 +52,9 @@ void AttackMA::findCommander(std::vector <CommanderProfile *> commandersCanAttac
 	std::cout << "Enter the name of the commander you would like to select: ";
 	getline(std::cin, commanderName);
 	if (attackingParticipant->hasCommander(commanderName) == false)
-	{
 		findCommander(commandersCanAttack);
-	}
-	attackingCommander = attackingParticipant -> getCommanderName(commanderName);
+	
+	attackingCommander = attackingParticipant -> getCommanderByName(commanderName);
 	preAttack();
 }
 

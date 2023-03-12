@@ -14,8 +14,8 @@ extern std::vector <Participants> participantsList;
 extern std::vector<std::vector<Provinces>> provincesMap;
 extern int continentSize;
 extern int enemyDifficulty;
-extern int troopsCP[5];
-extern std::string provinceResourcesNames[5];
+extern std::array<int, 5> TROOPS_CP;
+extern const std::array<std::string, 5> RESOURCE_NAMES;
 
 class AttackMA
 {

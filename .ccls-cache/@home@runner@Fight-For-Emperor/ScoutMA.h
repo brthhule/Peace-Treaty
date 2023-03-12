@@ -14,9 +14,9 @@ public:
   ScoutMA(Participants *newParticipant, Provinces *newProvince);
 
   // Functions
-  void selectTargetToScout();
+  void selectTarget();
   void playerScoutStepTwo();
-  int selectUnitToScout(int &unitName, bool &isProvince, std::array<int, 2> coordinates);
+  int selectUnitToScout(std::string &unitName, bool &isProvince, std::array<int, 2> coordinates);
   void scoutLogCalculationsProvince(int accuracy);
 	void getCanScout();
 	bool checkHasUnit (std::string unitName);

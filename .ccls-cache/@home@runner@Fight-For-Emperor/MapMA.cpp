@@ -21,7 +21,7 @@ void MapMA::viewPlayerMap() {
 
   switch (whatToDo) {
   case 'P': {
-    Provinces *province = participant->getYourCoords(1);
+    Provinces *province = participant->getYourProvince(1);
 		
     if (province->deleteStatus() != true) {
       selectUnitOriginal(province);

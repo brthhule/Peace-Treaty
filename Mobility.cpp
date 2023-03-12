@@ -36,8 +36,10 @@ void Mobility::moveUnitOne() {
   std::vector<Provinces *> provincesCanSelect;
   if (selectedCommander->hasMovedQuestion() == false) {
 		std::array<int, 2> newCoordinates = selectedCommander->returnCoordinates();
-    print ("The coordinates of the chosen unit unit are: (");
-    OF.printCoordinates(newCoordinates) << "\n\nYou can only move this unit to one of the provinces adjacent to the province it is in\n")
+    print ("The coordinates of the chosen unit unit are: ");
+		OF.printCoordinates(newCoordinates);
+		println("\n\nYou can only move this unit to one of the provinces adjacent to the province it is in");
+		
     provincesCanSelect = moveUnitTwo();
 
     // The participant slects coordiantes

@@ -4,8 +4,8 @@
 #include "AllUnits.h"
 #include <vector>
 
-extern const int UNIT_SIZE;
-extern const std::string RESOURCE_NAMES[];
+#define UNIT_SIZE 5
+extern const std::array<std::string, 5> RESOURCE_NAMES;
 
 class CommanderProfile : public AllUnits {
 public:
