@@ -120,7 +120,7 @@ void MapMA::selectEnemyProvince(Provinces *newP) {
   }
   case 'S': {
     ScoutMA newScout(participant, enemyProvince);
-    newScout.selectTargetToScout();
+    newScout.selectTarget();
 		//selectEnemyProvince(enemyProvince);
     break;
   }

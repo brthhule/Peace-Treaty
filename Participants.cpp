@@ -144,18 +144,21 @@ std::string Participants::getNewName() {
     if (newName == newProvince->getProvinceName())
       getNewName();
 
-  for (CommanderProfile *newCommander : commandersList)
-    if (newName == newCommander->getUnitName())
+  
+  for (it = commandersList.begin(); it != commandersList.end(); it++)
+    if (newName == it->getUnitName())
       getNewName();
 
   return newName;
 }
 
 CommanderProfile *Participants::getCommander(int index) {
-  return commandersList[index];
+  std::unordered_map<std::string, CommanderProfile*>::iterator it;
+  for (it = commandersList.begin(); it != commandersList.end(); it++)
+    if ()
 }
 
-std::vector<int> Participants::getTrainCosts() { return trainCosts; }
+std::array<int, 5> Participants::getTrainCosts() { return trainCosts; }
 
 int Participants::getMaxCommanders() { return maxCommanders; }
 

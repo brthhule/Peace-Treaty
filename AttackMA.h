@@ -31,7 +31,7 @@ public:
 	void preAttack();
 	void playerAttack();
 	void playerCommitAttack();
-	void calculateTroopsLost(CommanderProfile* commander, int lostCombatPower, std::vector<int> &troopsLost, int troopIndex);
+	void calculateTroopsLost(CommanderProfile* commander, int lostCombatPower, std::array<int,5> &troopsLost, int troopIndex);
 	void battleCalculationsTwo(int& lostCombatPower, int troopsLost[5], int troopIndex);
 
 
@@ -43,7 +43,7 @@ private:
 	CommanderProfile * attackingCommander;
 	std::vector <CommanderProfile*> defendingCommanders;
 	bool defenseCanRetreat;
-	std::vector<int> oldResources;
+	std::array<int,5> oldResources;
 };
 
 #endif

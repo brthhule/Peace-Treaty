@@ -15,31 +15,25 @@ AttackMA::AttackMA(Provinces *defendingProvinceArg, Participants* attackingParti
       // check that coordinates are inbound
       if (DPX >= 0 && DPY >= 0 && DPY < continentSize && DPX < continentSize) {
         Provinces *newProvince = &provincesMap[DPX][DPY];
-        for (int x = 0; x < newProvince->returnAllCommanders.size(); x++) {
-          commandersCanAttack.push_back(newProvince->returnAllCommanders.at(x));
-        }
+        std::vector<CommanderProfile*> commanderList = newProvince->returnAllCommanders();
+        for (CommanderProfile* newCommander: commanderList)
+          commandersCanAttack.push_back(newCommander);
       }
     }
   }
 
-  if (commandersCanAttack.size() == 0) {
-    std::cout
-        << "There are no armies available to attack the enemy. Please move "
-           "an army unit to one of the provinces around the target. \n\n";
-  } else
+  if (commandersCanAttack.size() == 0)
+    std::cout << "There are no armies available to attack the enemy. Please move an army unit to one of the provinces around the target. \n\n";
+  else
     findCommander(commandersCanAttack);
 }
 
-AttackMA::AttackMA(Provinces *attackerProvinceArg,
-                   Provinces *defenderProvinceArg,
-                   Participants *attackingParticipantArg,
-                   CommanderProfile *commanderArg) {
+AttackMA::AttackMA(Provinces *attackerProvinceArg, Provinces *defenderProvinceArg, Participants *attackingParticipantArg, CommanderProfile *commanderArg) {
   attackingProvince = attackerProvinceArg;
   defendingProvince = defenderProvinceArg;
   attackingParticipant = attackingParticipantArg;
   attackingCommander = commanderArg;
 	preAttack();
-	
 }
 
 void AttackMA::findCommander(std::vector <CommanderProfile *> commandersCanAttack) {
@@ -47,7 +41,7 @@ void AttackMA::findCommander(std::vector <CommanderProfile *> commandersCanAttac
   std::cout << "The following commanders can attack the target: \n";
   std::cout << "Amount of commanders: " << commandersCanAttack.size() << std::endl;
   for (int x = 0; x < commandersCanAttack.size(); x++) {
-    std::cout << "Commander " << commandersCanAttack[x]->getUnitName() << ", Level: " << commandersCanAttack[x]->getLevel();
+    std::cout << "Commander " << commandersCanAttack[x]->getUnitName() << ", Level: " << commandersCanAttack[x]->returnLevel();
   }
 	std::cout << "Enter the name of the commander you would like to select: ";
 	getline(std::cin, commanderName);
@@ -62,7 +56,7 @@ void AttackMA::preAttack()
 {
 	defendingParticipant = &participantsList[defendingProvince->getParticipantIndex()];
 	playerCommitAttack();
-	defendingCommanders = defendingProvince -> returnAllCommmanders();
+	defendingCommanders = defendingProvince -> returnAllCommanders();
 	oldResources = attackingCommander -> getAllResources();
 	playerCommitAttack();
 }
@@ -76,8 +70,8 @@ void AttackMA::playerCommitAttack() {
 
 	determineLostCP(attackerCP, defendingCP, attackerLostCP, defenderLostCP);
 
-  std::vector<int> troopsLost = {0, 0, 0, 0, 0};
-  std::vector<int> injuredTroops = {0, 0, 0, 0, 0};
+  std::array<int,5> troopsLost = {0, 0, 0, 0, 0};
+  std::array<int,5> injuredTroops = {0, 0, 0, 0, 0};
 
     calculateTroopsLost(attackingCommander, attackerLostCP, troopsLost, 0);
 		
@@ -86,7 +80,7 @@ void AttackMA::playerCommitAttack() {
       troopsLost[x] -= injuredTroops[x];
     }
     attackingCommander->addInjuredTroops(injuredTroops);
-		attackingCommander->removeTroops(troopsLost);
+		attackingCommander->modifyTroops(troopsLost, false);
 		
     std::cout << "  Results: \n\n";
     printResourcesGained();
@@ -127,7 +121,7 @@ void AttackMA::playerCommitAttack() {
 }
 
 /*Basically go through each unit type and subtract 16CP worth of troops and keep going (done so that lost troops are distributed evenly among the various ranks, but there is still use to training lower rank troops as meat shields (if all lower troops are used up, then losses start piling up on higher rank troops; it's key to keep a healthy proportion of troops in your army))*/
-void AttackMA::calculateTroopsLost(CommanderProfile* commander, int lostCombatPower, std::vector<int> &troopsLost, int troopIndex) {
+void AttackMA::calculateTroopsLost(CommanderProfile* commander, int lostCombatPower, std::array<int,5> &troopsLost, int troopIndex) {
 	
 	int troopPresent = commander -> getTroopsPresent(troopIndex);
 	int troopCP = troopsCP[troopIndex];

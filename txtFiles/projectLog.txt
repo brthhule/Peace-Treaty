@@ -136,18 +136,19 @@ February 24: 4 hours, 40 min			280
 February 26: 2 hours							120
 February 28: 50 min								50
 
-February Total: 11 hours, 45 min	875
+February Total: 14 hours, 35 min	875
 
 
 March 2: 20 min										20
 March 7: 3 hours, 15 min					195
 March 10: 3 hours, 50 min					230
+March 11: 4 hours, 10 min         250
+March 12: 1 hour, 40 min          100
 
-March Total: 7 hours, 25 min			445 
+March Total: 13 hours, 15 min			795
 
 
-
-Log:							Total: 98 hours, 45 min - 5925 min
+Log:							Total: 104 hours, 35 min - 6275 min
 
 
 June 10th - June 15th: 7 hours-
@@ -513,16 +514,33 @@ March 10: 3 hours, 50 min
 	10:00 - 10:30 pm (30 min): Finished making calculateEachUnit and calculateEachResource methods (and their respective calculateTotal methods)-- can probably merge them at some point, but I'll worry about that another time. Working on created scoutMap in Participants-- this way, the action of generating a scout report is burdened by the Participant (given a province/commander and accuracy level), not the unit itself. Moved updateProvinceResources from OtherFunctions to Main bc Participants used OtherFunctions and Provinces, and OtherFunctions uses Provinces, so I have to offload Provinces stuff from OtherFunctions to other classes/files. Moved createMap and pauseGame to main. Moving showMap to Participants. (10:25)-- finished taking Provinces out of OtherFunctions. Gonna take a break.
 	10:30 pm - 12:00 am (1 hour, 30 min): Consolidating the calculateTotal methods into calculateTotal and calculateEach methods into calculateEach. Got error trying to make scoutMap equal to &provincesMap-- something about something being overloaded. Moved the * to after the inside vector instead of the Provinces, ran program to see if it works, console started telling me to work on ArmyDeploymentMA, so I guess I'm doing that now. In the future, I should probably find away to consolidate all the add/subtract methods in AllUnits so it's less clunky. Moving on to BuildMA. Going to TrainMA. Created subtractCheckResources method in Provinces to make upgrade/training checking easier. Console telling me to work on MapMA now-- wrapping into the Participants scoutMap idea now. Creating new class: ScoutMap. Creating another class: ScoutProvinces. Realized I don't need ScoutProvinces-- I was going to create a new class so It'd be separate from ProvincesMap, then I realized the Provinces and CommanderProfile classes are already independent. Moved completeProvinceScoutReport from Provinces to ScoutMap. Moved completeProvinceScoutReport back to Provinces. Realized I don't actually need ScoutMap-- I can just work inside of Participants, deleted it. I messed up the province ScoutLog functionality-- have to go to a previous git commit to see what I did in the past (make sure to committ current version tho).
 
-March 11:
+March 11 (4 hours, 10 min):
 	4:00 - 6:10 pm (2 hours, 10 min): Continuing to work on Scout Log functionality. Created modifyArray in OtherFunctions because I've been using vectors a lot, which isn't memory efficient. I'm going to start changing vectors to arrays where I can. Moved pauseGame from main to PlayerAction, where is the only place it's called for. Worked on ScoutMA a little bit, created modifyTroops/Resources/whatever to consolidate the add/subtract methods. Jumping around and fixing stuff. Using arrays is a lot more messy than using vectors, but I think the memory benefits are worth it. Currently working on MapMA, figuring out scout stuff. 
 
-	6:15 - 7:25 pm: Working on scout stuff reimplementing provinceStats. Set up basic structure for Provinces and CommanderProfile scout reports-- have all the items I need to keep track of. Have yet to actually implement anything (7:10)-- I'm going to run the program first and fix everything else then come back when it starts running. Regular arrays suck-- it's too complicated trying to work around them. I'm going to use std::array instead, which, like primitive arrays, may perform better than vectors, but I can return them from methods and stuff.
-	7:30 - 8:20 pm: Kept jumping around, fixing stuff. Worked on MapMA, next up is ScoutMA.
+	6:15 - 7:25 pm (1 hour, 10 min): Working on scout stuff reimplementing provinceStats. Set up basic structure for Provinces and CommanderProfile scout reports-- have all the items I need to keep track of. Have yet to actually implement anything (7:10)-- I'm going to run the program first and fix everything else then come back when it starts running. Regular arrays suck-- it's too complicated trying to work around them. I'm going to use std::array instead, which, like primitive arrays, may perform better than vectors, but I can return them from methods and stuff.
+	7:30 - 8:20 pm (50 min): Kept jumping around, fixing stuff. Worked on MapMA, next up is ScoutMA.
 
-March 12:
+March 12: 1 hour, 40 min
 	3:55 - 5:35 pm (1 hour, 40 min): Just going through general erros-- mostly having to do with the change from primitive arrays to std::array. Working on Participants, simplified printListOfProvinces. Changed getYourCoords to getYourProvince to make it more intuitive to understand. Replaced vector for CommanderProfile with unordered_map, fixing stuff as needed. Changed getCommanderName to getCommanderByName to make it more intuitive. Deleted findCommanderIndex-- is never used. Worked on some Provinces Scout stuff.
 
+March 17:
+	11:00 pm - 12:00 am: Fixing whatever the console tells me to fix. Problems in ArmyDeploymentMA, going to go fix now. Rewriting code to make it more readable-- changing functionality so instead of selecting commander by number in list/index, do so by identying their name. Added enterAnything to OtherFunctions to make going back the previous menu easier. Moving to CommanderProfile now (11:42 pm). Later on, have to make functionality for scout stats. Worked on ScoutMA, turned printCoordinates into a string so it would make printing coordinates easier. Made getCanScoutTwo
 
+March 18:
+  7:45 - 7:55 am (10 min): Fixing console errors. Getting "make: *** [Makefile:17: PlayerAction.o] Error 1", going to search it up. Added "#include "ArmyDeploymentMA.h"", problem went away for now. Going to AttackMA.h. There might be a problem with selecting commanders hby name isntead of index.
+ 8:40 am - 8:55 am (15 min): Working on AttackMA. Note to self: don't use the built in repl auto format feature because it messes everything up-- only use if absolutely have to. Did random stuff, have to finish modiyfing casualtyReport to use arrays instead of vectors
+  9:45 - 9:55 am (10 min): Working on Participants. In the process of taking out getCommander(index) and replacing it with unordered_map
+  11:10 - 11:25 am (15 min): Working on ScoutMA, fixing getCanScoutTwo. Note to self; need to work more on selectUnitToScout.
+  12:10 - 12:25 am (15 min): Working on selectUnitToScout. Created selectUnitToScoutTwo to separate the text display from the actualy functionality. Fixed printCoordinates; didn't work because I tried concatenating the integer coordinates with the string text-- I turned the integers into strings and then concatenated the strings together. Changed coordinates[2] in Mobility to an array object. Still getting error:
+
+  PlayerAction.cpp:51:5: error: unknown type name 'ArmyDeploymentMA'
+    ArmyDeploymentMA newArmyDeploymentMA(participant);
+    ^
+1 error generated.
+make: *** [Makefile:17: PlayerAction.o] Error 1
+
+Have to find out what this is about and how to fix it; all the other functions seem find, what's different about this one?
+	
 
 Changes: 
 

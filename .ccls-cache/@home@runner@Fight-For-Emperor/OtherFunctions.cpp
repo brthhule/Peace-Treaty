@@ -102,9 +102,12 @@ int OtherFunctions::translateCoordinateOutput(int coordinate, char indicator) {
   }
 }
 
-void OtherFunctions::printCoordinates(std::array<int, 2> coordinates)
+std::string OtherFunctions::printCoordinates(std::array<int, 2> coordinates)
 {
-  std::cout << "(" << translateCoordinate(coordinates[0], 'x', 'O') << ", " << translateCoordinate(coordinates[1], 'y', 'O') << ") ";
+  std::string x = std::to_string(translateCoordinate(coordinates[0], 'x', 'O'));
+  std::string y = std::to_string(translateCoordinate(coordinates[1], 'y', 'O'));
+	std::string coordinatesString = "(" + x + ", " + y + ") ";
+	return coordinatesString;
 }
 
 std::vector<int> modifyVector(std::vector<int> primeVector, std::vector<int> secondaryVector, bool isAdd)
@@ -136,4 +139,12 @@ void OtherFunctions::printResources(std::array<int, 5> resourcesArray)
 		std::cout << "- " << provinceResourcesNames[x] << ": " << resourcesArray[x] <<  std::endl;
 	}
 	std::cout <<  std::endl;
+}
+
+void OtherFunctions::enterAnything()
+{
+	std::string emptyString = " ";
+	std::cout << "Enter anything to return to the previous menu: ";
+	getline(std::cin, emptyString);
+	println("\n")
 }

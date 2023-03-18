@@ -11,13 +11,13 @@ void synopsis()
 
 
 
-void casualtyReport(int deadTroops[5], int injuredTroops[5])
+void casualtyReport(std::array<int,5> troopsLost, std::array<int,5> injuredTroops)
 {
     std::cout << std::endl;
     std::cout << "Troops casualties: " << std::endl;
     for (int x = 0; x < 5; x++) /*print out deaths*/
     {
-        std::cout << troopNames[x] << " dead: " << deadTroops[x] << std::endl;
+        std::cout << troopNames[x] << " lost: " << troopsLost[x] << std::endl;
     }
     std::cout << std::endl;
     for (int x = 0; x < 5; x++) /*print out deaths*/

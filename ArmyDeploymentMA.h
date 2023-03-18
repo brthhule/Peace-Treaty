@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 #include "OtherFunctions.h"
 #include "textFunctions.h"
@@ -35,7 +36,7 @@ public:
 	void viewArmyOverview();
 	void deployCommanderMF();
 
-	CommanderProfile *selectCommander();
+	bool *selectCommander();
 
 
 	void displayCommanders();
@@ -44,6 +45,7 @@ private:
 	Provinces *capitalProvince;
 	int commandersNum;
 	OtherFunctions OF;
+	CommanderProfile* selectedCommander;
 };
 
 #endif

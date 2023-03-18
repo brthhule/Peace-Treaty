@@ -20,7 +20,6 @@ public:
   // Stats stuff
   int getCommanderStat(int index);
   void printCommanderStats();
-  void changeCommanderStat(int index, int amount);
   void setLocation(std::array<int, 2> pCoords);
 
   // Scout report stuff
@@ -32,11 +31,8 @@ public:
   void addLevel(){unitLevel++;} // addCommanderLevel
   std::array<int, 5> getUpgradeCosts();
   void printCosts(std::array<int, 5> costs);
-  std::string getName(){return unitName;} // getCommanderName
-  std::vector<int> getTrainCosts();
 
   void setDelete() { deleteCommander = true; }
-
   bool getDelete() { return deleteCommander; }
 
   // Moving

@@ -16,9 +16,11 @@ public:
   // Functions
   void selectTarget();
   void playerScoutStepTwo();
-  int selectUnitToScout(std::string &unitName, bool &isProvince, std::array<int, 2> coordinates);
+  int selectUnitToScout(std::string &unitName, bool &isProvince, std::array<int, 2> &coordinates);
+  int selectUnitToScoutTwo(std::string &unitName, bool &isProvince, std::array<int, 2> &coordinates);
   void scoutLogCalculationsProvince(int accuracy);
 	void getCanScout();
+  void getCanScoutTwo(int targetX, int targetY, int a, int b);
 	bool checkHasUnit (std::string unitName);
 
 private:

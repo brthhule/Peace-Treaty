@@ -58,9 +58,9 @@ public:
 	void modifySpecificResource(int index, int amount, bool isAdd);
 	void modifyResources(std::array<int, 5> resourcesArray, bool isAdd);
 	int getResource(int resourceIndex){return resourcesPresent[resourceIndex];}
-	void getAllResources (int &resourcesArray);//Add implementation
+	std::array<int,5> getAllResources ();//Add implementation
 	void printResources();
-	void printCoordinates();
+	std::string printCoordinates();
 
 
 	void changeUnitName(std::string name);

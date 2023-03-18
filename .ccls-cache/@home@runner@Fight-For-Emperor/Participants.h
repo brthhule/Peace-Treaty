@@ -47,9 +47,10 @@ public:
 	void addCommander();
 	CommanderProfile* getCommander(int index);
 	int getMaxCommanders ();
-	std::vector <int> getTrainCosts();
+	std::array<int, 5> getTrainCosts();
 	bool hasCommander(std::string name);
 	CommanderProfile* getCommanderByName(std::string name);
+  std::unordered_map<std::string, CommanderProfile*> getCommandersMap(){return commandersList;}
 			
 	//Province stuff
 	int provincesNum();
@@ -113,13 +114,14 @@ private:
 	int AIMainAction [5];
 	int AIBuildMA [2];
 	int AITroopMA [3];
-std::vector <int> trainCosts = {5, 4, 3, 2, 1};
+std::array <int, 5> trainCosts = {5, 4, 3, 2, 1};
 	int maxCommanders;
 	int participantIndex;
 
-	std::vector <int> troopsLost = { 0,0,0,0,0 };
+	std::array <int, 5> troopsLost = { 0,0,0,0,0 };
 	std::vector<std::vector<Provinces>> scoutMap;
 	OtherFunctions OF;
+  std::unordered_map<std::string, CommanderProfile*>::iterator it;
 };
 
 #endif

@@ -8,13 +8,7 @@ extern int currentParticipantIndex;
 
 /*Constructors*/
 CommanderProfile::CommanderProfile() {
-  for (int x = 0; x < 20; x++) {
-    commanderArmyStats[x] = 0;
-  }
   unitLevel = 1;
-  for (int x = 0; x < 22; x++) {
-    commanderScoutReport[x] = 0;
-  }
   hasMoved = false;
   maxTroops = 0;
   totalMaxResources = 0;
@@ -23,10 +17,6 @@ CommanderProfile::CommanderProfile() {
 	deleteCommander = false;
 }
 CommanderProfile::CommanderProfile(int level, std::string name) {
-  for (int x = 0; x < sizeof(commanderScoutReport) / sizeof(int); x++) {
-    commanderScoutReport[x] = 0;
-  }
-
   unitLevel = level;
 
   for (int x = 0; x < 5; x++) {
@@ -80,19 +70,17 @@ void CommanderProfile::printCommanderStats() {
   std::cout << "\n\033[;0m";
 }
 int CommanderProfile::getCommanderStat(int index) {
-  return *commanderArmyStats[index];
+	//placeholder
+	return -1;
+  //return *commanderArmyStats[index];
 }
 int CommanderProfile::printCommanderScoutReport(int index) {
   return commanderScoutReport[index];
 }
 
-/*Mutator Functions*/
-void CommanderProfile::changeCommanderStat(int index, int amount) {
-  commanderArmyStats[index] += amount;
-}
 
 void CommanderProfile::updateCommanderScoutReport(int index, int value) {
-  commanderScoutReport[index] = value;
+  //commanderScoutReport[index] = value;
 }
 
 void CommanderProfile::completeCommanderScoutReport(int accuracy) {

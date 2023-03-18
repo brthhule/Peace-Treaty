@@ -36,7 +36,7 @@ public:
 
   // Other stuff
   void clearScreen();
-  void printCoordinates(std::array<int, 2> coordinates);
+  std::string printCoordinates(std::array<int, 2> coordinates);
 
   std::vector<int> addVectors(std::vector<int> primeVector,
                               std::vector<int> secondaryVector);
@@ -45,6 +45,8 @@ public:
   std::array<int, 5> modifyArray(std::array<int, 5> primeArray,
                                  std::array<int, 5> secondaryArray, bool isAdd);
   void printResources(std::array<int, 5> resourcesArray);
+
+	void enterAnything ();
 
 private:
 };

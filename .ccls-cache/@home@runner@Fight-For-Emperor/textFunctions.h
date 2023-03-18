@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include <stdlib.h>
+#include <array>
 
 extern std::string provinceResourcesNames[5];
 extern std::string buildingNames[6];
@@ -15,7 +16,7 @@ extern int continentSize;
 
 void synopsis();
 void viewAllStatsFunction();
-void casualtyReport(int troopsLost[5], int injuredTroops[5]);
+void casualtyReport(std::array<int,5> troopsLost, std::array<int,5> injuredTroops);
 
 #endif
 

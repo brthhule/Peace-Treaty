@@ -14,7 +14,7 @@ extern const std::array<std::string, 5> RESOURCE_BUILDING_NAMES;
 extern const std::array<std::string, 5> TROOP_NAMES;
 extern int continentSize;
 extern const int BARRACKS_PRODUCTION;
-extern const std::array<int, 5> INITIAL_VALUES = { 5, 4, 3, 2, 1 };
+extern const std::array<int, 5> INITIAL_VALUES;
 extern int turn;
 
 const int LOG_SIZE = 20;
@@ -42,7 +42,7 @@ public:
   int findMaxGarrison();
 
 	//Buildings
-  int findMaxInfirmaryCapacity() { return (otherBuildingLevels[1] * 10); };
+  int findMaxInfirmaryCapacity() { return (otherBuildingsLevels[1] * 10); };
   int getBuildingLevel(int index);
   void increaseBuildingLevel(int index, int amount);
 
@@ -52,8 +52,8 @@ public:
   int findProvinceLevel();
   void addCommander(CommanderProfile *newCommander);
 	void removeCommander(CommanderProfile *newCommander);
-	std::vector <CommanderProfile*> returnAllCommmanders();
-	int commandersNum(){return commanders.size();};
+	std::vector <CommanderProfile*> returnAllCommanders();
+	int commandersNum(){return commanders.size();}
 
 	/*Training*/
   int getTroopsTrainedThisTurn() { return troopsTrainedThisTurn; };
@@ -64,7 +64,7 @@ public:
 
 	/*Resources*/
 	bool subtractCheckResources(std::array<int, 5> resourcesArray);
-std::vector<int> getTotalResources();
+  std::array<int,5> getTotalResources();
 
 	/*Stats*/
   void printBuildingStats();

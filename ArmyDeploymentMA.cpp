@@ -54,60 +54,30 @@ void ArmyDeploymentMA::armyDeploymentMF() {
 
 void ArmyDeploymentMA::upgradeCommandersOne() /*fix this-- finish making it*/
 {
-  int commandersNum = participant->commandersNum();
-  std::cout << "You have " << commandersNum << " army commanders." << std::endl;
-
-  if (commandersNum > 0) {
-    upgradeCommandersTwo();
-  } else {
-    std::cout << "No commanders available, can not upgrade" << std::endl;
-  }
-
-  std::string thingy = " ";
-  std::cout << "Enter anything to return to Army Deployment menu: \n\n";
-  getline(std::cin, thingy);
-}
-void ArmyDeploymentMA::upgradeCommandersTwo() {
-  std::vector<int> indexOfCommanders;
-  for (int x = 1; x <= commandersNum; x++) 
-    indexOfCommanders.push_back(x);
+  if (commandersNum > 0)
+	{
+		if (selectCommander() == true)
+			upgradeCommandersTwo();
+	}
+  else 
+    std::cout << "No commanders available, can not upgrade\n";
   
+  OF.enterAnything();
+}
+void ArmyDeploymentMA::upgradeCommandersTwo() 
+{
+  selectedCommander->printCosts(newCommander->getUpgradeCosts());
 
-  std::cout << "Here is list of your commanders: " << std::endl;
-  for (int x = 0; x < participant->commandersNum(); x++) {
-    CommanderProfile *tempCommander = participant->getCommander(x);
-    std::cout << x + 1 << ") Commander " << tempCommander->getName()
-              << "; Level: " << tempCommander->returnLevel() << std::endl;
-    delete tempCommander;
-  }
-
-  std::vector<std::string> selectableCommanders;
-  for (int h = 0; h < indexOfCommanders.size(); h++) {
-    selectableCommanders.push_back("" + std::to_string(indexOfCommanders[h]));
-  }
-
-  std::cout << std::endl;
-  int indexOfCommander =
-      stoi(OF.getInput(
-          "Enter the number of the army commander you want to upgrade: ",
-          selectableCommanders, 1)) -
-      1;
-
-  CommanderProfile *newCommander = participant->getCommander(indexOfCommander);
-  newCommander->printCosts(newCommander->getUpgradeCosts());
-
-  std::cout << std::endl;
-  char proceedWithUpgradeQuestion =
-      OF.getInput("Proceed with upgrade? ", {"Y", "N"}, 1).at(0);
+	char proceedWithUpgradeQuestion =
+      OF.getInput("\nProceed with upgrade? ", {"Y", "N"}, 1).at(0);
   if (proceedWithUpgradeQuestion == 'Y') {
 
-    std::array<int, 5> = newCommander->getUpgradeCosts();
+    std::array<int, 5> commanderCosts = newCommander->getUpgradeCosts();
 		bool commanderUpgradeIsSuccess = capitalProvince->subtractCheckResources(commanderCosts);
 
     if (commanderUpgradeIsSuccess == true) {
       newCommander->addLevel();
-      std::cout << "Upgrade successful; Commander " << newCommander->getName()
-                << "is now level " << newCommander->returnLevel() << std::endl;
+      std::cout << "Upgrade successful; Commander " << newCommander->returnName() << "is now level " << newCommander->returnLevel() << std::endl;
     } else {
       capitalProvince->modifyResources(commanderCosts, true);
       std::cout << "Upgrade failed. " << std::endl;
@@ -115,129 +85,111 @@ void ArmyDeploymentMA::upgradeCommandersTwo() {
   }
 }
 
-CommanderProfile *ArmyDeploymentMA::selectCommander() {
+bool *ArmyDeploymentMA::selectCommander() {
   displayCommanders();
   std::string commanderName = " ";
   println("Enter the name of the commander you wish to select: ");
   getline(std::cin, commanderName);
-  CommanderProfile *newCommander;
 
-  if (participant->hasCommander(commanderName) == false) {
+  if (participant->hasCommander(commanderName) == false) 	{
+		println("Invalid character entered. Please try again... (Enter any character to continue)");
     selectCommander();
-  } else {
-    newCommander = participant->getCommanderName(commanderName);
+  } 
+	else 
+		std::cout << "Commander " << commanderName << " selected...\n";
+	
+	selectedCommander = participant->getCommanderByName(commanderName);
 
-    std::cout << "Confirm selection of commander " << newCommander->getName()
-              << "? (Y/N): ";
-    char confirmSelection = OF.getInput("0", {"Y", "N"}, 2).at(0);
-    if (confirmSelection == 'Y') {
-      return newCommander;
-    } else {
-      newCommander->setDelete();
-      return newCommander;
-    }
-  }
+	std::cout << "Confirm selection of commander " << newCommander->returnName() << "? (Y/N): ";
+	char confirmSelection = OF.getInput("0", {"Y", "N"}, 2).at(0);
+
+	if (confirmSelection == 'Y')
+		return true;
+	return false;
+	
 }
 
 void ArmyDeploymentMA::viewArmyOverview() {
-  char decision = 'N';
-  CommanderProfile *newCommander = selectCommander();
-  switch (decision) {
-  case 'Y': {
-    std::cout << "Commander " << newCommander->getName() << " selected... "
-              << std::endl;
-    std::cout << "The coordinates of this Commander: "
-              << newCommander->printOutputCoordinates() << std::endl
-              << std::endl;
+  if (selectCommander() == true)
+	{
+		std::cout << "Commander " << newCommander->returnName() << " selected... " << std::endl;
+    std::cout << "The coordinates of this Commander: " << newCommander->printOutputCoordinates() << "\n\n";
 
     newCommander->printCommanderStats();
-    break;
-  }
-  case 'N':
-    std::cout << "Returning to Army Deployment Menu... " << std::endl;
-    break;
-  }
-  delete newCommander;
+	}
+	OF.enterAnything();	
 }
 
 void ArmyDeploymentMA::trainCommanders() {
   std::string yesOrNoString;
-  std::cout << "You have " << commandersNum << " army commanders in total. "
-            << std::endl;
+  std::cout << "You have " << commandersNum << "/" << selectedCommander->getMaxCommanders() << " total army commanders. \n";
   std::cout << "Do you want to train a commander? (Y/N) ";
 
-  std::vector<int> trainCosts = participant->getTrainCosts();
+  std::array<int, 5> trainCosts = participant->getTrainCosts();
 
-  if (OF.getInput("Replacement", {"Y", "N"}, 2).at(0) == 'Y') {
-    if (commandersNum <
-        maxAmountOfCommanders) /*if amount of commanders is less than max (not
-                                  at max capacity)*/
-    {
-      printCosts(trainCosts, "training");
-
-      if (OF.getInput("Proceed with training? (Y/N) ", {"Y", "N"}, 1).at(0) ==
-          'Y') {
+  if (OF.getInput("Proceed with training", {"Y", "N"}, 1).at(0) == 'Y') 	{
+    if (commandersNum < maxAmountOfCommanders) /*if amount of commanders is less than max (not at max capacity)*/
         proceedWithTraining(trainCosts);
-      }
-    } else {
-      std::cout << "At maximum army commander amount. Training failed, "
-                   "returning to menu \n";
-    }
-  } else {
-    std::cout << "Returning to previous menu... " << std::endl;
-  }
+    else 
+      std::cout << "At maximum army commander amount. Training failed, returning to menu \n";
+  } 
+	else 
+    OF.enterAnything();
 }
 
-void ArmyDeploymentMA::proceedWithTraining(std::vector<int> trainCosts) {
+void ArmyDeploymentMA::proceedWithTraining(std::array<int,5> trainCosts) {
   bool trainingSuccess = capitalProvince->subtractCheckResources(trainCosts);
 
-  if (trainingSuccess == true) {
-    println("Commander training successful ");
-    std::cout << "Current commanders: " << commandersNum + 1 << std::endl;
-
+  if (trainingSuccess == true) 
+	{
     CommanderProfile newCommander(1, participant->getNewName());
     newCommander.setLocation(capitalProvince->returnCoordinates());
     capitalProvince->addCommander(&newCommander);
-  } else {
+		
+		println("Commander training successful ");
+    std::cout << "Current commanders: " << commandersNum << std::endl;
+  } 
+	else 
+	{
     std::cout << "Commander training failed (Not enough resources)... \n\n";
     capitalProvince->addResources(trainCosts);
   }
 }
 
-void ArmyDeploymentMA::deployCommanderMF() {
-  displayCommanders();
-  bool returnToMenu = false;
-  CommanderProfile *newCommander = selectCommander();
-  newCommander->printCommanderStats();
+void ArmyDeploymentMA::deployCommanderMF() 
+{
+  if (selectCommander() == false)
+		return;
+	
+  selectedCommander->printCommanderStats();
 
-  std::cout << "Deploy commander " << newCommander->getUnitName() << "? (Y/N) ";
+  std::cout << "Deploy commander " << selectedCommander->getUnitName() << "? (Y/N) ";
   char confirmDeploy = OF.getInput("Replacement", {"Y", "N"}, 2).at(0);
 
-  if (confirmDeploy == 'Y') {
-    if (newCommander->hasMovedQuestion() == false) {
+  if (confirmDeploy == 'Y') 
+	{
+    if (selectedCommander->hasMovedQuestion() == false) {
       Mobility newMobility(newCommander, participant);
       newMobility.moveUnitOne();
       returnToMenu = true;
-    } else {
-      std::cout << "This unit has already moved... please pick another unit "
-                << std::endl;
-    }
-  } else {
-    returnToMenu = true;
-  }
-  if (returnToMenu == false) {
-    deployCommanderMF();
-  }
-  std::cout << "\nReturning to the Army Deployment action menu\n\n\n";
+    } 
+		else 
+		{
+			std::cout << "This unit has already moved... please pick another unit \n";
+			deployCommanderMF();
+		}
+
+  OF.enterAnything();
 }
 
 void ArmyDeploymentMA::displayCommanders() {
-  std::cout << "You have " << participant->commandersNum() << " commanders: \n";
-
-  for (int a = 0; a < participant->commandersNum(); a++) {
-    CommanderProfile *newCommander = participant->getCommander(a);
-    std::cout << "Commander " << newCommander->getName()
-              << "; Level: " << newCommander->getLevel() << std::endl;
+  std::cout << "Here is list of your commanders: \n";
+	std::unordered_map<std::string, CommanderProfile*> commandersMap = participant->getCommandersMap;
+  std::unordered_map<std::string, CommanderProfile*>::iterator it;
+  for (it = commandersMap.begin(); it != commandersMap.end(); it++) 	{
+    CommanderProfile *tempCommander = it->second;
+    std::cout << "- Commander " << tempCommander->returnName() << "; Level: " << tempCommander->returnLevel() << std::endl;
+    delete tempCommander;
   }
 }
 

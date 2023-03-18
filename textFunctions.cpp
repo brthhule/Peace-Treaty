@@ -11,7 +11,7 @@ void synopsis()
 
 
 
-void casualtyReport(int troopsLost[5], int injuredTroops[5])
+void casualtyReport(std::array<int,5> troopsLost, std::array<int,5> injuredTroops)
 {
     std::cout << std::endl;
     std::cout << "Troops casualties: " << std::endl;

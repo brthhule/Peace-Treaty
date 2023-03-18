@@ -171,18 +171,20 @@ int Provinces::getTotalCP()
 
 std::vector<int> Provinces::getTotalResources()
 {
-	std::vector<int> totalResources = resourcesPresent;
-	for (int x = 0; x < commandersNum(); x++)
+	std::array<int,5> totalResources = resourcesPresent;
+  std::unordered_map<std::string, CommanderProfile*>::iterator it;
+	for (it = commanders.begin(); it != commanders.end(); it++)
 	{
 		for (int y = 0; y < 5; y++)
 		{
-			totalResources[y] += commanders[x].getResource(y);
+			totalResources[y] += it->second->getResource(y);
 		}
 	}
 	return totalResources;
 }
 
-std::vector <CommanderProfile*> Provinces::returnAllCommmanders(){
+//Convert unordered_map to vector for easy understanding
+std::vector <CommanderProfile*> Provinces::returnAllCommanders(){
 		std::vector<CommanderProfile*> commandersList;
 		std::unordered_map<std::string, CommanderProfile*>::iterator it;
 		for (it = commanders.begin(); it != commanders.end(); it++)

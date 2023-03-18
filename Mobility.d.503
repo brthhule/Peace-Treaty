@@ -1,0 +1,2 @@
+Mobility.o: Mobility.cpp Mobility.h OtherFunctions.h textFunctions.h \
+  Participants.h Provinces.h AllUnits.h CommanderProfile.h AttackMA.h
