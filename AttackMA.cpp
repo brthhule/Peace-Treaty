@@ -15,7 +15,7 @@ AttackMA::AttackMA(Provinces *defendingProvinceArg, Participants* attackingParti
       // check that coordinates are inbound
       if (DPX >= 0 && DPY >= 0 && DPY < continentSize && DPX < continentSize) {
         Provinces *newProvince = &provincesMap[DPX][DPY];
-        std::vector<CommanderProfile*> commanderList = newProvince->returnAllCommanders();
+        std::vector<CommanderProfile*> commanderList = newProvince->getAllCommanders();
         for (CommanderProfile* newCommander: commanderList)
           commandersCanAttack.push_back(newCommander);
       }
@@ -41,7 +41,7 @@ void AttackMA::findCommander(std::vector <CommanderProfile *> commandersCanAttac
   std::cout << "The following commanders can attack the target: \n";
   std::cout << "Amount of commanders: " << commandersCanAttack.size() << std::endl;
   for (int x = 0; x < commandersCanAttack.size(); x++) {
-    std::cout << "Commander " << commandersCanAttack[x]->getUnitName() << ", Level: " << commandersCanAttack[x]->returnLevel();
+    std::cout << "Commander " << commandersCanAttack[x]->getUnitName() << ", Level: " << commandersCanAttack[x]->getLevel();
   }
 	std::cout << "Enter the name of the commander you would like to select: ";
 	getline(std::cin, commanderName);
@@ -56,12 +56,13 @@ void AttackMA::preAttack()
 {
 	defendingParticipant = &participantsList[defendingProvince->getParticipantIndex()];
 	playerCommitAttack();
-	defendingCommanders = defendingProvince -> returnAllCommanders();
+	defendingCommanders = defendingProvince -> getAllCommanders();
 	oldResources = attackingCommander -> getAllResources();
 	playerCommitAttack();
 }
 
-void AttackMA::playerCommitAttack() {
+void AttackMA::playerCommitAttack() 
+{
 	CommanderProfile* defendingCommander = defendingCommanders[0];
 	int attackerCP = attackingCommander -> getCP();
 	int defendingCP = defendingCommander ->getCP();
@@ -73,52 +74,50 @@ void AttackMA::playerCommitAttack() {
   std::array<int,5> troopsLost = {0, 0, 0, 0, 0};
   std::array<int,5> injuredTroops = {0, 0, 0, 0, 0};
 
-    calculateTroopsLost(attackingCommander, attackerLostCP, troopsLost, 0);
-		
-    for (int x = 0; x < 5; x++) {
-      injuredTroops[x] = troopsLost[x] / (2 * enemyDifficulty);
-      troopsLost[x] -= injuredTroops[x];
-    }
-    attackingCommander->addInjuredTroops(injuredTroops);
-		attackingCommander->modifyTroops(troopsLost, false);
-		
-    std::cout << "  Results: \n\n";
-    printResourcesGained();
-		attackingCommander->printResources();
-    casualtyReport(troopsLost, injuredTroops);
+	calculateTroopsLost(attackingCommander, attackerLostCP, troopsLost, 0);
+	
+	for (int x = 0; x < 5; x++) {
+		injuredTroops[x] = troopsLost[x] / (2 * enemyDifficulty);
+		troopsLost[x] -= injuredTroops[x];
+	}
+	attackingCommander->addInjuredTroops(injuredTroops);
+	attackingCommander->modifyTroops(troopsLost, false);
+	
+	std::cout << "  Results: \n\n";
+	printResourcesGained();
+	attackingCommander->printResources();
+	casualtyReport(troopsLost, injuredTroops);
 
-    char viewAllArmyStats = ' ';
-    char repeatViewAllArmyStats = 'N';
-    std::string viewAllArmyStatsString;
+	char viewAllArmyStats = ' ';
+	char repeatViewAllArmyStats = 'N';
+	std::string viewAllArmyStatsString;
 
-    defendingProvince->addCommander(
-        attackingCommander);
+	defendingProvince->addCommander(
+			attackingCommander);
 
-    do {
-      repeatViewAllArmyStats = 'N';
-      viewAllArmyStats = getChar("View all army stats? (Y/N) ", "YN", 1);
-      std::cout << std::endl;
+	do {
+		repeatViewAllArmyStats = 'N';
+		viewAllArmyStats = OF.getInput("View all army stats? (Y/N) ", {"Y", "N"}, 1).at(0);
+		std::cout << std::endl;
 
-      switch (viewAllArmyStats) {
-      case 'Y': {
-        allCommanders[currentParticipantIndex][commanderIndex]
-            .printCommanderStats();
-        break;
-      }
-      case 'N':
-        break;
-        std::cout << std::endl;
-      default:
-        repeatViewAllArmyStats = 'Y';
-        std::cout << "Invalid character entered. Please try again."
-                  << std::endl;
-        break;
-      }
-    } while (repeatViewAllArmyStats == 'Y');
+		switch (viewAllArmyStats) {
+		case 'Y': {
+			attackingCommander->printCommanderStats();
+			break;
+		}
+		case 'N':
+			break;
+			std::cout << std::endl;
+		default:
+			repeatViewAllArmyStats = 'Y';
+			std::cout << "Invalid character entered. Please try again.\n";
+			break;
+		}
+	} while (repeatViewAllArmyStats == 'Y');
 
-    /*fix this-- add attack functionality, differences in CP and stuff*/
-  }
+	/*fix this-- add attack functionality, differences in CP and stuff*/
 }
+
 
 /*Basically go through each unit type and subtract 16CP worth of troops and keep going (done so that lost troops are distributed evenly among the various ranks, but there is still use to training lower rank troops as meat shields (if all lower troops are used up, then losses start piling up on higher rank troops; it's key to keep a healthy proportion of troops in your army))*/
 void AttackMA::calculateTroopsLost(CommanderProfile* commander, int lostCombatPower, std::array<int,5> &troopsLost, int troopIndex) {
@@ -164,25 +163,21 @@ void AttackMA::calculateTroopsLost(CommanderProfile* commander, int lostCombatPo
 }
 
 
-void AttackMA::battleCalculationsTwo(int &lostCombatPower, int troopsLost[5],
-                                     int troopIndex) /*fix this*/
+void AttackMA::battleCalculationsTwo(int &lostCombatPower, int troopsLost[5], int troopIndex) /*fix this*/
 {
   Participants *playerParticipant = &participantsList[currentParticipantIndex];
 
   int z = abs(4 - troopIndex);
 
   for (int b = 0; b < troopsCP[z]; b++) {
-    if (attackingCommander.getTroopsPresent(
-            5) > 0) {
+    if (attackingCommander->getTroopsPresent(5) > 0) {
       b = troopsCP[z];
     } else {
       if (lostCombatPower > 0) {
         lostCombatPower -= troopsCP[troopIndex];
         troopsLost[troopIndex]++;
-        allCommanders[currentParticipantIndex][commanderIndex].removeTroops(
-            troopIndex, 1);
-        participantsList[currentParticipantIndex]
-            .playerTroopsLost[troopIndex] += 1;
+        attackingCommander->modifySpecificTroop(troopIndex, 1, false);
+        attackingCommander->addSpecificTroopLost(troopIndex, 1);
       } else
         b = troopsCP[z];
     }
@@ -191,13 +186,11 @@ void AttackMA::battleCalculationsTwo(int &lostCombatPower, int troopsLost[5],
 
 void AttackMA::printResourcesGained()
 {
-	std::vector<int> currentResources = attackingCommander->getAllResources();
+	std::array<int,5> currentResources = attackingCommander->getAllResources();
 	std::cout << "Resources gained: \n \033[;34m";
 
 	for (int x = 0; x < 5; x++)
-	{
 		std::cout << "- " << provinceResourcesNames[x] << ": " << currentResources[x] - oldResources[x] <<  "\n\n\033[;0m";
-	}
 }
 
 void AttackMA::determineLostCP(int attackerCP, int defendingCP, int& attackerLostCP, int& defenderLostCP)

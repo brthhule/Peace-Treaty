@@ -76,9 +76,10 @@ void Participants::addProvince(Provinces *newProvince) {
 
 void Participants::addCommander() {
   CommanderProfile newCommander(1, getNewName());
-  std::array<int, 2> newCoordinates = getCapital()->returnCoordinates();
+  std::array<int, 2> newCoordinates = getCapital()->getCoordinates();
   newCommander.setLocation(newCoordinates);
-  commandersList.push_back(&newCommander);
+commandersList.insert({newCommander.getUnitName(), &newCommander});
+	getCapital()->addCommander(&newCommander);
 }
 
 void Participants::setKingdomName(std::string newName) {
@@ -99,8 +100,8 @@ bool Participants::isAlive() {
 void Participants::createAsPlayer(bool choice) { playerStatus = choice; }
 
 void Participants::viewStats() {
-	std::vector<int> totalUnits = calculateEachUnit();
-	std::vector<int> totalResources = calculateEachResource();
+	std::array<int, 5> eachUnit = calculateEach(1);
+	std::array<int,5> totalResources = calculateEach(2);
 	
   std::cout << "Kingdom name: " << kingdomName << "\n\n";
 
@@ -109,9 +110,8 @@ void Participants::viewStats() {
   }
 
   for (int x = 0; x < 5; x++) 
-    std::cout << "Total " << troopNames[x] << " alive: " << totalUnits[x] << std::endl;
+    std::cout << "Total " << troopNames[x] << " alive: " << eachUnit[x] << std::endl;
   
-	totalUnits = calculateTotals(1)
   std::cout << "Your total army combat power: " << calculatePlayerValues(1).at(0);
   std::cout << "\nYour numnber of provinces: " << provincesNum() << "\n\n";
 
@@ -128,10 +128,13 @@ std::vector<int> Participants::calculatePlayerValues(int decision) {
 		int totalCPThingy = 0;
 		for (int x = 0; x < 5; x++)
 			totalCPThingy += newArray[x] * TROOPS_CP[x];
-    return {totalUnits};
+    return {totalCPThingy};
   }
   case 2: {
-    return troopsLost;
+		std::vector<int> newArray;
+		for (int x: troopsLost)
+			newArray.push_back(x);
+    return newArray;
   }
   }
 }
@@ -146,17 +149,17 @@ std::string Participants::getNewName() {
 
   
   for (it = commandersList.begin(); it != commandersList.end(); it++)
-    if (newName == it->getUnitName())
+    if (newName == it->second->getUnitName())
       getNewName();
 
   return newName;
 }
 
-CommanderProfile *Participants::getCommander(int index) {
-  std::unordered_map<std::string, CommanderProfile*>::iterator it;
-  for (it = commandersList.begin(); it != commandersList.end(); it++)
-    if ()
-}
+// CommanderProfile *Participants::getCommander(int index) {
+//   std::unordered_map<std::string, CommanderProfile*>::iterator it;
+//   for (it = commandersList.begin(); it != commandersList.end(); it++)
+//     if ()
+// }
 
 std::array<int, 5> Participants::getTrainCosts() { return trainCosts; }
 
@@ -169,20 +172,16 @@ int Participants::getParticipantIndex() { return participantIndex; }
 void Participants::viewAllStatsFunction() {
   std::string literallyAnyRandomCharacter;
   std::cout << "\033[;34m"; // NW
-	std::vector<int> troopsLost = calculateEachTroopLost ();
+	std::array<int,5> troopsLost = calculateEach(3);
   for (int x = 0; x < 5; x++) {
     std::cout << troopNames[x] << " lost: "
               << troopsLost[x]
               << std::endl;
   }
-  std::cout << "Total troops lost: " << calculatePlayerValues(2) << std::endl
-            << std::endl;
-  std::cout << "\033[;0m"; // NW
-
-  std::cout << "Enter any character to go back to the Main menu: ";
-  std::cout << "\033[31m";
-  getline(std::cin, literallyAnyRandomCharacter);
-  std::cout << "\033[0m";
+  std::cout << "Total troops lost: "; 
+	calculatePlayerValues(2);
+  std::cout << "\n\n\033[;0m"; // NW
+  OF.enterAnything();
 }
 
 void Participants::printListOfProvinces() {
@@ -248,16 +247,18 @@ Provinces *Participants::getCoords(int identifier) {
 int Participants::getRandomCoordinate() { return rand() % continentSize; }
 
 bool Participants::hasCommander(std::string name) {
-  return commandersList.contains(name);
+	if (commandersList.find(name) == commandersList.end())
+	  return false;
+	return true;
 }
 
 CommanderProfile *Participants::getCommanderByName(std::string name) {
-  return commanderLists[name];
+  return commandersList[name];
 }
 int Participants::calculateTotals (int option)
 {
 	int sum = 0;
-	std::vector <int> totals = calculateEach(option);
+	std::array <int,5> totals = calculateEach(option);
 	for (int x: totals)
 		sum += x;
 
@@ -267,22 +268,26 @@ int Participants::calculateTotals (int option)
 std::array<int, 5> Participants::calculateEach(int option)
 {
 	std::array<int, 5> returnArray = {0, 0, 0, 0, 0};
-	
-	for (CommanderProfile* newCommander: commandersList)
+	//Go through all commanders at this province
+	for (it = commandersList.begin(); it != commandersList.end(); it++)
 	{
+		CommanderProfile* newCommander = it->second;
 		switch (option)
 		{
 			case 1://Calculate each Unit
-				returnArray = newCommander->getAllTroopsPresent();
+				returnArray = OF.modifyArray(returnArray, newCommander->getAllTroopsPresent(), true);
 				break;
 			case 2://Calculate each resource
-				returnArray = newCommander->getAllResources();
+				returnArray = OF.modifyArray(returnArray, newCommander->getAllResources(), true);
 				break;
 			case 3://calculate each troop lost
-				returnArray = newCommander->getAllTroopsLost()
+				returnArray = OF.modifyArray(returnArray, newCommander->getAllTroopsLost(), true);
 				break;
 			default:
+				break;
+				//do nothing
 		}	
+		delete newCommander;
 	}
 
 	for (Provinces* newProvince: provincesList)
@@ -294,12 +299,12 @@ std::array<int, 5> Participants::calculateEach(int option)
 				break;
 			case 2://Calculate each resource
 				returnArray = OF.modifyArray(returnArray, newProvince->getAllResources(), true);
-				provinceVector = newProvince->getAllResources();
 				break;
 			case 3://calculate each troop lost
 				returnArray = OF.modifyArray(returnArray, newProvince->getAllTroopsLost(), true);
 				break;
 			default:
+				break;
 		}	
 	}
 	return returnArray;
@@ -376,4 +381,57 @@ void Participants::showMap() {
 void Participants::scoutProvince(Provinces *targetProvince, int accuracy) /*Add implementation later*/
 {
 	
+}
+
+bool Participants::subtractCheckResources(std::string provinceName, std::array<int, 5> resourcesArray)
+{
+	Provinces* newProvince = getProvinceByName(provinceName);
+	//returns false if resources dip into negatives
+	newProvince->modifyResources(resourcesArray, false);
+	for (int x: newProvince->getAllResources())
+		if (x < 0)
+			return false;
+	return true;
+}
+
+Provinces* Participants::getProvinceByName(std::string name)
+{
+	for (Provinces* newProvince: provincesList)
+		if (newProvince->getUnitName() == name)
+			return newProvince;
+}
+
+bool Participants::selectCommander() {
+  displayCommanders();
+  std::string commanderName = " ";
+  println("Enter the name of the commander you wish to select: ");
+  getline(std::cin, commanderName);
+
+  if (hasCommander(commanderName) == false) 	{
+		println("Invalid character entered. Please try again... (Enter any character to continue)");
+    selectCommander();
+  } 
+	else 
+		std::cout << "Commander " << commanderName << " selected...\n";
+	
+	selectedCommander = getCommanderByName(commanderName);
+
+	std::cout << "Confirm selection of commander " << selectedCommander->getUnitName() << "? (Y/N): ";
+	char confirmSelection = OF.getInput("0", {"Y", "N"}, 2).at(0);
+
+	if (confirmSelection == 'Y')
+		return true;
+	return false;
+	
+}
+void Participants::displayCommanders() 
+{
+  std::cout << "Here is list of your commanders: \n";
+	std::unordered_map<std::string, CommanderProfile*> commandersMap = getCommandersMap();
+  std::unordered_map<std::string, CommanderProfile*>::iterator it;
+  for (it = commandersMap.begin(); it != commandersMap.end(); it++) 	{
+    CommanderProfile *tempCommander = it->second;
+    std::cout << "- Commander " << tempCommander->getUnitName() << "; Level: " << tempCommander->getLevel() << std::endl;
+    delete tempCommander;
+  }
 }

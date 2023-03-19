@@ -91,7 +91,7 @@ void AllUnits::modifyResources(std::array<int, 5> resourcesArray, bool isAdd)
 	OF.modifyArray(resourcesPresent, resourcesArray, isAdd);
 }
 
-int AllUnits::returnLevel()
+int AllUnits::getLevel()
 {
 	return unitLevel;
 }
@@ -117,12 +117,12 @@ int AllUnits::translateY(bool isInput)
 	return abs(continentSize - yCoord);
 }
 
-std::array<int, 2> AllUnits::returnCoordinates()
+std::array<int, 2> AllUnits::getCoordinates()
 {
 	return {xCoord, yCoord};
 }
 
-int AllUnits::returnCoordinate(char which)
+int AllUnits::getCoordinate(char which)
 {
 	if (which == 'X')
 		return xCoord;
@@ -138,7 +138,7 @@ void AllUnits::addTroopsLost(std::array<int, 5> troopsArray)
 {
 	troopsLost = OF.modifyArray(troopsLost, troopsArray, true);
 }
-std::array<int, 5> AllUnits::getTroopsLost()
+std::array<int, 5> AllUnits::getAllTroopsLost()
 {
 	return troopsLost;
 }
@@ -151,4 +151,17 @@ std::string AllUnits::printCoordinates()
 std::array<int,5> AllUnits::getAllResources()
 {
   return resourcesPresent;
+}
+
+std::array<int,5> AllUnits::getAllTroopsInjured()
+{
+	return troopsInjured;
+}
+
+int AllUnits::getTotalTroops()
+{
+	int troopsNum = 0;
+	for (int x: troopsPresent)
+		troopsNum += x;
+	return troopsNum;
 }

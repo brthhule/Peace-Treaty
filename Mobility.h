@@ -16,7 +16,7 @@ extern std::vector<std::vector <Provinces>> provincesMap;
 class Mobility
 {
 public:
-	Mobility(CommanderProfile *sCommander, Participants *newP);
+	Mobility(std::string commanderName, Participants *newP);
 	void moveUnitOne();
 	std::vector <Provinces*> moveUnitTwo ();
 private:

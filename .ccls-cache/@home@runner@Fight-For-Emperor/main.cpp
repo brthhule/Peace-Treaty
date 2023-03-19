@@ -22,17 +22,10 @@
 
 //Miscellaneous
 #include "OtherFunctions.h"
-#include "textFunctions.h"
 #include "Lists.h"
 
 
 //Main Actions
-#include "BuildMA.h"
-#include "ArmyDeploymentMA.h"
-#include "AttackMA.h"
-#include "ScoutMA.h"
-#include "MapMA.h"
-#include "TrainMA.h"
 #include "PlayerAction.h"
 
 #define UNIT_AMOUNT 5

@@ -2,19 +2,14 @@
 #define print(x) std::cout << x;
 #define println(x) std::cout << x << std::endl;
 
-extern int maxAmountOfCommanders;
-extern std::vector<std::vector<Provinces>> provincesMap;
 extern std::vector<Participants> participantsList;
 
 extern std::string provinceResourcesNames[5];
 extern int initialResources[5];
 extern int currentParticipantIndex;
 
-ArmyDeploymentMA::ArmyDeploymentMA() {}
-
 ArmyDeploymentMA::ArmyDeploymentMA(Participants *newP) {
   participant = newP;
-  capitalProvince = participant->getCapital();
   commandersNum = participant->commandersNum();
 }
 
@@ -56,7 +51,7 @@ void ArmyDeploymentMA::upgradeCommandersOne() /*fix this-- finish making it*/
 {
   if (commandersNum > 0)
 	{
-		if (selectCommander() == true)
+		if (participant->selectCommander() == true)
 			upgradeCommandersTwo();
 	}
   else 
@@ -66,63 +61,41 @@ void ArmyDeploymentMA::upgradeCommandersOne() /*fix this-- finish making it*/
 }
 void ArmyDeploymentMA::upgradeCommandersTwo() 
 {
-  selectedCommander->printCosts(newCommander->getUpgradeCosts());
+  participant->selectedCommanderPrintCosts();
 
 	char proceedWithUpgradeQuestion =
       OF.getInput("\nProceed with upgrade? ", {"Y", "N"}, 1).at(0);
   if (proceedWithUpgradeQuestion == 'Y') {
 
-    std::array<int, 5> commanderCosts = newCommander->getUpgradeCosts();
-		bool commanderUpgradeIsSuccess = capitalProvince->subtractCheckResources(commanderCosts);
+    std::array<int, 5> commanderCosts = participant->getSCCC();
+		bool commanderUpgradeIsSuccess = participant->getCapital()->subtractCheckResources(commanderCosts);
 
     if (commanderUpgradeIsSuccess == true) {
-      newCommander->addLevel();
-      std::cout << "Upgrade successful; Commander " << newCommander->returnName() << "is now level " << newCommander->returnLevel() << std::endl;
+      participant->SCAL();
+      std::cout << "Upgrade successful; Commander " << participant->getSCName() << "is now level " << participant->getSCLevel() << std::endl;
     } else {
-      capitalProvince->modifyResources(commanderCosts, true);
+      participant->getCapital()->modifyResources(commanderCosts, true);
       std::cout << "Upgrade failed. " << std::endl;
     }
   }
 }
 
-bool *ArmyDeploymentMA::selectCommander() {
-  displayCommanders();
-  std::string commanderName = " ";
-  println("Enter the name of the commander you wish to select: ");
-  getline(std::cin, commanderName);
-
-  if (participant->hasCommander(commanderName) == false) 	{
-		println("Invalid character entered. Please try again... (Enter any character to continue)");
-    selectCommander();
-  } 
-	else 
-		std::cout << "Commander " << commanderName << " selected...\n";
-	
-	selectedCommander = participant->getCommanderByName(commanderName);
-
-	std::cout << "Confirm selection of commander " << newCommander->returnName() << "? (Y/N): ";
-	char confirmSelection = OF.getInput("0", {"Y", "N"}, 2).at(0);
-
-	if (confirmSelection == 'Y')
-		return true;
-	return false;
-	
-}
-
 void ArmyDeploymentMA::viewArmyOverview() {
-  if (selectCommander() == true)
+  if (participant->selectCommander() == true)
 	{
-		std::cout << "Commander " << newCommander->returnName() << " selected... " << std::endl;
-    std::cout << "The coordinates of this Commander: " << newCommander->printOutputCoordinates() << "\n\n";
+		std::cout << "Commander " << participant->getSCName() << " selected... " << std::endl;
+    std::cout << "The coordinates of this Commander: ";
+		participant->SC1();
+		std::cout << "\n\n";
 
-    newCommander->printCommanderStats();
+    participant->SC2();
 	}
 	OF.enterAnything();	
 }
 
 void ArmyDeploymentMA::trainCommanders() {
   std::string yesOrNoString;
-  std::cout << "You have " << commandersNum << "/" << selectedCommander->getMaxCommanders() << " total army commanders. \n";
+  std::cout << "You have " << commandersNum << "/" << participant->getMaxCommanders() << " total army commanders. \n";
   std::cout << "Do you want to train a commander? (Y/N) ";
 
   std::array<int, 5> trainCosts = participant->getTrainCosts();
@@ -138,13 +111,11 @@ void ArmyDeploymentMA::trainCommanders() {
 }
 
 void ArmyDeploymentMA::proceedWithTraining(std::array<int,5> trainCosts) {
-  bool trainingSuccess = capitalProvince->subtractCheckResources(trainCosts);
+  bool trainingSuccess = participant->getCapital()->subtractCheckResources(trainCosts);
 
   if (trainingSuccess == true) 
 	{
-    CommanderProfile newCommander(1, participant->getNewName());
-    newCommander.setLocation(capitalProvince->returnCoordinates());
-    capitalProvince->addCommander(&newCommander);
+    participant->
 		
 		println("Commander training successful ");
     std::cout << "Current commanders: " << commandersNum << std::endl;
@@ -152,26 +123,25 @@ void ArmyDeploymentMA::proceedWithTraining(std::array<int,5> trainCosts) {
 	else 
 	{
     std::cout << "Commander training failed (Not enough resources)... \n\n";
-    capitalProvince->addResources(trainCosts);
+    participant->getCapital()->modifyResources(trainCosts, true);
   }
 }
 
 void ArmyDeploymentMA::deployCommanderMF() 
 {
-  if (selectCommander() == false)
+  if (participant->selectCommander() == false)
 		return;
 	
-  selectedCommander->printCommanderStats();
+  participant->SC2();
 
-  std::cout << "Deploy commander " << selectedCommander->getUnitName() << "? (Y/N) ";
+  std::cout << "Deploy commander " << participant->getSCName() << "? (Y/N) ";
   char confirmDeploy = OF.getInput("Replacement", {"Y", "N"}, 2).at(0);
 
   if (confirmDeploy == 'Y') 
 	{
-    if (selectedCommander->hasMovedQuestion() == false) {
-      Mobility newMobility(newCommander, participant);
+    if (participant->SCMoved() == false) {
+      Mobility newMobility(participant->getSCName(), participant);
       newMobility.moveUnitOne();
-      returnToMenu = true;
     } 
 		else 
 		{
@@ -179,18 +149,8 @@ void ArmyDeploymentMA::deployCommanderMF()
 			deployCommanderMF();
 		}
 
-  OF.enterAnything();
-}
-
-void ArmyDeploymentMA::displayCommanders() {
-  std::cout << "Here is list of your commanders: \n";
-	std::unordered_map<std::string, CommanderProfile*> commandersMap = participant->getCommandersMap;
-  std::unordered_map<std::string, CommanderProfile*>::iterator it;
-  for (it = commandersMap.begin(); it != commandersMap.end(); it++) 	{
-    CommanderProfile *tempCommander = it->second;
-    std::cout << "- Commander " << tempCommander->returnName() << "; Level: " << tempCommander->returnLevel() << std::endl;
-    delete tempCommander;
-  }
+	  OF.enterAnything();
+	}
 }
 
 void ArmyDeploymentMA::printCosts(std::vector<int> costs, std::string type) {
@@ -199,14 +159,6 @@ void ArmyDeploymentMA::printCosts(std::vector<int> costs, std::string type) {
     std::cout << provinceResourcesNames[x] << ": " << costs[x];
 
   std::cout << "The following are the resources currently in your capital: \n";
-  capitalProvince->printResources();
+  participant->getCapital()->printResources();
 }
 
-// for (int x = 0; x < capitalProvince->howManyCommanders(); x++) {
-//   int xCoordinate = newParticipant->listOfProvincesX[x];
-//   int yCoordinate = newParticipant->listOfProvincesY[x];
-
-//   listOfCommandersIndex.push_back(
-//       provincesMap[xCoordinate][yCoordinate].returnCommanderIndex(x));
-//   amountOfCommanders.push_back(x + 1);
-// }

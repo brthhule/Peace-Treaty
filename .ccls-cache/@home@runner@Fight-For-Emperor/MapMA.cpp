@@ -42,7 +42,7 @@ void MapMA::viewPlayerMap() {
   }
 }
 
-Participants *MapMA::returnParticipant() { return participant; }
+Participants *MapMA::getParticipant() { return participant; }
 
 void MapMA::selectUnitOriginal(Provinces *selectedProvince) {
 	prov = selectedProvince;
@@ -55,7 +55,7 @@ void MapMA::selectUnitOriginal(Provinces *selectedProvince) {
     if (prov->commandersNum() >
         0) // If there are more than 0 commnaders
     {
-      if (prov->returnCommander(0)->getParticipantIndex() == pIndex)
+      if (prov->getCommander(0)->getParticipantIndex() == pIndex)
       {
         playerUnitAction(prov);
       } else {
@@ -155,7 +155,7 @@ void MapMA::playerUnitAction(Provinces *newP) {
 			}
 		}
 		if (participant->getCommander(commanderIndex)->hasMovedQuestion() == false) {
-			Mobility newMobility (participant->getCommander(commanderIndex), participant);
+			Mobility newMobility (participant->getCommander(commanderIndex)->getUnitName(), participant);
 			newMobility.moveUnitOne(); /*fix this*/
 			playerUnitAction(newProvince);
 		} else

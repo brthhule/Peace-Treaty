@@ -39,7 +39,9 @@ public:
   void setDeleteProvince() { deleteProvince = true; }
 
   /*Garrisons*/
-  int findMaxGarrison();
+  int getMaxGarrison();
+	int getMaxInfirmaryCapacity();
+
 
 	//Buildings
   int findMaxInfirmaryCapacity() { return (otherBuildingsLevels[1] * 10); };
@@ -48,11 +50,11 @@ public:
 
 
   // Commanders
-  CommanderProfile* returnCommander (std::string name);
+  CommanderProfile* getCommander (std::string name);
   int findProvinceLevel();
   void addCommander(CommanderProfile *newCommander);
 	void removeCommander(CommanderProfile *newCommander);
-	std::vector <CommanderProfile*> returnAllCommanders();
+	std::vector <CommanderProfile*> getAllCommanders();
 	int commandersNum(){return commanders.size();}
 
 	/*Training*/
@@ -73,38 +75,50 @@ public:
   void updateProvinceResources();
 
 	/*Scout Stuff*/
-	void completeProvinceScoutReport(int accuracy);
+	void completeProvinceScoutReport(int accuracy, Provinces* targetProvince, int scoutTurn);
+	int getEstimate(int newAccuracy, int quantity);
 	int getScoutReportTurn(){return scoutReportTurn;}
 	int getScoutLogTurnLevel(){return scoutReportLogLevel;}
-	void compileProvinceStats (int (&provinceStatsArray)[35]);
+	std::array<int,5> getResourceBuildingLevels();
+	std::array<int,5> getResourceBuildignsProduction();
+	std::array<int,5> getOtherBuildingsLevels ();
+	int getBarracksCapacity();
+	std::array<int,5> getMaxResources();
 
 	
 private:
 	/*Garrison*/
-  int maxGarrison;
-  int maxInfirmaryCapacity;
+  int maxGarrison;//derived
+  int maxInfirmaryCapacity;//derived
+
 	std::array<int, 5> resourceBuildingsLevels;
 	std::array<int, 5> resourceBuildingsProduction;
-	std::array<int, 4> otherBuildingsLevels;//Barracks, infirmary, Library, wall
-	int barracksCapacity;
+	std::array<int, 5> otherBuildingsLevels;// Barracks, infirmary, Library, wall, residences
+	int* barracksLevel = &otherBuildingsLevels[0];
+	int* infirmaryLevel = &otherBuildingsLevels[1];
+	int* libraryLevel = &otherBuildingsLevels[2];
+	int* wallLevel = &otherBuildingsLevels[3];	
+	int* residencesLevel = &otherBuildingsLevels[4];
+
+	int barracksCapacity;//derived
 	
-  int maxResources[5];
-  int totalMaxResources;
-  int troopsTrainedThisTurn;
-  int foodConsumption;
+  std::array<int,5> maxResources;//derived
+  int totalMaxResources;//derived
 
+  int troopsTrainedThisTurn;//variable
+  int foodConsumption;//variable
 
+  bool isACapital;//stat
 
-  bool isACapital;
-
-  int *provinceScoutReport[28];
-  bool deleteProvince;
+  bool deleteProvince;//conditional
 
 	std::unordered_map<std::string, CommanderProfile*> commanders;
+	std::unordered_map<std::string, CommanderProfile*>::iterator it;
 
 	int scoutReportTurn;
 	int scoutReportLogLevel;
 	int logAccuracy;
+	double newAccuracy;
 };
 
 #endif

@@ -58,6 +58,9 @@ public:
 	void addProvince(Provinces *newProvince);
 	Provinces *getProvince (int index);
 	void printListOfProvinces();
+	bool subtractCheckResources(std::string provinceName, std::array<int, 5> resourcesArray);
+	Provinces* getProvinceByName(std::string name);
+
 
 
 	//Create participant
@@ -78,12 +81,7 @@ public:
 	std::vector<int> calculatePlayerValues (int decision);
 	void viewAllStatsFunction();
 	void viewStats();
-	int calculateTotalUnits ();
-	std::vector<int> calculateEachUnit();
-	int calculateTotalResources();
-	std::vector<int> calculateEachResource();
-	int calculateTotalTroopsLost();
-	std::vector<int> calculateEachTroopLost();
+
 
 	int calculateTotals (int option);
 	std::array<int, 5> calculateEach(int option);
@@ -99,6 +97,19 @@ public:
 	void scoutProvince(Provinces *targetProvince, int accuracy);
 
 	void printParticipantStats(int option);
+
+	//ArmyDeploymentMA stuff
+	void displayCommanders();
+	bool selectCommander();
+	CommanderProfile* getSelectedCommander(){return selectedCommander;}
+	void selectedCommanderPrintCosts(){selectedCommander->printCosts(selectedCommander->getUpgradeCosts());}
+	std::array<int,5> getSCCC () {return selectedCommander->getUpgradeCosts();}
+	void SCAL (){selectedCommander->addLevel();};
+	std::string getSCName () {return selectedCommander->getUnitName();}
+	int getSCLevel(){return selectedCommander->getLevel();}
+	void SC1 () {selectedCommander->printOutputCoordinates();}
+	void SC2 (){selectedCommander->printCommanderStats();}
+	bool SCMoved () {return selectedCommander->hasMovedQuestion();}
   
 
 
@@ -122,6 +133,7 @@ std::array <int, 5> trainCosts = {5, 4, 3, 2, 1};
 	std::vector<std::vector<Provinces>> scoutMap;
 	OtherFunctions OF;
   std::unordered_map<std::string, CommanderProfile*>::iterator it;
+	CommanderProfile* selectedCommander; //For ArmyDeploymentMA
 };
 
 #endif

@@ -5,11 +5,11 @@
 #include <cmath>
 
 #include "Participants.h"
+#include "ArmyDeploymentMA.h"
 #include "Lists.h"
 #include "BuildMA.h"
 #include "TrainMA.h"
 #include "OtherFunctions.h"
-#include "ArmyDeploymentMA.h"
 #include "MapMA.h"
 
 class PlayerAction

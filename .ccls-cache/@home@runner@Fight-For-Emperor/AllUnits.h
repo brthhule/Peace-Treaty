@@ -39,16 +39,20 @@ public:
 	std::array<int, 5> modifyTroops(std::array<int, 5> troopsAdd, bool isAdd);
 	void addSpecificInjuredTroop(int troopIndex, int amount);
 	void addInjuredTroops(std::array<int, 5> troops);
+	std::array<int,5> getAllTroopsInjured();
+
 	void addSpecificTroopLost(int index, int amount);
 	void addTroopsLost(std::array<int, 5> troopsArray);
-	std::array<int, 5> getTroopsLost();
+	std::array<int, 5> getAllTroopsLost();
+	int getTotalTroops ();
+	int getFoodConsumption (){return foodConsumption;}
 
 	//Provinces & Commanders
-	int returnLevel();
+	int getLevel();
 
 	//Coordinate Stuff
-	std::array<int, 2> returnCoordinates();
-	int returnCoordinate(char which);
+	std::array<int, 2> getCoordinates();
+	int getCoordinate(char which);
 	void printOutputCoordinates();
 	int translateX (bool isInput);
 	int translateY (bool isInput);

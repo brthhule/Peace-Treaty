@@ -22,6 +22,7 @@ Key words to look out for (ctrl f)
 - Have to finish working on ScoutMA
 - Fix AttackMA
 - Add functionality for training province garrisons
+- Fix battleCalculations functionality
 
 /*How to use colors: */
 /*On Linux, you can change the current foreground and background color by writing special character sequences into the output. Write the ESC escape character (octal "\033", hex \x1b), followed by an opening square bracket [. The color definition will follow next, termniated by a lowercase m.
@@ -540,6 +541,10 @@ March 18:
 make: *** [Makefile:17: PlayerAction.o] Error 1
 
 Have to find out what this is about and how to fix it; all the other functions seem find, what's different about this one?
+
+20 min: Tried setting up Visual Studio Code so that I could work using that IDE (which has better navigation features, like using ctrl + shift + f to find all instances of something, but when you click on an item, the screen doesn't disappear so you have to go back again). Figured out how to connect/clone the github repo, but couldn't figure out how to run/debug the code-- running into configuration issues or something like that. Just going to stick to repl for now and switch over after more research. 
+	8:30 - 9:50 pm (1 hour, 20 min): Working on Provinces. Delted compileProvinceStats-- I think I can just pass a Provinces object to the scout function instead of doing all of this unnecessary work. Conolidating scout stuff to completeProvinceScoutReport. Rewrote completeProvinceScoutReport to be more simple and actually make sense. Finished completing completeProvinceScoutReport. After doing all this, I'm going to make the return... / get... uniform to get... so I don't have to remeber between the two for different functions and I can just use one of them. Finished updating all the return... methods and isntances to get... (9:47). Going to go fix Participants. Finished fixing getEach. Everything should work now??? (9:50)
+	10:10 pm: Still getting the PlayerAction/ArmyDeploymentMA error. Trying to fix it now. I fixed some stuff in ArmyDeploymentMA (using selectedCommander instead of newCommander, deleting an unnecessary *), error went away for now. Going to AttackMA now. Have to work on battleCalculations functionality so the math is logical. Going to scoutMA now. Still getting ArmyDeployment error in PlayerAction... Deleted all the main actions classes from main because they're never used. Console telling me to go fix ArmyDeployment now. Going to Participants now. Getting ArmyDeployment error again. I think the issue is that ArmyDeployment MA includes Participants, CommanderProfile, and Provinces, causing circular dependency. I have to decide on what to take out and how to work around it. Took CommanderProfile entirely out of ArmyDeployment, took Provinces half out of ArmyDeployment. I think it should work now? (11:24).
 	
 
 Changes: 

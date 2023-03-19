@@ -1035,3 +1035,115 @@ std::vector<Provinces *> TrainMA::getTrainProvince() {
 	provinceStats[11] = &maxGarrison;
 	provinceStats[17] = &maxInfirmaryCapacity;
 	provinceStats[26] = &foodConsumption;
+
+void Provinces::compileProvinceStats (std::array<std::array<int, 5>, 7> &provinceStatsArray, bool &isACapitalArg, std::array<std::vector<int>, 7> &otherStats, std::string &unitNameArg, std::unordered_map<std::string, CommanderProfile*> &commandersArg)
+{
+	unitNameArg = unitName;
+	isACapitalArg = isACapital;
+	
+
+	provinceStatsArray[0] = resourcesPresent;
+	provinceStatsArray[1] = troopsPresent;
+	provinceStatsArray[2] = troopsInjured;
+	provinceStatsArray[3] = troopsLost;
+	provinceStatsArray[4] = resourceBuildingsLevels;
+	provinceStatsArray[5] = resourceBuildingsProduction;
+	provinceStatsArray[6] = maxResources;
+
+	
+	otherStats[0] =  {CP, totalTroops, troopsTrainedThisTurn}; //Troop Stuff
+
+	otherStats[1] =  {xCoord, yCoord};
+	otherStats[2] =  {participantIndex, unitLevel};
+	otherStats[3] =  {maxGarrison, maxInfirmaryCapacity};
+	
+	std::vector <int >newVector;
+	for (int x: otherBuildingsLevels)
+		newVector.push_back(x);
+	otherStats[4] =  newVector;
+	
+  otherStats[5] =  {totalMaxResources, foodConsumption};
+	otherStats[6] =  {scoutReportTurn, scoutReportLogLevel, logAccuracy};
+
+	commandersArg = commanders;
+
+
+	//Commander stuff
+	int resourcesPresent[5] = {0, 0, 0, 0, 0};
+	int troopsPresent[5] = {0, 0, 0, 0, 0};
+	int troopsInjured[5] = {0, 0, 0, 0, 0};
+	int troopsLost[5] = {0, 0, 0, 0, 0};
+	int CP;
+	int totalTroops;
+	int foodConsumption;
+
+	const int initialStats[5] = { 5, 4, 3, 2, 1 };
+
+  //Coordinates;
+	int *coords [2];
+	int xCoord = 0;
+	int yCoord = 0;
+	char canSelectThisUnit;
+	int participantIndex;
+	std::string unitName;
+	std::string isCommanderOrProvince;
+	int unitLevel;
+	OtherFunctions OF;
+}
+
+	for (int x = 0; x < 20; x++) //fix this
+	{
+		//findRange = *provinceStats[x];
+		accuracyAdjustedValueOne = findRange * newAccuracy;
+		fooOne = findRange - (int)accuracyAdjustedValueOne;
+		fooTwo = findRange + (int)accuracyAdjustedValueOne;
+		accuracyAdjustedValueTwo = rand() % fooOne + fooTwo;
+		updateProvinceScoutLog(x, accuracyAdjustedValueTwo);
+	}
+	updateProvinceScoutLog(20, turn);
+	updateProvinceScoutLog(21, accuracy);
+
+	/*/*
+[0] food present
+[1] wood present
+[2] ore present
+[3] gold present
+[4] mana present
+[5] max resources province can hold
+[6] garrisoned militia
+[7] garrisoned guards
+[8] garrisoned cavalry
+[9] garrisoned knights
+[10] garrisoned paladins
+[11] max garrison
+[12] injured malitia
+[13] injured guards
+[14] injured cavalry
+[15] injured knights
+[16] injured paladins
+[17] max infirmary capacity
+[18] farm level
+[19] lumber mill level
+[20] quarry level
+[21] mine level
+[22] church level
+[23] barracks level
+[24] infirmary level
+[25] total CP
+[26] food consumption*/
+
+int calculateTotalUnits ();
+std::vector<int> calculateEachUnit();
+int calculateTotalResources();
+std::vector<int> calculateEachResource();
+int calculateTotalTroopsLost();
+std::vector<int> calculateEachTroopLost();
+
+// for (int x = 0; x < capitalProvince->howManyCommanders(); x++) {
+//   int xCoordinate = newParticipant->listOfProvincesX[x];
+//   int yCoordinate = newParticipant->listOfProvincesY[x];
+
+//   listOfCommandersIndex.push_back(
+//       provincesMap[xCoordinate][yCoordinate].returnCommanderIndex(x));
+//   amountOfCommanders.push_back(x + 1);
+// }

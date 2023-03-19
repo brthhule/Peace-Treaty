@@ -135,16 +135,15 @@ std::array<int, 5> OtherFunctions::modifyArray(std::array<int, 5> primeArray, st
 void OtherFunctions::printResources(std::array<int, 5> resourcesArray)
 {
 	for (int x = 0; x < 5; x++)
-	{
 		std::cout << "- " << provinceResourcesNames[x] << ": " << resourcesArray[x] <<  std::endl;
-	}
+	
 	std::cout <<  std::endl;
 }
 
 void OtherFunctions::enterAnything()
 {
 	std::string emptyString = " ";
-	std::cout << "Enter anything to return to the previous menu: ";
+	std::cout << "Enter anything to return to the previous menu: \033[31m";
 	getline(std::cin, emptyString);
-	println("\n")
+	println("\n\033[0m")
 }

@@ -2,10 +2,10 @@
 #define print(x) std::cout << x;
 #define println(x) std::cout << x << std::endl;
 
-Mobility::Mobility(CommanderProfile *sCommander, Participants *newP)
+Mobility::Mobility(std::string commanderName, Participants *newP)
 {
-	selectedCommander = sCommander;
-	selectedCommanderProvince = &provincesMap[selectedCommander->returnCoordinate('X')][selectedCommander->returnCoordinate('Y')];
+	selectedCommander = participant->getCommanderByName(commanderName);
+	selectedCommanderProvince = &provincesMap[selectedCommander->getCoordinate('X')][selectedCommander->getCoordinate('Y')];
 	participant = newP;
 }
 
@@ -35,7 +35,7 @@ void Mobility::moveUnitOne() {
 	OtherFunctions OF;
   std::vector<Provinces *> provincesCanSelect;
   if (selectedCommander->hasMovedQuestion() == false) {
-		std::array<int, 2> newCoordinates = selectedCommander->returnCoordinates();
+		std::array<int, 2> newCoordinates = selectedCommander->getCoordinates();
     std::cout<<"The coordinates of the chosen unit unit are: " << OF.printCoordinates(newCoordinates);
 		println("\n\nYou can only move this unit to one of the provinces adjacent to the province it is in");
 		
@@ -76,7 +76,7 @@ void Mobility::moveUnitOne() {
       if (OF.getInput("Replacement", {"Y", "N"}, false).at(0) == 'Y') {
         // If it's peaceful (moving to one of their own provinces)
         if (attackScenario == 'P') {
-					std::array<int, 2> coordinates = moveTwo->returnCoordinates();
+					std::array<int, 2> coordinates = moveTwo->getCoordinates();
           selectedCommander->setLocation(coordinates);
           attackProvince->addCommander(selectedCommander);
         }

@@ -27,8 +27,8 @@ void Provinces::basicStats()
 	scoutReportLogLevel = -1;
 	
 	unitLevel = 1;
-	maxGarrison = findMaxGarrison();
-	maxInfirmaryCapacity = findMaxInfirmaryCapacity();
+	maxGarrison = getMaxGarrison();
+	maxInfirmaryCapacity = getMaxInfirmaryCapacity();
 	
   troopsTrainedThisTurn = 0;
   deleteProvince = false;
@@ -37,9 +37,14 @@ void Provinces::basicStats()
 
 //Province stats
 
-int Provinces::findMaxGarrison()
+int Provinces::getMaxGarrison()
 {
-	return otherBuildingsLevels[3] * 10;
+	//Wall
+	return *wallLevel * 10;
+}
+int Provinces::getMaxInfirmaryCapacity()
+{
+	return *infirmaryLevel * 10;
 }
 
 int Provinces::findProvinceLevel()
@@ -163,13 +168,12 @@ int Provinces::getTotalCP()
 {
 	int totalCP = 0;
 	totalCP += getCP();
-	for (int x = 0; x < commandersNum(); x++)
-	{
-		totalCP += commanders[x]->getCP();
-	}
+	for (it = commanders.begin(); it != commanders.end(); it++)
+		totalCP += it->second->getCP();
+	return totalCP;
 }
 
-std::vector<int> Provinces::getTotalResources()
+std::array<int,5> Provinces::getTotalResources()
 {
 	std::array<int,5> totalResources = resourcesPresent;
   std::unordered_map<std::string, CommanderProfile*>::iterator it;
@@ -184,7 +188,7 @@ std::vector<int> Provinces::getTotalResources()
 }
 
 //Convert unordered_map to vector for easy understanding
-std::vector <CommanderProfile*> Provinces::returnAllCommanders(){
+std::vector <CommanderProfile*> Provinces::getAllCommanders(){
 		std::vector<CommanderProfile*> commandersList;
 		std::unordered_map<std::string, CommanderProfile*>::iterator it;
 		for (it = commanders.begin(); it != commanders.end(); it++)
@@ -192,7 +196,7 @@ std::vector <CommanderProfile*> Provinces::returnAllCommanders(){
 		return commandersList;
 }
 
-CommanderProfile* Provinces::returnCommander(std::string name)
+CommanderProfile* Provinces::getCommander(std::string name)
 {
 	return commanders[name];
 }
@@ -208,110 +212,71 @@ bool Provinces::subtractCheckResources(std::array<int, 5> resourcesArray)
 }
 
 
-
-
-void Provinces::completeProvinceScoutReport(int accuracy)
+void Provinces::completeProvinceScoutReport(int accuracy, Provinces* targetProvince, int scoutTurn)
 {
-	double newAccuracy = (double)accuracy / 100;
-	newAccuracy = 1 - newAccuracy;
-	double accuracyAdjustedValueOne;
-	int accuracyAdjustedValueTwo;
+	Provinces* t = targetProvince;
+	/*Higher accuracy = more accurate scout log-- default is 50% accuracy (if
+  there are 10 food resources in a province,
+  the margin is 50%-- 5-15 units. 100 accuracy is the most accurate, 0 accuracy
+  is the least accurate*/
+	newAccuracy = (double)accuracy / 100;
+	newAccuracy = (1 - newAccuracy)/2;//The most it will ever be off by is 50%
 
-	int fooOne;
-	int fooTwo;
-	int findRange;
-	for (int x = 0; x < 20; x++) //fix this
-	{
-		findRange = *provinceStats[x];
-		accuracyAdjustedValueOne = findRange * newAccuracy;
-		fooOne = findRange - (int)accuracyAdjustedValueOne;
-		fooTwo = findRange + (int)accuracyAdjustedValueOne;
-		accuracyAdjustedValueTwo = rand() % fooOne + fooTwo;
-		updateProvinceScoutLog(x, accuracyAdjustedValueTwo);
-	}
-	updateProvinceScoutLog(20, turn);
-	updateProvinceScoutLog(21, accuracy);
-	/*/*
-[0] food present
-[1] wood present
-[2] ore present
-[3] gold present
-[4] mana present
-[5] max resources province can hold
-[6] garrisoned militia
-[7] garrisoned guards
-[8] garrisoned cavalry
-[9] garrisoned knights
-[10] garrisoned paladins
-[11] max garrison
-[12] injured malitia
-[13] injured guards
-[14] injured cavalry
-[15] injured knights
-[16] injured paladins
-[17] max infirmary capacity
-[18] farm level
-[19] lumber mill level
-[20] quarry level
-[21] mine level
-[22] church level
-[23] barracks level
-[24] infirmary level
-[25] total CP
-[26] food consumption*/
+	//AllUnits info
+	unitName = t->getUnitName();
+	resourcesPresent = t->getAllResources();
+	troopsPresent = t->getAllTroopsPresent();
+	troopsInjured = t->getAllTroopsInjured();
+	troopsLost = t->getAllTroopsLost();
+	totalTroops = t->getTotalTroops();
+	foodConsumption = t->getFoodConsumption();
+	xCoord = t->getCoordinate('X');
+	yCoord = t->getCoordinate('Y');
+	participantIndex = t->getParticipantIndex();
+	unitLevel = t->getLevel();
+	unitName = t->getUnitName();
+	CP = getEstimate(newAccuracy, t->getCP());
+
+	maxGarrison = t->getMaxGarrison();
+	maxInfirmaryCapacity = t->getMaxInfirmaryCapacity();
+	resourceBuildingsLevels = t->getResourceBuildingLevels();
+	resourceBuildingsProduction = t->getResourceBuildignsProduction();
+	otherBuildingsLevels = t->getOtherBuildingsLevels();
+	barracksCapacity = t->getBarracksCapacity();
+	maxResources = t->getMaxResources();
+	
+	turn = scoutTurn;
+	accuracy = accuracy;
+
+
 }
 
-void Provinces::compileProvinceStats (std::array<std::array<int, 5>, 7> &provinceStatsArray, bool &isACapitalArg, std::array<std::vector<int>, 7> &otherStats, std::string &unitNameArg, std::unordered_map<std::string, CommanderProfile*> &commandersArg)
+int Provinces::getEstimate(int newAccuracy, int quantity)
 {
-	unitNameArg = unitName;
-	isACapitalArg = isACapital;
-	
+	int margin = (int) (newAccuracy * quantity);
+	int lowerBound = quantity - margin;
+	int upperBound = quantity + margin;
+	int scoutEstimate = rand() % lowerBound + upperBound;
+	return scoutEstimate;
+}
 
-	provinceStatsArray[0] = resourcesPresent;
-	provinceStatsArray[1] = troopsPresent;
-	provinceStatsArray[2] = troopsInjured;
-	provinceStatsArray[3] = troopsLost;
-	provinceStatsArray[4] = resourceBuildingsLevels;
-	provinceStatsArray[5] = resourceBuildingsProduction;
-	provinceStatsArray[6] = maxResources;
-
-	
-	otherStats[0] =  {CP, totalTroops, troopsTrainedThisTurn}; //Troop Stuff
-
-	otherStats[1] =  {xCoord, yCoord};
-	otherStats[2] =  {participantIndex, unitLevel};
-	otherStats[3] =  {maxGarrison, maxInfirmaryCapacity};
-	
-	std::vector <int >newVector;
-	for (int x: otherBuildingsLevels)
-		newVector.push_back(x);
-	otherStats[4] =  newVector;
-	
-  otherStats[5] =  {totalMaxResources, foodConsumption};
-	otherStats[6] =  {scoutReportTurn, scoutReportLogLevel, logAccuracy};
-
-	commandersArg = commanders;
-
-
-	//Commander stuff
-	int resourcesPresent[5] = {0, 0, 0, 0, 0};
-	int troopsPresent[5] = {0, 0, 0, 0, 0};
-	int troopsInjured[5] = {0, 0, 0, 0, 0};
-	int troopsLost[5] = {0, 0, 0, 0, 0};
-	int CP;
-	int totalTroops;
-	int foodConsumption;
-
-	const int initialStats[5] = { 5, 4, 3, 2, 1 };
-
-  //Coordinates;
-	int *coords [2];
-	int xCoord = 0;
-	int yCoord = 0;
-	char canSelectThisUnit;
-	int participantIndex;
-	std::string unitName;
-	std::string isCommanderOrProvince;
-	int unitLevel;
-	OtherFunctions OF;
+std::array<int,5> Provinces::getResourceBuildingLevels()
+{
+	return resourceBuildingsLevels;
+}
+std::array<int,5> Provinces::getResourceBuildignsProduction()
+{
+	return resourceBuildingsProduction;
+}
+std::array<int,5> Provinces::getOtherBuildingsLevels()
+{
+	return otherBuildingsLevels;
+}
+int Provinces::getBarracksCapacity()
+{
+	return *barracksLevel * 10;
+}
+std::array<int,5> Provinces::getMaxResources()
+{
+	return maxResources;
 }

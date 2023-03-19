@@ -95,7 +95,7 @@ void TrainMA::TrainMAFunction() {
 							province->modifyResources(requiredResources, true);
             } else {
               std::cout << "Training successful" << std::endl;
-              province->addSpecificTroop(troopTier - 1, amountOfTroops);
+              province->modifySpecificTroop(troopTier - 1, amountOfTroops, true);
             }
             break;
           }

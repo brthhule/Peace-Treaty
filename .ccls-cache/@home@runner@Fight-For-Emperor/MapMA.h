@@ -33,7 +33,7 @@ public:
 	void provinceReportLog(char whatReportChar, Provinces* enemyProvince);
 
 
-  Participants *returnParticipant();
+  Participants *getParticipant();
 
 private:
 	Participants *participant;
