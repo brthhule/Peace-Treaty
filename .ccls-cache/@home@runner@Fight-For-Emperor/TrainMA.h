@@ -10,14 +10,12 @@
 #include "Participants.h"
 #include "Lists.h"
 #include "OtherFunctions.h"
-
-#define UNIT_AMOUNT 5
+#include "ConstValues.h"
 
 extern std::vector <std::vector <Provinces>> provincesMap;
 extern std::vector <Participants> participantsList;
-extern const std::array<std::string, UNIT_AMOUNT> TROOP_NAMES;
-extern const std::array<std::string, UNIT_AMOUNT> RESOURCE_NAMES;
-extern int currentParticipantIndex;
+
+extern ConstValues CV;
 
 class TrainMA
 {

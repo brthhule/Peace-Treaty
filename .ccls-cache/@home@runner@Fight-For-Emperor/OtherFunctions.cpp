@@ -12,7 +12,8 @@ std::string OtherFunctions::getInput(std::string text, std::vector<std::string> 
 		std::cout << "\033[31m";
 	  std::getline(std::cin, input);
 	  std::cout << "\033[0m";
-	} else
+	} 
+	else if (redo == true)
 	{
 		std::cout << std::endl;
     std::cout << "Invalid character entered. Please try again. " << std::endl;
@@ -22,11 +23,30 @@ std::string OtherFunctions::getInput(std::string text, std::vector<std::string> 
     std::cout << "\033[0m";
 	}
 
-	for (int x = 0; x < AV.size(); x++)
+	std::cout << "Input: " << input << std::endl;
+	if (input.length() == 1)
 	{
-		if (input == AV[x])
-			return input;
+		char letter = toupper(input.at(0));
+		input.clear();
+		input.push_back(letter);
 	}
+	std::cout << "New input: " << input << std::endl;
+	// bool canReturn = false;
+	for (std::string option: AV)
+	{
+		std::cout << "Input three: " << input << std::endl;
+		std::cout << "Option: " << option << std::endl;
+		if (input == option)
+		{
+			std::cout << "Returning... " << std::endl;
+			return input;
+			// canReturn = true;
+			std::cout << "Done returning...\n";
+		}
+	}
+	// if (canReturn)
+	// 	return input;
+	std::cout << "We're still here? \n";
 	getInput(text, AV, true);
 }
 
@@ -135,7 +155,7 @@ std::array<int, 5> OtherFunctions::modifyArray(std::array<int, 5> primeArray, st
 void OtherFunctions::printResources(std::array<int, 5> resourcesArray)
 {
 	for (int x = 0; x < 5; x++)
-		std::cout << "- " << provinceResourcesNames[x] << ": " << resourcesArray[x] <<  std::endl;
+		std::cout << "- " << CV.RESOURCE_NAMES[x] << ": " << resourcesArray[x] <<  std::endl;
 	
 	std::cout <<  std::endl;
 }

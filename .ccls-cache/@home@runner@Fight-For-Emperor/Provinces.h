@@ -6,15 +6,12 @@
 
 #include "AllUnits.h"
 #include "CommanderProfile.h"
+#include "ConstValues.h"
 
-extern const std::array<int, 5> TROOPS_CP;
-extern const std::array<int, 5> RESOURCE_PRODUCTION;
-extern const std::array<std::string, 5> RESOURCE_NAMES;
-extern const std::array<std::string, 5> RESOURCE_BUILDING_NAMES;
-extern const std::array<std::string, 5> TROOP_NAMES;
+extern ConstValues CV;
+
 extern int continentSize;
 extern const int BARRACKS_PRODUCTION;
-extern const std::array<int, 5> INITIAL_VALUES;
 extern int turn;
 
 const int LOG_SIZE = 20;
@@ -56,6 +53,8 @@ public:
 	void removeCommander(CommanderProfile *newCommander);
 	std::vector <CommanderProfile*> getAllCommanders();
 	int commandersNum(){return commanders.size();}
+	void printCommanders ();
+	bool hasCommander (std::string name);
 
 	/*Training*/
   int getTroopsTrainedThisTurn() { return troopsTrainedThisTurn; };

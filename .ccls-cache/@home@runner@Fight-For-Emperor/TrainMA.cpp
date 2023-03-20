@@ -28,12 +28,9 @@ void TrainMA::TrainMAFunction() {
   if (troopTier > 5) {
     troopTier = 5;
   }
-  std::cout << "The max tier troop you can train: " << troopTier << ", "
-            << troopNames[troopTier - 1] << std::endl;
-  std::cout << "The max amount of troops you can train at this barracks during "
-               "this turn (training capacity): \033[0m"
-            << std::endl;
-  std::cout << std::endl;
+  std::cout << "The max tier troop you can train: " << troopTier << ", " << CV.TROOP_NAMES[troopTier - 1] << std::endl;
+  std::cout << "The max amount of troops you can train at this barracks during this turn (training capacity): \033[0m\n\n";
+	
   int trainTroop;
   std::string trainTroops;
   std::vector<std::string> trainTroopsAVOne;

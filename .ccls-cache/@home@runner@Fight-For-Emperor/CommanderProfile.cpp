@@ -1,11 +1,5 @@
 #include "CommanderProfile.h"
 
-extern std::string provinceResourcesNames[5];
-extern std::string troopNames[5];
-extern int turn;
-extern int continentSize;
-extern int currentParticipantIndex;
-
 /*Constructors*/
 CommanderProfile::CommanderProfile() {
   unitLevel = 1;
@@ -33,10 +27,10 @@ CommanderProfile::CommanderProfile(int level, std::string name) {
 	otherCommanderStats[6] = &totalMaxResources;
 
   for (int x = 0; x < 5; x++) {
-    namesOfMANOne[0][x] = provinceResourcesNames[x];
-    namesOfMANOne[1][x] = troopNames[x];
-    namesOfMANOne[2][x] = troopNames[x];
-		namesOfMANOne[3][x] = troopNames[x];
+    namesOfMANOne[0][x] = CV.RESOURCE_NAMES[x];
+    namesOfMANOne[1][x] =  CV.TROOP_NAMES[x];
+    namesOfMANOne[2][x] = CV.TROOP_NAMES[x];
+		namesOfMANOne[3][x] = CV.TROOP_NAMES[x];
   }
   namesOfManTwo[0] = "Total Troops";
   namesOfManTwo[1] = "Total Army CP";
@@ -118,7 +112,7 @@ std::array<int, 5> CommanderProfile::getUpgradeCosts(){
 void CommanderProfile::printCosts(std::array <int, 5> costs)
 {
 	for (int x = 0; x < 5; x++)
-		std::cout << RESOURCE_NAMES[x] << " cost: " << costs[x] << std::endl;
+		std::cout << CV.RESOURCE_NAMES[x] << " cost: " << costs[x] << std::endl;
 	std::cout << std::endl;
 }
 

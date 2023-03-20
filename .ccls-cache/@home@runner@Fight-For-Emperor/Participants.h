@@ -20,13 +20,13 @@
 #include <unordered_map>
 
 #include "AllUnits.h"
+#include "ConstValues.h"
 
-extern int provinceBuildingsProductionNumbers[6];
+extern ConstValues CV;
 extern int continentSize;
-extern int troopsCP[5];
-extern int currentParticipantIndex;
-extern int initialResources [5];
 extern std::vector <std::vector <Provinces>> provincesMap;
+
+
 
 
 class Participants

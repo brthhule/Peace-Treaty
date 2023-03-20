@@ -5,6 +5,7 @@
 #include <vector>
 #include <iostream>
 #include <array>
+#include "ConstValues.h"
 
 #include "OtherFunctions.h"
 #define UNIT_AMOUNT = 5
@@ -13,19 +14,14 @@
 	int troopsPresent[5];
 	int troopsInjured[5];
 	int totalCP;*/
-extern const std::array<int, 5> TROOPS_CP;
-extern const std::array<int, 5> RESOURCE_PRODUCTION;
-extern const std::array<std::string, 5> RESOURCE_NAMES;
-extern const std::array<std::string, 5> RESOURCE_BUILDING_NAMES;
-extern const std::array<std::string, 5> TROOP_NAMES;
+extern ConstValues CV;
 extern int continentSize;
-extern const int BARRACKS_PRODUCTION;
 
 class AllUnits
 {
 public:
 	//constructor
-	AllUnits();
+	AllUnits() {};
 	AllUnits(int index);
 
 	int getCP();

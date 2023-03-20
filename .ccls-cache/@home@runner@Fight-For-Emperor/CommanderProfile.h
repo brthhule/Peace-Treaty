@@ -2,10 +2,12 @@
 #define COMMANDERPROFILE_H
 
 #include "AllUnits.h"
+#include "ConstValues.h"
 #include <vector>
 
-#define UNIT_SIZE 5
-extern const std::array<std::string, 5> RESOURCE_NAMES;
+extern ConstValues CV;
+extern int turn;
+
 
 class CommanderProfile : public AllUnits {
 public:

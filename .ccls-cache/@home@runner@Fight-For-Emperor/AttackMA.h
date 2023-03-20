@@ -9,13 +9,13 @@
 #include "CommanderProfile.h"
 #include "Provinces.h"
 #include "AllUnits.h"
+#include "ConstValues.h"
 
 extern std::vector <Participants> participantsList;
 extern std::vector<std::vector<Provinces>> provincesMap;
 extern int continentSize;
 extern int enemyDifficulty;
-extern const std::array<int, 5> TROOPS_CP;
-extern const std::array<std::string, 5> RESOURCE_NAMES;
+extern ConstValues CV;
 
 class AttackMA
 {
@@ -29,7 +29,6 @@ public:
 
 	//Function stuff
 	void preAttack();
-	void playerAttack();
 	void playerCommitAttack();
 	void calculateTroopsLost(CommanderProfile* commander, int lostCombatPower, std::array<int,5> &troopsLost, int troopIndex);
 	void battleCalculationsTwo(int& lostCombatPower, int troopsLost[5], int troopIndex);

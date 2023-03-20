@@ -2,11 +2,6 @@
 #define print(x)std::cout << x;
 #define println(x)std::cout << x << std::endl;
 
-extern std::vector<std::vector<Provinces>> provincesMap;
-extern std::string buildingNames[6];
-extern std::string provinceResourcesNames[5];
-extern int currentParticipantIndex;
-
 BuildMA::BuildMA() { province = findProvince(); }
 BuildMA::BuildMA(Provinces *newProvince, Participants *newParticipant) {
   province = newProvince;
@@ -101,14 +96,14 @@ void BuildMA::upgradeBuildings() {
   std::cout << "Returning to Build Infrastructure action menu. " << std::endl;
 }
 
+//Fix this to differentiate between resource buildings and othe rother buildings; right now, only accounts for resource buildings
 void BuildMA::printInformation(int buildingNumber, std::array<int, 5> requiredResources) {
  std::cout << "---------- Start printing information----------\n\n\033[34m";
-  println(buildingNames[buildingNumber] + " selected \n");
+  println(CV.RESOURCE_BUILDING_NAMES[buildingNumber] + " selected \n");
   println("The following is the cost of the upgrade: ");
   for (int x = 0; x < 5; x++) {
-    requiredResources[x] = (int)requiredResourcesBuildings[buildingNumber][x] *
-                           province->getBuildingLevel(x);
-    std::cout << provinceResourcesNames[x] << ": " << requiredResources[x]
+    requiredResources[x] = (int)requiredResourcesBuildings[buildingNumber][x] * province->getBuildingLevel(x);
+    std::cout << CV.RESOURCE_NAMES[x] << ": " << requiredResources[x]
               << std::endl;
   }
   println("\nThe following are how many resources are in this province: ");

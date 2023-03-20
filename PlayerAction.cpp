@@ -14,7 +14,7 @@ int PlayerAction::initialDecision() {
   std::cout << "Welcome to the Main menu " << std::endl;
   participant->showMap();
   char courseOfAction = ' ';
-  if (participant->isPlayer()) // If the participant is the player
+  if (participant->getParticipantIndex() != -1) // If the participant is the player
   {
     Lists newList(4);
     courseOfAction = newList.listOfActions();
@@ -47,8 +47,8 @@ int PlayerAction::initialDecision() {
     break;
   }
   case 'D': {
-    ArmyDeploymentMA newArmyDeploymentMA(participant);
-    newArmyDeploymentMA.armyDeploymentMF();
+    ArmyOverviewMA newArmyOverview(participant);
+    newArmyOverview.armyDeploymentMF();
     break;
   }
   case 'N':

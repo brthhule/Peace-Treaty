@@ -10,9 +10,11 @@
 #include "Provinces.h"
 #include "Participants.h"
 #include "AllUnits.h"
+#include "ConstValues.h"
 
 extern std::vector<Participants> participantsList;
 extern int continentSize;
+extern ConstValues CV;
 
 class BuildMA
 {

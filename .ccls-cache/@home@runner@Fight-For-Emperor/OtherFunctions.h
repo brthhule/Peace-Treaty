@@ -13,9 +13,10 @@
 #include <vector>
 
 #include "textFunctions.h"
+#include "ConstValues.h"
 
 extern int continentSize;
-extern int troopsCP[5];
+extern ConstValues CV;
 extern int currentParticipantIndex;
 
 class OtherFunctions {
@@ -23,8 +24,7 @@ public:
   OtherFunctions();
 
   // Check input-- maybe use template for this?
-  std::string getInput(std::string text, std::vector<std::string> AV,
-                       bool redo);
+  std::string getInput(std::string text, std::vector<std::string> AV, bool redo);
 
   // Map stuff
   int translateCoordinate(int coordinate, char indicator, char whichWay);
@@ -38,12 +38,9 @@ public:
   void clearScreen();
   std::string printCoordinates(std::array<int, 2> coordinates);
 
-  std::vector<int> addVectors(std::vector<int> primeVector,
-                              std::vector<int> secondaryVector);
-  std::vector<int> subtractVectors(std::vector<int> primeVector,
-                                   std::vector<int> secondaryVector);
-  std::array<int, 5> modifyArray(std::array<int, 5> primeArray,
-                                 std::array<int, 5> secondaryArray, bool isAdd);
+  std::vector<int> addVectors(std::vector<int> primeVector, std::vector<int> secondaryVector);
+  std::vector<int> subtractVectors(std::vector<int> primeVector, std::vector<int> secondaryVector);
+  std::array<int, 5> modifyArray(std::array<int, 5> primeArray, std::array<int, 5> secondaryArray, bool isAdd);
   void printResources(std::array<int, 5> resourcesArray);
 
 	void enterAnything ();

@@ -57,7 +57,7 @@ int Participants::commandersNum() { commandersList.size(); }
 void Participants::initialCapRSS() {
 	//Add functionality so, depending on the difficulty, AI participants get more or less resources to start off with
   Provinces *newProvince = provincesList[capitalIndex];
-	newProvince -> modifyResources(INITIAL_VALUES, true);
+	newProvince -> modifyResources(CV.INITIAL_VALUES, true);
 }
 
 // Mutators
@@ -106,11 +106,11 @@ void Participants::viewStats() {
   std::cout << "Kingdom name: " << kingdomName << "\n\n";
 
   for (int x = 0; x < 5; x++) {
-    std::cout << "Total " << provinceResourcesNames[x] << ": " << totalResources[x] << std::endl;
+    std::cout << "Total " << CV.RESOURCE_NAMES[x] << ": " << totalResources[x] << std::endl;
   }
 
   for (int x = 0; x < 5; x++) 
-    std::cout << "Total " << troopNames[x] << " alive: " << eachUnit[x] << std::endl;
+    std::cout << "Total " << CV.TROOP_NAMES[x] << " alive: " << eachUnit[x] << std::endl;
   
   std::cout << "Your total army combat power: " << calculatePlayerValues(1).at(0);
   std::cout << "\nYour numnber of provinces: " << provincesNum() << "\n\n";
@@ -127,7 +127,7 @@ std::vector<int> Participants::calculatePlayerValues(int decision) {
   case 1: { // Return total CP
 		int totalCPThingy = 0;
 		for (int x = 0; x < 5; x++)
-			totalCPThingy += newArray[x] * TROOPS_CP[x];
+			totalCPThingy += newArray[x] * CV.TROOPS_CP[x];
     return {totalCPThingy};
   }
   case 2: {
@@ -144,7 +144,7 @@ Provinces *Participants::getProvince(int index) { return provincesList[index]; }
 std::string Participants::getNewName() {
   std::string newName = OF.createRandomName();
   for (Provinces *newProvince : provincesList)
-    if (newName == newProvince->getProvinceName())
+    if (newName == newProvince->getUnitName())
       getNewName();
 
   
@@ -174,7 +174,7 @@ void Participants::viewAllStatsFunction() {
   std::cout << "\033[;34m"; // NW
 	std::array<int,5> troopsLost = calculateEach(3);
   for (int x = 0; x < 5; x++) {
-    std::cout << troopNames[x] << " lost: "
+    std::cout << CV.TROOP_NAMES[x] << " lost: "
               << troopsLost[x]
               << std::endl;
   }
@@ -219,13 +219,10 @@ Provinces *Participants::getCoords(int identifier) {
   case 3:
     phrase = "of the army you want to use to attack the target with";
   }
-  int xCoordinate = stoi(OF.getInput("Enter the x coordinate " + phrase +
-                               "(Enter '-1' to go back to previous menu) : ",
-                           actualCoordinatesAVTwo, 2));
+  int xCoordinate = stoi(OF.getInput("Enter the x coordinate " + phrase + "(Enter '-1' to go back to previous menu) : ", actualCoordinatesAVTwo, 2));
   // Critical: check to make sure the coordinate checkings are correct
   if (xCoordinate != -1 && xCoordinate < continentSize && xCoordinate >= 0) {
-    yCoordinate = stoi(OF.getInput("Enter the y coordinate " + phrase + " (Enter '-1' to go back to previous menu) : ",
-                         actualCoordinatesAVTwo, 2));
+    yCoordinate = stoi(OF.getInput("Enter the y coordinate " + phrase + " (Enter '-1' to go back to previous menu) : ", actualCoordinatesAVTwo, 2));
     std::cout << std::endl;
     if (yCoordinate != -1 && yCoordinate < continentSize && yCoordinate >= 0) {
       int replacement = xCoordinate;
@@ -327,7 +324,7 @@ void Participants::showMap() {
     for (int y = 0; y < continentSize; y++) {
       char letter = ' '; // Fix this later
       char identifierThingy = ' ';
-      if (provincesMap[x][y].getParticipantIndex() == currentParticipantIndex) {
+      if (provincesMap[x][y].getParticipantIndex() == participantIndex) {
         std::cout << "\033[;34m";
         identifierThingy = 'H';
         if (provincesMap[x][y].isCapital() == true) {

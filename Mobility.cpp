@@ -81,12 +81,8 @@ void Mobility::moveUnitOne() {
           attackProvince->addCommander(selectedCommander);
         }
         // If scenario is attack
-        else {
+        else 
           AttackMA newAttackMA(selectedCommanderProvince, attackProvince, participant, selectedCommander);
-          newAttackMA
-              .playerAttack(); // fix this-- don't need to pass unitXCoordinate,
-                               // can just use indexInList
-        }
       }
     } else {
       std::cout << "Invalid province selected... please try again. " << std::endl;

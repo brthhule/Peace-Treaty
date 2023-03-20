@@ -12,7 +12,7 @@ Provinces::Provinces(int sendXCoordinate, int sendYCoordinate, int pIndex)
 		x = 1;
 	for (int &x: otherBuildingsLevels)
 		x = 1;
-	resourcesPresent = INITIAL_VALUES;
+	resourcesPresent = CV.INITIAL_VALUES;
 	xCoord = sendXCoordinate;
 	yCoord = sendYCoordinate;
 	participantIndex = pIndex;
@@ -21,7 +21,7 @@ Provinces::Provinces(int sendXCoordinate, int sendYCoordinate, int pIndex)
 
 void Provinces::basicStats()
 {
-	OF.modifyArray(resourcesPresent, INITIAL_VALUES, true);
+	OF.modifyArray(resourcesPresent, CV.INITIAL_VALUES, true);
 	
 	scoutReportTurn = -1;
 	scoutReportLogLevel = -1;
@@ -90,16 +90,16 @@ void Provinces::printBuildingStats()
 {
 	for (int x = 0; x < 5; x++)
 	{
-		resourceBuildingsProduction[x] = resourceBuildingsLevels[x] * INITIAL_VALUES[x];
+		resourceBuildingsProduction[x] = resourceBuildingsLevels[x] * CV.INITIAL_VALUES[x];
 	}
     std::cout << "\033[;34m";
 
 	std::cout << "Building stats of this province: " << std::endl;
 	for (int x = 0; x < 5; x++)
 	{
-		std::cout << "- " << RESOURCE_BUILDING_NAMES[x] << " (" << buildingNames[x].substr(0, 1) << ") " << std::endl;
+		std::cout << "- " << CV.RESOURCE_BUILDING_NAMES[x] << " (" << CV.RESOURCE_BUILDING_NAMES[x].at(0) << ") " << std::endl;
 		std::cout << "    Level: " << resourceBuildingsLevels[x] << std::endl;
-		std::cout << "    " << RESOURCE_NAMES[x] << " production rate : " << resourceBuildingsProduction[x] << std::endl;
+		std::cout << "    " << CV.RESOURCE_NAMES[x] << " production rate : " << resourceBuildingsProduction[x] << std::endl;
 	}
 	//Add implementation
 	std::cout << "Barracks (B) " << std::endl;
@@ -117,7 +117,7 @@ void Provinces::updateBuildingsProduction()
 {
 	for (int x = 0; x < 5; x++)
 	{
-		resourceBuildingsProduction[x] = resourceBuildingsLevels[x] * RESOURCE_PRODUCTION[x];
+		resourceBuildingsProduction[x] = resourceBuildingsLevels[x] * CV.RESOURCE_PRODUCTION[x];
 	}
 }
 
@@ -178,12 +178,9 @@ std::array<int,5> Provinces::getTotalResources()
 	std::array<int,5> totalResources = resourcesPresent;
   std::unordered_map<std::string, CommanderProfile*>::iterator it;
 	for (it = commanders.begin(); it != commanders.end(); it++)
-	{
 		for (int y = 0; y < 5; y++)
-		{
 			totalResources[y] += it->second->getResource(y);
-		}
-	}
+	
 	return totalResources;
 }
 
@@ -279,4 +276,18 @@ int Provinces::getBarracksCapacity()
 std::array<int,5> Provinces::getMaxResources()
 {
 	return maxResources;
+}
+
+void Provinces::printCommanders()
+{
+	for (it = commanders.begin(); it != commanders.end(); it++)
+		std::cout << "- " << it->second->getUnitName();
+}
+
+bool Provinces::hasCommander(std::string name)
+{
+	for (it = commanders.begin(); it != commanders.end(); it++)
+		if (it->second->getUnitName() == name)
+			return true;
+	return false;
 }

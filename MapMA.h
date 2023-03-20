@@ -14,6 +14,11 @@
 
 #include "Participants.h"
 #include "Provinces.h"
+#include "ConstValues.h"
+
+extern std::vector<std::vector<Provinces>> provincesMap;
+extern std::vector<Participants> participantsList;
+extern ConstValues CV;
 
 class MapMA
 {
@@ -26,6 +31,7 @@ public:
 	void selectUnitOriginal(Provinces *selectedProvince);
 	void selectPlayerProvince();
 	void playerUnitAction(Provinces *newP);
+	void playerUnitActionP(Provinces *newP);
 	void selectEnemyAction();
 	void selectEnemyProvince(Provinces *newP);
 

@@ -1,19 +1,13 @@
-#include "ArmyDeploymentMA.h"
+#include "ArmyOverviewMA.h"
 #define print(x) std::cout << x;
 #define println(x) std::cout << x << std::endl;
 
-extern std::vector<Participants> participantsList;
-
-extern std::string provinceResourcesNames[5];
-extern int initialResources[5];
-extern int currentParticipantIndex;
-
-ArmyDeploymentMA::ArmyDeploymentMA(Participants *newP) {
+ArmyOverviewMA::ArmyOverviewMA(Participants *newP) {
   participant = newP;
   commandersNum = participant->commandersNum();
 }
 
-void ArmyDeploymentMA::armyDeploymentMF() {
+void ArmyOverviewMA::armyDeploymentMF() {
   char armyDeploymentActionChar;
 
   println("Welcome to the Army Deployment action menu");
@@ -47,7 +41,7 @@ void ArmyDeploymentMA::armyDeploymentMF() {
   armyDeploymentMF();
 }
 
-void ArmyDeploymentMA::upgradeCommandersOne() /*fix this-- finish making it*/
+void ArmyOverviewMA::upgradeCommandersOne() /*fix this-- finish making it*/
 {
   if (commandersNum > 0)
 	{
@@ -59,7 +53,7 @@ void ArmyDeploymentMA::upgradeCommandersOne() /*fix this-- finish making it*/
   
   OF.enterAnything();
 }
-void ArmyDeploymentMA::upgradeCommandersTwo() 
+void ArmyOverviewMA::upgradeCommandersTwo() 
 {
   participant->selectedCommanderPrintCosts();
 
@@ -80,7 +74,7 @@ void ArmyDeploymentMA::upgradeCommandersTwo()
   }
 }
 
-void ArmyDeploymentMA::viewArmyOverview() {
+void ArmyOverviewMA::viewArmyOverview() {
   if (participant->selectCommander() == true)
 	{
 		std::cout << "Commander " << participant->getSCName() << " selected... " << std::endl;
@@ -93,7 +87,7 @@ void ArmyDeploymentMA::viewArmyOverview() {
 	OF.enterAnything();	
 }
 
-void ArmyDeploymentMA::trainCommanders() {
+void ArmyOverviewMA::trainCommanders() {
   std::string yesOrNoString;
   std::cout << "You have " << commandersNum << "/" << participant->getMaxCommanders() << " total army commanders. \n";
   std::cout << "Do you want to train a commander? (Y/N) ";
@@ -101,7 +95,7 @@ void ArmyDeploymentMA::trainCommanders() {
   std::array<int, 5> trainCosts = participant->getTrainCosts();
 
   if (OF.getInput("Proceed with training", {"Y", "N"}, 1).at(0) == 'Y') 	{
-    if (commandersNum < maxAmountOfCommanders) /*if amount of commanders is less than max (not at max capacity)*/
+    if (commandersNum < participant->getMaxCommanders()) /*if amount of commanders is less than max (not at max capacity)*/
         proceedWithTraining(trainCosts);
     else 
       std::cout << "At maximum army commander amount. Training failed, returning to menu \n";
@@ -110,7 +104,7 @@ void ArmyDeploymentMA::trainCommanders() {
     OF.enterAnything();
 }
 
-void ArmyDeploymentMA::proceedWithTraining(std::array<int,5> trainCosts) {
+void ArmyOverviewMA::proceedWithTraining(std::array<int,5> trainCosts) {
   bool trainingSuccess = participant->getCapital()->subtractCheckResources(trainCosts);
 
   if (trainingSuccess == true) 
@@ -127,7 +121,7 @@ void ArmyDeploymentMA::proceedWithTraining(std::array<int,5> trainCosts) {
   }
 }
 
-void ArmyDeploymentMA::deployCommanderMF() 
+void ArmyOverviewMA::deployCommanderMF() 
 {
   if (participant->selectCommander() == false)
 		return;
@@ -153,10 +147,10 @@ void ArmyDeploymentMA::deployCommanderMF()
 	}
 }
 
-void ArmyDeploymentMA::printCosts(std::vector<int> costs, std::string type) {
+void ArmyOverviewMA::printCosts(std::vector<int> costs, std::string type) {
   std::cout << "The following are the " << type << " costs: \n";
   for (int x = 0; x < 5; x++)
-    std::cout << provinceResourcesNames[x] << ": " << costs[x];
+    std::cout << CV.RESOURCE_NAMES[x] << ": " << costs[x];
 
   std::cout << "The following are the resources currently in your capital: \n";
   participant->getCapital()->printResources();

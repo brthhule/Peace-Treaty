@@ -3,10 +3,7 @@
 #define println(x) std::cout << x << std::endl;
 #define part() getParticipantIndex()
 
-extern std::vector<std::vector<Provinces>> provincesMap;
-extern std::vector<Participants> participantsList;
-extern std::string troopNames[5];
-extern int troopsCP[5];
+
 
 MapMA::MapMA(Participants *newParticipant) { participant = newParticipant;
 pIndex = participant->getParticipantIndex();}
@@ -46,23 +43,28 @@ Participants *MapMA::getParticipant() { return participant; }
 
 void MapMA::selectUnitOriginal(Provinces *selectedProvince) {
 	prov = selectedProvince;
-  if (prov->part() ==
-      pIndex) // If belongs to participant
+  if (prov->part() == pIndex) // If belongs to participant
   {
     selectPlayerProvince();
-  } else if (prov->part() == -1) // If empty province
+  }
+	else if (prov->part() == -1) // If empty province
   {
     if (prov->commandersNum() >
         0) // If there are more than 0 commnaders
     {
+			//If the commander here is yours
       if (prov->getCommander(0)->getParticipantIndex() == pIndex)
       {
         playerUnitAction(prov);
-      } else {
+      } 
+			//If the commander here is an emey
+			else {
         selectEnemyAction();
       }
     }
-  } else // If enemy province
+		
+  } 
+	else // If enemy province
   {
     selectEnemyProvince(prov);
   }
@@ -114,7 +116,6 @@ void MapMA::selectEnemyProvince(Provinces *newP) {
   switch (selectUnitEnemyProvinceChar) {
   case 'A': {
     AttackMA newAttackMA(enemyProvince, participant);
-    newAttackMA.playerAttack();
 		//selectEnemyProvince(enemyProvince);
     break;
   }
@@ -139,30 +140,17 @@ void MapMA::selectEnemyProvince(Provinces *newP) {
   }
 }
 
+//Get the commander that's here 
 void MapMA::playerUnitAction(Provinces *newP) {
 	Provinces *newProvince = newP;
   println("This is one of your armies ");
 	
 	Lists newLists (2);
 	switch (newLists.listOfActions()) {
-	case 'P': {
-		// find index of commander unit, fix this
-		int commanderIndex = 0;
-		for (int x = 0; x < participant->commandersNum(); x++) {
-			if (participant->getProvince(x) == newProvince) {
-				commanderIndex = x;
-				x = participant->commandersNum();
-			}
-		}
-		if (participant->getCommander(commanderIndex)->hasMovedQuestion() == false) {
-			Mobility newMobility (participant->getCommander(commanderIndex)->getUnitName(), participant);
-			newMobility.moveUnitOne(); /*fix this*/
-			playerUnitAction(newProvince);
-		} else
-		{
-			println("This unit has already moved this turn... returning to the View Map action menu \n");
+	case 'P': //Move this unit
+	{
+		playerUnitActionP(newProvince);
 		break;
-		}
 	}
 	case 'H':
 	{
@@ -174,6 +162,32 @@ void MapMA::playerUnitAction(Provinces *newP) {
 	case 'M':
 		std::cout << "Returning to menu... \n" ;
 		break;
+	}
+}
+
+void MapMA::playerUnitActionP(Provinces *newP)
+{
+	Provinces *newProvince = newP;
+	std::cout << "The following commanders are at this province: \n";
+	newProvince -> printCommanders();
+	// find index of commander unit, fix this
+	std::string commanderName = " ";
+	std::cout << "\nEnter the name of the commander you would like to select: ";
+	getline(std::cin, commanderName);
+	if (newProvince->hasCommander(commanderName) == false)
+	{
+		std::cout << "Invalid name entered; please try again...";
+		playerUnitAction(newProvince);
+	}
+	
+	if (participant->getCommanderByName(commanderName)->hasMovedQuestion() == false) {
+		Mobility newMobility (commanderName, participant);
+		newMobility.moveUnitOne(); /*fix this*/
+		playerUnitAction(newProvince);
+	} 
+	else
+	{
+		println("This unit has already moved this turn... returning to the View Map action menu \n");
 	}
 }
 
@@ -203,12 +217,7 @@ void MapMA::scoutLogFunction(Provinces* enemyProvince) {
   char repeatScoutLog = 'N';
   char whatReportChar;
 
-  std::cout << "Turn of scout report: "
-            << enemyProvince->getScoutReportTurn()
-            << "; Level of report: "
-            << enemyProvince -> getScoutLogTurnLevel()
-            << std::endl
-            << std::endl;
+  std::cout << "Turn of scout report: " << enemyProvince->getScoutReportTurn() << "; Level of report: " << enemyProvince -> getScoutLogTurnLevel() << "\n\n";
   do {
 		Lists newLists(11);
     whatReportChar = newLists.listOfActions();
@@ -222,12 +231,12 @@ void MapMA::provinceReportLog(char whatReportChar, Provinces* enemyProvince) {
   case 'G': {
     std::cout << "Garrisoned troops: " << std::endl;
     for (int x = 0; x < 5; x++) {
-      std::cout << "-" << troopNames[x] << ": "
+      std::cout << "-" << CV.TROOP_NAMES[x] << ": "
                 << enemyProvince->getTroopsPresent(x)
                 << std::endl;
       totalGarrisonedCP +=
           (enemyProvince->getTroopsPresent(x) *
-           troopsCP[x]);
+           CV.TROOPS_CP[x]);
     }
     std::cout << "Total Garrison Combat Power: " << totalGarrisonedCP << std::endl
               << std::endl;

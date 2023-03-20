@@ -1,3 +1,0 @@
-ArmyDeploymentMA.o: ArmyDeploymentMA.cpp ArmyDeploymentMA.h \
-  OtherFunctions.h Participants.h Provinces.h CommanderProfile.h \
-  AllUnits.h textFunctions.h Lists.h
