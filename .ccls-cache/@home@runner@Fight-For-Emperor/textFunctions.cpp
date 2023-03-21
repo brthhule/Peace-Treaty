@@ -3,10 +3,10 @@
 
 void synopsis()
 {
-    std::cout << "- Welcome to Fight For Emperor" << std::endl;
-    std::cout << "- In a large continent, filled with various kingdoms, you are a monarch seeking to unit the land; you will defeat the other kingdoms and become emperorer." << std::endl;
-    std::cout << "- Develop buildings, train troops, and use logistics and battle strategies to conquer enemy provinces." << std::endl;
-    std::cout << "- Although players cannot save their complete data, a portion of the land that they gained in the previous game (as well as the amount of resources available) will be available through a code \n\n";
+	std::cout << "- Welcome to Fight For Emperor" << std::endl;
+	std::cout << "- In a large continent, filled with various kingdoms, you are a monarch seeking to unit the land; you will defeat the other kingdoms and become emperorer." << std::endl;
+	std::cout << "- Develop buildings, train troops, and use logistics and battle strategies to conquer enemy provinces." << std::endl;
+	std::cout << "- Although players cannot save their complete data, a portion of the land that they gained in the previous game (as well as the amount of resources available) will be available through a code \n\n";
 }
 
 

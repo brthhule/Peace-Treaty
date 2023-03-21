@@ -33,7 +33,7 @@ class Participants
 {
 public:
 	//constructors
-	Participants();
+	Participants(int pIndex);
 
 
 	//Capital stuff

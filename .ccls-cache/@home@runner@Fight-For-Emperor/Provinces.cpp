@@ -139,11 +139,6 @@ void Provinces::addTroopsTrainedThisTurn(int amount)
     troopsTrainedThisTurn += amount;
 }
 
-void Provinces::changeParticipant(int num)
-{
-  participantIndex = num;
-}
-
 int Provinces::getCoordinate (char identifier)
 {
   switch (identifier)

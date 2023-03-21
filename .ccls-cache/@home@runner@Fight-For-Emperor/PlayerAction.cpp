@@ -6,12 +6,13 @@ PlayerAction::PlayerAction() {}
 
 PlayerAction::PlayerAction(Participants *newP) { participant = newP; }
 
-int PlayerAction::initialDecision() {
-
+void PlayerAction::initialDecision() {
+  std::cout << "Initial decision made... \n";
+  bool goToNextTurn = false;
   OF.clearScreen();
 
-  std::cout << "Turn: " << turn << std::endl << std::endl;
-  std::cout << "Welcome to the Main menu " << std::endl;
+  std::cout << "Turn: " << turn;
+  std::cout << "\n\nWelcome to the Main menu \n";
   participant->showMap();
   char courseOfAction = ' ';
   if (participant->getParticipantIndex() != -1) // If the participant is the player
@@ -33,8 +34,7 @@ int PlayerAction::initialDecision() {
     break;
   }
   case 'T': {
-		Provinces *newProvince = participant->getYourProvince(1);
-    TrainMA newTrainMA(newProvince);
+    TrainMA newTrainMA(participant);
     newTrainMA.TrainMAFunction();
     break;
   }
@@ -52,25 +52,25 @@ int PlayerAction::initialDecision() {
     break;
   }
   case 'N':
-    return -1;
+    goToNextTurn = true;
   case 'H': {
     Lists newList(4);
     newList.listOfHelp();
-    char whenYouDoneChar = OF.getInput(" ", {"P"}, 2).at(0);
+    char whenYouDoneChar = OF.getInput(" ", {"P"}, false).at(0);
     break;
   }
   case 'P': {
     char pauseGameQuestionChar = OF.getInput(
         "Pausing the game will end this session of gameplay. Proceed? (Y/N): ",
-		{"Y", "N"}, 1).at(0);
+		{"Y", "N"}, false).at(0);
     if (pauseGameQuestionChar == 'Y') {
       pauseGame();
     }
-    std::cout << "Returning to the Main menu... " << std::endl;
-    return -2;
+    std::cout << "Returning to the Main menu... \n";
   }
   }
-  initialDecision();
+  if (goToNextTurn == false)
+    initialDecision();
 }
 
 char PlayerAction::randomAction() {

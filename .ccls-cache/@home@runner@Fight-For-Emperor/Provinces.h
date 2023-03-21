@@ -27,7 +27,6 @@ public:
 	bool isCapital(){return isACapital;};
 	void setCoordinates(int xCoordinate, int yCoordinate);
   void initializeCapital(); // provinceIsACapital
-  void changeParticipant(int num);
 
 	/*Province Identity*/
 	int getCoordinate(char identifier);
@@ -82,6 +81,7 @@ public:
 	std::array<int,5> getResourceBuildignsProduction();
 	std::array<int,5> getOtherBuildingsLevels ();
 	int getBarracksCapacity();
+	int getBarracksLevel(){return *barracksLevel;}
 	std::array<int,5> getMaxResources();
 
 	

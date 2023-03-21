@@ -2,9 +2,12 @@
 
 #define print(x) std::cout << x;
 #define println(x) std::cout << x << std::endl;
+#define RED "\033[31m"
+#define WHITE "\033[0m"
+#define BLUE "\033[;34m"
 
 // Constructor
-Participants::Participants() {
+Participants::Participants(int pIndex) {
   createCapital();
   addCommander();
   initialCapRSS();
@@ -31,7 +34,7 @@ void Participants::createCapital() {
   int yCoord = getRandomCoordinate();
   Provinces *newProvince = &provincesMap[xCoord][yCoord];
   if (newProvince->getParticipantIndex() == -1) {
-    newProvince->changeParticipant(participantIndex);
+    newProvince->changeParticipantIndex(participantIndex);
     addProvince(newProvince);
     setCapital(newProvince);
   } else {
@@ -51,7 +54,7 @@ Provinces *Participants::findProvince(int x, int y) {
 }
 
 int Participants::provincesNum() { return provincesList.size(); }
-int Participants::commandersNum() { commandersList.size(); }
+int Participants::commandersNum() { return commandersList.size(); }
 
 
 void Participants::initialCapRSS() {
@@ -77,6 +80,7 @@ void Participants::addProvince(Provinces *newProvince) {
 void Participants::addCommander() {
   CommanderProfile newCommander(1, getNewName());
   std::array<int, 2> newCoordinates = getCapital()->getCoordinates();
+	newCommander.changeParticipantIndex(participantIndex);
   newCommander.setLocation(newCoordinates);
 commandersList.insert({newCommander.getUnitName(), &newCommander});
 	getCapital()->addCommander(&newCommander);
@@ -91,18 +95,30 @@ void Participants::setKingdomName(std::string newName) {
 std::string Participants::getKingdomName() { return kingdomName; }
 
 bool Participants::isAlive() {
+  std::cout << "ProvincesNum: " << provincesNum() << std::endl;
+  std::cout << "CommandersNum: " << commandersNum() << std::endl;
   if (provincesNum() > 0 && commandersNum() > 0) {
     return true;
   }
   return false;
 }
 
-void Participants::createAsPlayer(bool choice) { playerStatus = choice; }
+void Participants::createAsPlayer(bool choice) 
+{ 
+  playerStatus = choice; 
+  //If player
+  if (choice == true)
+  {
+    std::cout << "Enter a name for this participant: " << RED;
+    getline (std::cin, kingdomName);
+    std::cout << WHITE << "Kingdom " << RED << kingdomName << WHITE << " created... \n\n";
+  }
+}
 
 void Participants::viewStats() {
 	std::array<int, 5> eachUnit = calculateEach(1);
 	std::array<int,5> totalResources = calculateEach(2);
-	
+
   std::cout << "Kingdom name: " << kingdomName << "\n\n";
 
   for (int x = 0; x < 5; x++) {
@@ -115,7 +131,7 @@ void Participants::viewStats() {
   std::cout << "Your total army combat power: " << calculatePlayerValues(1).at(0);
   std::cout << "\nYour numnber of provinces: " << provincesNum() << "\n\n";
 
-  if (OF.getInput("View all stats? (Y/N) ", {"Y", "N"}, 1).at(0) == 'Y') 
+  if (OF.getInput("View all stats? (Y/N) ", {"Y", "N"}, false).at(0) == 'Y') 
     viewAllStatsFunction();
 		
   std::cout << "Returning to menu" << std::endl;
@@ -171,7 +187,7 @@ int Participants::getParticipantIndex() { return participantIndex; }
 
 void Participants::viewAllStatsFunction() {
   std::string literallyAnyRandomCharacter;
-  std::cout << "\033[;34m"; // NW
+  std::cout << BLUE; // NW
 	std::array<int,5> troopsLost = calculateEach(3);
   for (int x = 0; x < 5; x++) {
     std::cout << CV.TROOP_NAMES[x] << " lost: "
@@ -219,10 +235,10 @@ Provinces *Participants::getCoords(int identifier) {
   case 3:
     phrase = "of the army you want to use to attack the target with";
   }
-  int xCoordinate = stoi(OF.getInput("Enter the x coordinate " + phrase + "(Enter '-1' to go back to previous menu) : ", actualCoordinatesAVTwo, 2));
+  int xCoordinate = stoi(OF.getInput("Enter the x coordinate " + phrase + "(Enter '-1' to go back to previous menu) : ", actualCoordinatesAVTwo, false));
   // Critical: check to make sure the coordinate checkings are correct
   if (xCoordinate != -1 && xCoordinate < continentSize && xCoordinate >= 0) {
-    yCoordinate = stoi(OF.getInput("Enter the y coordinate " + phrase + " (Enter '-1' to go back to previous menu) : ", actualCoordinatesAVTwo, 2));
+    yCoordinate = stoi(OF.getInput("Enter the y coordinate " + phrase + " (Enter '-1' to go back to previous menu) : ", actualCoordinatesAVTwo, false));
     std::cout << std::endl;
     if (yCoordinate != -1 && yCoordinate < continentSize && yCoordinate >= 0) {
       int replacement = xCoordinate;
@@ -309,7 +325,7 @@ std::array<int, 5> Participants::calculateEach(int option)
 
 
 void Participants::showMap() {
-  std::cout << "Map: " << std::endl;
+  std::cout << "Map: \n";
   int thingy = continentSize;
   for (int x = 0; x < continentSize; x++) {
     // Y axis stuff
@@ -324,21 +340,22 @@ void Participants::showMap() {
     for (int y = 0; y < continentSize; y++) {
       char letter = ' '; // Fix this later
       char identifierThingy = ' ';
+			
       if (provincesMap[x][y].getParticipantIndex() == participantIndex) {
-        std::cout << "\033[;34m";
+        std::cout << BLUE;
         identifierThingy = 'H';
         if (provincesMap[x][y].isCapital() == true) {
-          letter = 'P';
+          letter = 'C';
         } else {
           letter = 'p';
         }
       } else if (provincesMap[x][y].getParticipantIndex() != -1) {
-        std::cout << "\033[;31m";
+        std::cout << RED;
         identifierThingy = 'V';
         if (provincesMap[x][y].isCapital() == true) {
-          letter = 'E';
+          letter = 'C';
         } else {
-          letter = 'e';
+          letter = 'p';
         }
       } else {
         letter = '0';
@@ -353,7 +370,7 @@ void Participants::showMap() {
           std::cout << letter << identifierThingy << "* ";
         }
       }
-      std::cout << "\033[;0m";
+      std::cout << WHITE;
     }
     std::cout << std::endl;
   }
@@ -414,7 +431,7 @@ bool Participants::selectCommander() {
 	selectedCommander = getCommanderByName(commanderName);
 
 	std::cout << "Confirm selection of commander " << selectedCommander->getUnitName() << "? (Y/N): ";
-	char confirmSelection = OF.getInput("0", {"Y", "N"}, 2).at(0);
+	char confirmSelection = OF.getInput("0", {"Y", "N"}, false).at(0);
 
 	if (confirmSelection == 'Y')
 		return true;

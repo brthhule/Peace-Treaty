@@ -23,31 +23,25 @@ std::string OtherFunctions::getInput(std::string text, std::vector<std::string> 
     std::cout << "\033[0m";
 	}
 
-	std::cout << "Input: " << input << std::endl;
-	if (input.length() == 1)
+  if (input.length() == 1 && AV[0] == "letter")
 	{
 		char letter = toupper(input.at(0));
 		input.clear();
 		input.push_back(letter);
 	}
-	std::cout << "New input: " << input << std::endl;
-	// bool canReturn = false;
-	for (std::string option: AV)
-	{
-		std::cout << "Input three: " << input << std::endl;
-		std::cout << "Option: " << option << std::endl;
-		if (input == option)
-		{
-			std::cout << "Returning... " << std::endl;
-			return input;
-			// canReturn = true;
-			std::cout << "Done returning...\n";
-		}
-	}
-	// if (canReturn)
-	// 	return input;
-	std::cout << "We're still here? \n";
-	getInput(text, AV, true);
+
+
+  // if (AV[0] != "number")
+  	for (std::string option: AV)
+  		if (input == option)
+  			return input;
+  // else
+  //   for (int number: AVInt)
+  //     if (number == inputInt)
+  //       return std::to_string(inputInt);
+	
+  return getInput(text, AV, true);
+  
 }
 
 std::string OtherFunctions::createRandomName() {

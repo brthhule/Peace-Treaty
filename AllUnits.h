@@ -64,6 +64,7 @@ public:
 
 
 	void changeUnitName(std::string name);
+	void changeParticipantIndex (int number) {participantIndex = number;}
   std::string getUnitName();
 
 

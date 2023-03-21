@@ -88,7 +88,7 @@ void MapMA::selectPlayerProvince() {
     break;
   }
   case 'T': {
-    TrainMA newTrainMA(prov);
+    TrainMA newTrainMA(participant);
     newTrainMA.TrainMAFunction();
     break;
   }

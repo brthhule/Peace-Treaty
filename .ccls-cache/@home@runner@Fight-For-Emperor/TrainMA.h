@@ -22,12 +22,13 @@ class TrainMA
 public:
 	//constructor
 	TrainMA();
-	TrainMA(Provinces *newP);
+	TrainMA(Participants *newParticipant);
 	//other functions
 	void TrainMAFunction();
 private:
 	Provinces *province;
 	OtherFunctions OF;
+	Participants *participant;
 };
 
 #endif

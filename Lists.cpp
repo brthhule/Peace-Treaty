@@ -3,7 +3,7 @@
 Lists::Lists(int num) { identifier = num; }
 char Lists::listOfActions() // print out what actions a player can do
 {
-  std::vector<std::string> vectorToSend = {};
+  std::vector<std::string> vectorToSend;
   /*cout << "- ()\n";*/
   /*HANDLE console_color;
   console_color = GetStdHandle(STD_OUTPUT_HANDLE); //WO
@@ -95,18 +95,22 @@ char Lists::listOfActions() // print out what actions a player can do
     break;
   }
   }
-  std::cout << "-------------- End List: ---------------- \033[;0m\n\n";
 
   std::cout << "- Return to the previous menu (M)\n";
+  std::cout << "-------------- End List: ---------------- \033[;0m\n\n";
   // SetConsoleTextAttribute(console_color, 15); //WO
   if (identifier != 3 && identifier != 4) {
     vectorToSend.push_back("M");
-		vectorToSend.push_back("H");
   }
+
+	vectorToSend.push_back("H");
+
+  std::vector <std::string> newVector;
+  newVector.push_back("letter");
+  for (std::string option: vectorToSend)
+    newVector.push_back(option);
 	
-  char letter = OF.getInput("Enter the letter of the action you want to complete (enter 'H' to see help to know what to do): ", vectorToSend , false).at(0);
-	std::cout << "Letter is: " << letter << std::endl;
-	return letter;
+	return OF.getInput("Enter the letter of the action you want to complete (enter 'H' to see help to know what to do): ", newVector , false).at(0);
 }
 
 
