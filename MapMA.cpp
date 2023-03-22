@@ -10,11 +10,17 @@ pIndex = participant->getParticipantIndex();}
 
 void MapMA::viewPlayerMap() {
   char whatToDo = ' ';
-  participant->showMap();
-
-  print("Welcome to the View Map action menu");
-  Lists newList(8);
-  whatToDo = newList.listOfActions();
+  if (participant->isPlayer())
+  {
+    participant->showMap();
+    println("Welcome to the View Map action menu");
+  
+    Lists newList(8);
+    whatToDo = newList.listOfActions();
+  }
+  else
+    whatToDo = 'P';
+  
 
   switch (whatToDo) {
   case 'P': {

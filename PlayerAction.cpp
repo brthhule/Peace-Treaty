@@ -7,19 +7,19 @@ PlayerAction::PlayerAction() {}
 PlayerAction::PlayerAction(Participants *newP) { participant = newP; }
 
 void PlayerAction::initialDecision() {
-  std::cout << "Initial decision made... \n";
   bool goToNextTurn = false;
   OF.clearScreen();
-
-  std::cout << "Turn: " << turn;
-  std::cout << "\n\nWelcome to the Main menu \n";
-  participant->showMap();
   char courseOfAction = ' ';
-  if (participant->getParticipantIndex() != -1) // If the participant is the player
+  if (participant->isPlayer() == true)
   {
+    std::cout << "Turn: " << turn << std::endl;
+    std::cout << "Player " << participant->getKingdomName() << "'s move...";
+    std::cout << "\n\nWelcome to the Main Action menu \n\n";
+    participant->showMap();
     Lists newList(4);
     courseOfAction = newList.listOfActions();
-  } else // If the participant is the AI
+  }
+  else // If the participant is the AI
   {
     courseOfAction = randomAction();
   }
@@ -53,6 +53,7 @@ void PlayerAction::initialDecision() {
   }
   case 'N':
     goToNextTurn = true;
+    break;
   case 'H': {
     Lists newList(4);
     newList.listOfHelp();
@@ -75,7 +76,7 @@ void PlayerAction::initialDecision() {
 
 char PlayerAction::randomAction() {
   int randomNumber = rand() % 6; // Random number 0 to 5 (inclusive)
-	std::vector<char> newVector = {'B', 'T', 'V', 'M', 'A', 'G'};
+	std::vector<char> newVector = {'B', 'T', 'S', 'U', 'D', 'N'};
   return newVector[randomNumber];
 }
 

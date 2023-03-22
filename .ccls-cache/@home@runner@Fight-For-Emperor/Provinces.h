@@ -24,7 +24,7 @@ public:
 	void basicStats();
 
 	/*Initialization*/
-	bool isCapital(){return isACapital;};
+	bool isCapital(){return isACapital;}
 	void setCoordinates(int xCoordinate, int yCoordinate);
   void initializeCapital(); // provinceIsACapital
 

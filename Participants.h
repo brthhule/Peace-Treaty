@@ -28,7 +28,6 @@ extern std::vector <std::vector <Provinces>> provincesMap;
 
 
 
-
 class Participants
 {
 public:
@@ -60,6 +59,8 @@ public:
 	void printListOfProvinces();
 	bool subtractCheckResources(std::string provinceName, std::array<int, 5> resourcesArray);
 	Provinces* getProvinceByName(std::string name);
+  bool hasProvince (std::string name);
+  Provinces* selectRandomProvince();
 
 
 
@@ -75,7 +76,8 @@ public:
 	//AI
 	void createAsPlayer (bool choice);
 	bool isAlive();
-	bool isPlayer();
+	bool isPlayer(){return playerStatus;}
+  void setPlayerStatus (bool status){playerStatus = status;}
 
 	//Stats
 	std::vector<int> calculatePlayerValues (int decision);

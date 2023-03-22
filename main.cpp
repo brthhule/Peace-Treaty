@@ -14,6 +14,7 @@
 #include <time.h>
 
 
+
 //Player infrastructure
 #include "Provinces.h"
 #include "Participants.h"
@@ -29,14 +30,15 @@
 //Main Actions
 #include "PlayerAction.h"
 
+
 #define UNIT_AMOUNT 5
 #define RED "\033[31m"
 #define WHITE "\033[0m"
 
 char introduction();
 void resumeGame();
-void startGame(std::string kingdomName);
-void generateNewContinent(std::string kingdomName, int pNum);
+void startGame();
+void generateNewContinent(int pNum);
 void gamePlay();
 void endScreen();
 void updateProvinceResources();
@@ -56,7 +58,6 @@ int enemyDifficulty = 0;
 
 ConstValues CV;
 
-std::string kingdomName = " ";
 int totalMaxCommanders = 0;
 
 
@@ -74,10 +75,10 @@ int main()/*main code*/
   case 'S':
   {
     std::cout << "New game started...\n\n";
-    std::cout << "What is your kingdom name? " << RED;
-    std::getline(std::cin, kingdomName);
-    std::cout << WHITE << "The kingdom of " << RED << kingdomName << WHITE << " has been created! \n\n";
-    startGame(kingdomName);
+    // std::cout << "What is your kingdom name? " << RED;
+    // std::getline(std::cin, kingdomName);
+    // std::cout << WHITE << "The kingdom of " << RED << kingdomName << WHITE << " has been created! \n\n";
+    startGame();
     break;
   }
   case 'H':
@@ -88,6 +89,9 @@ int main()/*main code*/
   }
   }
 
+  // for (Participants thingy: participantsList)
+  //   std::cout << "Participant index: " << thingy.getParticipantIndex() << std::endl;
+  
   std::string literallyAnything = " ";
   std::cout << "Enter anything to proceed to the game: " << RED;
 	getline(std::cin, literallyAnything);
@@ -110,7 +114,7 @@ void resumeGame() /*download data from previous game fix this*/
 	std::cout << "\033[0m";
 	/*use global variables to figure out code*/
 }
-void startGame(std::string kingdomName)
+void startGame()
 {
 	std::string text = "What continent size do you want to play on?\n- 5 (Recommended for mobile devices)\n- 10 (Medium-sized map)\n- 15 (Full experienced, recommended for a monitor)\nEnter the number here: ";
 	//"What continent size do you want to play on? (5, 10, 15) "
@@ -125,32 +129,34 @@ void startGame(std::string kingdomName)
 	enemyDifficulty = stoi(OF.getInput("What gameplay difficulty do you want (1-3): ", {"number","1","2","3" }, false)); 
 	std::cout << "Gameplay difficulty " << RED << enemyDifficulty << WHITE << " selected. \n\n";
 
-	generateNewContinent(kingdomName, pNum);
+	generateNewContinent(pNum);
 }
-void generateNewContinent(std::string kingdomName, int pNum)
+void generateNewContinent(int pNum)
 {
 	createMap();
   std::vector<std::string> howManyPlayers = {"number"};
-  for (int x = 1; x <= 10; x++)
+  for (int x = 1; x <= 3; x++)
     howManyPlayers.push_back(std::to_string(x));
   
-	int players = stoi(OF.getInput("How many human players are there (including yourself, up to 10): ", howManyPlayers, false));
+	int players = stoi(OF.getInput("How many human players are there (1/2/3; 1 is recommended for single player experience)): ", howManyPlayers, false));
   std::cout << RED << players << WHITE << " players initialized...\n\n";
+  pNum += players;
 	
   
-  for (int x = 0; x <= pNum; x++)
+  for (int x = 0; x < pNum; x++)
 	{
 		Participants newParticipant (x);
 		//Create x + 1 many players
 		if (x < players)
     {
-      std::cout << "New participant created... \n";
+      //std::cout << "New participant created... \n";
       newParticipant.createAsPlayer(true);
     }
     //Everyone else is enemy AI
 		else
 			newParticipant.createAsPlayer (false);
-		
+
+  //   std::cout << "Participant index: " << newParticipant.getParticipantIndex() << std::endl;
 		participantsList.push_back(newParticipant);
 	}
 }
@@ -172,7 +178,7 @@ void endScreen()
 	for (int x = 0; x <= participantsList.size(); x++)
 	{
 		if (participantsList[x].isAlive())
-			std::cout << "Congratulatios to kingdom " << participantsList[x].getKingdomName() << " for winning. You have successfully conquered your enemies and now reign as the Emperor! \n";
+			std::cout << "Congratulatios to player " << participantsList[x].getKingdomName() << " for winning. You have successfully conquered your enemies and now reign as the Emperor! \n";
 	}
 	char playAgain = OF.getInput("Play again? (Y/N) ", {"letter", "Y", "N"}, false).at(0);
 	if (playAgain == 'Y')
@@ -196,11 +202,7 @@ void gamePlay()
 	
   //Iterate through partiicpants by reference
   for (Participants &newParticipant: participantsList)
-  {
-    std::cout << "This is participant " << newParticipant.getKingdomName() << std::endl;
-    std::cout << "Kingdom is alive: \n";
-		std::cout << newParticipant.isAlive() << std::endl;
-		
+  {		
     if (newParticipant.isAlive())
     {
       PlayerAction newPlayerAction (&newParticipant);
@@ -228,3 +230,7 @@ void gamePlay()
   
 	endScreen();
 }
+curl $REPLIT_DB_URL -d 'MyLife = 2'
+curl -XDELETE $REPLIT_DB_URL/MyLife
+curl $REPLIT_DB_URL -d 'MyLife = 2'
+curl $REPLIT_DB_URL -d 'MyLife = 2'

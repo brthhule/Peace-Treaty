@@ -588,12 +588,17 @@ March 20: 1 hour, 50 min
 
 	10:40 - 11:30 pm (50 min): Asked Lauren to test help test some stuff out. Working on formatting stuff. Got everything to work up until the PlayerAction menu, added directions for continent size to optimize map for mobile devices (and other conditions), fixed getInput instances to use true/false instead of numbers. Have to work on TrainMA, map is acting funky.
 --------------------------------------------
+March 21:
+  10 min-- Figured out Participant indices-- just forgot to set the participant index at Participant initialization
+  30 min: Tweaking gameplay
 
 Changes: 
 
 - Replaced findProvinceCoordinates with getTrainProvince ()
 - Replaced getTrainBuildCoordinates and getCoordinates with getCoords;
 - Changed deadTroops to troopsLost
+
+
 
 Last PC update: August 5 @ 11:37 am
 Last Repl update: November 13 @ 10:11 pm

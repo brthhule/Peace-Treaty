@@ -12,6 +12,7 @@ Participants::Participants(int pIndex) {
   addCommander();
   initialCapRSS();
   setKingdomName("-1");
+  participantIndex = pIndex;
 
 	for (int x = 0; x < continentSize; x++)
 	{
@@ -35,6 +36,7 @@ void Participants::createCapital() {
   Provinces *newProvince = &provincesMap[xCoord][yCoord];
   if (newProvince->getParticipantIndex() == -1) {
     newProvince->changeParticipantIndex(participantIndex);
+    newProvince->initializeCapital();
     addProvince(newProvince);
     setCapital(newProvince);
   } else {
@@ -59,7 +61,7 @@ int Participants::commandersNum() { return commandersList.size(); }
 
 void Participants::initialCapRSS() {
 	//Add functionality so, depending on the difficulty, AI participants get more or less resources to start off with
-  Provinces *newProvince = provincesList[capitalIndex];
+  Provinces *newProvince = getCapital();
 	newProvince -> modifyResources(CV.INITIAL_VALUES, true);
 }
 
@@ -95,11 +97,9 @@ void Participants::setKingdomName(std::string newName) {
 std::string Participants::getKingdomName() { return kingdomName; }
 
 bool Participants::isAlive() {
-  std::cout << "ProvincesNum: " << provincesNum() << std::endl;
-  std::cout << "CommandersNum: " << commandersNum() << std::endl;
-  if (provincesNum() > 0 && commandersNum() > 0) {
+  if (provincesNum() > 0 && commandersNum() > 0) 
     return true;
-  }
+
   return false;
 }
 
@@ -111,8 +111,9 @@ void Participants::createAsPlayer(bool choice)
   {
     std::cout << "Enter a name for this participant: " << RED;
     getline (std::cin, kingdomName);
-    std::cout << WHITE << "Kingdom " << RED << kingdomName << WHITE << " created... \n\n";
+    std::cout << WHITE << "Participant " << RED << kingdomName << WHITE << " created... \n\n";
   }
+  
 }
 
 void Participants::viewStats() {
@@ -203,7 +204,7 @@ void Participants::viewAllStatsFunction() {
 void Participants::printListOfProvinces() {
   std::cout << "Here is a list of your provinces: \n";
 	for (Provinces *tempProvince: provincesList)
-		std::cout << "- " << tempProvince -> getUnitName() << ", " << tempProvince->printCoordinates() << std::endl;
+		std::cout << "- " << tempProvince -> getUnitName() << tempProvince->printCoordinates() << std::endl;
 }
 
 Provinces *Participants::getYourProvince(int identifier) {
@@ -326,51 +327,43 @@ std::array<int, 5> Participants::calculateEach(int option)
 
 void Participants::showMap() {
   std::cout << "Map: \n";
+
   int thingy = continentSize;
   for (int x = 0; x < continentSize; x++) {
     // Y axis stuff
-    if (thingy < 10) {
+    if (thingy < 10) 
       std::cout << " " << thingy << "| ";
-    } else {
+    else 
       std::cout << thingy << "| ";
-    }
+    
     thingy--;
     // End y axis stuff
 
     for (int y = 0; y < continentSize; y++) {
       char letter = ' '; // Fix this later
-      char identifierThingy = ' ';
-			
-      if (provincesMap[x][y].getParticipantIndex() == participantIndex) {
+			Provinces* mapProvince = &provincesMap[x][y];
+
+      if (mapProvince->getParticipantIndex() == participantIndex)
+      {
         std::cout << BLUE;
-        identifierThingy = 'H';
-        if (provincesMap[x][y].isCapital() == true) {
+        if (mapProvince->isCapital() == true)
           letter = 'C';
-        } else {
+        else
           letter = 'p';
-        }
-      } else if (provincesMap[x][y].getParticipantIndex() != -1) {
+      } 
+      else if (mapProvince->getParticipantIndex() != -1) 
+      {
         std::cout << RED;
-        identifierThingy = 'V';
-        if (provincesMap[x][y].isCapital() == true) {
+        if (provincesMap[x][y].isCapital() == true)
           letter = 'C';
-        } else {
+        else 
           letter = 'p';
-        }
-      } else {
+      } 
+      else {
         letter = '0';
       }
-      if (provincesMap[x][y].commandersNum() == 0) {
-        std::cout << letter << "   ";
-      } else {
-        if (provincesMap[x][y].commandersNum() <= 9) {
-          std::cout << letter << identifierThingy
-                    << provincesMap[x][y].commandersNum() << " ";
-        } else {
-          std::cout << letter << identifierThingy << "* ";
-        }
-      }
-      std::cout << WHITE;
+      
+      std::cout << letter << mapProvince->commandersNum() << "  " << WHITE;
     }
     std::cout << std::endl;
   }
@@ -380,13 +373,13 @@ void Participants::showMap() {
   for (int a = 0; a < continentSize - 1; a++) {
     std::cout << "----";
   }
-  std::cout << "-";
+  std::cout << "--";
   std::cout << std::endl;
   std::cout << "    ";
   for (int a = 0; a < continentSize; a++) {
-    if (a < 8) {
+    if (a < 9) 
       std::cout << a + 1 << "   ";
-    } else
+    else
       std::cout << a + 1 << "  ";
   }
   std::cout << "\n\n";
@@ -413,6 +406,19 @@ Provinces* Participants::getProvinceByName(std::string name)
 	for (Provinces* newProvince: provincesList)
 		if (newProvince->getUnitName() == name)
 			return newProvince;
+}
+
+Provinces* Participants::selectRandomProvince()
+{
+  
+}
+
+bool Participants::hasProvince (std::string name)
+{
+  for (Provinces* newProvince: provincesList)
+    if (newProvince->getUnitName() == name)
+      return true;
+  return false;
 }
 
 bool Participants::selectCommander() {
