@@ -1,0 +1,6 @@
+#include "textFunctions.h"
+
+
+
+
+

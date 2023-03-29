@@ -230,7 +230,4 @@ void gamePlay()
   
 	endScreen();
 }
-curl $REPLIT_DB_URL -d 'MyLife = 2'
-curl -XDELETE $REPLIT_DB_URL/MyLife
-curl $REPLIT_DB_URL -d 'MyLife = 2'
-curl $REPLIT_DB_URL -d 'MyLife = 2'
+

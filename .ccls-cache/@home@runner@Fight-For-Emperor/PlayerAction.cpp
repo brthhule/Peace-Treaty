@@ -57,16 +57,14 @@ void PlayerAction::initialDecision() {
   case 'H': {
     Lists newList(4);
     newList.listOfHelp();
-    char whenYouDoneChar = OF.getInput(" ", {"P"}, false).at(0);
     break;
   }
   case 'P': {
-    char pauseGameQuestionChar = OF.getInput(
-        "Pausing the game will end this session of gameplay. Proceed? (Y/N): ",
-		{"Y", "N"}, false).at(0);
-    if (pauseGameQuestionChar == 'Y') {
+    char pauseGameQuestionChar = OF.getInput("Pausing the game will end this session of gameplay. Proceed? (Y/N): ", {"Y", "N"}, false).at(0);
+		
+    if (pauseGameQuestionChar == 'Y') 
       pauseGame();
-    }
+    
     std::cout << "Returning to the Main menu... \n";
   }
   }

@@ -1,0 +1,107 @@
+\033[;31m---------- List of Operations: ----------\n
+
+case 1 /*selectEnemyAction*/
+- Attack this province (A) \n
+- Scout this province (S) \n
+Options:
+A
+S
+M
+
+case 2: /*playerUnitAction*/
+- Move this unit (P)\n
+Options: 
+P
+M
+
+case 3: /*introduction*/
+- Start a new game (S)\n;
+- Resume a previous game (R)\n;
+Options:
+S
+R
+
+case 4: /*playerAction*/
+- Buildings (B)\n;
+- Training (T)\n;
+- Stats (S)\n;
+- Select Unit (U)\n;
+- Deployment (D)\n;
+- Next Turn (N)\n;
+- Pause (P)\n;
+Options:
+B
+T
+S
+U
+D
+N
+P
+    
+
+case 5: /*armyDeployment*/
+- Train a commander (T)\n;
+- Upgrade a commander (U)\n;
+- View army overview (V)\n;
+- Deploy a commander (D)\n;
+Options:
+T
+U
+V
+D 
+M
+
+case 6: /*TrainMAFunction*/
+- Proceed with training (P)\n;
+- See the amount of resources in this province (S)\n;
+Options:
+P
+S
+M
+    
+
+case 7: /*playerBuildFunction*/
+- Upgrade a building (U)\n;
+Options:
+U
+M
+    
+
+case 8: /*viewPlayerMap*/
+- Pick a province (P)\n;
+Options:
+P
+M
+    
+
+case 9: /*selectPlayerProvince*/
+- Build infrastructure (B)\n;
+- Train Troops (T)\n;
+Options:
+B
+T
+M
+    
+
+case 10: /*selectEnemyProvince*/
+- Attack this province (A)\n;
+- Scout this province (S)\n;
+- View the scout log (V)\n;
+Options:
+A
+S
+V
+M
+    
+
+End
+- Return to the previous menu (M)\n
+-------------- End List: ---------------- \033[;0m\n\n
+
+  std::vector <std::string> newVector;
+  newVector.push_back(letter);
+  for (std::string option: vectorToSend)
+    newVector.push_back(option);
+	
+	return OF.getInput(Enter the letter of the action you want to complete (enter 'H' to see help to know what to do): newVector false).at(0);
+}
