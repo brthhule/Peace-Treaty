@@ -1,4 +1,7 @@
 #include "showText.h"
+#define RED "\033[31m"
+#define WHITE "\033[0m"
+#define BLUE "\033[;34m"
 
 /*
 1 - selectEnemyAction
@@ -19,20 +22,21 @@ std::vector<std::string> showOptions(int caseNum)
 {
 	std::string caseNumString = std::to_string(caseNum);
   std::fstream newfile;
-  newfile.open("Options.txt", std::ios::in); // open a file to perform read operation using file object
+  newfile.open("MA/Units/Misc/Options.txt", std::ios::in); // open a file to perform read operation using file object
 	std::vector<std::string> acceptableValues = {"H"};
 	
   if (newfile.is_open()) 
 	{
 		std::string line;
 		bool pause = false;
+		bool addToArray = false;
     while (getline(newfile, line)) 
 		{
 			bool wait = false;
 
-			if (line.substr(0,3) == "case")
+			if (line.substr(0,4) == "case")
 				pause = true;
-			if (line == "case " + caseNumString)
+			if (line.substr(0,6) == "case " + caseNumString)
 			{
 				pause = false;
 				wait = true;
@@ -40,14 +44,42 @@ std::vector<std::string> showOptions(int caseNum)
 			if (line == "End")
 			{
 				wait = true;
-				pause = false;
+				pause = true;
+			}
+			if (line == "Options:")
+			{
+				addToArray = true;
+				wait = true;
 			}
 
-			if (pause == false && wait == false)
-				std::cout << line;
+			if (line.substr(0,1) != "!")
+			{
+				if (pause == false && wait == false)
+				{
+					if (addToArray == false)
+						std::cout << line << std::endl;
+					else if (addToArray == true)
+						acceptableValues.push_back(line);
+				}
+					
+			}
+			else
+			{
+				if (line.substr(1) == "RED")
+					std::cout << RED;
+				else if (line.substr(1) == "BLUE")
+					std::cout << BLUE;
+				else if (line.substr(1) == "WHITE")
+					std::cout << WHITE;
+				else if (line.substr(1) == "NEWLINE")
+						std::cout << std::endl;
+			}
 		}
     newfile.close(); // close the file object.
   }
+	// std::cout << "AV: \n";
+	// for (std::string newString: acceptableValues)
+	// 	std::cout << newString << std::endl;
 	return acceptableValues;
 }
 
@@ -124,20 +156,27 @@ void showHelp (int caseNum)
 
 void printFile (std::string fileName)
 {
-	std::cout << "I am here" << std::endl;
-	std::cout << "File name: " << fileName << std::endl;
 	std::fstream newfile;
-	newfile.open("Synopsis.txt", std::ios::in);
-	std::cout << "Is open: " << newfile.is_open();
+	newfile.open(fileName, std::ios::in);
 	if (newfile.is_open())
 	{
 		std::string line;
 		while (getline(newfile, line))
 		{
-			std::cout << line;
+			if (line.substr(0,1) != "!")
+				std::cout << line << std::endl;
+			else if (line.substr(1) == "RED")
+				std::cout << RED;
+			else if (line.substr(1) == "BLUE")
+				std::cout << BLUE;
+			else if (line.substr(1) == "WHITE")
+				std::cout << WHITE;
+			else if (line.substr(1) == "NEWLINE")
+					std::cout << std::endl;
 		}
 		newfile.close();
 	}
+	std::cout << std::endl;
 	
 }
 

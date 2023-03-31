@@ -8,7 +8,8 @@ std::string OtherFunctions::getInput(std::string text, std::vector<std::string> 
 	std::string input;
 	if (redo == false)
 	{
-		if (text.substr(0, 10) == "showOptions")
+		//std::cout << "String: " << text.substr(0,10) << std::endl;
+		if (text.substr(0, 11) == "showOptions")
 		{
 			int comma = text.find(",");
 			std::string number = text.substr(comma + 2);

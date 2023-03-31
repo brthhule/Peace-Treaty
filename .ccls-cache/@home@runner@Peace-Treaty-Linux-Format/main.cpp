@@ -101,8 +101,8 @@ int main()/*main code*/
 }
 char introduction()/*introduce player to game synopsis*/
 {
-    printFile("Synopsis.txt");
-		return getOption(3);
+  printFile("MA/Units/Misc/Synopsis.txt");
+	return getOption(3);
 }
 void resumeGame() /*download data from previous game fix this*/
 {
