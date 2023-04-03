@@ -74,6 +74,7 @@ int main()/*main code*/
       break;
   case 'S':
   {
+		OF.clearScreen();
     std::cout << "New game started...\n\n";
     // std::cout << "What is your kingdom name? " << RED;
     // std::getline(std::cin, kingdomName);
@@ -118,13 +119,16 @@ void startGame()
 	//"What continent size do you want to play on? (5, 10, 15) "
   std::string input = OF.getInput(text, {"number", "5", "10", "15" }, false);
 	continentSize = stoi(input);
+	OF.clearScreen();
   std::cout << "Continent size " << RED << continentSize << WHITE << " created..\n\n";
 
 	int pNum = stoi(OF.getInput("How many AI kingdoms will you fight? (1, 2, 3) ", {"number", "1", "2", "3" }, false));
   std::cout << RED << pNum << WHITE << " opponent kingdoms generated... \n\n";
+	OF.clearScreen();
 	totalMaxCommanders = continentSize;
 	
 	enemyDifficulty = stoi(OF.getInput("What gameplay difficulty do you want (1-3): ", {"number","1","2","3" }, false)); 
+	OF.clearScreen();
 	std::cout << "Gameplay difficulty " << RED << enemyDifficulty << WHITE << " selected. \n\n";
 
 	generateNewContinent(pNum);
@@ -137,6 +141,7 @@ void generateNewContinent(int pNum)
     howManyPlayers.push_back(std::to_string(x));
   
 	int players = stoi(OF.getInput("How many human players are there (1/2/3; 1 is recommended for single player experience)): ", howManyPlayers, false));
+	OF.clearScreen();
   std::cout << RED << players << WHITE << " players initialized...\n\n";
   pNum += players;
 	
@@ -161,12 +166,13 @@ void generateNewContinent(int pNum)
 
 void createMap() {
   /*Basically create the map-- make each province an object of Provinces*/
-  for (int x = 0; x < continentSize; x++) {
+	for (int x = 0; x < continentSize; x++) 
+	{
     std::vector<Provinces> vectorThingy;
     provincesMap.push_back(vectorThingy);
     for (int y = 0; y < continentSize; y++) {
       Provinces newProvince(x, y, -1);
-      provincesMap[x].push_back(newProvince);
+			provincesMap[x].push_back(newProvince);
     }
   }
 }

@@ -33,13 +33,14 @@ std::vector<std::string> showOptions(int caseNum)
     while (getline(newfile, line)) 
 		{
 			bool wait = false;
-
+			
 			if (line.substr(0,4) == "case")
 				pause = true;
-			if (line.substr(0,6) == "case " + caseNumString)
+			if (line.substr(0,6) == "case " + caseNumString || line == "start")
 			{
 				pause = false;
 				wait = true;
+				addToArray = false;
 			}
 			if (line == "End")
 			{
@@ -51,6 +52,9 @@ std::vector<std::string> showOptions(int caseNum)
 				addToArray = true;
 				wait = true;
 			}
+
+			// std::cout << "Pause: " << pause << std::endl;
+			// std::cout << "Wait: "  << wait << std::endl;
 
 			if (line.substr(0,1) != "!")
 			{

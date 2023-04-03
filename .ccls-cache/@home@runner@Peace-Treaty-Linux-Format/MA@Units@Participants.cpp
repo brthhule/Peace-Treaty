@@ -37,6 +37,7 @@ void Participants::createCapital() {
   if (newProvince->getParticipantIndex() == -1) {
     newProvince->changeParticipantIndex(participantIndex);
     newProvince->initializeCapital();
+		newProvince->changeUnitName(getNewName());
     addProvince(newProvince);
     setCapital(newProvince);
   } else {
@@ -204,7 +205,11 @@ void Participants::viewAllStatsFunction() {
 void Participants::printListOfProvinces() {
   std::cout << "Here is a list of your provinces: \n";
 	for (Provinces *tempProvince: provincesList)
-		std::cout << "- " << tempProvince -> getUnitName() << tempProvince->printCoordinates() << std::endl;
+	{
+		std::cout << "XCoord: " << tempProvince->getCoordinate('X') << std::endl;
+		std::cout << "YCoord: " << tempProvince->getCoordinate('Y') << std::endl;
+		std::cout << "- " << tempProvince -> getUnitName() << " " << tempProvince->printCoordinates() << std::endl;
+	}
 }
 
 Provinces *Participants::getYourProvince(int identifier) {
